@@ -1,0 +1,81 @@
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Minus, Plus } from 'lucide-react';
+
+interface QuickExpenseFormProps {
+  categories: string[];
+  onSubmit: (name: string, amount: number, category: string) => void;
+}
+
+export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps) => {
+  const [name, setName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [category, setCategory] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !amount || !category) return;
+    
+    onSubmit(name.trim(), parseFloat(amount), category);
+    setName('');
+    setAmount('');
+    setCategory('');
+  };
+
+  return (
+    <div className="bg-expense rounded-2xl p-5 shadow-card animate-slide-up" style={{ animationDelay: '0.1s' }}>
+      <div className="flex items-center gap-2 mb-4">
+        <div className="p-2 rounded-lg bg-expense-foreground/20">
+          <Minus className="w-4 h-4 text-expense-foreground" />
+        </div>
+        <h3 className="text-lg font-display font-semibold text-expense-foreground">
+          Brzi unos troška
+        </h3>
+      </div>
+      
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <Input
+          placeholder="Naziv troška"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground placeholder:text-expense-foreground/60 focus:border-expense-foreground/40"
+        />
+        
+        <div className="flex gap-3">
+          <Input
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="Iznos (€)"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground placeholder:text-expense-foreground/60 focus:border-expense-foreground/40"
+          />
+          
+          <Select value={category} onValueChange={setCategory}>
+            <SelectTrigger className="bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground">
+              <SelectValue placeholder="Kategorija" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
+        <Button
+          type="submit"
+          className="w-full bg-expense-foreground text-expense hover:bg-expense-foreground/90 font-semibold"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Dodaj trošak
+        </Button>
+      </form>
+    </div>
+  );
+};
