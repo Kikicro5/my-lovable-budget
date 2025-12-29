@@ -1,5 +1,6 @@
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
+import { MonthCard } from '@/components/MonthCard';
 import { BalanceCard } from '@/components/BalanceCard';
 import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
@@ -61,14 +62,14 @@ const Index = () => {
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
         <div className="space-y-4">
+          <MonthCard month={state.currentMonth} year={state.currentYear} />
+          
           <BalanceCard
             balance={getBalance()}
             income={getTotalIncome()}
             expense={getTotalExpense()}
             investment={getTotalInvestment()}
             savings={getTotalSavings()}
-            month={state.currentMonth}
-            year={state.currentYear}
           />
 
           {previousBalance !== 0 && (
