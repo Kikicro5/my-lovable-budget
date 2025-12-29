@@ -5,6 +5,7 @@ import { TransactionList } from '@/components/TransactionList';
 import { MonthlyBudget } from '@/types/budget';
 import { Calendar, ChevronRight, TrendingUp, TrendingDown, Wallet } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { MonthCard } from '@/components/MonthCard';
 
 const monthNames = [
   'Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj',
@@ -23,23 +24,21 @@ const Archive = () => {
     const expense = getTotalExpense(selectedBudget);
 
     return (
-      <div className="min-h-screen bg-background pb-24">
-        <div className="max-w-lg mx-auto px-4 pt-6">
+      <div className="min-h-screen bg-background pb-24 pt-4">
+        <div className="max-w-lg mx-auto px-4">
           <button
             onClick={() => setSelectedBudget(null)}
-            className="flex items-center gap-2 text-primary font-medium mb-6 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2 text-primary font-medium mb-4 hover:opacity-80 transition-opacity"
           >
             <ChevronRight className="w-4 h-4 rotate-180" />
             Natrag na arhivu
           </button>
 
-          <div className="text-center mb-6">
-            <h1 className="text-2xl font-display font-bold text-foreground">
-              {monthNames[selectedBudget.month]} {selectedBudget.year}
-            </h1>
+          <div className="mb-4">
+            <MonthCard month={selectedBudget.month} year={selectedBudget.year} />
           </div>
 
-          <div className="bg-card rounded-xl p-5 shadow-soft mb-6 animate-fade-in">
+          <div className="bg-card rounded-xl p-5 shadow-soft mb-4 animate-fade-in">
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Prihodi</p>
@@ -75,15 +74,17 @@ const Archive = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <div className="max-w-lg mx-auto px-4 pt-6">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-3 rounded-xl bg-primary">
-            <Calendar className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-display font-bold text-foreground">Arhiva</h1>
-            <p className="text-muted-foreground text-sm">Pregledaj prošle mjesece</p>
+    <div className="min-h-screen bg-background pb-24 pt-4">
+      <div className="max-w-lg mx-auto px-4">
+        <div className="bg-card rounded-2xl p-4 shadow-card animate-slide-up mb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-primary">
+              <Calendar className="w-6 h-6 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-xl font-display font-bold text-foreground">Arhiva</h1>
+              <p className="text-muted-foreground text-sm">Pregledaj prošle mjesece</p>
+            </div>
           </div>
         </div>
 
