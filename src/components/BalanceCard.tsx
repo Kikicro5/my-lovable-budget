@@ -7,13 +7,23 @@ interface BalanceCardProps {
   expense: number;
   investment?: number;
   savings?: number;
+  month: number;
+  year: number;
 }
 
-export const BalanceCard = ({ balance, income, expense, investment = 0, savings = 0 }: BalanceCardProps) => {
+const monthNames = [
+  'Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj',
+  'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'
+];
+
+export const BalanceCard = ({ balance, income, expense, investment = 0, savings = 0, month, year }: BalanceCardProps) => {
   const isPositive = balance >= 0;
 
   return (
     <div className="bg-card rounded-2xl p-6 shadow-card animate-slide-up">
+      <p className="text-lg font-display font-bold text-foreground text-center mb-4">
+        {monthNames[month]} {year}
+      </p>
       <p className="text-sm text-muted-foreground font-medium mb-2 text-center">
         Trenutno stanje
       </p>
