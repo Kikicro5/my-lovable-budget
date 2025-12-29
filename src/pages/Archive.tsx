@@ -3,16 +3,39 @@ import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { TransactionList } from '@/components/TransactionList';
 import { MonthlyBudget } from '@/types/budget';
-import { Calendar, ChevronRight, TrendingUp, TrendingDown, Wallet } from 'lucide-react';
+import { Calendar, ChevronRight, TrendingUp, TrendingDown, Wallet, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthCard } from '@/components/MonthCard';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { Button } from '@/components/ui/button';
+import { exportBudgetToPDF } from '@/utils/exportPdf';
 
 const Archive = () => {
   const { getPastBudgets, getBalance, getTotalIncome, getTotalExpense, removeTransaction } = useBudget();
   const [selectedBudget, setSelectedBudget] = useState<MonthlyBudget | null>(null);
   const { t } = useLanguage();
   const pastBudgets = getPastBudgets();
+
+  const handleExportPDF = (budget: MonthlyBudget) => {
+    exportBudgetToPDF({
+      budget,
+      monthName: t(`month.${budget.month}`),
+      labels: {
+        income: t('balance.income'),
+        expense: t('balance.expense'),
+        investment: t('balance.investment'),
+        savings: t('balance.savings'),
+        balance: t('balance.current'),
+        transactions: t('pdf.transactions'),
+        name: t('pdf.name'),
+        category: t('transaction.category'),
+        amount: t('transaction.amount'),
+        type: t('pdf.type'),
+        date: t('pdf.date'),
+        summary: t('pdf.summary'),
+      },
+    });
+  };
 
   if (selectedBudget) {
     const balance = getBalance(selectedBudget);
@@ -22,9 +45,15 @@ const Archive = () => {
     return (
       <div className="min-h-screen bg-background pb-24 pt-4">
         <div className="max-w-lg mx-auto px-4">
-          <button onClick={() => setSelectedBudget(null)} className="flex items-center gap-2 text-primary font-medium mb-4 hover:opacity-80 transition-opacity">
-            <ChevronRight className="w-4 h-4 rotate-180" />{t('archive.backToArchive')}
-          </button>
+          <div className="flex items-center justify-between mb-4">
+            <button onClick={() => setSelectedBudget(null)} className="flex items-center gap-2 text-primary font-medium hover:opacity-80 transition-opacity">
+              <ChevronRight className="w-4 h-4 rotate-180" />{t('archive.backToArchive')}
+            </button>
+            <Button onClick={() => handleExportPDF(selectedBudget)} variant="outline" size="sm" className="gap-2">
+              <Download className="w-4 h-4" />
+              {t('pdf.export')}
+            </Button>
+          </div>
           <div className="mb-4"><MonthCard month={selectedBudget.month} year={selectedBudget.year} /></div>
           <div className="bg-card rounded-xl p-5 shadow-soft mb-4 animate-fade-in">
             <div className="grid grid-cols-3 gap-4 text-center">
@@ -62,17 +91,24 @@ const Archive = () => {
               const income = getTotalIncome(budget);
               const expense = getTotalExpense(budget);
               return (
-                <button key={budget.id} onClick={() => setSelectedBudget(budget)} className="w-full bg-card rounded-xl p-4 shadow-soft hover:shadow-card transition-all duration-200 text-left animate-slide-up">
+                <div key={budget.id} className="w-full bg-card rounded-xl p-4 shadow-soft hover:shadow-card transition-all duration-200 animate-slide-up">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-display font-semibold text-foreground">{t(`month.${budget.month}`)} {budget.year}</h3>
-                    <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                    <button onClick={() => setSelectedBudget(budget)} className="font-display font-semibold text-foreground hover:text-primary transition-colors text-left flex-1">
+                      {t(`month.${budget.month}`)} {budget.year}
+                    </button>
+                    <div className="flex items-center gap-2">
+                      <Button onClick={() => handleExportPDF(budget)} variant="ghost" size="icon" className="h-8 w-8">
+                        <Download className="w-4 h-4" />
+                      </Button>
+                      <button onClick={() => setSelectedBudget(budget)}><ChevronRight className="w-5 h-5 text-muted-foreground" /></button>
+                    </div>
                   </div>
                   <div className="grid grid-cols-3 gap-3">
                     <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-income-light"><TrendingUp className="w-3 h-3 text-income" /></div><span className="text-sm text-income font-medium">+{income.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} €</span></div>
                     <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-expense-light"><TrendingDown className="w-3 h-3 text-expense" /></div><span className="text-sm text-expense font-medium">-{expense.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} €</span></div>
                     <div className="flex items-center gap-2"><div className={cn('p-1.5 rounded-lg', balance >= 0 ? 'bg-income-light' : 'bg-expense-light')}><Wallet className={cn('w-3 h-3', balance >= 0 ? 'text-income' : 'text-expense')} /></div><span className={cn('text-sm font-medium', balance >= 0 ? 'text-income' : 'text-expense')}>{balance.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} €</span></div>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
