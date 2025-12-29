@@ -4,7 +4,6 @@ import { MonthCard } from '@/components/MonthCard';
 import { BalanceCard } from '@/components/BalanceCard';
 import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
-import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
 import { BudgetProgress } from '@/components/BudgetProgress';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -52,16 +51,12 @@ const Index = () => {
             <div className="flex-1">
               <MonthCard month={state.currentMonth} year={state.currentYear} />
             </div>
-          </div>
-          
-          <div className="flex justify-end gap-2">
             {hasRecurring && !recurringApplied && (
               <Button variant="outline" size="sm" className="gap-2" onClick={handleApplyRecurring}>
                 <Repeat className="w-4 h-4" />
                 {t('recurring.apply')}
               </Button>
             )}
-            <BudgetLimitsForm />
           </div>
           
           <BalanceCard balance={getBalance()} income={getTotalIncome()} expense={getTotalExpense()} investment={getTotalInvestment()} savings={getTotalSavings()} />

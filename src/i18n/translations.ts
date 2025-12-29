@@ -111,6 +111,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Budget Limits
     'limits.title': 'Mjesečni limiti',
+    'limits.description': 'Postavi limite za praćenje potrošnje i ciljeve štednje.',
     'limits.expense': 'Limit rashoda',
     'limits.investment': 'Limit investicija',
     'limits.savings': 'Cilj štednje',
@@ -245,6 +246,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Budget Limits
     'limits.title': 'Monthly Limits',
+    'limits.description': 'Set limits to track spending and savings goals.',
     'limits.expense': 'Expense Limit',
     'limits.investment': 'Investment Limit',
     'limits.savings': 'Savings Goal',
@@ -379,6 +381,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Budget Limits
     'limits.title': 'Monatliche Limits',
+    'limits.description': 'Legen Sie Limits fest, um Ausgaben und Sparziele zu verfolgen.',
     'limits.expense': 'Ausgabenlimit',
     'limits.investment': 'Investitionslimit',
     'limits.savings': 'Sparziel',
@@ -513,6 +516,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Budget Limits
     'limits.title': 'Miesięczne limity',
+    'limits.description': 'Ustaw limity, aby śledzić wydatki i cele oszczędnościowe.',
     'limits.expense': 'Limit wydatków',
     'limits.investment': 'Limit inwestycji',
     'limits.savings': 'Cel oszczędności',
@@ -647,6 +651,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Budget Limits
     'limits.title': 'Límites mensuales',
+    'limits.description': 'Establece límites para rastrear gastos y metas de ahorro.',
     'limits.expense': 'Límite de gastos',
     'limits.investment': 'Límite de inversiones',
     'limits.savings': 'Meta de ahorro',
@@ -781,6 +786,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Budget Limits
     'limits.title': 'Limites mensuelles',
+    'limits.description': 'Définissez des limites pour suivre les dépenses et les objectifs d\'épargne.',
     'limits.expense': 'Limite de dépenses',
     'limits.investment': 'Limite d\'investissement',
     'limits.savings': 'Objectif d\'épargne',
