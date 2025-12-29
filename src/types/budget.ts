@@ -7,16 +7,21 @@ export interface Transaction {
   date: string;
 }
 
+export interface Category {
+  name: string;
+  description?: string;
+}
+
 export interface MonthlyBudget {
   id: string;
   month: number;
   year: number;
   transactions: Transaction[];
   savedCategories: {
-    income: string[];
-    expense: string[];
-    investment: string[];
-    savings: string[];
+    income: Category[];
+    expense: Category[];
+    investment: Category[];
+    savings: Category[];
   };
 }
 
@@ -25,9 +30,21 @@ export interface BudgetState {
   currentYear: number;
   budgets: MonthlyBudget[];
   savedCategories: {
-    income: string[];
-    expense: string[];
-    investment: string[];
-    savings: string[];
+    income: Category[];
+    expense: Category[];
+    investment: Category[];
+    savings: Category[];
+  };
+}
+
+export interface BudgetState {
+  currentMonth: number;
+  currentYear: number;
+  budgets: MonthlyBudget[];
+  savedCategories: {
+    income: Category[];
+    expense: Category[];
+    investment: Category[];
+    savings: Category[];
   };
 }

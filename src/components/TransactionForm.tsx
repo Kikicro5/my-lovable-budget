@@ -4,12 +4,13 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Category } from '@/types/budget';
 
 interface TransactionFormProps {
   type: 'income' | 'expense' | 'investment' | 'savings';
-  categories: string[];
+  categories: Category[];
   onSubmit: (name: string, amount: number, category: string) => void;
-  onAddCategory: (category: string) => void;
+  onAddCategory: (category: Category) => void;
 }
 
 const typeConfig = {
@@ -59,7 +60,8 @@ export const TransactionForm = ({
 }: TransactionFormProps) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
-  const [newCategory, setNewCategory] = useState('');
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [showNewCategory, setShowNewCategory] = useState(false);
 
   const config = typeConfig[type];
@@ -75,10 +77,14 @@ export const TransactionForm = ({
   };
 
   const handleAddCategory = () => {
-    if (!newCategory.trim()) return;
-    onAddCategory(newCategory.trim());
-    setCategory(newCategory.trim());
-    setNewCategory('');
+    if (!newCategoryName.trim()) return;
+    onAddCategory({ 
+      name: newCategoryName.trim(), 
+      description: newCategoryDescription.trim() || undefined 
+    });
+    setCategory(newCategoryName.trim());
+    setNewCategoryName('');
+    setNewCategoryDescription('');
     setShowNewCategory(false);
   };
 
@@ -111,26 +117,38 @@ export const TransactionForm = ({
         />
 
         {showNewCategory ? (
-          <div className="flex gap-2">
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <Input
+                placeholder="Naziv kategorije"
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                className="bg-card border-border"
+                autoFocus
+              />
+              <Button type="button" size="icon" onClick={handleAddCategory} className="shrink-0">
+                <Plus className="w-4 h-4" />
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                variant="ghost"
+                onClick={() => {
+                  setShowNewCategory(false);
+                  setNewCategoryName('');
+                  setNewCategoryDescription('');
+                }}
+                className="shrink-0"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
             <Input
-              placeholder="Nova kategorija"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
+              placeholder="Opis kategorije (opcionalno)"
+              value={newCategoryDescription}
+              onChange={(e) => setNewCategoryDescription(e.target.value)}
               className="bg-card border-border"
-              autoFocus
             />
-            <Button type="button" size="icon" onClick={handleAddCategory} className="shrink-0">
-              <Plus className="w-4 h-4" />
-            </Button>
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              onClick={() => setShowNewCategory(false)}
-              className="shrink-0"
-            >
-              <X className="w-4 h-4" />
-            </Button>
           </div>
         ) : (
           <div className="flex gap-2">
@@ -140,8 +158,13 @@ export const TransactionForm = ({
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
+                  <SelectItem key={cat.name} value={cat.name}>
+                    <div className="flex flex-col">
+                      <span>{cat.name}</span>
+                      {cat.description && (
+                        <span className="text-xs text-muted-foreground">{cat.description}</span>
+                      )}
+                    </div>
                   </SelectItem>
                 ))}
               </SelectContent>

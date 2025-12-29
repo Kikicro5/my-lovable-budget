@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BudgetState, MonthlyBudget, Transaction } from '@/types/budget';
+import { BudgetState, MonthlyBudget, Transaction, Category } from '@/types/budget';
 
 const STORAGE_KEY = 'monthly-budget-app';
 
@@ -10,12 +10,44 @@ const getInitialState = (): BudgetState => {
     currentYear: now.getFullYear(),
     budgets: [],
     savedCategories: {
-      income: ['Plaća', 'Bonus', 'Freelance', 'Dividende', 'Ostalo'],
-      expense: ['Režije', 'Hrana', 'Transport', 'Zabava', 'Zdravlje', 'Odjeća', 'Ostalo'],
-      investment: ['Dionice', 'Kripto', 'Nekretnine', 'Fondovi', 'Ostalo'],
-      savings: ['Hitni fond', 'Godišnji odmor', 'Mirovina', 'Ostalo'],
+      income: [
+        { name: 'Plaća' },
+        { name: 'Bonus' },
+        { name: 'Freelance' },
+        { name: 'Dividende' },
+        { name: 'Ostalo' },
+      ],
+      expense: [
+        { name: 'Režije' },
+        { name: 'Hrana' },
+        { name: 'Transport' },
+        { name: 'Zabava' },
+        { name: 'Zdravlje' },
+        { name: 'Odjeća' },
+        { name: 'Ostalo' },
+      ],
+      investment: [
+        { name: 'Dionice' },
+        { name: 'Kripto' },
+        { name: 'Nekretnine' },
+        { name: 'Fondovi' },
+        { name: 'Ostalo' },
+      ],
+      savings: [
+        { name: 'Hitni fond' },
+        { name: 'Godišnji odmor' },
+        { name: 'Mirovina' },
+        { name: 'Ostalo' },
+      ],
     },
   };
+};
+
+// Helper to migrate old string categories to new Category format
+const migrateCategories = (categories: (string | Category)[]): Category[] => {
+  return categories.map((cat) =>
+    typeof cat === 'string' ? { name: cat } : cat
+  );
 };
 
 export const useBudget = () => {
@@ -25,14 +57,14 @@ export const useBudget = () => {
       try {
         const parsed = JSON.parse(saved);
         const defaults = getInitialState();
-        // Merge saved categories with defaults to ensure new category types exist
+        // Merge saved categories with defaults and migrate old format
         return {
           ...parsed,
           savedCategories: {
-            income: parsed.savedCategories?.income || defaults.savedCategories.income,
-            expense: parsed.savedCategories?.expense || defaults.savedCategories.expense,
-            investment: parsed.savedCategories?.investment || defaults.savedCategories.investment,
-            savings: parsed.savedCategories?.savings || defaults.savedCategories.savings,
+            income: migrateCategories(parsed.savedCategories?.income || defaults.savedCategories.income),
+            expense: migrateCategories(parsed.savedCategories?.expense || defaults.savedCategories.expense),
+            investment: migrateCategories(parsed.savedCategories?.investment || defaults.savedCategories.investment),
+            savings: migrateCategories(parsed.savedCategories?.savings || defaults.savedCategories.savings),
           },
         };
       } catch {
@@ -104,8 +136,8 @@ export const useBudget = () => {
     }));
   };
 
-  const addCategory = (type: 'income' | 'expense' | 'investment' | 'savings', category: string) => {
-    if (state.savedCategories[type].includes(category)) return;
+  const addCategory = (type: 'income' | 'expense' | 'investment' | 'savings', category: Category) => {
+    if (state.savedCategories[type].some((c) => c.name === category.name)) return;
 
     setState((prev) => ({
       ...prev,
@@ -116,12 +148,12 @@ export const useBudget = () => {
     }));
   };
 
-  const removeCategory = (type: 'income' | 'expense' | 'investment' | 'savings', category: string) => {
+  const removeCategory = (type: 'income' | 'expense' | 'investment' | 'savings', categoryName: string) => {
     setState((prev) => ({
       ...prev,
       savedCategories: {
         ...prev.savedCategories,
-        [type]: prev.savedCategories[type].filter((c) => c !== category),
+        [type]: prev.savedCategories[type].filter((c) => c.name !== categoryName),
       },
     }));
   };
