@@ -19,12 +19,10 @@ const Options = () => {
     setSelectedLanguage(code);
     const currentUrl = window.location.origin;
     if (code === 'hr') {
-      // If Croatian, just stay on original site
-      window.location.href = currentUrl;
-    } else {
-      const translateUrl = `https://translate.google.com/translate?sl=hr&tl=${code}&u=${encodeURIComponent(currentUrl)}`;
-      window.location.href = translateUrl;
+      return; // Already in Croatian
     }
+    const translateUrl = `https://translate.google.com/translate?sl=hr&tl=${code}&u=${encodeURIComponent(currentUrl)}`;
+    window.open(translateUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
