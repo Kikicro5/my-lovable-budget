@@ -1,13 +1,15 @@
 import { cn } from '@/lib/utils';
-import { TrendingUp, TrendingDown } from 'lucide-react';
+import { TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
 
 interface BalanceCardProps {
   balance: number;
   income: number;
   expense: number;
+  investment?: number;
+  savings?: number;
 }
 
-export const BalanceCard = ({ balance, income, expense }: BalanceCardProps) => {
+export const BalanceCard = ({ balance, income, expense, investment = 0, savings = 0 }: BalanceCardProps) => {
   const isPositive = balance >= 0;
 
   return (
@@ -48,6 +50,30 @@ export const BalanceCard = ({ balance, income, expense }: BalanceCardProps) => {
             <p className="text-xs text-muted-foreground">Rashodi</p>
             <p className="text-sm font-semibold text-expense">
               -{expense.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-primary/10">
+          <div className="p-2 rounded-lg bg-primary">
+            <LineChart className="w-4 h-4 text-primary-foreground" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Investicije</p>
+            <p className="text-sm font-semibold text-primary">
+              {investment.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-accent/10">
+          <div className="p-2 rounded-lg bg-accent">
+            <PiggyBank className="w-4 h-4 text-accent-foreground" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Štednja</p>
+            <p className="text-sm font-semibold text-accent">
+              {savings.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
             </p>
           </div>
         </div>
