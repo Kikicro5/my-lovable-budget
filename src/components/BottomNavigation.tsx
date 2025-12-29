@@ -1,16 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, FileText, Archive, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 const navItems = [
-  { path: '/', icon: Home, label: 'Početna' },
-  { path: '/monthly', icon: FileText, label: 'Mjesečno' },
-  { path: '/archive', icon: Archive, label: 'Arhiva' },
-  { path: '/options', icon: Settings, label: 'Opcije' },
+  { path: '/', icon: Home, labelKey: 'nav.home' },
+  { path: '/monthly', icon: FileText, labelKey: 'nav.monthly' },
+  { path: '/archive', icon: Archive, labelKey: 'nav.archive' },
+  { path: '/options', icon: Settings, labelKey: 'nav.options' },
 ];
 
 export const BottomNavigation = () => {
   const location = useLocation();
+  const { t } = useLanguage();
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-soft z-50">
@@ -29,7 +31,7 @@ export const BottomNavigation = () => {
               )}
             >
               <item.icon className={cn('w-5 h-5', isActive && 'scale-110')} />
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className="text-xs font-medium">{t(item.labelKey)}</span>
             </Link>
           );
         })}

@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface BalanceCardProps {
   balance: number;
@@ -11,11 +12,12 @@ interface BalanceCardProps {
 
 export const BalanceCard = ({ balance, income, expense, investment = 0, savings = 0 }: BalanceCardProps) => {
   const isPositive = balance >= 0;
+  const { t } = useLanguage();
 
   return (
     <div className="bg-card rounded-2xl p-6 shadow-card animate-slide-up">
       <p className="text-sm text-muted-foreground font-medium mb-2 text-center">
-        Trenutno stanje
+        {t('balance.current')}
       </p>
       <h2
         className={cn(
@@ -35,7 +37,7 @@ export const BalanceCard = ({ balance, income, expense, investment = 0, savings 
             <TrendingUp className="w-4 h-4 text-income-foreground" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Prihodi</p>
+            <p className="text-xs text-muted-foreground">{t('balance.income')}</p>
             <p className="text-sm font-semibold text-income">
               +{income.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
             </p>
@@ -47,7 +49,7 @@ export const BalanceCard = ({ balance, income, expense, investment = 0, savings 
             <TrendingDown className="w-4 h-4 text-expense-foreground" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Rashodi</p>
+            <p className="text-xs text-muted-foreground">{t('balance.expense')}</p>
             <p className="text-sm font-semibold text-expense">
               -{expense.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
             </p>
@@ -59,7 +61,7 @@ export const BalanceCard = ({ balance, income, expense, investment = 0, savings 
             <LineChart className="w-4 h-4 text-primary-foreground" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Investicije</p>
+            <p className="text-xs text-muted-foreground">{t('balance.investment')}</p>
             <p className="text-sm font-semibold text-primary">
               {investment.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
             </p>
@@ -71,7 +73,7 @@ export const BalanceCard = ({ balance, income, expense, investment = 0, savings 
             <PiggyBank className="w-4 h-4 text-accent-foreground" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Štednja</p>
+            <p className="text-xs text-muted-foreground">{t('balance.savings')}</p>
             <p className="text-sm font-semibold text-accent">
               {savings.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
             </p>

@@ -5,6 +5,7 @@ import { Plus, X, TrendingUp, TrendingDown, LineChart, PiggyBank, Info } from 'l
 import { cn } from '@/lib/utils';
 import { Category } from '@/types/budget';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface CategoryManagerProps {
   type: 'income' | 'expense' | 'investment' | 'savings';
@@ -16,28 +17,28 @@ interface CategoryManagerProps {
 const typeConfig = {
   income: {
     icon: TrendingUp,
-    title: 'Kategorije prihoda',
+    titleKey: 'category.income',
     bgClass: 'bg-income',
     iconTextClass: 'text-income-foreground',
     tagClass: 'bg-income-light text-income border border-income/20',
   },
   expense: {
     icon: TrendingDown,
-    title: 'Kategorije rashoda',
+    titleKey: 'category.expense',
     bgClass: 'bg-expense',
     iconTextClass: 'text-expense-foreground',
     tagClass: 'bg-expense-light text-expense border border-expense/20',
   },
   investment: {
     icon: LineChart,
-    title: 'Kategorije investicija',
+    titleKey: 'category.investment',
     bgClass: 'bg-primary',
     iconTextClass: 'text-primary-foreground',
     tagClass: 'bg-primary/10 text-primary border border-primary/20',
   },
   savings: {
     icon: PiggyBank,
-    title: 'Kategorije štednje',
+    titleKey: 'category.savings',
     bgClass: 'bg-accent',
     iconTextClass: 'text-accent-foreground',
     tagClass: 'bg-accent/10 text-accent border border-accent/20',
@@ -54,6 +55,7 @@ export const CategoryManager = ({
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const config = typeConfig[type];
   const Icon = config.icon;
+  const { t } = useLanguage();
 
   const handleAdd = () => {
     if (!newCategoryName.trim() || categories.some((c) => c.name === newCategoryName.trim())) return;
@@ -72,13 +74,13 @@ export const CategoryManager = ({
           <Icon className={cn('w-4 h-4', config.iconTextClass)} />
         </div>
         <h3 className="text-lg font-display font-semibold text-foreground">
-          {config.title}
+          {t(config.titleKey)}
         </h3>
       </div>
 
       <div className="space-y-2 mb-4">
         <Input
-          placeholder="Naziv kategorije"
+          placeholder={t('transaction.categoryName')}
           value={newCategoryName}
           onChange={(e) => setNewCategoryName(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
@@ -86,7 +88,7 @@ export const CategoryManager = ({
         />
         <div className="flex gap-2">
           <Input
-            placeholder="Opis kategorije (opcionalno)"
+            placeholder={t('transaction.categoryDesc')}
             value={newCategoryDescription}
             onChange={(e) => setNewCategoryDescription(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAdd()}

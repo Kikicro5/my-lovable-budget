@@ -2,6 +2,7 @@ import { Transaction } from '@/types/budget';
 import { Trash2, TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/i18n/LanguageContext';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -62,6 +63,8 @@ export const TransactionList = ({
   title,
   filterType,
 }: TransactionListProps) => {
+  const { t } = useLanguage();
+  
   const filteredTransactions = filterType
     ? transactions.filter((t) => t.type === filterType)
     : transactions;
@@ -78,7 +81,7 @@ export const TransactionList = ({
             {title}
           </h3>
         )}
-        <p className="text-muted-foreground">Nema transakcija</p>
+        <p className="text-muted-foreground">{t('transaction.noTransactions')}</p>
       </div>
     );
   }
@@ -132,15 +135,15 @@ export const TransactionList = ({
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Jeste li sigurni?</AlertDialogTitle>
+                      <AlertDialogTitle>{t('dialog.confirm')}</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Ova radnja će trajno obrisati transakciju "{transaction.name}".
+                        {t('dialog.deleteTransaction')} "{transaction.name}".
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Odustani</AlertDialogCancel>
+                      <AlertDialogCancel>{t('dialog.cancel')}</AlertDialogCancel>
                       <AlertDialogAction onClick={() => onRemove(transaction.id)}>
-                        Obriši
+                        {t('dialog.delete')}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
