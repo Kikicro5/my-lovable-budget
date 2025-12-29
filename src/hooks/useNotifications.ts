@@ -43,11 +43,13 @@ export const useNotifications = () => {
       setPermissionGranted(result.display === 'granted');
     } catch (error) {
       console.log('Notifications not available (web environment)');
+      // In web environment, we'll still allow enabling settings
+      // They just won't work until running on native
       setPermissionGranted(false);
     }
   };
 
-  const requestPermissions = async () => {
+  const requestPermissions = async (): Promise<boolean> => {
     try {
       const result = await LocalNotifications.requestPermissions();
       const granted = result.display === 'granted';
@@ -55,17 +57,18 @@ export const useNotifications = () => {
       return granted;
     } catch (error) {
       console.log('Notifications not available (web environment)');
-      return false;
+      // Return true for web to allow settings to be saved
+      // They will work when running on native device
+      return true;
     }
   };
 
   const updateSettings = async (newSettings: Partial<NotificationSettings>) => {
-    if (newSettings.enabled && !permissionGranted) {
-      const granted = await requestPermissions();
-      if (!granted) {
-        return;
-      }
+    // If enabling notifications, try to request permissions
+    if (newSettings.enabled === true) {
+      await requestPermissions();
     }
+    // Always update settings - they'll be saved for when app runs on native
     setSettings(prev => ({ ...prev, ...newSettings }));
   };
 
