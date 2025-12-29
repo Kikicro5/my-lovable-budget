@@ -219,6 +219,58 @@ export const useBudget = () => {
       });
   };
 
+  const getPreviousMonthBudget = (): MonthlyBudget | undefined => {
+    let prevMonth = state.currentMonth - 1;
+    let prevYear = state.currentYear;
+    if (prevMonth < 0) {
+      prevMonth = 11;
+      prevYear -= 1;
+    }
+    return state.budgets.find((b) => b.month === prevMonth && b.year === prevYear);
+  };
+
+  const getPreviousMonthBalance = (): number => {
+    const prevBudget = getPreviousMonthBudget();
+    return getBalance(prevBudget);
+  };
+
+  const carryOverBalance = () => {
+    const prevBalance = getPreviousMonthBalance();
+    if (prevBalance === 0) return false;
+
+    const budget = getOrCreateCurrentBudget();
+    
+    // Check if already carried over
+    const hasCarryOver = budget.transactions.some(
+      (t) => t.category === 'Prijenos iz prethodnog mjeseca'
+    );
+    if (hasCarryOver) return false;
+
+    const newTransaction: Transaction = {
+      id: crypto.randomUUID(),
+      name: 'Prijenos iz prethodnog mjeseca',
+      amount: Math.abs(prevBalance),
+      type: prevBalance > 0 ? 'income' : 'expense',
+      category: 'Prijenos iz prethodnog mjeseca',
+      date: new Date().toISOString(),
+    };
+
+    setState((prev) => ({
+      ...prev,
+      budgets: prev.budgets.map((b) =>
+        b.id === budget.id
+          ? { ...b, transactions: [...b.transactions, newTransaction] }
+          : b
+      ).concat(
+        prev.budgets.find((b) => b.id === budget.id)
+          ? []
+          : [{ ...budget, transactions: [newTransaction] }]
+      ),
+    }));
+
+    return true;
+  };
+
   const setCurrentPeriod = (month: number, year: number) => {
     setState((prev) => ({
       ...prev,
@@ -241,6 +293,8 @@ export const useBudget = () => {
     getTotalInvestment,
     getTotalSavings,
     getPastBudgets,
+    getPreviousMonthBalance,
+    carryOverBalance,
     setCurrentPeriod,
   };
 };

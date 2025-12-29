@@ -4,7 +4,9 @@ import { MonthHeader } from '@/components/MonthHeader';
 import { BalanceCard } from '@/components/BalanceCard';
 import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
+import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
+import { ArrowRightLeft } from 'lucide-react';
 
 const Index = () => {
   const {
@@ -17,9 +19,12 @@ const Index = () => {
     getTotalExpense,
     getTotalInvestment,
     getTotalSavings,
+    getPreviousMonthBalance,
+    carryOverBalance,
   } = useBudget();
 
   const currentBudget = getCurrentBudget();
+  const previousBalance = getPreviousMonthBalance();
 
   const handleAddExpense = (name: string, amount: number, category: string) => {
     addTransaction({ name, amount, type: 'expense', category });
@@ -37,6 +42,22 @@ const Index = () => {
     });
   };
 
+  const handleCarryOver = () => {
+    const success = carryOverBalance();
+    if (success) {
+      toast({
+        title: 'Stanje preneseno',
+        description: `Preneseno ${previousBalance.toLocaleString('hr-HR')} € iz prethodnog mjeseca`,
+      });
+    } else {
+      toast({
+        title: 'Nije moguće prenijeti',
+        description: 'Stanje je već preneseno ili nema stanja za prijenos',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background pb-24">
       <div className="max-w-lg mx-auto px-4">
@@ -50,6 +71,17 @@ const Index = () => {
             investment={getTotalInvestment()}
             savings={getTotalSavings()}
           />
+
+          {previousBalance !== 0 && (
+            <Button
+              onClick={handleCarryOver}
+              variant="outline"
+              className="w-full flex items-center gap-2"
+            >
+              <ArrowRightLeft className="w-4 h-4" />
+              Prenesi stanje iz prethodnog mjeseca ({previousBalance.toLocaleString('hr-HR')} €)
+            </Button>
+          )}
 
           <QuickExpenseForm
             categories={state.savedCategories.expense}
