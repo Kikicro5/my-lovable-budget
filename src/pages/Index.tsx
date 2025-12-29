@@ -15,6 +15,8 @@ const Index = () => {
     getBalance,
     getTotalIncome,
     getTotalExpense,
+    getTotalInvestment,
+    getTotalSavings,
   } = useBudget();
 
   const currentBudget = getCurrentBudget();
@@ -45,6 +47,8 @@ const Index = () => {
             balance={getBalance()}
             income={getTotalIncome()}
             expense={getTotalExpense()}
+            investment={getTotalInvestment()}
+            savings={getTotalSavings()}
           />
 
           <QuickExpenseForm
