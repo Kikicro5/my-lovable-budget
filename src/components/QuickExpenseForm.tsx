@@ -3,9 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Minus, Plus } from 'lucide-react';
+import { Category } from '@/types/budget';
 
 interface QuickExpenseFormProps {
-  categories: string[];
+  categories: Category[];
   onSubmit: (name: string, amount: number, category: string) => void;
 }
 
@@ -51,8 +52,13 @@ export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps
             </SelectTrigger>
             <SelectContent>
               {categories.map((cat) => (
-                <SelectItem key={cat} value={cat}>
-                  {cat}
+                <SelectItem key={cat.name} value={cat.name}>
+                  <div className="flex flex-col">
+                    <span>{cat.name}</span>
+                    {cat.description && (
+                      <span className="text-xs text-muted-foreground">{cat.description}</span>
+                    )}
+                  </div>
                 </SelectItem>
               ))}
             </SelectContent>

@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus, X, Tags, TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
+import { Plus, X, TrendingUp, TrendingDown, LineChart, PiggyBank, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Category } from '@/types/budget';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface CategoryManagerProps {
   type: 'income' | 'expense' | 'investment' | 'savings';
-  categories: string[];
-  onAdd: (category: string) => void;
-  onRemove: (category: string) => void;
+  categories: Category[];
+  onAdd: (category: Category) => void;
+  onRemove: (categoryName: string) => void;
 }
 
 const typeConfig = {
@@ -48,14 +50,19 @@ export const CategoryManager = ({
   onAdd,
   onRemove,
 }: CategoryManagerProps) => {
-  const [newCategory, setNewCategory] = useState('');
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const config = typeConfig[type];
   const Icon = config.icon;
 
   const handleAdd = () => {
-    if (!newCategory.trim() || categories.includes(newCategory.trim())) return;
-    onAdd(newCategory.trim());
-    setNewCategory('');
+    if (!newCategoryName.trim() || categories.some((c) => c.name === newCategoryName.trim())) return;
+    onAdd({ 
+      name: newCategoryName.trim(), 
+      description: newCategoryDescription.trim() || undefined 
+    });
+    setNewCategoryName('');
+    setNewCategoryDescription('');
   };
 
   return (
@@ -69,37 +76,58 @@ export const CategoryManager = ({
         </h3>
       </div>
 
-      <div className="flex gap-2 mb-4">
+      <div className="space-y-2 mb-4">
         <Input
-          placeholder="Nova kategorija"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
+          placeholder="Naziv kategorije"
+          value={newCategoryName}
+          onChange={(e) => setNewCategoryName(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
           className="bg-background border-border"
         />
-        <Button onClick={handleAdd} size="icon" className="shrink-0">
-          <Plus className="w-4 h-4" />
-        </Button>
+        <div className="flex gap-2">
+          <Input
+            placeholder="Opis kategorije (opcionalno)"
+            value={newCategoryDescription}
+            onChange={(e) => setNewCategoryDescription(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
+            className="bg-background border-border"
+          />
+          <Button onClick={handleAdd} size="icon" className="shrink-0">
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {categories.map((category) => (
-          <div
-            key={category}
-            className={cn(
-              'flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium',
-              config.tagClass
-            )}
-          >
-            {category}
-            <button
-              onClick={() => onRemove(category)}
-              className="ml-1 hover:opacity-70 transition-opacity"
+        <TooltipProvider>
+          {categories.map((category) => (
+            <div
+              key={category.name}
+              className={cn(
+                'flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium',
+                config.tagClass
+              )}
             >
-              <X className="w-3 h-3" />
-            </button>
-          </div>
-        ))}
+              {category.name}
+              {category.description && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="w-3 h-3 ml-1 opacity-60 cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{category.description}</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+              <button
+                onClick={() => onRemove(category.name)}
+                className="ml-1 hover:opacity-70 transition-opacity"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+        </TooltipProvider>
       </div>
     </div>
   );

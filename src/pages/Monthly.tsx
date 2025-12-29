@@ -47,11 +47,11 @@ const Monthly = () => {
     });
   };
 
-  const handleAddCategory = (type: 'income' | 'expense' | 'investment' | 'savings', category: string) => {
+  const handleAddCategory = (type: 'income' | 'expense' | 'investment' | 'savings', category: { name: string; description?: string }) => {
     addCategory(type, category);
     toast({
       title: 'Kategorija dodana',
-      description: category,
+      description: category.name,
     });
   };
 
