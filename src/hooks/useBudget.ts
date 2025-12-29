@@ -23,7 +23,18 @@ export const useBudget = () => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        const defaults = getInitialState();
+        // Merge saved categories with defaults to ensure new category types exist
+        return {
+          ...parsed,
+          savedCategories: {
+            income: parsed.savedCategories?.income || defaults.savedCategories.income,
+            expense: parsed.savedCategories?.expense || defaults.savedCategories.expense,
+            investment: parsed.savedCategories?.investment || defaults.savedCategories.investment,
+            savings: parsed.savedCategories?.savings || defaults.savedCategories.savings,
+          },
+        };
       } catch {
         return getInitialState();
       }
