@@ -5,8 +5,9 @@ import { TransactionForm } from '@/components/TransactionForm';
 import { TransactionList } from '@/components/TransactionList';
 import { CategoryManager } from '@/components/CategoryManager';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
-import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart } from 'lucide-react';
+import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, ArrowRightLeft } from 'lucide-react';
 
 const Monthly = () => {
   const {
@@ -16,9 +17,12 @@ const Monthly = () => {
     removeTransaction,
     addCategory,
     removeCategory,
+    getPreviousMonthBalance,
+    carryOverBalance,
   } = useBudget();
 
   const currentBudget = getCurrentBudget();
+  const previousBalance = getPreviousMonthBalance();
 
   const handleAddTransaction = (
     type: 'income' | 'expense' | 'investment' | 'savings',
@@ -63,6 +67,22 @@ const Monthly = () => {
     });
   };
 
+  const handleCarryOver = () => {
+    const success = carryOverBalance();
+    if (success) {
+      toast({
+        title: 'Stanje preneseno',
+        description: `Preneseno ${previousBalance.toLocaleString('hr-HR')} € iz prethodnog mjeseca`,
+      });
+    } else {
+      toast({
+        title: 'Nije moguće prenijeti',
+        description: 'Stanje je već preneseno ili nema stanja za prijenos',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
@@ -95,6 +115,16 @@ const Monthly = () => {
           </TabsList>
 
           <TabsContent value="income" className="space-y-4">
+            {previousBalance !== 0 && (
+              <Button
+                onClick={handleCarryOver}
+                variant="outline"
+                className="w-full flex items-center gap-2"
+              >
+                <ArrowRightLeft className="w-4 h-4" />
+                Prenesi stanje iz prethodnog mjeseca ({previousBalance.toLocaleString('hr-HR')} €)
+              </Button>
+            )}
             <TransactionForm
               type="income"
               categories={state.savedCategories.income}
