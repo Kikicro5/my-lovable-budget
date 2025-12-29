@@ -8,15 +8,20 @@ import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
 import { BudgetProgress } from '@/components/BudgetProgress';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { Button } from '@/components/ui/button';
+import { Repeat } from 'lucide-react';
 
 const Index = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getBudgetProgress } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getBudgetProgress, applyRecurringTransactions } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
 
   const expenseProgress = getBudgetProgress('expense');
   const investmentProgress = getBudgetProgress('investment');
   const savingsProgress = getBudgetProgress('savings');
+
+  const hasRecurring = state.recurringTransactions.filter(r => r.isActive).length > 0;
+  const recurringApplied = currentBudget?.recurringApplied || false;
 
   const handleAddExpense = (name: string, amount: number, category: string) => {
     addTransaction({ name, amount, type: 'expense', category });
@@ -26,6 +31,15 @@ const Index = () => {
   const handleRemoveTransaction = (id: string) => {
     removeTransaction(id);
     toast({ title: t('toast.transaction.removed'), variant: 'destructive' });
+  };
+
+  const handleApplyRecurring = () => {
+    const applied = applyRecurringTransactions();
+    if (applied) {
+      toast({ title: t('recurring.applied') });
+    } else {
+      toast({ title: t('recurring.alreadyApplied'), variant: 'destructive' });
+    }
   };
 
   const hasAnyLimit = expenseProgress.limit > 0 || investmentProgress.limit > 0 || savingsProgress.limit > 0;
@@ -40,7 +54,13 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            {hasRecurring && !recurringApplied && (
+              <Button variant="outline" size="sm" className="gap-2" onClick={handleApplyRecurring}>
+                <Repeat className="w-4 h-4" />
+                {t('recurring.apply')}
+              </Button>
+            )}
             <BudgetLimitsForm />
           </div>
           

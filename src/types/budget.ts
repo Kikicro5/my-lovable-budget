@@ -7,6 +7,15 @@ export interface Transaction {
   date: string;
 }
 
+export interface RecurringTransaction {
+  id: string;
+  name: string;
+  amount: number;
+  type: 'income' | 'expense' | 'investment' | 'savings';
+  category: string;
+  isActive: boolean;
+}
+
 export interface Category {
   name: string;
   description?: string;
@@ -30,6 +39,7 @@ export interface MonthlyBudget {
     savings: Category[];
   };
   limits?: BudgetLimits;
+  recurringApplied?: boolean;
 }
 
 export interface BudgetState {
@@ -43,4 +53,5 @@ export interface BudgetState {
     savings: Category[];
   };
   defaultLimits: BudgetLimits;
+  recurringTransactions: RecurringTransaction[];
 }

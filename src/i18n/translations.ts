@@ -122,6 +122,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'limits.warning': 'Približavate se limitu!',
     'limits.exceeded': 'Limit prekoračen!',
     'limits.remaining': 'Preostalo',
+
+    // Recurring Transactions
+    'recurring.title': 'Ponavljajuće transakcije',
+    'recurring.description': 'Transakcije koje se automatski dodaju svakog mjeseca (npr. plaća, režije, pretplate).',
+    'recurring.add': 'Dodaj ponavljajuću',
+    'recurring.name': 'Naziv transakcije',
+    'recurring.list': 'Aktivne ponavljajuće transakcije',
+    'recurring.empty': 'Nema ponavljajućih transakcija',
+    'recurring.apply': 'Primijeni ponavljajuće',
+    'recurring.applied': 'Ponavljajuće transakcije primijenjene',
+    'recurring.alreadyApplied': 'Već primijenjeno ovaj mjesec',
   },
 
   en: {
@@ -245,6 +256,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'limits.warning': 'Approaching limit!',
     'limits.exceeded': 'Limit exceeded!',
     'limits.remaining': 'Remaining',
+
+    // Recurring Transactions
+    'recurring.title': 'Recurring Transactions',
+    'recurring.description': 'Transactions that are automatically added every month (e.g., salary, bills, subscriptions).',
+    'recurring.add': 'Add recurring',
+    'recurring.name': 'Transaction name',
+    'recurring.list': 'Active recurring transactions',
+    'recurring.empty': 'No recurring transactions',
+    'recurring.apply': 'Apply recurring',
+    'recurring.applied': 'Recurring transactions applied',
+    'recurring.alreadyApplied': 'Already applied this month',
   },
 
   de: {
@@ -368,6 +390,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'limits.warning': 'Limit fast erreicht!',
     'limits.exceeded': 'Limit überschritten!',
     'limits.remaining': 'Verbleibend',
+
+    // Recurring Transactions
+    'recurring.title': 'Wiederkehrende Transaktionen',
+    'recurring.description': 'Transaktionen, die automatisch jeden Monat hinzugefügt werden (z.B. Gehalt, Rechnungen, Abonnements).',
+    'recurring.add': 'Wiederkehrende hinzufügen',
+    'recurring.name': 'Transaktionsname',
+    'recurring.list': 'Aktive wiederkehrende Transaktionen',
+    'recurring.empty': 'Keine wiederkehrenden Transaktionen',
+    'recurring.apply': 'Wiederkehrende anwenden',
+    'recurring.applied': 'Wiederkehrende Transaktionen angewendet',
+    'recurring.alreadyApplied': 'Bereits diesen Monat angewendet',
   },
 
   pl: {
@@ -491,6 +524,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'limits.warning': 'Zbliżasz się do limitu!',
     'limits.exceeded': 'Limit przekroczony!',
     'limits.remaining': 'Pozostało',
+
+    // Recurring Transactions
+    'recurring.title': 'Transakcje cykliczne',
+    'recurring.description': 'Transakcje automatycznie dodawane co miesiąc (np. wynagrodzenie, rachunki, subskrypcje).',
+    'recurring.add': 'Dodaj cykliczną',
+    'recurring.name': 'Nazwa transakcji',
+    'recurring.list': 'Aktywne transakcje cykliczne',
+    'recurring.empty': 'Brak transakcji cyklicznych',
+    'recurring.apply': 'Zastosuj cykliczne',
+    'recurring.applied': 'Transakcje cykliczne zastosowane',
+    'recurring.alreadyApplied': 'Już zastosowano w tym miesiącu',
   },
 
   es: {
@@ -614,6 +658,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'limits.warning': '¡Acercándose al límite!',
     'limits.exceeded': '¡Límite excedido!',
     'limits.remaining': 'Restante',
+
+    // Recurring Transactions
+    'recurring.title': 'Transacciones recurrentes',
+    'recurring.description': 'Transacciones que se añaden automáticamente cada mes (ej. salario, facturas, suscripciones).',
+    'recurring.add': 'Añadir recurrente',
+    'recurring.name': 'Nombre de transacción',
+    'recurring.list': 'Transacciones recurrentes activas',
+    'recurring.empty': 'Sin transacciones recurrentes',
+    'recurring.apply': 'Aplicar recurrentes',
+    'recurring.applied': 'Transacciones recurrentes aplicadas',
+    'recurring.alreadyApplied': 'Ya aplicado este mes',
   },
 
   fr: {
@@ -737,6 +792,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'limits.warning': 'Approche de la limite!',
     'limits.exceeded': 'Limite dépassée!',
     'limits.remaining': 'Restant',
+
+    // Recurring Transactions
+    'recurring.title': 'Transactions récurrentes',
+    'recurring.description': 'Transactions automatiquement ajoutées chaque mois (ex. salaire, factures, abonnements).',
+    'recurring.add': 'Ajouter récurrente',
+    'recurring.name': 'Nom de la transaction',
+    'recurring.list': 'Transactions récurrentes actives',
+    'recurring.empty': 'Aucune transaction récurrente',
+    'recurring.apply': 'Appliquer récurrentes',
+    'recurring.applied': 'Transactions récurrentes appliquées',
+    'recurring.alreadyApplied': 'Déjà appliqué ce mois-ci',
   },
 };
 
