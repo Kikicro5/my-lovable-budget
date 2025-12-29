@@ -14,12 +14,12 @@ export const BalanceCard = ({ balance, income, expense, investment = 0, savings 
 
   return (
     <div className="bg-card rounded-2xl p-6 shadow-card animate-slide-up">
-      <p className="text-sm text-muted-foreground font-medium mb-2">
+      <p className="text-sm text-muted-foreground font-medium mb-2 text-center">
         Trenutno stanje
       </p>
       <h2
         className={cn(
-          'text-4xl font-display font-bold mb-6',
+          'text-4xl font-display font-bold mb-6 text-center',
           isPositive ? 'text-income' : 'text-expense'
         )}
       >
