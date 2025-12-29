@@ -97,6 +97,9 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Opcije',
     'options.language': 'Jezik',
+    'options.theme': 'Tema',
+    'options.theme.light': 'Svijetla',
+    'options.theme.dark': 'Tamna',
 
     // PDF Export
     'pdf.export': 'Preuzmi PDF',
@@ -203,6 +206,9 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Options',
     'options.language': 'Language',
+    'options.theme': 'Theme',
+    'options.theme.light': 'Light',
+    'options.theme.dark': 'Dark',
 
     // PDF Export
     'pdf.export': 'Download PDF',
@@ -309,6 +315,9 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Optionen',
     'options.language': 'Sprache',
+    'options.theme': 'Thema',
+    'options.theme.light': 'Hell',
+    'options.theme.dark': 'Dunkel',
 
     // PDF Export
     'pdf.export': 'PDF herunterladen',
@@ -415,6 +424,9 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Opcje',
     'options.language': 'Język',
+    'options.theme': 'Motyw',
+    'options.theme.light': 'Jasny',
+    'options.theme.dark': 'Ciemny',
 
     // PDF Export
     'pdf.export': 'Pobierz PDF',
@@ -521,6 +533,9 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Opciones',
     'options.language': 'Idioma',
+    'options.theme': 'Tema',
+    'options.theme.light': 'Claro',
+    'options.theme.dark': 'Oscuro',
 
     // PDF Export
     'pdf.export': 'Descargar PDF',
@@ -627,6 +642,9 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Options',
     'options.language': 'Langue',
+    'options.theme': 'Thème',
+    'options.theme.light': 'Clair',
+    'options.theme.dark': 'Sombre',
 
     // PDF Export
     'pdf.export': 'Télécharger PDF',
