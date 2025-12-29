@@ -1,5 +1,5 @@
 import { Transaction } from '@/types/budget';
-import { Trash2, TrendingUp, TrendingDown } from 'lucide-react';
+import { Trash2, TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -7,8 +7,43 @@ interface TransactionListProps {
   transactions: Transaction[];
   onRemove: (id: string) => void;
   title?: string;
-  filterType?: 'income' | 'expense';
+  filterType?: 'income' | 'expense' | 'investment' | 'savings';
 }
+
+const typeConfig = {
+  income: {
+    icon: TrendingUp,
+    bgClass: 'bg-income-light hover:bg-income-light/80',
+    iconBgClass: 'bg-income',
+    iconTextClass: 'text-income-foreground',
+    amountClass: 'text-income',
+    prefix: '+',
+  },
+  expense: {
+    icon: TrendingDown,
+    bgClass: 'bg-expense-light hover:bg-expense-light/80',
+    iconBgClass: 'bg-expense',
+    iconTextClass: 'text-expense-foreground',
+    amountClass: 'text-expense',
+    prefix: '-',
+  },
+  investment: {
+    icon: LineChart,
+    bgClass: 'bg-primary/10 hover:bg-primary/15',
+    iconBgClass: 'bg-primary',
+    iconTextClass: 'text-primary-foreground',
+    amountClass: 'text-primary',
+    prefix: '',
+  },
+  savings: {
+    icon: PiggyBank,
+    bgClass: 'bg-accent/10 hover:bg-accent/15',
+    iconBgClass: 'bg-accent',
+    iconTextClass: 'text-accent-foreground',
+    amountClass: 'text-accent',
+    prefix: '',
+  },
+};
 
 export const TransactionList = ({
   transactions,
@@ -45,58 +80,47 @@ export const TransactionList = ({
         </h3>
       )}
       <div className="space-y-2">
-        {sortedTransactions.map((transaction) => (
-          <div
-            key={transaction.id}
-            className={cn(
-              'flex items-center justify-between p-3 rounded-lg transition-colors',
-              transaction.type === 'income'
-                ? 'bg-income-light hover:bg-income-light/80'
-                : 'bg-expense-light hover:bg-expense-light/80'
-            )}
-          >
-            <div className="flex items-center gap-3">
-              <div
-                className={cn(
-                  'p-2 rounded-lg',
-                  transaction.type === 'income' ? 'bg-income' : 'bg-expense'
-                )}
-              >
-                {transaction.type === 'income' ? (
-                  <TrendingUp className="w-4 h-4 text-income-foreground" />
-                ) : (
-                  <TrendingDown className="w-4 h-4 text-expense-foreground" />
-                )}
+        {sortedTransactions.map((transaction) => {
+          const config = typeConfig[transaction.type];
+          const Icon = config.icon;
+          
+          return (
+            <div
+              key={transaction.id}
+              className={cn(
+                'flex items-center justify-between p-3 rounded-lg transition-colors',
+                config.bgClass
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <div className={cn('p-2 rounded-lg', config.iconBgClass)}>
+                  <Icon className={cn('w-4 h-4', config.iconTextClass)} />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">{transaction.name}</p>
+                  <p className="text-xs text-muted-foreground">{transaction.category}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-medium text-foreground">{transaction.name}</p>
-                <p className="text-xs text-muted-foreground">{transaction.category}</p>
+              <div className="flex items-center gap-2">
+                <span className={cn('font-semibold', config.amountClass)}>
+                  {config.prefix}
+                  {transaction.amount.toLocaleString('hr-HR', {
+                    minimumFractionDigits: 2,
+                  })}{' '}
+                  €
+                </span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onRemove(transaction.id)}
+                  className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span
-                className={cn(
-                  'font-semibold',
-                  transaction.type === 'income' ? 'text-income' : 'text-expense'
-                )}
-              >
-                {transaction.type === 'income' ? '+' : '-'}
-                {transaction.amount.toLocaleString('hr-HR', {
-                  minimumFractionDigits: 2,
-                })}{' '}
-                €
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onRemove(transaction.id)}
-                className="h-8 w-8 text-muted-foreground hover:text-destructive"
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ export interface Transaction {
   id: string;
   name: string;
   amount: number;
-  type: 'income' | 'expense';
+  type: 'income' | 'expense' | 'investment' | 'savings';
   category: string;
   date: string;
 }
@@ -15,6 +15,8 @@ export interface MonthlyBudget {
   savedCategories: {
     income: string[];
     expense: string[];
+    investment: string[];
+    savings: string[];
   };
 }
 
@@ -25,5 +27,7 @@ export interface BudgetState {
   savedCategories: {
     income: string[];
     expense: string[];
+    investment: string[];
+    savings: string[];
   };
 }
