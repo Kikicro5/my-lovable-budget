@@ -33,12 +33,9 @@ export const MonthHeader = ({
           <ChevronLeft className="w-5 h-5" />
         </Button>
       )}
-      <div className="text-center">
-        <h1 className="text-2xl font-display font-bold text-foreground">
-          {monthNames[month]}
-        </h1>
-        <p className="text-lg text-muted-foreground font-medium">{year}</p>
-      </div>
+      <h1 className="text-2xl font-display font-bold text-foreground">
+        {monthNames[month]} {year}
+      </h1>
       {showNavigation && onNext && (
         <Button
           variant="ghost"
