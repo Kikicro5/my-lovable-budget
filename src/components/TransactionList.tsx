@@ -2,6 +2,17 @@ import { Transaction } from '@/types/budget';
 import { Trash2, TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -109,14 +120,31 @@ export const TransactionList = ({
                   })}{' '}
                   €
                 </span>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => onRemove(transaction.id)}
-                  className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Jeste li sigurni?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Ova radnja će trajno obrisati transakciju "{transaction.name}".
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Odustani</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => onRemove(transaction.id)}>
+                        Obriši
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           );
