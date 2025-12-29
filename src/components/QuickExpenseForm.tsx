@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Minus, Plus } from 'lucide-react';
 import { Category } from '@/types/budget';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface QuickExpenseFormProps {
   categories: Category[];
@@ -13,6 +14,7 @@ interface QuickExpenseFormProps {
 export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
+  const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps
           <Minus className="w-4 h-4 text-expense-foreground" />
         </div>
         <h3 className="text-lg font-display font-semibold text-expense-foreground">
-          Brzi unos troška
+          {t('quickExpense.title')}
         </h3>
       </div>
       
@@ -40,7 +42,7 @@ export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps
             type="number"
             step="0.01"
             min="0"
-            placeholder="Iznos (€)"
+            placeholder={t('transaction.amount')}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             className="bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground placeholder:text-expense-foreground/60 focus:border-expense-foreground/40"
@@ -48,7 +50,7 @@ export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps
           
           <Select value={category} onValueChange={setCategory}>
             <SelectTrigger className="bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground">
-              <SelectValue placeholder="Kategorija" />
+              <SelectValue placeholder={t('transaction.category')} />
             </SelectTrigger>
             <SelectContent>
               {categories.map((cat) => (
@@ -70,7 +72,7 @@ export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps
           className="w-full bg-expense-foreground text-expense hover:bg-expense-foreground/90 font-semibold"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Dodaj trošak
+          {t('quickExpense.add')}
         </Button>
       </form>
     </div>

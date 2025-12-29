@@ -1,7 +1,4 @@
-const monthNames = [
-  'Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj',
-  'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'
-];
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface MonthCardProps {
   month: number;
@@ -9,10 +6,12 @@ interface MonthCardProps {
 }
 
 export const MonthCard = ({ month, year }: MonthCardProps) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="bg-card rounded-2xl p-4 shadow-card animate-slide-up">
       <h1 className="text-xl font-display font-bold text-foreground text-center">
-        {monthNames[month]} {year}
+        {t(`month.${month}`)} {year}
       </h1>
     </div>
   );

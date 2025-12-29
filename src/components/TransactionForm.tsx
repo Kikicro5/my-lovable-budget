@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Category } from '@/types/budget';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface TransactionFormProps {
   type: 'income' | 'expense' | 'investment' | 'savings';
@@ -16,8 +17,8 @@ interface TransactionFormProps {
 const typeConfig = {
   income: {
     icon: TrendingUp,
-    title: 'Dodaj prihod',
-    buttonText: 'prihod',
+    titleKey: 'transaction.add.income',
+    buttonTextKey: 'transaction.button.income',
     bgClass: 'bg-income-light border border-income/20',
     iconBgClass: 'bg-income',
     iconTextClass: 'text-income-foreground',
@@ -25,8 +26,8 @@ const typeConfig = {
   },
   expense: {
     icon: TrendingDown,
-    title: 'Dodaj rashod',
-    buttonText: 'rashod',
+    titleKey: 'transaction.add.expense',
+    buttonTextKey: 'transaction.button.expense',
     bgClass: 'bg-expense-light border border-expense/20',
     iconBgClass: 'bg-expense',
     iconTextClass: 'text-expense-foreground',
@@ -34,8 +35,8 @@ const typeConfig = {
   },
   investment: {
     icon: LineChart,
-    title: 'Dodaj investiciju',
-    buttonText: 'investiciju',
+    titleKey: 'transaction.add.investment',
+    buttonTextKey: 'transaction.button.investment',
     bgClass: 'bg-primary/10 border border-primary/20',
     iconBgClass: 'bg-primary',
     iconTextClass: 'text-primary-foreground',
@@ -43,8 +44,8 @@ const typeConfig = {
   },
   savings: {
     icon: PiggyBank,
-    title: 'Dodaj štednju',
-    buttonText: 'štednju',
+    titleKey: 'transaction.add.savings',
+    buttonTextKey: 'transaction.button.savings',
     bgClass: 'bg-accent/10 border border-accent/20',
     iconBgClass: 'bg-accent',
     iconTextClass: 'text-accent-foreground',
@@ -63,6 +64,7 @@ export const TransactionForm = ({
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [showNewCategory, setShowNewCategory] = useState(false);
+  const { t } = useLanguage();
 
   const config = typeConfig[type];
   const Icon = config.icon;
@@ -100,7 +102,7 @@ export const TransactionForm = ({
           <Icon className={cn('w-4 h-4', config.iconTextClass)} />
         </div>
         <h3 className="text-lg font-display font-semibold text-foreground">
-          {config.title}
+          {t(config.titleKey)}
         </h3>
       </div>
 
@@ -110,7 +112,7 @@ export const TransactionForm = ({
           type="number"
           step="0.01"
           min="0"
-          placeholder="Iznos (€)"
+          placeholder={t('transaction.amount')}
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           className="bg-card border-border"
@@ -120,7 +122,7 @@ export const TransactionForm = ({
           <div className="space-y-2">
             <div className="flex gap-2">
               <Input
-                placeholder="Naziv kategorije"
+                placeholder={t('transaction.categoryName')}
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
                 className="bg-card border-border"
@@ -144,7 +146,7 @@ export const TransactionForm = ({
               </Button>
             </div>
             <Input
-              placeholder="Opis kategorije (opcionalno)"
+              placeholder={t('transaction.categoryDesc')}
               value={newCategoryDescription}
               onChange={(e) => setNewCategoryDescription(e.target.value)}
               className="bg-card border-border"
@@ -154,7 +156,7 @@ export const TransactionForm = ({
           <div className="flex gap-2">
             <Select value={category} onValueChange={setCategory}>
               <SelectTrigger className="bg-card border-border flex-1">
-                <SelectValue placeholder="Odaberi kategoriju" />
+                <SelectValue placeholder={t('transaction.selectCategory')} />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat) => (
@@ -189,7 +191,7 @@ export const TransactionForm = ({
           )}
         >
           <Plus className="w-4 h-4 mr-2" />
-          Dodaj {config.buttonText}
+          {t(config.titleKey)}
         </Button>
       </form>
     </div>
