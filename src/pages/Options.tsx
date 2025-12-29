@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 
 const openGoogleTranslate = () => {
   const currentUrl = window.location.origin;
-  const translateUrl = `https://translate.google.com/translate?sl=auto&tl=en&u=${encodeURIComponent(currentUrl)}`;
-  window.open(translateUrl, '_blank');
+  const translateUrl = `https://translate.google.com/translate?sl=hr&tl=en&u=${encodeURIComponent(currentUrl)}`;
+  window.location.href = translateUrl;
 };
 
 const Options = () => {
