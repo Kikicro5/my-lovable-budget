@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
 import Archive from "./pages/Archive";
+import Options from "./pages/Options";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/monthly" element={<Monthly />} />
           <Route path="/archive" element={<Archive />} />
+          <Route path="/options" element={<Options />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
