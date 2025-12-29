@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits } from '@/types/budget';
+import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits, RecurringTransaction } from '@/types/budget';
 
 const STORAGE_KEY = 'monthly-budget-app';
 
@@ -47,6 +47,7 @@ const getInitialState = (): BudgetState => {
       ],
     },
     defaultLimits: DEFAULT_LIMITS,
+    recurringTransactions: [],
   };
 };
 
@@ -74,6 +75,7 @@ export const useBudget = () => {
             savings: migrateCategories(parsed.savedCategories?.savings || defaults.savedCategories.savings),
           },
           defaultLimits: parsed.defaultLimits || DEFAULT_LIMITS,
+          recurringTransactions: parsed.recurringTransactions || [],
         };
       } catch {
         return getInitialState();
@@ -312,6 +314,69 @@ export const useBudget = () => {
     return { spent, limit, percentage };
   };
 
+  const addRecurringTransaction = (transaction: Omit<RecurringTransaction, 'id' | 'isActive'>) => {
+    const newRecurring: RecurringTransaction = {
+      ...transaction,
+      id: crypto.randomUUID(),
+      isActive: true,
+    };
+
+    setState((prev) => ({
+      ...prev,
+      recurringTransactions: [...prev.recurringTransactions, newRecurring],
+    }));
+  };
+
+  const removeRecurringTransaction = (id: string) => {
+    setState((prev) => ({
+      ...prev,
+      recurringTransactions: prev.recurringTransactions.filter((r) => r.id !== id),
+    }));
+  };
+
+  const toggleRecurringTransaction = (id: string) => {
+    setState((prev) => ({
+      ...prev,
+      recurringTransactions: prev.recurringTransactions.map((r) =>
+        r.id === id ? { ...r, isActive: !r.isActive } : r
+      ),
+    }));
+  };
+
+  const applyRecurringTransactions = () => {
+    const budget = getOrCreateCurrentBudget();
+    
+    // Check if already applied for this month
+    if (budget.recurringApplied) return false;
+
+    const activeRecurring = state.recurringTransactions.filter((r) => r.isActive);
+    if (activeRecurring.length === 0) return false;
+
+    const newTransactions: Transaction[] = activeRecurring.map((r) => ({
+      id: crypto.randomUUID(),
+      name: r.name,
+      amount: r.amount,
+      type: r.type,
+      category: r.category,
+      date: new Date().toISOString(),
+    }));
+
+    setState((prev) => ({
+      ...prev,
+      budgets: prev.budgets.map((b) =>
+        b.id === budget.id
+          ? { ...b, transactions: [...b.transactions, ...newTransactions], recurringApplied: true }
+          : b
+      ).concat(
+        prev.budgets.find((b) => b.id === budget.id)
+          ? []
+          : [{ ...budget, transactions: newTransactions, recurringApplied: true }]
+      ),
+    }));
+
+    return true;
+  };
+
   return {
     state,
     getCurrentBudget,
@@ -332,5 +397,9 @@ export const useBudget = () => {
     setDefaultLimits,
     getCurrentLimits,
     getBudgetProgress,
+    addRecurringTransaction,
+    removeRecurringTransaction,
+    toggleRecurringTransaction,
+    applyRecurringTransactions,
   };
 };
