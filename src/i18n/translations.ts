@@ -97,6 +97,14 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Opcije',
     'options.language': 'Jezik',
+
+    // PDF Export
+    'pdf.export': 'Preuzmi PDF',
+    'pdf.summary': 'Sažetak',
+    'pdf.transactions': 'Transakcije',
+    'pdf.name': 'Naziv',
+    'pdf.type': 'Tip',
+    'pdf.date': 'Datum',
   },
 
   en: {
@@ -195,6 +203,14 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Options',
     'options.language': 'Language',
+
+    // PDF Export
+    'pdf.export': 'Download PDF',
+    'pdf.summary': 'Summary',
+    'pdf.transactions': 'Transactions',
+    'pdf.name': 'Name',
+    'pdf.type': 'Type',
+    'pdf.date': 'Date',
   },
 
   de: {
@@ -293,6 +309,14 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Optionen',
     'options.language': 'Sprache',
+
+    // PDF Export
+    'pdf.export': 'PDF herunterladen',
+    'pdf.summary': 'Zusammenfassung',
+    'pdf.transactions': 'Transaktionen',
+    'pdf.name': 'Name',
+    'pdf.type': 'Typ',
+    'pdf.date': 'Datum',
   },
 
   pl: {
@@ -391,6 +415,14 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Opcje',
     'options.language': 'Język',
+
+    // PDF Export
+    'pdf.export': 'Pobierz PDF',
+    'pdf.summary': 'Podsumowanie',
+    'pdf.transactions': 'Transakcje',
+    'pdf.name': 'Nazwa',
+    'pdf.type': 'Typ',
+    'pdf.date': 'Data',
   },
 
   es: {
@@ -489,6 +521,14 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Opciones',
     'options.language': 'Idioma',
+
+    // PDF Export
+    'pdf.export': 'Descargar PDF',
+    'pdf.summary': 'Resumen',
+    'pdf.transactions': 'Transacciones',
+    'pdf.name': 'Nombre',
+    'pdf.type': 'Tipo',
+    'pdf.date': 'Fecha',
   },
 
   fr: {
@@ -587,6 +627,14 @@ export const translations: Record<Language, Record<string, string>> = {
     // Options
     'options.title': 'Options',
     'options.language': 'Langue',
+
+    // PDF Export
+    'pdf.export': 'Télécharger PDF',
+    'pdf.summary': 'Résumé',
+    'pdf.transactions': 'Transactions',
+    'pdf.name': 'Nom',
+    'pdf.type': 'Type',
+    'pdf.date': 'Date',
   },
 };
 
