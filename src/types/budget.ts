@@ -12,6 +12,12 @@ export interface Category {
   description?: string;
 }
 
+export interface BudgetLimits {
+  expense: number;
+  investment: number;
+  savings: number;
+}
+
 export interface MonthlyBudget {
   id: string;
   month: number;
@@ -23,6 +29,7 @@ export interface MonthlyBudget {
     investment: Category[];
     savings: Category[];
   };
+  limits?: BudgetLimits;
 }
 
 export interface BudgetState {
@@ -35,16 +42,5 @@ export interface BudgetState {
     investment: Category[];
     savings: Category[];
   };
-}
-
-export interface BudgetState {
-  currentMonth: number;
-  currentYear: number;
-  budgets: MonthlyBudget[];
-  savedCategories: {
-    income: Category[];
-    expense: Category[];
-    investment: Category[];
-    savings: Category[];
-  };
+  defaultLimits: BudgetLimits;
 }

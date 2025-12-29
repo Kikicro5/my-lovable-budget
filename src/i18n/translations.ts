@@ -108,6 +108,20 @@ export const translations: Record<Language, Record<string, string>> = {
     'pdf.name': 'Naziv',
     'pdf.type': 'Tip',
     'pdf.date': 'Datum',
+
+    // Budget Limits
+    'limits.title': 'Mjesečni limiti',
+    'limits.expense': 'Limit rashoda',
+    'limits.investment': 'Limit investicija',
+    'limits.savings': 'Cilj štednje',
+    'limits.set': 'Postavi limite',
+    'limits.save': 'Spremi',
+    'limits.noLimit': 'Bez limita',
+    'limits.spent': 'Potrošeno',
+    'limits.of': 'od',
+    'limits.warning': 'Približavate se limitu!',
+    'limits.exceeded': 'Limit prekoračen!',
+    'limits.remaining': 'Preostalo',
   },
 
   en: {
@@ -217,6 +231,20 @@ export const translations: Record<Language, Record<string, string>> = {
     'pdf.name': 'Name',
     'pdf.type': 'Type',
     'pdf.date': 'Date',
+
+    // Budget Limits
+    'limits.title': 'Monthly Limits',
+    'limits.expense': 'Expense Limit',
+    'limits.investment': 'Investment Limit',
+    'limits.savings': 'Savings Goal',
+    'limits.set': 'Set Limits',
+    'limits.save': 'Save',
+    'limits.noLimit': 'No limit',
+    'limits.spent': 'Spent',
+    'limits.of': 'of',
+    'limits.warning': 'Approaching limit!',
+    'limits.exceeded': 'Limit exceeded!',
+    'limits.remaining': 'Remaining',
   },
 
   de: {
@@ -326,6 +354,20 @@ export const translations: Record<Language, Record<string, string>> = {
     'pdf.name': 'Name',
     'pdf.type': 'Typ',
     'pdf.date': 'Datum',
+
+    // Budget Limits
+    'limits.title': 'Monatliche Limits',
+    'limits.expense': 'Ausgabenlimit',
+    'limits.investment': 'Investitionslimit',
+    'limits.savings': 'Sparziel',
+    'limits.set': 'Limits festlegen',
+    'limits.save': 'Speichern',
+    'limits.noLimit': 'Kein Limit',
+    'limits.spent': 'Ausgegeben',
+    'limits.of': 'von',
+    'limits.warning': 'Limit fast erreicht!',
+    'limits.exceeded': 'Limit überschritten!',
+    'limits.remaining': 'Verbleibend',
   },
 
   pl: {
@@ -435,6 +477,20 @@ export const translations: Record<Language, Record<string, string>> = {
     'pdf.name': 'Nazwa',
     'pdf.type': 'Typ',
     'pdf.date': 'Data',
+
+    // Budget Limits
+    'limits.title': 'Miesięczne limity',
+    'limits.expense': 'Limit wydatków',
+    'limits.investment': 'Limit inwestycji',
+    'limits.savings': 'Cel oszczędności',
+    'limits.set': 'Ustaw limity',
+    'limits.save': 'Zapisz',
+    'limits.noLimit': 'Brak limitu',
+    'limits.spent': 'Wydano',
+    'limits.of': 'z',
+    'limits.warning': 'Zbliżasz się do limitu!',
+    'limits.exceeded': 'Limit przekroczony!',
+    'limits.remaining': 'Pozostało',
   },
 
   es: {
@@ -544,6 +600,20 @@ export const translations: Record<Language, Record<string, string>> = {
     'pdf.name': 'Nombre',
     'pdf.type': 'Tipo',
     'pdf.date': 'Fecha',
+
+    // Budget Limits
+    'limits.title': 'Límites mensuales',
+    'limits.expense': 'Límite de gastos',
+    'limits.investment': 'Límite de inversiones',
+    'limits.savings': 'Meta de ahorro',
+    'limits.set': 'Establecer límites',
+    'limits.save': 'Guardar',
+    'limits.noLimit': 'Sin límite',
+    'limits.spent': 'Gastado',
+    'limits.of': 'de',
+    'limits.warning': '¡Acercándose al límite!',
+    'limits.exceeded': '¡Límite excedido!',
+    'limits.remaining': 'Restante',
   },
 
   fr: {
@@ -653,6 +723,20 @@ export const translations: Record<Language, Record<string, string>> = {
     'pdf.name': 'Nom',
     'pdf.type': 'Type',
     'pdf.date': 'Date',
+
+    // Budget Limits
+    'limits.title': 'Limites mensuelles',
+    'limits.expense': 'Limite de dépenses',
+    'limits.investment': 'Limite d\'investissement',
+    'limits.savings': 'Objectif d\'épargne',
+    'limits.set': 'Définir les limites',
+    'limits.save': 'Enregistrer',
+    'limits.noLimit': 'Pas de limite',
+    'limits.spent': 'Dépensé',
+    'limits.of': 'sur',
+    'limits.warning': 'Approche de la limite!',
+    'limits.exceeded': 'Limite dépassée!',
+    'limits.remaining': 'Restant',
   },
 };
 
