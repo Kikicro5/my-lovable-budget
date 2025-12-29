@@ -18,7 +18,6 @@ export const TransactionForm = ({
   onSubmit,
   onAddCategory,
 }: TransactionFormProps) => {
-  const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [newCategory, setNewCategory] = useState('');
@@ -29,10 +28,9 @@ export const TransactionForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !amount || !category) return;
+    if (!amount || !category) return;
 
-    onSubmit(name.trim(), parseFloat(amount), category);
-    setName('');
+    onSubmit(category, parseFloat(amount), category);
     setAmount('');
     setCategory('');
   };
@@ -62,12 +60,6 @@ export const TransactionForm = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3">
-        <Input
-          placeholder={isIncome ? 'Naziv prihoda' : 'Naziv rashoda'}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="bg-card border-border"
-        />
 
         <Input
           type="number"
