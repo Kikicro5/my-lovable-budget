@@ -115,6 +115,14 @@ const Monthly = () => {
           </TabsList>
 
           <TabsContent value="income" className="space-y-4">
+            <TransactionForm
+              type="income"
+              categories={state.savedCategories.income}
+              onSubmit={(name, amount, category) =>
+                handleAddTransaction('income', name, amount, category)
+              }
+              onAddCategory={(cat) => handleAddCategory('income', cat)}
+            />
             {previousBalance !== 0 && (
               <Button
                 onClick={handleCarryOver}
@@ -125,14 +133,6 @@ const Monthly = () => {
                 Prenesi stanje iz prethodnog mjeseca ({previousBalance.toLocaleString('hr-HR')} €)
               </Button>
             )}
-            <TransactionForm
-              type="income"
-              categories={state.savedCategories.income}
-              onSubmit={(name, amount, category) =>
-                handleAddTransaction('income', name, amount, category)
-              }
-              onAddCategory={(cat) => handleAddCategory('income', cat)}
-            />
             <TransactionList
               title="Prihodi ovog mjeseca"
               transactions={currentBudget?.transactions || []}
