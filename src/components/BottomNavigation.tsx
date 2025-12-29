@@ -1,12 +1,24 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, FileText, Archive } from 'lucide-react';
+import { Home, FileText, Archive, Settings, Languages } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Početna' },
   { path: '/monthly', icon: FileText, label: 'Mjesečno' },
   { path: '/archive', icon: Archive, label: 'Arhiva' },
 ];
+
+const openGoogleTranslate = () => {
+  const currentUrl = window.location.href;
+  const translateUrl = `https://translate.google.com/translate?sl=auto&tl=en&u=${encodeURIComponent(currentUrl)}`;
+  window.open(translateUrl, '_blank');
+};
 
 export const BottomNavigation = () => {
   const location = useLocation();
@@ -21,7 +33,7 @@ export const BottomNavigation = () => {
               key={item.path}
               to={item.path}
               className={cn(
-                'flex flex-col items-center gap-1 px-6 py-2 rounded-lg transition-all duration-200',
+                'flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200',
                 isActive
                   ? 'text-primary bg-primary/10'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -32,6 +44,23 @@ export const BottomNavigation = () => {
             </Link>
           );
         })}
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className="flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-muted"
+            >
+              <Settings className="w-5 h-5" />
+              <span className="text-xs font-medium">Opcije</span>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-popover border border-border shadow-lg z-[100]">
+            <DropdownMenuItem onClick={openGoogleTranslate} className="cursor-pointer">
+              <Languages className="w-4 h-4 mr-2" />
+              Promijeni jezik
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );
