@@ -10,8 +10,8 @@ const getInitialState = (): BudgetState => {
     currentYear: now.getFullYear(),
     budgets: [],
     savedCategories: {
-      income: ['Plaća', 'Bonus', 'Freelance', 'Dividende', 'Ostalo'],
-      expense: ['Režije', 'Hrana', 'Transport', 'Zabava', 'Zdravlje', 'Odjeća', 'Ostalo'],
+      income: ['Plaća', 'Bonus', 'Freelance', 'Dividende', 'Investicije', 'Štednja', 'Ostalo'],
+      expense: ['Režije', 'Hrana', 'Transport', 'Zabava', 'Zdravlje', 'Odjeća', 'Investicije', 'Štednja', 'Ostalo'],
     },
   };
 };
