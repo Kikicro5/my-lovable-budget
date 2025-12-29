@@ -21,30 +21,6 @@ const Options = () => {
         <h1 className="text-2xl font-bold text-foreground mb-6">{t('options.title')}</h1>
         
         <div className="space-y-4">
-          {/* Budget Limits Section */}
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <div className="flex items-center gap-2 mb-4">
-              <Target className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">{t('limits.title')}</h2>
-            </div>
-            <p className="text-sm text-muted-foreground mb-3">
-              {t('limits.description')}
-            </p>
-            <BudgetLimitsForm />
-          </div>
-
-          {/* Recurring Transactions Section */}
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <div className="flex items-center gap-2 mb-4">
-              <Repeat className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">{t('recurring.title')}</h2>
-            </div>
-            <p className="text-sm text-muted-foreground mb-3">
-              {t('recurring.description')}
-            </p>
-            <RecurringTransactionsManager />
-          </div>
-
           {/* Theme Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
             <div className="flex items-center gap-2 mb-4">
@@ -93,6 +69,30 @@ const Options = () => {
                 </Button>
               ))}
             </div>
+          </div>
+
+          {/* Budget Limits Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <Target className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('limits.title')}</h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              {t('limits.description')}
+            </p>
+            <BudgetLimitsForm />
+          </div>
+
+          {/* Recurring Transactions Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <Repeat className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('recurring.title')}</h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              {t('recurring.description')}
+            </p>
+            <RecurringTransactionsManager />
           </div>
         </div>
       </div>
