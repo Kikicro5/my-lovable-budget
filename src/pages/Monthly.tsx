@@ -1,6 +1,6 @@
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
-import { MonthHeader } from '@/components/MonthHeader';
+import { MonthCard } from '@/components/MonthCard';
 import { TransactionForm } from '@/components/TransactionForm';
 import { TransactionList } from '@/components/TransactionList';
 import { CategoryManager } from '@/components/CategoryManager';
@@ -64,9 +64,11 @@ const Monthly = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
-        <MonthHeader month={state.currentMonth} year={state.currentYear} />
+        <div className="mb-4">
+          <MonthCard month={state.currentMonth} year={state.currentYear} />
+        </div>
 
         <Tabs defaultValue="income" className="w-full">
           <TabsList className="w-full grid grid-cols-5 mb-6">
