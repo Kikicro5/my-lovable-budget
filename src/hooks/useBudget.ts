@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
-import { BudgetState, MonthlyBudget, Transaction, Category } from '@/types/budget';
+import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits } from '@/types/budget';
 
 const STORAGE_KEY = 'monthly-budget-app';
+
+const DEFAULT_LIMITS: BudgetLimits = {
+  expense: 0,
+  investment: 0,
+  savings: 0,
+};
 
 const getInitialState = (): BudgetState => {
   const now = new Date();
@@ -40,6 +46,7 @@ const getInitialState = (): BudgetState => {
         { name: 'Ostalo' },
       ],
     },
+    defaultLimits: DEFAULT_LIMITS,
   };
 };
 
@@ -66,6 +73,7 @@ export const useBudget = () => {
             investment: migrateCategories(parsed.savedCategories?.investment || defaults.savedCategories.investment),
             savings: migrateCategories(parsed.savedCategories?.savings || defaults.savedCategories.savings),
           },
+          defaultLimits: parsed.defaultLimits || DEFAULT_LIMITS,
         };
       } catch {
         return getInitialState();
@@ -279,6 +287,31 @@ export const useBudget = () => {
     }));
   };
 
+  const setDefaultLimits = (limits: BudgetLimits) => {
+    setState((prev) => ({
+      ...prev,
+      defaultLimits: limits,
+    }));
+  };
+
+  const getCurrentLimits = (): BudgetLimits => {
+    const budget = getCurrentBudget();
+    return budget?.limits || state.defaultLimits;
+  };
+
+  const getBudgetProgress = (type: 'expense' | 'investment' | 'savings'): { spent: number; limit: number; percentage: number } => {
+    const limits = getCurrentLimits();
+    const limit = limits[type];
+    let spent = 0;
+    
+    if (type === 'expense') spent = getTotalExpense();
+    else if (type === 'investment') spent = getTotalInvestment();
+    else if (type === 'savings') spent = getTotalSavings();
+    
+    const percentage = limit > 0 ? Math.min((spent / limit) * 100, 100) : 0;
+    return { spent, limit, percentage };
+  };
+
   return {
     state,
     getCurrentBudget,
@@ -296,5 +329,8 @@ export const useBudget = () => {
     getPreviousMonthBalance,
     carryOverBalance,
     setCurrentPeriod,
+    setDefaultLimits,
+    getCurrentLimits,
+    getBudgetProgress,
   };
 };

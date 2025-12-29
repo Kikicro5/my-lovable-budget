@@ -4,13 +4,19 @@ import { MonthCard } from '@/components/MonthCard';
 import { BalanceCard } from '@/components/BalanceCard';
 import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
+import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
+import { BudgetProgress } from '@/components/BudgetProgress';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const Index = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getBudgetProgress } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
+
+  const expenseProgress = getBudgetProgress('expense');
+  const investmentProgress = getBudgetProgress('investment');
+  const savingsProgress = getBudgetProgress('savings');
 
   const handleAddExpense = (name: string, amount: number, category: string) => {
     addTransaction({ name, amount, type: 'expense', category });
@@ -22,12 +28,38 @@ const Index = () => {
     toast({ title: t('toast.transaction.removed'), variant: 'destructive' });
   };
 
+  const hasAnyLimit = expenseProgress.limit > 0 || investmentProgress.limit > 0 || savingsProgress.limit > 0;
+
   return (
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
         <div className="space-y-4">
-          <MonthCard month={state.currentMonth} year={state.currentYear} />
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <MonthCard month={state.currentMonth} year={state.currentYear} />
+            </div>
+          </div>
+          
+          <div className="flex justify-end">
+            <BudgetLimitsForm />
+          </div>
+          
           <BalanceCard balance={getBalance()} income={getTotalIncome()} expense={getTotalExpense()} investment={getTotalInvestment()} savings={getTotalSavings()} />
+          
+          {hasAnyLimit && (
+            <div className="space-y-3">
+              {expenseProgress.limit > 0 && (
+                <BudgetProgress spent={expenseProgress.spent} limit={expenseProgress.limit} type="expense" />
+              )}
+              {investmentProgress.limit > 0 && (
+                <BudgetProgress spent={investmentProgress.spent} limit={investmentProgress.limit} type="investment" />
+              )}
+              {savingsProgress.limit > 0 && (
+                <BudgetProgress spent={savingsProgress.spent} limit={savingsProgress.limit} type="savings" />
+              )}
+            </div>
+          )}
+          
           <QuickExpenseForm categories={state.savedCategories.expense} onSubmit={handleAddExpense} />
           <TransactionList title={t('transaction.lastTransactions')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} />
         </div>
