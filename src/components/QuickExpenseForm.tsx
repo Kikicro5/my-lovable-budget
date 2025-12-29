@@ -10,16 +10,14 @@ interface QuickExpenseFormProps {
 }
 
 export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps) => {
-  const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !amount || !category) return;
+    if (!amount || !category) return;
     
-    onSubmit(name.trim(), parseFloat(amount), category);
-    setName('');
+    onSubmit(category, parseFloat(amount), category);
     setAmount('');
     setCategory('');
   };
@@ -36,13 +34,6 @@ export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps
       </div>
       
       <form onSubmit={handleSubmit} className="space-y-3">
-        <Input
-          placeholder="Naziv troška"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground placeholder:text-expense-foreground/60 focus:border-expense-foreground/40"
-        />
-        
         <div className="flex gap-3">
           <Input
             type="number"
