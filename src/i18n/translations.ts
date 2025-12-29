@@ -134,6 +134,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'recurring.apply': 'Primijeni ponavljajuće',
     'recurring.applied': 'Ponavljajuće transakcije primijenjene',
     'recurring.alreadyApplied': 'Već primijenjeno ovaj mjesec',
+
+    // Notifications
+    'notifications.title': 'Obavijesti',
+    'notifications.description': 'Postavi podsjetnike za unos troškova i upozorenja o budžetu.',
+    'notifications.enable': 'Omogući obavijesti',
+    'notifications.dailyReminder': 'Dnevni podsjetnik',
+    'notifications.reminderTime': 'Vrijeme podsjetnika',
+    'notifications.budgetWarnings': 'Upozorenja o budžetu',
+    'notifications.permissionRequired': 'Potrebna je dozvola za obavijesti.',
   },
 
   en: {
@@ -269,6 +278,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'recurring.apply': 'Apply recurring',
     'recurring.applied': 'Recurring transactions applied',
     'recurring.alreadyApplied': 'Already applied this month',
+
+    // Notifications
+    'notifications.title': 'Notifications',
+    'notifications.description': 'Set reminders for expense tracking and budget warnings.',
+    'notifications.enable': 'Enable notifications',
+    'notifications.dailyReminder': 'Daily reminder',
+    'notifications.reminderTime': 'Reminder time',
+    'notifications.budgetWarnings': 'Budget warnings',
+    'notifications.permissionRequired': 'Notification permission required.',
   },
 
   de: {
@@ -404,6 +422,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'recurring.apply': 'Wiederkehrende anwenden',
     'recurring.applied': 'Wiederkehrende Transaktionen angewendet',
     'recurring.alreadyApplied': 'Bereits diesen Monat angewendet',
+
+    // Notifications
+    'notifications.title': 'Benachrichtigungen',
+    'notifications.description': 'Erinnerungen für Ausgabenerfassung und Budgetwarnungen einrichten.',
+    'notifications.enable': 'Benachrichtigungen aktivieren',
+    'notifications.dailyReminder': 'Tägliche Erinnerung',
+    'notifications.reminderTime': 'Erinnerungszeit',
+    'notifications.budgetWarnings': 'Budgetwarnungen',
+    'notifications.permissionRequired': 'Benachrichtigungsberechtigung erforderlich.',
   },
 
   pl: {
@@ -539,6 +566,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'recurring.apply': 'Zastosuj cykliczne',
     'recurring.applied': 'Transakcje cykliczne zastosowane',
     'recurring.alreadyApplied': 'Już zastosowano w tym miesiącu',
+
+    // Notifications
+    'notifications.title': 'Powiadomienia',
+    'notifications.description': 'Ustaw przypomnienia o wydatkach i ostrzeżenia o budżecie.',
+    'notifications.enable': 'Włącz powiadomienia',
+    'notifications.dailyReminder': 'Codzienne przypomnienie',
+    'notifications.reminderTime': 'Czas przypomnienia',
+    'notifications.budgetWarnings': 'Ostrzeżenia o budżecie',
+    'notifications.permissionRequired': 'Wymagana zgoda na powiadomienia.',
   },
 
   es: {
@@ -674,6 +710,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'recurring.apply': 'Aplicar recurrentes',
     'recurring.applied': 'Transacciones recurrentes aplicadas',
     'recurring.alreadyApplied': 'Ya aplicado este mes',
+
+    // Notifications
+    'notifications.title': 'Notificaciones',
+    'notifications.description': 'Configura recordatorios para gastos y alertas de presupuesto.',
+    'notifications.enable': 'Habilitar notificaciones',
+    'notifications.dailyReminder': 'Recordatorio diario',
+    'notifications.reminderTime': 'Hora del recordatorio',
+    'notifications.budgetWarnings': 'Alertas de presupuesto',
+    'notifications.permissionRequired': 'Se requiere permiso de notificaciones.',
   },
 
   fr: {
@@ -809,6 +854,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'recurring.apply': 'Appliquer récurrentes',
     'recurring.applied': 'Transactions récurrentes appliquées',
     'recurring.alreadyApplied': 'Déjà appliqué ce mois-ci',
+
+    // Notifications
+    'notifications.title': 'Notifications',
+    'notifications.description': 'Configurez des rappels pour les dépenses et les alertes de budget.',
+    'notifications.enable': 'Activer les notifications',
+    'notifications.dailyReminder': 'Rappel quotidien',
+    'notifications.reminderTime': 'Heure du rappel',
+    'notifications.budgetWarnings': 'Alertes de budget',
+    'notifications.permissionRequired': 'Autorisation de notification requise.',
   },
 };
 
