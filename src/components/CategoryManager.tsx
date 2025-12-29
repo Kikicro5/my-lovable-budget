@@ -1,15 +1,46 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus, X, Tags } from 'lucide-react';
+import { Plus, X, Tags, TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CategoryManagerProps {
-  type: 'income' | 'expense';
+  type: 'income' | 'expense' | 'investment' | 'savings';
   categories: string[];
   onAdd: (category: string) => void;
   onRemove: (category: string) => void;
 }
+
+const typeConfig = {
+  income: {
+    icon: TrendingUp,
+    title: 'Kategorije prihoda',
+    bgClass: 'bg-income',
+    iconTextClass: 'text-income-foreground',
+    tagClass: 'bg-income-light text-income border border-income/20',
+  },
+  expense: {
+    icon: TrendingDown,
+    title: 'Kategorije rashoda',
+    bgClass: 'bg-expense',
+    iconTextClass: 'text-expense-foreground',
+    tagClass: 'bg-expense-light text-expense border border-expense/20',
+  },
+  investment: {
+    icon: LineChart,
+    title: 'Kategorije investicija',
+    bgClass: 'bg-primary',
+    iconTextClass: 'text-primary-foreground',
+    tagClass: 'bg-primary/10 text-primary border border-primary/20',
+  },
+  savings: {
+    icon: PiggyBank,
+    title: 'Kategorije štednje',
+    bgClass: 'bg-accent',
+    iconTextClass: 'text-accent-foreground',
+    tagClass: 'bg-accent/10 text-accent border border-accent/20',
+  },
+};
 
 export const CategoryManager = ({
   type,
@@ -18,7 +49,8 @@ export const CategoryManager = ({
   onRemove,
 }: CategoryManagerProps) => {
   const [newCategory, setNewCategory] = useState('');
-  const isIncome = type === 'income';
+  const config = typeConfig[type];
+  const Icon = config.icon;
 
   const handleAdd = () => {
     if (!newCategory.trim() || categories.includes(newCategory.trim())) return;
@@ -29,11 +61,11 @@ export const CategoryManager = ({
   return (
     <div className="bg-card rounded-xl p-5 shadow-soft animate-fade-in">
       <div className="flex items-center gap-2 mb-4">
-        <div className={cn('p-2 rounded-lg', isIncome ? 'bg-income' : 'bg-expense')}>
-          <Tags className={cn('w-4 h-4', isIncome ? 'text-income-foreground' : 'text-expense-foreground')} />
+        <div className={cn('p-2 rounded-lg', config.bgClass)}>
+          <Icon className={cn('w-4 h-4', config.iconTextClass)} />
         </div>
         <h3 className="text-lg font-display font-semibold text-foreground">
-          Kategorije {isIncome ? 'prihoda' : 'rashoda'}
+          {config.title}
         </h3>
       </div>
 
@@ -56,9 +88,7 @@ export const CategoryManager = ({
             key={category}
             className={cn(
               'flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium',
-              isIncome
-                ? 'bg-income-light text-income border border-income/20'
-                : 'bg-expense-light text-expense border border-expense/20'
+              config.tagClass
             )}
           >
             {category}

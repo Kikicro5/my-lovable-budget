@@ -10,8 +10,10 @@ const getInitialState = (): BudgetState => {
     currentYear: now.getFullYear(),
     budgets: [],
     savedCategories: {
-      income: ['Plaća', 'Bonus', 'Freelance', 'Dividende', 'Investicije', 'Štednja', 'Ostalo'],
-      expense: ['Režije', 'Hrana', 'Transport', 'Zabava', 'Zdravlje', 'Odjeća', 'Investicije', 'Štednja', 'Ostalo'],
+      income: ['Plaća', 'Bonus', 'Freelance', 'Dividende', 'Ostalo'],
+      expense: ['Režije', 'Hrana', 'Transport', 'Zabava', 'Zdravlje', 'Odjeća', 'Ostalo'],
+      investment: ['Dionice', 'Kripto', 'Nekretnine', 'Fondovi', 'Ostalo'],
+      savings: ['Hitni fond', 'Godišnji odmor', 'Mirovina', 'Ostalo'],
     },
   };
 };
@@ -91,7 +93,7 @@ export const useBudget = () => {
     }));
   };
 
-  const addCategory = (type: 'income' | 'expense', category: string) => {
+  const addCategory = (type: 'income' | 'expense' | 'investment' | 'savings', category: string) => {
     if (state.savedCategories[type].includes(category)) return;
 
     setState((prev) => ({
@@ -103,7 +105,7 @@ export const useBudget = () => {
     }));
   };
 
-  const removeCategory = (type: 'income' | 'expense', category: string) => {
+  const removeCategory = (type: 'income' | 'expense' | 'investment' | 'savings', category: string) => {
     setState((prev) => ({
       ...prev,
       savedCategories: {
@@ -118,7 +120,9 @@ export const useBudget = () => {
     if (!b) return 0;
 
     return b.transactions.reduce((acc, t) => {
-      return t.type === 'income' ? acc + t.amount : acc - t.amount;
+      if (t.type === 'income') return acc + t.amount;
+      if (t.type === 'expense') return acc - t.amount;
+      return acc;
     }, 0);
   };
 
@@ -137,6 +141,24 @@ export const useBudget = () => {
 
     return b.transactions
       .filter((t) => t.type === 'expense')
+      .reduce((acc, t) => acc + t.amount, 0);
+  };
+
+  const getTotalInvestment = (budget?: MonthlyBudget): number => {
+    const b = budget || getCurrentBudget();
+    if (!b) return 0;
+
+    return b.transactions
+      .filter((t) => t.type === 'investment')
+      .reduce((acc, t) => acc + t.amount, 0);
+  };
+
+  const getTotalSavings = (budget?: MonthlyBudget): number => {
+    const b = budget || getCurrentBudget();
+    if (!b) return 0;
+
+    return b.transactions
+      .filter((t) => t.type === 'savings')
       .reduce((acc, t) => acc + t.amount, 0);
   };
 
@@ -173,6 +195,8 @@ export const useBudget = () => {
     getBalance,
     getTotalIncome,
     getTotalExpense,
+    getTotalInvestment,
+    getTotalSavings,
     getPastBudgets,
     setCurrentPeriod,
   };
