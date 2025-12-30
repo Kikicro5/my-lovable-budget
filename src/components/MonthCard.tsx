@@ -10,8 +10,16 @@ export const MonthCard = ({ month, year }: MonthCardProps) => {
   
   return (
     <div className="bg-card rounded-2xl p-4 shadow-card animate-slide-up">
-      <h1 className="text-xl font-display font-bold text-foreground text-center">
-        {t(`month.${month}`)} {year}
+      <h1 className="text-xl font-display font-bold text-foreground">
+        <span className="flex items-center justify-center gap-3">
+          <img
+            src="/icon-192.png"
+            alt="Budget Card ikona"
+            className="h-8 w-8 rounded-lg"
+            loading="lazy"
+          />
+          <span>{t(`month.${month}`)} {year}</span>
+        </span>
       </h1>
     </div>
   );
