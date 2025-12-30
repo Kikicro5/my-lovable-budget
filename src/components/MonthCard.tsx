@@ -13,7 +13,7 @@ export const MonthCard = ({ month, year }: MonthCardProps) => {
       <h1 className="text-xl font-display font-bold text-foreground">
         <span className="flex items-center justify-center gap-3">
           <img
-            src="/icon-192.png"
+            src="/icon-192.png?v=2"
             alt="Budget Card ikona"
             className="h-12 w-12 rounded-xl"
             loading="lazy"
