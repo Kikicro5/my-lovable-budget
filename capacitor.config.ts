@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'app.lovable.2b913f8ae0084a13b688581953b1b4f7',
-  appName: 'budgetcard',
+  appName: 'Budget Card',
   webDir: 'dist',
   server: {
     url: 'https://2b913f8a-e008-4a13-b688-581953b1b4f7.lovableproject.com?forceHideBadge=true',
@@ -17,8 +17,20 @@ const config: CapacitorConfig = {
       androidScaleType: "CENTER_CROP",
       showSpinner: false,
       splashFullScreen: true,
-      splashImmersive: true
+      splashImmersive: true,
+      layoutName: "launch_screen",
+      useDialog: true
     }
+  },
+  android: {
+    allowMixedContent: true,
+    captureInput: true,
+    webContentsDebuggingEnabled: false
+  },
+  ios: {
+    contentInset: "automatic",
+    allowsLinkPreview: true,
+    scrollEnabled: true
   }
 };
 
