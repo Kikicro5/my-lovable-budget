@@ -143,6 +143,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Vrijeme podsjetnika',
     'notifications.budgetWarnings': 'Upozorenja o budžetu',
     'notifications.permissionRequired': 'Potrebna je dozvola za obavijesti.',
+
+    // Install
+    'install.title': 'Instaliraj aplikaciju',
+    'install.settingsDescription': 'Instaliraj aplikaciju na svoj uređaj za brži pristup.',
+    'install.openInstructions': 'Upute za instalaciju',
   },
 
   en: {
@@ -287,6 +292,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Reminder time',
     'notifications.budgetWarnings': 'Budget warnings',
     'notifications.permissionRequired': 'Notification permission required.',
+
+    // Install
+    'install.title': 'Install App',
+    'install.settingsDescription': 'Install the app on your device for quick access.',
+    'install.openInstructions': 'Installation instructions',
   },
 
   de: {
@@ -431,6 +441,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Erinnerungszeit',
     'notifications.budgetWarnings': 'Budgetwarnungen',
     'notifications.permissionRequired': 'Benachrichtigungsberechtigung erforderlich.',
+
+    // Install
+    'install.title': 'App installieren',
+    'install.settingsDescription': 'Installieren Sie die App auf Ihrem Gerät für schnellen Zugriff.',
+    'install.openInstructions': 'Installationsanleitung',
   },
 
   pl: {
@@ -575,6 +590,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Czas przypomnienia',
     'notifications.budgetWarnings': 'Ostrzeżenia o budżecie',
     'notifications.permissionRequired': 'Wymagana zgoda na powiadomienia.',
+
+    // Install
+    'install.title': 'Zainstaluj aplikację',
+    'install.settingsDescription': 'Zainstaluj aplikację na swoim urządzeniu dla szybkiego dostępu.',
+    'install.openInstructions': 'Instrukcja instalacji',
   },
 
   es: {
@@ -719,6 +739,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Hora del recordatorio',
     'notifications.budgetWarnings': 'Alertas de presupuesto',
     'notifications.permissionRequired': 'Se requiere permiso de notificaciones.',
+
+    // Install
+    'install.title': 'Instalar aplicación',
+    'install.settingsDescription': 'Instala la aplicación en tu dispositivo para acceso rápido.',
+    'install.openInstructions': 'Instrucciones de instalación',
   },
 
   fr: {
@@ -863,6 +888,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Heure du rappel',
     'notifications.budgetWarnings': 'Alertes de budget',
     'notifications.permissionRequired': 'Autorisation de notification requise.',
+
+    // Install
+    'install.title': 'Installer l\'application',
+    'install.settingsDescription': 'Installez l\'application sur votre appareil pour un accès rapide.',
+    'install.openInstructions': 'Instructions d\'installation',
   },
 };
 

@@ -1,4 +1,5 @@
-import { Languages, Check, Sun, Moon, Palette, Repeat, Target, Bell } from 'lucide-react';
+import { Languages, Check, Sun, Moon, Palette, Repeat, Target, Bell, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -106,6 +107,23 @@ const Options = () => {
               {t('notifications.description')}
             </p>
             <NotificationSettings />
+          </div>
+
+          {/* Install App Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <Download className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('install.title')}</h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              {t('install.settingsDescription')}
+            </p>
+            <Link to="/install">
+              <Button variant="outline" className="w-full gap-2">
+                <Download className="w-4 h-4" />
+                {t('install.openInstructions')}
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
