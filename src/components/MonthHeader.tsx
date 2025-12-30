@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import appIcon from '@/assets/app-icon-base.png';
 
 interface MonthHeaderProps {
   month: number;
@@ -24,7 +23,7 @@ export const MonthHeader = ({
 }: MonthHeaderProps) => {
   return (
     <div className="flex items-center justify-center gap-4 py-6">
-      <img src={appIcon} alt="Budget Card" className="w-8 h-8 rounded-lg" />
+      <img src="/icon-192.png" alt="Budget Card" className="w-8 h-8 rounded-lg" />
       {showNavigation && onPrevious && (
         <Button
           variant="ghost"
