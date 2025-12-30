@@ -23,7 +23,7 @@ export const MonthHeader = ({
 }: MonthHeaderProps) => {
   return (
     <div className="flex items-center justify-center gap-4 py-6">
-      <img src="/icon-192.png?v=2" alt="Budget Card ikona" className="w-10 h-10 rounded-xl" />
+      <img src="/icon-192.png?v=4" alt="Budget Card ikona" className="w-10 h-10 rounded-xl" />
       {showNavigation && onPrevious && (
         <Button
           variant="ghost"
