@@ -20,7 +20,7 @@ const Options = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       <div className="max-w-lg mx-auto p-4">
-        <h1 className="text-2xl font-bold text-foreground mb-6">{t('options.title')}</h1>
+        
         
         <div className="space-y-4">
           {/* Theme Section */}
