@@ -15,7 +15,7 @@ export const MonthCard = ({ month, year }: MonthCardProps) => {
           <img
             src="/icon-192.png"
             alt="Budget Card ikona"
-            className="h-12 w-12 rounded-full"
+            className="h-12 w-12 rounded-full bg-sky-100"
             loading="lazy"
           />
           <span>{t(`month.${month}`)} {year}</span>
