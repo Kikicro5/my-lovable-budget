@@ -15,7 +15,7 @@ const STORAGE_KEY = 'app-language';
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<Language>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return (saved as Language) || 'hr';
+    return (saved as Language) || 'en';
   });
 
   useEffect(() => {
