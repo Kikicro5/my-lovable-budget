@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Repeat } from 'lucide-react';
 
 const Index = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getBudgetProgress, applyRecurringTransactions } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getInvestmentFromPreviousPeriod, getSavingsFromPreviousPeriod, getBudgetProgress, applyRecurringTransactions } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
   
@@ -63,7 +63,7 @@ const Index = () => {
             )}
           </div>
           
-          <BalanceCard balance={getBalance()} income={getTotalIncome()} expense={getTotalExpense()} investment={getTotalInvestment()} savings={getTotalSavings()} />
+          <BalanceCard balance={getBalance()} income={getTotalIncome()} expense={getTotalExpense()} investment={getTotalInvestment()} savings={getTotalSavings()} investmentFromPrevious={getInvestmentFromPreviousPeriod()} savingsFromPrevious={getSavingsFromPreviousPeriod()} />
           
           {hasAnyLimit && (
             <div className="space-y-3">
