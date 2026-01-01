@@ -5,14 +5,12 @@ export interface NotificationSettings {
   enabled: boolean;
   dailyReminder: boolean;
   reminderTime: string; // HH:mm format
-  budgetWarnings: boolean;
 }
 
 const DEFAULT_SETTINGS: NotificationSettings = {
   enabled: false,
   dailyReminder: false,
   reminderTime: '20:00',
-  budgetWarnings: true,
 };
 
 const STORAGE_KEY = 'notification-settings';
@@ -112,29 +110,6 @@ export const useNotifications = () => {
     }
   };
 
-  const sendBudgetWarning = async (message: string) => {
-    if (!settings.enabled || !settings.budgetWarnings) return;
-    
-    try {
-      await LocalNotifications.schedule({
-        notifications: [
-          {
-            id: Date.now(),
-            title: 'Upozorenje o budžetu',
-            body: message,
-            schedule: { at: new Date(Date.now() + 1000) },
-            sound: undefined,
-            attachments: undefined,
-            actionTypeId: '',
-            extra: null,
-          },
-        ],
-      });
-    } catch (error) {
-      console.log('Could not send notification:', error);
-    }
-  };
-
   const cancelAllNotifications = async () => {
     try {
       const pending = await LocalNotifications.getPending();
@@ -153,6 +128,5 @@ export const useNotifications = () => {
     updateSettings,
     permissionGranted,
     requestPermissions,
-    sendBudgetWarning,
   };
 };
