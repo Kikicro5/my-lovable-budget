@@ -478,6 +478,13 @@ export const useBudget = () => {
     return true;
   };
 
+  const removeBudget = (budgetId: string) => {
+    setState((prev) => ({
+      ...prev,
+      budgets: prev.budgets.filter((b) => b.id !== budgetId),
+    }));
+  };
+
   return {
     state,
     getCurrentBudget,
@@ -504,6 +511,7 @@ export const useBudget = () => {
     removeRecurringTransaction,
     toggleRecurringTransaction,
     applyRecurringTransactions,
+    removeBudget,
     autoCarryOverAmount,
     clearAutoCarryOverAmount: () => setAutoCarryOverAmount(null),
   };

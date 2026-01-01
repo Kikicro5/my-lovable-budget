@@ -90,6 +90,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.noArchived': 'Nema arhiviranih mjeseci',
     'archive.willAppear': 'Prošli mjeseci će se automatski pojaviti ovdje',
     'archive.backToArchive': 'Natrag na arhivu',
+    'archive.deleted': 'Mjesec obrisan',
+    'archive.deleteConfirm': 'Obriši mjesec?',
+    'archive.deleteWarning': 'Ova radnja će trajno obrisati sve podatke za',
+
+    // Common
+    'common.cancel': 'Odustani',
+    'common.delete': 'Obriši',
 
     // Dialog
     'dialog.confirm': 'Jeste li sigurni?',
@@ -242,6 +249,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.noArchived': 'No archived months',
     'archive.willAppear': 'Past months will automatically appear here',
     'archive.backToArchive': 'Back to archive',
+    'archive.deleted': 'Month deleted',
+    'archive.deleteConfirm': 'Delete month?',
+    'archive.deleteWarning': 'This action will permanently delete all data for',
+
+    // Common
+    'common.cancel': 'Cancel',
+    'common.delete': 'Delete',
 
     // Dialog
     'dialog.confirm': 'Are you sure?',
@@ -394,6 +408,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.noArchived': 'Keine archivierten Monate',
     'archive.willAppear': 'Vergangene Monate erscheinen automatisch hier',
     'archive.backToArchive': 'Zurück zum Archiv',
+    'archive.deleted': 'Monat gelöscht',
+    'archive.deleteConfirm': 'Monat löschen?',
+    'archive.deleteWarning': 'Diese Aktion löscht dauerhaft alle Daten für',
+
+    // Common
+    'common.cancel': 'Abbrechen',
+    'common.delete': 'Löschen',
 
     // Dialog
     'dialog.confirm': 'Sind Sie sicher?',
@@ -546,6 +567,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.noArchived': 'Brak zarchiwizowanych miesięcy',
     'archive.willAppear': 'Poprzednie miesiące pojawią się tutaj automatycznie',
     'archive.backToArchive': 'Powrót do archiwum',
+    'archive.deleted': 'Miesiąc usunięty',
+    'archive.deleteConfirm': 'Usunąć miesiąc?',
+    'archive.deleteWarning': 'Ta akcja trwale usunie wszystkie dane za',
+
+    // Common
+    'common.cancel': 'Anuluj',
+    'common.delete': 'Usuń',
 
     // Dialog
     'dialog.confirm': 'Czy na pewno?',
@@ -698,6 +726,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.noArchived': 'Sin meses archivados',
     'archive.willAppear': 'Los meses anteriores aparecerán automáticamente aquí',
     'archive.backToArchive': 'Volver al archivo',
+    'archive.deleted': 'Mes eliminado',
+    'archive.deleteConfirm': '¿Eliminar mes?',
+    'archive.deleteWarning': 'Esta acción eliminará permanentemente todos los datos de',
+
+    // Common
+    'common.cancel': 'Cancelar',
+    'common.delete': 'Eliminar',
 
     // Dialog
     'dialog.confirm': '¿Estás seguro?',
@@ -850,6 +885,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.noArchived': 'Aucun mois archivé',
     'archive.willAppear': 'Les mois précédents apparaîtront automatiquement ici',
     'archive.backToArchive': 'Retour aux archives',
+    'archive.deleted': 'Mois supprimé',
+    'archive.deleteConfirm': 'Supprimer le mois?',
+    'archive.deleteWarning': 'Cette action supprimera définitivement toutes les données de',
+
+    // Common
+    'common.cancel': 'Annuler',
+    'common.delete': 'Supprimer',
 
     // Dialog
     'dialog.confirm': 'Êtes-vous sûr?',
