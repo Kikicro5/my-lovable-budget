@@ -62,6 +62,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'toast.balance.transferred': 'Stanje preneseno',
     'toast.balance.transferFailed': 'Nije moguće prenijeti',
     'toast.balance.alreadyTransferred': 'Stanje je već preneseno ili nema stanja za prijenos',
+    'toast.balance.autoTransferred': 'Automatski preneseno stanje iz prethodnog mjeseca',
 
     // Monthly page
     'monthly.income': 'Prihodi',
@@ -213,6 +214,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'toast.balance.transferred': 'Balance transferred',
     'toast.balance.transferFailed': 'Cannot transfer',
     'toast.balance.alreadyTransferred': 'Balance already transferred or no balance to transfer',
+    'toast.balance.autoTransferred': 'Balance automatically transferred from previous month',
 
     // Monthly page
     'monthly.income': 'Income',
@@ -364,6 +366,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'toast.balance.transferred': 'Saldo übertragen',
     'toast.balance.transferFailed': 'Übertragung nicht möglich',
     'toast.balance.alreadyTransferred': 'Saldo bereits übertragen oder kein Saldo vorhanden',
+    'toast.balance.autoTransferred': 'Saldo automatisch vom Vormonat übertragen',
 
     // Monthly page
     'monthly.income': 'Einnahmen',
@@ -515,6 +518,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'toast.balance.transferred': 'Saldo przeniesione',
     'toast.balance.transferFailed': 'Nie można przenieść',
     'toast.balance.alreadyTransferred': 'Saldo już przeniesione lub brak salda do przeniesienia',
+    'toast.balance.autoTransferred': 'Saldo automatycznie przeniesione z poprzedniego miesiąca',
 
     // Monthly page
     'monthly.income': 'Przychody',
@@ -666,6 +670,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'toast.balance.transferred': 'Saldo transferido',
     'toast.balance.transferFailed': 'No se puede transferir',
     'toast.balance.alreadyTransferred': 'Saldo ya transferido o sin saldo para transferir',
+    'toast.balance.autoTransferred': 'Saldo transferido automáticamente del mes anterior',
 
     // Monthly page
     'monthly.income': 'Ingresos',
@@ -817,6 +822,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'toast.balance.transferred': 'Solde transféré',
     'toast.balance.transferFailed': 'Transfert impossible',
     'toast.balance.alreadyTransferred': 'Solde déjà transféré ou aucun solde à transférer',
+    'toast.balance.autoTransferred': 'Solde automatiquement transféré du mois précédent',
 
     // Monthly page
     'monthly.income': 'Revenus',

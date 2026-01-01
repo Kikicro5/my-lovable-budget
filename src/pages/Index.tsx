@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MonthCard } from '@/components/MonthCard';
@@ -11,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Repeat } from 'lucide-react';
 
 const Index = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getInvestmentFromPreviousPeriod, getSavingsFromPreviousPeriod, getBudgetProgress, applyRecurringTransactions } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getInvestmentFromPreviousPeriod, getSavingsFromPreviousPeriod, getBudgetProgress, applyRecurringTransactions, autoCarryOverAmount, clearAutoCarryOverAmount } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
   
@@ -25,6 +26,17 @@ const Index = () => {
 
   const hasRecurring = state.recurringTransactions.filter(r => r.isActive).length > 0;
   const recurringApplied = currentBudget?.recurringApplied || false;
+
+  // Show notification when auto carry-over happens
+  useEffect(() => {
+    if (autoCarryOverAmount !== null) {
+      toast({ 
+        title: t('toast.balance.autoTransferred'), 
+        description: `${Math.abs(autoCarryOverAmount).toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €` 
+      });
+      clearAutoCarryOverAmount();
+    }
+  }, [autoCarryOverAmount, clearAutoCarryOverAmount, t]);
 
   const handleAddExpense = (name: string, amount: number, category: string) => {
     addTransaction({ name, amount, type: 'expense', category });

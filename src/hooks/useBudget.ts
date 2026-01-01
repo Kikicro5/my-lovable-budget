@@ -84,6 +84,9 @@ export const useBudget = () => {
     return getInitialState();
   });
 
+  // Track if auto carry-over happened
+  const [autoCarryOverAmount, setAutoCarryOverAmount] = useState<number | null>(null);
+
   // Auto-archive previous month and carry over balance when month changes
   useEffect(() => {
     const now = new Date();
@@ -110,16 +113,15 @@ export const useBudget = () => {
           }, 0)
         : 0;
 
+      // Check if carry-over already exists in the new month
+      const newBudgetId = `${realYear}-${realMonth}`;
+      const existingNewBudget = state.budgets.find((b) => b.month === realMonth && b.year === realYear);
+      const hasCarryOver = existingNewBudget?.transactions.some(
+        (t) => t.category === 'Prijenos iz prethodnog mjeseca'
+      );
+
       // Update to current real month and create carry-over transaction if there's a balance
       setState((prev) => {
-        const newBudgetId = `${realYear}-${realMonth}`;
-        const existingNewBudget = prev.budgets.find((b) => b.month === realMonth && b.year === realYear);
-        
-        // Check if carry-over already exists
-        const hasCarryOver = existingNewBudget?.transactions.some(
-          (t) => t.category === 'Prijenos iz prethodnog mjeseca'
-        );
-
         let updatedBudgets = prev.budgets;
 
         if (previousBalance !== 0 && !hasCarryOver) {
@@ -148,6 +150,9 @@ export const useBudget = () => {
             };
             updatedBudgets = [...prev.budgets, newBudget];
           }
+
+          // Set the amount for notification
+          setAutoCarryOverAmount(previousBalance);
         }
 
         return {
@@ -499,5 +504,7 @@ export const useBudget = () => {
     removeRecurringTransaction,
     toggleRecurringTransaction,
     applyRecurringTransactions,
+    autoCarryOverAmount,
+    clearAutoCarryOverAmount: () => setAutoCarryOverAmount(null),
   };
 };
