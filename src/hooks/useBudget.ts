@@ -208,12 +208,30 @@ export const useBudget = () => {
       .reduce((acc, t) => acc + t.amount, 0);
   };
 
+  const getInvestmentFromPreviousPeriod = (budget?: MonthlyBudget): number => {
+    const b = budget || getCurrentBudget();
+    if (!b) return 0;
+
+    return b.transactions
+      .filter((t) => t.type === 'investment' && t.isFromPreviousPeriod)
+      .reduce((acc, t) => acc + t.amount, 0);
+  };
+
   const getTotalSavings = (budget?: MonthlyBudget): number => {
     const b = budget || getCurrentBudget();
     if (!b) return 0;
 
     return b.transactions
       .filter((t) => t.type === 'savings' && !t.isFromPreviousPeriod)
+      .reduce((acc, t) => acc + t.amount, 0);
+  };
+
+  const getSavingsFromPreviousPeriod = (budget?: MonthlyBudget): number => {
+    const b = budget || getCurrentBudget();
+    if (!b) return 0;
+
+    return b.transactions
+      .filter((t) => t.type === 'savings' && t.isFromPreviousPeriod)
       .reduce((acc, t) => acc + t.amount, 0);
   };
 
@@ -392,6 +410,8 @@ export const useBudget = () => {
     getTotalExpense,
     getTotalInvestment,
     getTotalSavings,
+    getInvestmentFromPreviousPeriod,
+    getSavingsFromPreviousPeriod,
     getPastBudgets,
     getPreviousMonthBalance,
     carryOverBalance,
