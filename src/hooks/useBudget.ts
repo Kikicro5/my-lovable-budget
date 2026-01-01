@@ -173,6 +173,8 @@ export const useBudget = () => {
     if (!b) return 0;
 
     return b.transactions.reduce((acc, t) => {
+      // Exclude "from previous period" transactions from balance
+      if (t.isFromPreviousPeriod) return acc;
       if (t.type === 'income') return acc + t.amount;
       if (t.type === 'expense' || t.type === 'investment' || t.type === 'savings') return acc - t.amount;
       return acc;
