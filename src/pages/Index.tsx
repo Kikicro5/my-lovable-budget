@@ -14,6 +14,10 @@ const Index = () => {
   const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getBudgetProgress, applyRecurringTransactions } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
+  
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
 
   const expenseProgress = getBudgetProgress('expense');
   const investmentProgress = getBudgetProgress('investment');
@@ -49,7 +53,7 @@ const Index = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <MonthCard month={state.currentMonth} year={state.currentYear} />
+              <MonthCard month={currentMonth} year={currentYear} />
             </div>
             {hasRecurring && !recurringApplied && (
               <Button variant="outline" size="sm" className="gap-2" onClick={handleApplyRecurring}>
