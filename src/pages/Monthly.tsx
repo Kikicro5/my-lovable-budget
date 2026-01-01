@@ -15,6 +15,10 @@ const Monthly = () => {
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
   const previousBalance = getPreviousMonthBalance();
+  
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
 
   const handleAddTransaction = (type: 'income' | 'expense' | 'investment' | 'savings', name: string, amount: number, category: string) => {
     addTransaction({ name, amount, type, category });
@@ -49,7 +53,7 @@ const Monthly = () => {
   return (
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
-        <div className="mb-4"><MonthCard month={state.currentMonth} year={state.currentYear} /></div>
+        <div className="mb-4"><MonthCard month={currentMonth} year={currentYear} /></div>
         <Tabs defaultValue="income" className="w-full">
           <TabsList className="w-full grid grid-cols-5 mb-6">
             <TabsTrigger value="income" className="flex items-center gap-1 text-xs px-2"><TrendingUp className="w-3 h-3" /><span className="hidden sm:inline">{t('monthly.income')}</span></TabsTrigger>
