@@ -84,6 +84,82 @@ export const useBudget = () => {
     return getInitialState();
   });
 
+  // Auto-archive previous month and carry over balance when month changes
+  useEffect(() => {
+    const now = new Date();
+    const realMonth = now.getMonth();
+    const realYear = now.getFullYear();
+
+    // Check if state month/year is behind real date
+    const isNewMonth = 
+      realYear > state.currentYear || 
+      (realYear === state.currentYear && realMonth > state.currentMonth);
+
+    if (isNewMonth) {
+      // Get the previous period (which was the "current" in state)
+      const previousBudget = state.budgets.find(
+        (b) => b.month === state.currentMonth && b.year === state.currentYear
+      );
+      
+      const previousBalance = previousBudget 
+        ? previousBudget.transactions.reduce((acc, t) => {
+            if (t.isFromPreviousPeriod) return acc;
+            if (t.type === 'income') return acc + t.amount;
+            if (t.type === 'expense' || t.type === 'investment' || t.type === 'savings') return acc - t.amount;
+            return acc;
+          }, 0)
+        : 0;
+
+      // Update to current real month and create carry-over transaction if there's a balance
+      setState((prev) => {
+        const newBudgetId = `${realYear}-${realMonth}`;
+        const existingNewBudget = prev.budgets.find((b) => b.month === realMonth && b.year === realYear);
+        
+        // Check if carry-over already exists
+        const hasCarryOver = existingNewBudget?.transactions.some(
+          (t) => t.category === 'Prijenos iz prethodnog mjeseca'
+        );
+
+        let updatedBudgets = prev.budgets;
+
+        if (previousBalance !== 0 && !hasCarryOver) {
+          const carryOverTransaction: Transaction = {
+            id: crypto.randomUUID(),
+            name: 'Prijenos iz prethodnog mjeseca',
+            amount: Math.abs(previousBalance),
+            type: previousBalance > 0 ? 'income' : 'expense',
+            category: 'Prijenos iz prethodnog mjeseca',
+            date: new Date().toISOString(),
+          };
+
+          if (existingNewBudget) {
+            updatedBudgets = prev.budgets.map((b) =>
+              b.id === newBudgetId
+                ? { ...b, transactions: [...b.transactions, carryOverTransaction] }
+                : b
+            );
+          } else {
+            const newBudget: MonthlyBudget = {
+              id: newBudgetId,
+              month: realMonth,
+              year: realYear,
+              transactions: [carryOverTransaction],
+              savedCategories: { ...prev.savedCategories },
+            };
+            updatedBudgets = [...prev.budgets, newBudget];
+          }
+        }
+
+        return {
+          ...prev,
+          currentMonth: realMonth,
+          currentYear: realYear,
+          budgets: updatedBudgets,
+        };
+      });
+    }
+  }, []);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
