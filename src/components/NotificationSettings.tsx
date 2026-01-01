@@ -57,16 +57,6 @@ export const NotificationSettings = () => {
             </div>
           )}
 
-          {/* Budget warnings */}
-          <div className="flex items-center justify-between pl-6">
-            <Label htmlFor="budget-warnings">{t('notifications.budgetWarnings')}</Label>
-            <Switch
-              id="budget-warnings"
-              checked={settings.budgetWarnings}
-              onCheckedChange={(checked) => updateSettings({ budgetWarnings: checked })}
-            />
-          </div>
-
           {!permissionGranted && (
             <p className="text-sm text-amber-600 dark:text-amber-400 pl-6">
               {t('notifications.permissionRequired')}
