@@ -74,6 +74,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'monthly.investmentThisMonth': 'Investicije ovog mjeseca',
     'monthly.savingsThisMonth': 'Štednja ovog mjeseca',
     'monthly.carryOver': 'Prenesi stanje iz prethodnog mjeseca',
+    'monthly.fromPreviousPeriod': 'Iz prethodnog razdoblja',
+    'monthly.addFromPrevious': 'Dodaj',
 
     // Categories
     'category.income': 'Kategorije prihoda',
@@ -223,6 +225,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'monthly.investmentThisMonth': 'Investments this month',
     'monthly.savingsThisMonth': 'Savings this month',
     'monthly.carryOver': 'Carry over balance from previous month',
+    'monthly.fromPreviousPeriod': 'From previous period',
+    'monthly.addFromPrevious': 'Add',
 
     // Categories
     'category.income': 'Income categories',
@@ -372,6 +376,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'monthly.investmentThisMonth': 'Investitionen diesen Monat',
     'monthly.savingsThisMonth': 'Ersparnisse diesen Monat',
     'monthly.carryOver': 'Saldo aus dem Vormonat übertragen',
+    'monthly.fromPreviousPeriod': 'Aus vorheriger Periode',
+    'monthly.addFromPrevious': 'Hinzufügen',
 
     // Categories
     'category.income': 'Einnahmekategorien',
@@ -521,6 +527,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'monthly.investmentThisMonth': 'Inwestycje w tym miesiącu',
     'monthly.savingsThisMonth': 'Oszczędności w tym miesiącu',
     'monthly.carryOver': 'Przenieś saldo z poprzedniego miesiąca',
+    'monthly.fromPreviousPeriod': 'Z poprzedniego okresu',
+    'monthly.addFromPrevious': 'Dodaj',
 
     // Categories
     'category.income': 'Kategorie przychodów',
@@ -670,6 +678,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'monthly.investmentThisMonth': 'Inversiones este mes',
     'monthly.savingsThisMonth': 'Ahorros este mes',
     'monthly.carryOver': 'Transferir saldo del mes anterior',
+    'monthly.fromPreviousPeriod': 'Del período anterior',
+    'monthly.addFromPrevious': 'Añadir',
 
     // Categories
     'category.income': 'Categorías de ingresos',
@@ -819,6 +829,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'monthly.investmentThisMonth': 'Investissements ce mois',
     'monthly.savingsThisMonth': 'Épargne ce mois',
     'monthly.carryOver': 'Reporter le solde du mois précédent',
+    'monthly.fromPreviousPeriod': 'De la période précédente',
+    'monthly.addFromPrevious': 'Ajouter',
 
     // Categories
     'category.income': 'Catégories de revenus',

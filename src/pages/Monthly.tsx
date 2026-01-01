@@ -4,6 +4,7 @@ import { MonthCard } from '@/components/MonthCard';
 import { TransactionForm } from '@/components/TransactionForm';
 import { TransactionList } from '@/components/TransactionList';
 import { CategoryManager } from '@/components/CategoryManager';
+import { PreviousPeriodInput } from '@/components/PreviousPeriodInput';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
@@ -73,10 +74,12 @@ const Monthly = () => {
           </TabsContent>
           <TabsContent value="investment" className="space-y-4">
             <TransactionForm type="investment" categories={state.savedCategories.investment} onSubmit={(name, amount, category) => handleAddTransaction('investment', name, amount, category)} onAddCategory={(cat) => handleAddCategory('investment', cat)} />
+            <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransaction('investment', t('monthly.fromPreviousPeriod'), amount, t('monthly.fromPreviousPeriod'))} />
             <TransactionList title={t('monthly.investmentThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" />
           </TabsContent>
           <TabsContent value="savings" className="space-y-4">
             <TransactionForm type="savings" categories={state.savedCategories.savings} onSubmit={(name, amount, category) => handleAddTransaction('savings', name, amount, category)} onAddCategory={(cat) => handleAddCategory('savings', cat)} />
+            <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransaction('savings', t('monthly.fromPreviousPeriod'), amount, t('monthly.fromPreviousPeriod'))} />
             <TransactionList title={t('monthly.savingsThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" />
           </TabsContent>
           <TabsContent value="categories" className="space-y-4">
