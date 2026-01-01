@@ -1,4 +1,5 @@
-import { Languages, Check, Sun, Moon, Palette, Repeat, Target, Bell } from 'lucide-react';
+import { Languages, Check, Sun, Moon, Palette, Repeat, Target, Bell, Share2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -14,6 +15,27 @@ const Options = () => {
 
   const handleLanguageSelect = (code: Language) => {
     setLanguage(code);
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: 'BudgetCard',
+      text: t('share.message') || 'Check out this budget tracking app!',
+      url: window.location.origin,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Share failed:', err);
+        }
+      }
+    } else {
+      await navigator.clipboard.writeText(window.location.origin);
+      toast.success(t('share.copied') || 'Link copied to clipboard!');
+    }
   };
 
   return (
@@ -106,6 +128,21 @@ const Options = () => {
               {t('notifications.description')}
             </p>
             <NotificationSettings />
+          </div>
+
+          {/* Share Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <Share2 className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('share.title') || 'Share App'}</h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              {t('share.description') || 'Share this app with friends and family'}
+            </p>
+            <Button onClick={handleShare} className="w-full gap-2">
+              <Share2 className="w-4 h-4" />
+              {t('share.button') || 'Share'}
+            </Button>
           </div>
         </div>
       </div>
