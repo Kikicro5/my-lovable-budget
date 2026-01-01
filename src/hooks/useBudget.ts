@@ -202,7 +202,7 @@ export const useBudget = () => {
     if (!b) return 0;
 
     return b.transactions
-      .filter((t) => t.type === 'investment')
+      .filter((t) => t.type === 'investment' && !t.isFromPreviousPeriod)
       .reduce((acc, t) => acc + t.amount, 0);
   };
 
@@ -211,7 +211,7 @@ export const useBudget = () => {
     if (!b) return 0;
 
     return b.transactions
-      .filter((t) => t.type === 'savings')
+      .filter((t) => t.type === 'savings' && !t.isFromPreviousPeriod)
       .reduce((acc, t) => acc + t.amount, 0);
   };
 

@@ -27,6 +27,11 @@ const Monthly = () => {
     toast({ title: t(toastKeys[type]), description: `${name}: ${amount.toLocaleString('hr-HR')} €` });
   };
 
+  const handleAddTransactionFromPreviousPeriod = (type: 'investment' | 'savings', amount: number) => {
+    addTransaction({ name: t('monthly.fromPreviousPeriod'), amount, type, category: t('monthly.fromPreviousPeriod'), isFromPreviousPeriod: true });
+    toast({ title: t(type === 'investment' ? 'toast.investment.added' : 'toast.savings.added'), description: `${t('monthly.fromPreviousPeriod')}: ${amount.toLocaleString('hr-HR')} €` });
+  };
+
   const handleRemoveTransaction = (id: string) => {
     removeTransaction(id);
     toast({ title: t('toast.transaction.removed'), variant: 'destructive' });
@@ -74,13 +79,13 @@ const Monthly = () => {
           </TabsContent>
           <TabsContent value="investment" className="space-y-4">
             <TransactionForm type="investment" categories={state.savedCategories.investment} onSubmit={(name, amount, category) => handleAddTransaction('investment', name, amount, category)} onAddCategory={(cat) => handleAddCategory('investment', cat)} />
-            <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransaction('investment', t('monthly.fromPreviousPeriod'), amount, t('monthly.fromPreviousPeriod'))} />
-            <TransactionList title={t('monthly.investmentThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" />
+            <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('investment', amount)} />
+            <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" />
           </TabsContent>
           <TabsContent value="savings" className="space-y-4">
             <TransactionForm type="savings" categories={state.savedCategories.savings} onSubmit={(name, amount, category) => handleAddTransaction('savings', name, amount, category)} onAddCategory={(cat) => handleAddCategory('savings', cat)} />
-            <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransaction('savings', t('monthly.fromPreviousPeriod'), amount, t('monthly.fromPreviousPeriod'))} />
-            <TransactionList title={t('monthly.savingsThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" />
+            <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('savings', amount)} />
+            <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" />
           </TabsContent>
           <TabsContent value="categories" className="space-y-4">
             <CategoryManager type="income" categories={state.savedCategories.income} onAdd={(cat) => handleAddCategory('income', cat)} onRemove={(cat) => handleRemoveCategory('income', cat)} />

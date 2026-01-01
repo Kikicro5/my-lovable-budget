@@ -5,6 +5,7 @@ export interface Transaction {
   type: 'income' | 'expense' | 'investment' | 'savings';
   category: string;
   date: string;
+  isFromPreviousPeriod?: boolean;
 }
 
 export interface RecurringTransaction {
