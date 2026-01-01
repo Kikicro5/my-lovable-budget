@@ -3,37 +3,74 @@ import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { TransactionList } from '@/components/TransactionList';
 import { MonthlyBudget } from '@/types/budget';
-import { Calendar, ChevronRight, TrendingUp, TrendingDown, Wallet, Download } from 'lucide-react';
+import { Calendar, ChevronRight, TrendingUp, TrendingDown, Wallet, Download, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthCard } from '@/components/MonthCard';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { exportBudgetToPDF } from '@/utils/exportPdf';
+import { toast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const Archive = () => {
-  const { getPastBudgets, getBalance, getTotalIncome, getTotalExpense, removeTransaction } = useBudget();
+  const { getPastBudgets, getBalance, getTotalIncome, getTotalExpense, removeTransaction, removeBudget } = useBudget();
   const [selectedBudget, setSelectedBudget] = useState<MonthlyBudget | null>(null);
   const { t } = useLanguage();
   const pastBudgets = getPastBudgets();
 
-  const handleExportPDF = (budget: MonthlyBudget) => {
-    exportBudgetToPDF({
-      budget,
-      monthName: t(`month.${budget.month}`),
-      labels: {
-        income: t('balance.income'),
-        expense: t('balance.expense'),
-        investment: t('balance.investment'),
-        savings: t('balance.savings'),
-        balance: t('balance.current'),
-        transactions: t('pdf.transactions'),
-        name: t('pdf.name'),
-        category: t('transaction.category'),
-        amount: t('transaction.amount'),
-        type: t('pdf.type'),
-        date: t('pdf.date'),
-        summary: t('pdf.summary'),
-      },
+  const handleExportPDF = (budget: MonthlyBudget, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    try {
+      exportBudgetToPDF({
+        budget,
+        monthName: t(`month.${budget.month}`),
+        labels: {
+          income: t('balance.income'),
+          expense: t('balance.expense'),
+          investment: t('balance.investment'),
+          savings: t('balance.savings'),
+          balance: t('balance.current'),
+          transactions: t('pdf.transactions'),
+          name: t('pdf.name'),
+          category: t('transaction.category'),
+          amount: t('transaction.amount'),
+          type: t('pdf.type'),
+          date: t('pdf.date'),
+          summary: t('pdf.summary'),
+        },
+      });
+      toast({
+        title: t('pdf.export'),
+        description: `${t(`month.${budget.month}`)} ${budget.year}`,
+      });
+    } catch (error) {
+      console.error('PDF export error:', error);
+      toast({
+        title: 'Greška',
+        description: 'Nije moguće izvesti PDF.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleDeleteBudget = (budget: MonthlyBudget) => {
+    removeBudget(budget.id);
+    if (selectedBudget?.id === budget.id) {
+      setSelectedBudget(null);
+    }
+    toast({
+      title: t('archive.deleted'),
+      description: `${t(`month.${budget.month}`)} ${budget.year}`,
     });
   };
 
@@ -49,10 +86,33 @@ const Archive = () => {
             <button onClick={() => setSelectedBudget(null)} className="flex items-center gap-2 text-primary font-medium hover:opacity-80 transition-opacity">
               <ChevronRight className="w-4 h-4 rotate-180" />{t('archive.backToArchive')}
             </button>
-            <Button onClick={() => handleExportPDF(selectedBudget)} variant="outline" size="sm" className="gap-2">
-              <Download className="w-4 h-4" />
-              {t('pdf.export')}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button onClick={(e) => handleExportPDF(selectedBudget, e)} variant="outline" size="sm" className="gap-2">
+                <Download className="w-4 h-4" />
+                {t('pdf.export')}
+              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-2 text-destructive hover:text-destructive">
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t('archive.deleteConfirm')}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t('archive.deleteWarning')} {t(`month.${selectedBudget.month}`)} {selectedBudget.year}?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDeleteBudget(selectedBudget)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                      {t('common.delete')}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
           </div>
           <div className="mb-4"><MonthCard month={selectedBudget.month} year={selectedBudget.year} /></div>
           <div className="bg-card rounded-xl p-5 shadow-soft mb-4 animate-fade-in">
@@ -96,10 +156,31 @@ const Archive = () => {
                     <button onClick={() => setSelectedBudget(budget)} className="font-display font-semibold text-foreground hover:text-primary transition-colors text-left flex-1">
                       {t(`month.${budget.month}`)} {budget.year}
                     </button>
-                    <div className="flex items-center gap-2">
-                      <Button onClick={() => handleExportPDF(budget)} variant="ghost" size="icon" className="h-8 w-8">
+                    <div className="flex items-center gap-1">
+                      <Button onClick={(e) => handleExportPDF(budget, e)} variant="ghost" size="icon" className="h-8 w-8">
                         <Download className="w-4 h-4" />
                       </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive">
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{t('archive.deleteConfirm')}</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {t('archive.deleteWarning')} {t(`month.${budget.month}`)} {budget.year}?
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteBudget(budget)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                              {t('common.delete')}
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                       <button onClick={() => setSelectedBudget(budget)}><ChevronRight className="w-5 h-5 text-muted-foreground" /></button>
                     </div>
                   </div>
