@@ -132,13 +132,10 @@ const Options = () => {
 
           {/* Share Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3">
               <Share2 className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">{t('share.title') || 'Share App'}</h2>
+              <h2 className="text-lg font-semibold text-foreground">Share App</h2>
             </div>
-            <p className="text-sm text-muted-foreground mb-3">
-              {t('share.description') || 'Share this app with friends and family'}
-            </p>
             <Button onClick={handleShare} className="w-full gap-2">
               <Share2 className="w-4 h-4" />
               {t('share.button') || 'Share'}
