@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.lovable.budgetcard.twa",
+      "sha256_cert_fingerprints": [
+        "D4:47:86:AE:17:6C:62:89:FF:B6:F5:01:12:84:82:CA:C7:3D:54:AE:6F:81:B6:81:DB:1D:B9:2E:92:E0:0B:E2"
+      ]
+    }
+  }
+]
