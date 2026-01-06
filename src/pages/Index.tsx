@@ -10,6 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Repeat } from 'lucide-react';
+import AdSense from '@/components/AdSense';
 
 const Index = () => {
   const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getInvestmentFromPreviousPeriod, getSavingsFromPreviousPeriod, getBudgetProgress, applyRecurringTransactions, autoCarryOverAmount, clearAutoCarryOverAmount } = useBudget();
@@ -92,6 +93,10 @@ const Index = () => {
           )}
           
           <QuickExpenseForm categories={state.savedCategories.expense} onSubmit={handleAddExpense} />
+          
+          {/* AdSense oglas */}
+          <AdSense adSlot="YOUR_AD_SLOT_ID" adFormat="rectangle" />
+          
           <TransactionList title={t('transaction.lastTransactions')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} />
         </div>
       </div>
