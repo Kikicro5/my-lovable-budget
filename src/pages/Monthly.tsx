@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, ArrowRightLeft } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+import AdSense from '@/components/AdSense';
 
 const Monthly = () => {
   const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getPreviousMonthBalance, carryOverBalance } = useBudget();
@@ -94,6 +95,9 @@ const Monthly = () => {
             <CategoryManager type="savings" categories={state.savedCategories.savings} onAdd={(cat) => handleAddCategory('savings', cat)} onRemove={(cat) => handleRemoveCategory('savings', cat)} />
           </TabsContent>
         </Tabs>
+        
+        {/* AdSense oglas */}
+        <AdSense adSlot="YOUR_AD_SLOT_ID" adFormat="horizontal" className="mt-6" />
       </div>
       <BottomNavigation />
     </div>
