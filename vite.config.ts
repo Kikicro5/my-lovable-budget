@@ -17,9 +17,9 @@ export default defineConfig(({ mode }) => ({
       registerType: "autoUpdate",
       includeAssets: ["icon-192.png", "icon-512.png", "apple-touch-icon.png"],
       manifest: {
-        name: "Budget Card",
-        short_name: "Budget",
-        description: "Praćenje financija i budžeta",
+        name: "PDF Instant",
+        short_name: "PDF Instant",
+        description: "Instant PDF tools",
         theme_color: "#0D9488",
         background_color: "#0D9488",
         display: "standalone",

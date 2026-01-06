@@ -1,7 +1,7 @@
 {
-  "name": "Budget Card",
-  "short_name": "Budget",
-  "description": "Praćenje financija i budžeta",
+  "name": "PDF Instant",
+  "short_name": "PDF Instant",
+  "description": "Instant PDF tools",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D9488",
