@@ -66,7 +66,7 @@ const InstallPrompt = () => {
       <div className="flex items-center gap-3 flex-1 min-w-0">
         <Download className="h-5 w-5 flex-shrink-0" />
         <p className="text-sm font-medium truncate">
-          Instaliraj PDF Instant aplikaciju
+          Instaliraj Budget Card aplikaciju
         </p>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
