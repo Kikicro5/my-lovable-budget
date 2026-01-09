@@ -1,7 +1,7 @@
 {
-  "name": "PDF Instant",
-  "short_name": "PDF Instant",
-  "description": "Instant PDF tools",
+  "name": "Budget Card",
+  "short_name": "Budget Card",
+  "description": "Simple budget, income and expense tracking",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D9488",
