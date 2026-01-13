@@ -98,25 +98,16 @@ export const BalanceCard = ({
           )}
         </div>
 
-        <div className="flex flex-col gap-2 p-3 rounded-xl bg-accent/10">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-accent">
-              <PiggyBank className="w-4 h-4 text-accent-foreground" />
-            </div>
-            <div className="flex-1">
-              <p className="text-xs text-muted-foreground">{t('balance.savings')}</p>
-              <p className="text-sm font-semibold text-accent">
-                {totalSavings.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
-              </p>
-            </div>
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-accent/10">
+          <div className="p-2 rounded-lg bg-accent">
+            <PiggyBank className="w-4 h-4 text-accent-foreground" />
           </div>
-          {onTransferFromSavings && availableSavings > 0 && (
-            <TransferFromCategoryDialog
-              type="savings"
-              availableAmount={availableSavings}
-              onTransfer={onTransferFromSavings}
-            />
-          )}
+          <div>
+            <p className="text-xs text-muted-foreground">{t('balance.savings')}</p>
+            <p className="text-sm font-semibold text-accent">
+              {totalSavings.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+            </p>
+          </div>
         </div>
       </div>
     </div>
