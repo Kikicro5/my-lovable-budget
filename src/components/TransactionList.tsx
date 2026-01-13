@@ -65,8 +65,11 @@ export const TransactionList = ({
 }: TransactionListProps) => {
   const { t } = useLanguage();
   
-  // Filter out withdrawal transactions (they are internal, only show the income side)
-  const baseTransactions = transactions.filter((t) => !t.isWithdrawal);
+  // When viewing all transactions on home page (no filter), hide withdrawal transactions
+  // When viewing specific category (investment/savings), show all transactions including withdrawals
+  const baseTransactions = filterType 
+    ? transactions
+    : transactions.filter((t) => !t.isWithdrawal);
   
   const filteredTransactions = filterType
     ? baseTransactions.filter((t) => t.type === filterType)

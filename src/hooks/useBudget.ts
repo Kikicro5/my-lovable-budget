@@ -362,6 +362,21 @@ export const useBudget = () => {
     return getBalance(prevBudget);
   };
 
+  // Get the balance as it was on the last day of the previous month (excluding any transfers that happened after)
+  const getLastDayOfPreviousMonthBalance = (): number => {
+    const prevBudget = getPreviousMonthBudget();
+    if (!prevBudget) return 0;
+
+    // Calculate balance from transactions, excluding those marked as isFromPreviousPeriod
+    return prevBudget.transactions.reduce((acc, t) => {
+      if (t.isFromPreviousPeriod) return acc;
+      if (t.type === 'income') return acc + t.amount;
+      if ((t.type === 'investment' || t.type === 'savings') && t.isWithdrawal) return acc;
+      if (t.type === 'expense' || t.type === 'investment' || t.type === 'savings') return acc - t.amount;
+      return acc;
+    }, 0);
+  };
+
   const carryOverBalance = () => {
     const prevBalance = getPreviousMonthBalance();
     if (prevBalance === 0) return false;
@@ -596,6 +611,7 @@ export const useBudget = () => {
     getSavingsFromPreviousPeriod,
     getPastBudgets,
     getPreviousMonthBalance,
+    getLastDayOfPreviousMonthBalance,
     carryOverBalance,
     setCurrentPeriod,
     setDefaultLimits,
