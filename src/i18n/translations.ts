@@ -158,6 +158,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Instaliraj aplikaciju',
     'install.settingsDescription': 'Instaliraj aplikaciju na svoj uređaj za brži pristup.',
     'install.openInstructions': 'Upute za instalaciju',
+
+    // Transfer
+    'transfer.toBalance': 'Na stanje',
+    'transfer.fromInvestment': 'Prijenos iz investicija',
+    'transfer.fromSavings': 'Prijenos iz štednje',
+    'transfer.available': 'Dostupno',
+    'transfer.enterAmount': 'Unesite iznos',
+    'transfer.exceedsAvailable': 'Iznos premašuje dostupni saldo',
+    'transfer.invalidAmount': 'Unesite ispravan iznos',
+    'transfer.confirm': 'Prenesi',
+    'transfer.success': 'Sredstva prenesena na stanje',
   },
 
   en: {
@@ -317,6 +328,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Install App',
     'install.settingsDescription': 'Install the app on your device for quick access.',
     'install.openInstructions': 'Installation instructions',
+
+    // Transfer
+    'transfer.toBalance': 'To balance',
+    'transfer.fromInvestment': 'Transfer from investments',
+    'transfer.fromSavings': 'Transfer from savings',
+    'transfer.available': 'Available',
+    'transfer.enterAmount': 'Enter amount',
+    'transfer.exceedsAvailable': 'Amount exceeds available balance',
+    'transfer.invalidAmount': 'Enter a valid amount',
+    'transfer.confirm': 'Transfer',
+    'transfer.success': 'Funds transferred to balance',
   },
 
   de: {
@@ -476,6 +498,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'App installieren',
     'install.settingsDescription': 'Installieren Sie die App auf Ihrem Gerät für schnellen Zugriff.',
     'install.openInstructions': 'Installationsanleitung',
+
+    // Transfer
+    'transfer.toBalance': 'Zum Kontostand',
+    'transfer.fromInvestment': 'Überweisung aus Investitionen',
+    'transfer.fromSavings': 'Überweisung aus Ersparnissen',
+    'transfer.available': 'Verfügbar',
+    'transfer.enterAmount': 'Betrag eingeben',
+    'transfer.exceedsAvailable': 'Betrag übersteigt verfügbares Guthaben',
+    'transfer.invalidAmount': 'Gültigen Betrag eingeben',
+    'transfer.confirm': 'Überweisen',
+    'transfer.success': 'Geld auf Kontostand übertragen',
   },
 
   pl: {
@@ -635,6 +668,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Zainstaluj aplikację',
     'install.settingsDescription': 'Zainstaluj aplikację na swoim urządzeniu dla szybkiego dostępu.',
     'install.openInstructions': 'Instrukcja instalacji',
+
+    // Transfer
+    'transfer.toBalance': 'Na saldo',
+    'transfer.fromInvestment': 'Przelew z inwestycji',
+    'transfer.fromSavings': 'Przelew z oszczędności',
+    'transfer.available': 'Dostępne',
+    'transfer.enterAmount': 'Wprowadź kwotę',
+    'transfer.exceedsAvailable': 'Kwota przekracza dostępne saldo',
+    'transfer.invalidAmount': 'Wprowadź prawidłową kwotę',
+    'transfer.confirm': 'Prześlij',
+    'transfer.success': 'Środki przelane na saldo',
   },
 
   es: {
@@ -794,6 +838,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Instalar aplicación',
     'install.settingsDescription': 'Instala la aplicación en tu dispositivo para acceso rápido.',
     'install.openInstructions': 'Instrucciones de instalación',
+
+    // Transfer
+    'transfer.toBalance': 'Al saldo',
+    'transfer.fromInvestment': 'Transferencia de inversiones',
+    'transfer.fromSavings': 'Transferencia de ahorros',
+    'transfer.available': 'Disponible',
+    'transfer.enterAmount': 'Ingrese el monto',
+    'transfer.exceedsAvailable': 'El monto excede el saldo disponible',
+    'transfer.invalidAmount': 'Ingrese un monto válido',
+    'transfer.confirm': 'Transferir',
+    'transfer.success': 'Fondos transferidos al saldo',
   },
 
   fr: {
@@ -953,6 +1008,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Installer l\'application',
     'install.settingsDescription': 'Installez l\'application sur votre appareil pour un accès rapide.',
     'install.openInstructions': 'Instructions d\'installation',
+
+    // Transfer
+    'transfer.toBalance': 'Vers le solde',
+    'transfer.fromInvestment': 'Transfert des investissements',
+    'transfer.fromSavings': 'Transfert de l\'épargne',
+    'transfer.available': 'Disponible',
+    'transfer.enterAmount': 'Entrez le montant',
+    'transfer.exceedsAvailable': 'Le montant dépasse le solde disponible',
+    'transfer.invalidAmount': 'Entrez un montant valide',
+    'transfer.confirm': 'Transférer',
+    'transfer.success': 'Fonds transférés au solde',
   },
 };
 
