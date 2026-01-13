@@ -12,7 +12,7 @@ import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, ArrowRightLeft } 
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const Monthly = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getPreviousMonthBalance, carryOverBalance } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getPreviousMonthBalance, carryOverBalance, getAvailableInvestment, getAvailableSavings, transferFromCategory } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
   const previousBalance = getPreviousMonthBalance();
@@ -56,6 +56,20 @@ const Monthly = () => {
     }
   };
 
+  const handleTransferFromInvestment = (amount: number) => {
+    const success = transferFromCategory('investment', amount);
+    if (success) {
+      toast({ title: t('transfer.success'), description: `${amount.toLocaleString('hr-HR')} €` });
+    }
+  };
+
+  const handleTransferFromSavings = (amount: number) => {
+    const success = transferFromCategory('savings', amount);
+    if (success) {
+      toast({ title: t('transfer.success'), description: `${amount.toLocaleString('hr-HR')} €` });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
@@ -78,12 +92,12 @@ const Monthly = () => {
             <TransactionList title={t('monthly.expenseThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="expense" />
           </TabsContent>
           <TabsContent value="investment" className="space-y-4">
-            <TransactionForm type="investment" categories={state.savedCategories.investment} onSubmit={(name, amount, category) => handleAddTransaction('investment', name, amount, category)} onAddCategory={(cat) => handleAddCategory('investment', cat)} />
+            <TransactionForm type="investment" categories={state.savedCategories.investment} onSubmit={(name, amount, category) => handleAddTransaction('investment', name, amount, category)} onAddCategory={(cat) => handleAddCategory('investment', cat)} availableForTransfer={getAvailableInvestment()} onTransferToBalance={handleTransferFromInvestment} />
             <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('investment', amount)} />
             <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" />
           </TabsContent>
           <TabsContent value="savings" className="space-y-4">
-            <TransactionForm type="savings" categories={state.savedCategories.savings} onSubmit={(name, amount, category) => handleAddTransaction('savings', name, amount, category)} onAddCategory={(cat) => handleAddCategory('savings', cat)} />
+            <TransactionForm type="savings" categories={state.savedCategories.savings} onSubmit={(name, amount, category) => handleAddTransaction('savings', name, amount, category)} onAddCategory={(cat) => handleAddCategory('savings', cat)} availableForTransfer={getAvailableSavings()} onTransferToBalance={handleTransferFromSavings} />
             <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('savings', amount)} />
             <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" />
           </TabsContent>
