@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank } from 'lucide-react';
+import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank, ArrowRightLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Category } from '@/types/budget';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -12,6 +12,8 @@ interface TransactionFormProps {
   categories: Category[];
   onSubmit: (name: string, amount: number, category: string) => void;
   onAddCategory: (category: Category) => void;
+  availableForTransfer?: number;
+  onTransferToBalance?: (amount: number) => void;
 }
 
 const typeConfig = {
@@ -58,16 +60,20 @@ export const TransactionForm = ({
   categories,
   onSubmit,
   onAddCategory,
+  availableForTransfer = 0,
+  onTransferToBalance,
 }: TransactionFormProps) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [showNewCategory, setShowNewCategory] = useState(false);
+  const [transferAmount, setTransferAmount] = useState('');
   const { t } = useLanguage();
 
   const config = typeConfig[type];
   const Icon = config.icon;
+  const canTransfer = (type === 'investment' || type === 'savings') && availableForTransfer > 0 && onTransferToBalance;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,6 +94,13 @@ export const TransactionForm = ({
     setNewCategoryName('');
     setNewCategoryDescription('');
     setShowNewCategory(false);
+  };
+
+  const handleTransfer = () => {
+    const transferValue = parseFloat(transferAmount);
+    if (!transferValue || transferValue <= 0 || transferValue > availableForTransfer) return;
+    onTransferToBalance?.(transferValue);
+    setTransferAmount('');
   };
 
   return (
@@ -183,17 +196,52 @@ export const TransactionForm = ({
           </div>
         )}
 
-        <Button
-          type="submit"
-          className={cn(
-            'w-full font-semibold',
-            config.buttonClass
-          )}
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          {t(config.titleKey)}
-        </Button>
+        <div className={cn("flex gap-2", canTransfer ? "flex-col sm:flex-row" : "")}>
+          <Button
+            type="submit"
+            className={cn(
+              'flex-1 font-semibold',
+              config.buttonClass
+            )}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            {t(config.titleKey)}
+          </Button>
+        </div>
       </form>
+
+      {canTransfer && (
+        <div className="mt-4 pt-4 border-t border-border/50">
+          <div className="flex items-center gap-2 mb-2">
+            <ArrowRightLeft className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">
+              {t('transfer.toBalance')} ({t('transfer.available')}: {availableForTransfer.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €)
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <Input
+              type="number"
+              step="0.01"
+              min="0"
+              max={availableForTransfer}
+              placeholder={t('transfer.enterAmount')}
+              value={transferAmount}
+              onChange={(e) => setTransferAmount(e.target.value)}
+              className="bg-card border-border flex-1"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleTransfer}
+              disabled={!transferAmount || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > availableForTransfer}
+              className="shrink-0"
+            >
+              <ArrowRightLeft className="w-4 h-4 mr-2" />
+              {t('transfer.toBalance')}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
