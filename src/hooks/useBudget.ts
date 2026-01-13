@@ -287,9 +287,16 @@ export const useBudget = () => {
     const b = budget || getCurrentBudget();
     if (!b) return 0;
 
-    return b.transactions
-      .filter((t) => t.type === 'investment' && !t.isFromPreviousPeriod)
+    // Include investments but subtract withdrawals
+    const invested = b.transactions
+      .filter((t) => t.type === 'investment' && !t.isFromPreviousPeriod && !t.isWithdrawal)
       .reduce((acc, t) => acc + t.amount, 0);
+    
+    const withdrawn = b.transactions
+      .filter((t) => t.type === 'investment' && t.isWithdrawal)
+      .reduce((acc, t) => acc + t.amount, 0);
+
+    return Math.max(0, invested - withdrawn);
   };
 
   const getInvestmentFromPreviousPeriod = (budget?: MonthlyBudget): number => {
@@ -305,9 +312,16 @@ export const useBudget = () => {
     const b = budget || getCurrentBudget();
     if (!b) return 0;
 
-    return b.transactions
-      .filter((t) => t.type === 'savings' && !t.isFromPreviousPeriod)
+    // Include savings but subtract withdrawals
+    const saved = b.transactions
+      .filter((t) => t.type === 'savings' && !t.isFromPreviousPeriod && !t.isWithdrawal)
       .reduce((acc, t) => acc + t.amount, 0);
+    
+    const withdrawn = b.transactions
+      .filter((t) => t.type === 'savings' && t.isWithdrawal)
+      .reduce((acc, t) => acc + t.amount, 0);
+
+    return Math.max(0, saved - withdrawn);
   };
 
   const getSavingsFromPreviousPeriod = (budget?: MonthlyBudget): number => {
