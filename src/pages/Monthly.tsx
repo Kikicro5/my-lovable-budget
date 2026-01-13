@@ -12,14 +12,20 @@ import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, ArrowRightLeft } 
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const Monthly = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getPreviousMonthBalance, carryOverBalance, getAvailableInvestment, getAvailableSavings, transferFromCategory } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getPreviousMonthBalance, carryOverBalance, getAvailableInvestment, getAvailableSavings, transferFromCategory, getLastDayOfPreviousMonthBalance } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
   const previousBalance = getPreviousMonthBalance();
+  const lastDayBalance = getLastDayOfPreviousMonthBalance();
   
   const now = new Date();
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
+  
+  // Check if carry over already happened (either manually or automatically)
+  const hasCarryOver = currentBudget?.transactions.some(
+    (t) => t.category === 'Prijenos iz prethodnog mjeseca'
+  ) || false;
 
   const handleAddTransaction = (type: 'income' | 'expense' | 'investment' | 'savings', name: string, amount: number, category: string) => {
     addTransaction({ name, amount, type, category });
@@ -84,7 +90,10 @@ const Monthly = () => {
           </TabsList>
           <TabsContent value="income" className="space-y-4">
             <TransactionForm type="income" categories={state.savedCategories.income} onSubmit={(name, amount, category) => handleAddTransaction('income', name, amount, category)} onAddCategory={(cat) => handleAddCategory('income', cat)} />
-            {previousBalance !== 0 && <Button onClick={handleCarryOver} variant="outline" className="w-full flex items-center gap-2"><ArrowRightLeft className="w-4 h-4" />{t('monthly.carryOver')} ({previousBalance.toLocaleString('hr-HR')} €)</Button>}
+            <Button onClick={handleCarryOver} variant="outline" className="w-full flex items-center gap-2" disabled={hasCarryOver}>
+              <ArrowRightLeft className="w-4 h-4" />
+              {t('monthly.carryOver')} ({lastDayBalance.toLocaleString('hr-HR')} €)
+            </Button>
             <TransactionList title={t('monthly.incomeThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="income" />
           </TabsContent>
           <TabsContent value="expense" className="space-y-4">
