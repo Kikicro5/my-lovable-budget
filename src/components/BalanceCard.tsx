@@ -1,7 +1,6 @@
 import { cn } from '@/lib/utils';
 import { TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
-import { TransferFromCategoryDialog } from './TransferFromCategoryDialog';
 
 interface BalanceCardProps {
   balance: number;
@@ -11,10 +10,6 @@ interface BalanceCardProps {
   savings?: number;
   investmentFromPrevious?: number;
   savingsFromPrevious?: number;
-  availableInvestment?: number;
-  availableSavings?: number;
-  onTransferFromInvestment?: (amount: number) => void;
-  onTransferFromSavings?: (amount: number) => void;
 }
 
 export const BalanceCard = ({ 
@@ -25,10 +20,6 @@ export const BalanceCard = ({
   savings = 0, 
   investmentFromPrevious = 0, 
   savingsFromPrevious = 0,
-  availableInvestment = 0,
-  availableSavings = 0,
-  onTransferFromInvestment,
-  onTransferFromSavings,
 }: BalanceCardProps) => {
   const isPositive = balance >= 0;
   const totalInvestment = investment + investmentFromPrevious;
@@ -77,25 +68,16 @@ export const BalanceCard = ({
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 p-3 rounded-xl bg-primary/10">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary">
-              <LineChart className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <div className="flex-1">
-              <p className="text-xs text-muted-foreground">{t('balance.investment')}</p>
-              <p className="text-sm font-semibold text-primary">
-                {totalInvestment.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
-              </p>
-            </div>
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-primary/10">
+          <div className="p-2 rounded-lg bg-primary">
+            <LineChart className="w-4 h-4 text-primary-foreground" />
           </div>
-          {onTransferFromInvestment && availableInvestment > 0 && (
-            <TransferFromCategoryDialog
-              type="investment"
-              availableAmount={availableInvestment}
-              onTransfer={onTransferFromInvestment}
-            />
-          )}
+          <div>
+            <p className="text-xs text-muted-foreground">{t('balance.investment')}</p>
+            <p className="text-sm font-semibold text-primary">
+              {totalInvestment.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-3 p-3 rounded-xl bg-accent/10">
