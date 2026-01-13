@@ -534,6 +534,7 @@ export const useBudget = () => {
     const b = budget || getCurrentBudget();
     if (!b) return 0;
 
+    // Include both current month investments and previous period investments
     const invested = b.transactions
       .filter((t) => t.type === 'investment' && !t.isWithdrawal)
       .reduce((acc, t) => acc + t.amount, 0);
@@ -542,13 +543,14 @@ export const useBudget = () => {
       .filter((t) => t.type === 'investment' && t.isWithdrawal)
       .reduce((acc, t) => acc + t.amount, 0);
 
-    return invested - withdrawn;
+    return Math.max(0, invested - withdrawn);
   };
 
   const getAvailableSavings = (budget?: MonthlyBudget): number => {
     const b = budget || getCurrentBudget();
     if (!b) return 0;
 
+    // Include both current month savings and previous period savings
     const saved = b.transactions
       .filter((t) => t.type === 'savings' && !t.isWithdrawal)
       .reduce((acc, t) => acc + t.amount, 0);
@@ -557,7 +559,7 @@ export const useBudget = () => {
       .filter((t) => t.type === 'savings' && t.isWithdrawal)
       .reduce((acc, t) => acc + t.amount, 0);
 
-    return saved - withdrawn;
+    return Math.max(0, saved - withdrawn);
   };
 
   return {
