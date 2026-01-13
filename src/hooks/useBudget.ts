@@ -485,6 +485,81 @@ export const useBudget = () => {
     }));
   };
 
+  const transferFromCategory = (type: 'investment' | 'savings', amount: number): boolean => {
+    const budget = getCurrentBudget();
+    if (!budget) return false;
+
+    // Calculate available amount in the category
+    const availableAmount = type === 'investment' 
+      ? getTotalInvestment() + getInvestmentFromPreviousPeriod()
+      : getTotalSavings() + getSavingsFromPreviousPeriod();
+
+    if (amount <= 0 || amount > availableAmount) return false;
+
+    // Create two transactions:
+    // 1. Negative transaction in the category (withdrawal)
+    // 2. Income transaction (transfer to balance)
+    const withdrawalTransaction: Transaction = {
+      id: crypto.randomUUID(),
+      name: type === 'investment' ? 'Prijenos na stanje' : 'Prijenos na stanje',
+      amount: amount,
+      type: type,
+      category: 'Prijenos na stanje',
+      date: new Date().toISOString(),
+      isWithdrawal: true, // Mark as withdrawal so it reduces the category total
+    };
+
+    const incomeTransaction: Transaction = {
+      id: crypto.randomUUID(),
+      name: type === 'investment' ? 'Prijenos iz investicija' : 'Prijenos iz štednje',
+      amount: amount,
+      type: 'income',
+      category: type === 'investment' ? 'Prijenos iz investicija' : 'Prijenos iz štednje',
+      date: new Date().toISOString(),
+    };
+
+    setState((prev) => ({
+      ...prev,
+      budgets: prev.budgets.map((b) =>
+        b.id === budget.id
+          ? { ...b, transactions: [...b.transactions, withdrawalTransaction, incomeTransaction] }
+          : b
+      ),
+    }));
+
+    return true;
+  };
+
+  const getAvailableInvestment = (budget?: MonthlyBudget): number => {
+    const b = budget || getCurrentBudget();
+    if (!b) return 0;
+
+    const invested = b.transactions
+      .filter((t) => t.type === 'investment' && !t.isWithdrawal)
+      .reduce((acc, t) => acc + t.amount, 0);
+    
+    const withdrawn = b.transactions
+      .filter((t) => t.type === 'investment' && t.isWithdrawal)
+      .reduce((acc, t) => acc + t.amount, 0);
+
+    return invested - withdrawn;
+  };
+
+  const getAvailableSavings = (budget?: MonthlyBudget): number => {
+    const b = budget || getCurrentBudget();
+    if (!b) return 0;
+
+    const saved = b.transactions
+      .filter((t) => t.type === 'savings' && !t.isWithdrawal)
+      .reduce((acc, t) => acc + t.amount, 0);
+    
+    const withdrawn = b.transactions
+      .filter((t) => t.type === 'savings' && t.isWithdrawal)
+      .reduce((acc, t) => acc + t.amount, 0);
+
+    return saved - withdrawn;
+  };
+
   return {
     state,
     getCurrentBudget,
@@ -512,6 +587,9 @@ export const useBudget = () => {
     toggleRecurringTransaction,
     applyRecurringTransactions,
     removeBudget,
+    transferFromCategory,
+    getAvailableInvestment,
+    getAvailableSavings,
     autoCarryOverAmount,
     clearAutoCarryOverAmount: () => setAutoCarryOverAmount(null),
   };

@@ -6,6 +6,7 @@ export interface Transaction {
   category: string;
   date: string;
   isFromPreviousPeriod?: boolean;
+  isWithdrawal?: boolean;
 }
 
 export interface RecurringTransaction {

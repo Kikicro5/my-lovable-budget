@@ -12,7 +12,26 @@ import { Button } from '@/components/ui/button';
 import { Repeat } from 'lucide-react';
 
 const Index = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, getBalance, getTotalIncome, getTotalExpense, getTotalInvestment, getTotalSavings, getInvestmentFromPreviousPeriod, getSavingsFromPreviousPeriod, getBudgetProgress, applyRecurringTransactions, autoCarryOverAmount, clearAutoCarryOverAmount } = useBudget();
+  const { 
+    state, 
+    getCurrentBudget, 
+    addTransaction, 
+    removeTransaction, 
+    getBalance, 
+    getTotalIncome, 
+    getTotalExpense, 
+    getTotalInvestment, 
+    getTotalSavings, 
+    getInvestmentFromPreviousPeriod, 
+    getSavingsFromPreviousPeriod, 
+    getBudgetProgress, 
+    applyRecurringTransactions, 
+    autoCarryOverAmount, 
+    clearAutoCarryOverAmount,
+    transferFromCategory,
+    getAvailableInvestment,
+    getAvailableSavings,
+  } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
   
@@ -57,6 +76,20 @@ const Index = () => {
     }
   };
 
+  const handleTransferFromInvestment = (amount: number) => {
+    const success = transferFromCategory('investment', amount);
+    if (success) {
+      toast({ title: t('transfer.success'), description: `${amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €` });
+    }
+  };
+
+  const handleTransferFromSavings = (amount: number) => {
+    const success = transferFromCategory('savings', amount);
+    if (success) {
+      toast({ title: t('transfer.success'), description: `${amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €` });
+    }
+  };
+
   const hasAnyLimit = expenseProgress.limit > 0 || investmentProgress.limit > 0 || savingsProgress.limit > 0;
 
   return (
@@ -75,7 +108,19 @@ const Index = () => {
             )}
           </div>
           
-          <BalanceCard balance={getBalance()} income={getTotalIncome()} expense={getTotalExpense()} investment={getTotalInvestment()} savings={getTotalSavings()} investmentFromPrevious={getInvestmentFromPreviousPeriod()} savingsFromPrevious={getSavingsFromPreviousPeriod()} />
+          <BalanceCard 
+            balance={getBalance()} 
+            income={getTotalIncome()} 
+            expense={getTotalExpense()} 
+            investment={getTotalInvestment()} 
+            savings={getTotalSavings()} 
+            investmentFromPrevious={getInvestmentFromPreviousPeriod()} 
+            savingsFromPrevious={getSavingsFromPreviousPeriod()}
+            availableInvestment={getAvailableInvestment()}
+            availableSavings={getAvailableSavings()}
+            onTransferFromInvestment={handleTransferFromInvestment}
+            onTransferFromSavings={handleTransferFromSavings}
+          />
           
           {hasAnyLimit && (
             <div className="space-y-3">
