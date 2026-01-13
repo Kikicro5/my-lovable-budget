@@ -28,9 +28,6 @@ const Index = () => {
     applyRecurringTransactions, 
     autoCarryOverAmount, 
     clearAutoCarryOverAmount,
-    transferFromCategory,
-    getAvailableInvestment,
-    getAvailableSavings,
   } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
@@ -76,20 +73,6 @@ const Index = () => {
     }
   };
 
-  const handleTransferFromInvestment = (amount: number) => {
-    const success = transferFromCategory('investment', amount);
-    if (success) {
-      toast({ title: t('transfer.success'), description: `${amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €` });
-    }
-  };
-
-  const handleTransferFromSavings = (amount: number) => {
-    const success = transferFromCategory('savings', amount);
-    if (success) {
-      toast({ title: t('transfer.success'), description: `${amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €` });
-    }
-  };
-
   const hasAnyLimit = expenseProgress.limit > 0 || investmentProgress.limit > 0 || savingsProgress.limit > 0;
 
   return (
@@ -116,10 +99,6 @@ const Index = () => {
             savings={getTotalSavings()} 
             investmentFromPrevious={getInvestmentFromPreviousPeriod()} 
             savingsFromPrevious={getSavingsFromPreviousPeriod()}
-            availableInvestment={getAvailableInvestment()}
-            availableSavings={getAvailableSavings()}
-            onTransferFromInvestment={handleTransferFromInvestment}
-            onTransferFromSavings={handleTransferFromSavings}
           />
           
           {hasAnyLimit && (

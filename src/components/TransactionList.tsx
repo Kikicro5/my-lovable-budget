@@ -65,9 +65,12 @@ export const TransactionList = ({
 }: TransactionListProps) => {
   const { t } = useLanguage();
   
+  // Filter out withdrawal transactions (they are internal, only show the income side)
+  const baseTransactions = transactions.filter((t) => !t.isWithdrawal);
+  
   const filteredTransactions = filterType
-    ? transactions.filter((t) => t.type === filterType)
-    : transactions;
+    ? baseTransactions.filter((t) => t.type === filterType)
+    : baseTransactions;
 
   const sortedTransactions = [...filteredTransactions].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
