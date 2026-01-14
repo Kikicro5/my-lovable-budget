@@ -104,9 +104,11 @@ export const useNotifications = () => {
               at: scheduledTime,
               repeats: true,
               every: 'day',
+              allowWhileIdle: true, // Ensures notification fires even in Doze mode
             },
-            sound: undefined,
-            attachments: undefined,
+            sound: 'default',
+            smallIcon: 'ic_stat_icon_config_sample',
+            largeIcon: 'ic_launcher',
             actionTypeId: '',
             extra: null,
           },
@@ -114,6 +116,7 @@ export const useNotifications = () => {
       };
 
       await LocalNotifications.schedule(options);
+      console.log('Daily reminder scheduled for:', scheduledTime);
     } catch (error) {
       console.log('Could not schedule notification:', error);
     }
