@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import InstallPrompt from "@/components/InstallPrompt";
+import { AdMobBanner } from "@/components/AdMobBanner";
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
 import Archive from "./pages/Archive";
@@ -22,6 +23,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <AdMobBanner />
           <BrowserRouter>
             <InstallPrompt />
             <Routes>
