@@ -1,13 +1,12 @@
-import { Bell, Clock, ShieldCheck } from 'lucide-react';
+import { Bell, Clock } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 export const NotificationSettings = () => {
-  const { settings, updateSettings, permissionGranted, requestPermissions } = useNotifications();
+  const { settings, updateSettings } = useNotifications();
   const { t } = useLanguage();
 
   const handleEnableNotifications = async (enabled: boolean) => {
@@ -58,22 +57,6 @@ export const NotificationSettings = () => {
             </div>
           )}
 
-          {!permissionGranted && (
-            <div className="pl-6 space-y-2">
-              <p className="text-sm text-amber-600 dark:text-amber-400">
-                {t('notifications.permissionRequired')}
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => requestPermissions()}
-                className="flex items-center gap-2"
-              >
-                <ShieldCheck className="w-4 h-4" />
-                {t('notifications.requestPermission')}
-              </Button>
-            </div>
-          )}
         </>
       )}
     </div>
