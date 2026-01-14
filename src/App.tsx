@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import InstallPrompt from "@/components/InstallPrompt";
 import { AdMobBanner } from "@/components/AdMobBanner";
+import { NotificationPermissionRequest } from "@/components/NotificationPermissionRequest";
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
 import Archive from "./pages/Archive";
@@ -24,6 +25,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <AdMobBanner />
+          <NotificationPermissionRequest />
           <BrowserRouter>
             <InstallPrompt />
             <Routes>
