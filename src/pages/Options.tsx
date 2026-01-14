@@ -1,4 +1,4 @@
-import { Languages, Check, Sun, Moon, Palette, Repeat, Target, Bell, Share2 } from 'lucide-react';
+import { Languages, Check, Sun, Moon, Palette, Repeat, Target, Bell, BellRing, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { Language } from '@/i18n/translations';
 import { RecurringTransactionsManager } from '@/components/RecurringTransactionsManager';
 import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
 import { NotificationSettings } from '@/components/NotificationSettings';
-
+import { PushNotificationSettings } from '@/components/PushNotificationSettings';
 const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -118,7 +118,7 @@ const Options = () => {
             <RecurringTransactionsManager />
           </div>
 
-          {/* Notifications Section */}
+          {/* Local Notifications Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
             <div className="flex items-center gap-2 mb-4">
               <Bell className="w-5 h-5 text-primary" />
@@ -128,6 +128,18 @@ const Options = () => {
               {t('notifications.description')}
             </p>
             <NotificationSettings />
+          </div>
+
+          {/* Push Notifications Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <BellRing className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('notifications.pushTitle') || 'Push obavijesti'}</h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              {t('notifications.pushDescription') || 'Primaj obavijesti čak i kada aplikacija nije otvorena.'}
+            </p>
+            <PushNotificationSettings />
           </div>
 
           {/* Share Section */}
