@@ -153,6 +153,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Vrijeme podsjetnika',
     'notifications.budgetWarnings': 'Upozorenja o budžetu',
     'notifications.permissionRequired': 'Potrebna je dozvola za obavijesti.',
+    'notifications.requestPermission': 'Zatraži dozvolu',
 
     // Install
     'install.title': 'Instaliraj aplikaciju',
@@ -323,6 +324,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Reminder time',
     'notifications.budgetWarnings': 'Budget warnings',
     'notifications.permissionRequired': 'Notification permission required.',
+    'notifications.requestPermission': 'Request permission',
 
     // Install
     'install.title': 'Install App',
@@ -493,6 +495,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Erinnerungszeit',
     'notifications.budgetWarnings': 'Budgetwarnungen',
     'notifications.permissionRequired': 'Benachrichtigungsberechtigung erforderlich.',
+    'notifications.requestPermission': 'Berechtigung anfordern',
 
     // Install
     'install.title': 'App installieren',
@@ -663,6 +666,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Czas przypomnienia',
     'notifications.budgetWarnings': 'Ostrzeżenia o budżecie',
     'notifications.permissionRequired': 'Wymagana zgoda na powiadomienia.',
+    'notifications.requestPermission': 'Poproś o zgodę',
 
     // Install
     'install.title': 'Zainstaluj aplikację',
@@ -833,6 +837,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Hora del recordatorio',
     'notifications.budgetWarnings': 'Alertas de presupuesto',
     'notifications.permissionRequired': 'Se requiere permiso de notificaciones.',
+    'notifications.requestPermission': 'Solicitar permiso',
 
     // Install
     'install.title': 'Instalar aplicación',
@@ -1003,6 +1008,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Heure du rappel',
     'notifications.budgetWarnings': 'Alertes de budget',
     'notifications.permissionRequired': 'Autorisation de notification requise.',
+    'notifications.requestPermission': 'Demander l\'autorisation',
 
     // Install
     'install.title': 'Installer l\'application',
