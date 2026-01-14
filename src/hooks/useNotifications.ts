@@ -1,6 +1,5 @@
 import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 export interface NotificationSettings {
   enabled: boolean;
@@ -53,19 +52,11 @@ export const useNotifications = () => {
       const result = await LocalNotifications.requestPermissions();
       const granted = result.display === 'granted';
       setPermissionGranted(granted);
-      if (granted) {
-        toast.success('Dozvola za obavijesti je odobrena!');
-      } else {
-        toast.error('Dozvola za obavijesti je odbijena.');
-      }
       return granted;
     } catch (error) {
       console.log('Notifications not available (web environment)');
-      // Show info toast for web environment
-      toast.info('Obavijesti će raditi kada pokrenete aplikaciju na mobitelu.');
       // Return true for web to allow settings to be saved
       // They will work when running on native device
-      setPermissionGranted(true); // Mark as granted for web so button hides
       return true;
     }
   };
@@ -104,11 +95,9 @@ export const useNotifications = () => {
               at: scheduledTime,
               repeats: true,
               every: 'day',
-              allowWhileIdle: true, // Ensures notification fires even in Doze mode
             },
-            sound: 'default',
-            smallIcon: 'ic_stat_icon_config_sample',
-            largeIcon: 'ic_launcher',
+            sound: undefined,
+            attachments: undefined,
             actionTypeId: '',
             extra: null,
           },
@@ -116,7 +105,6 @@ export const useNotifications = () => {
       };
 
       await LocalNotifications.schedule(options);
-      console.log('Daily reminder scheduled for:', scheduledTime);
     } catch (error) {
       console.log('Could not schedule notification:', error);
     }

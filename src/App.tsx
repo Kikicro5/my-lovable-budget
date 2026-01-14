@@ -7,8 +7,6 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import InstallPrompt from "@/components/InstallPrompt";
 import { AdMobBanner } from "@/components/AdMobBanner";
-import BrowserRedirect from "@/components/BrowserRedirect";
-
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
 import Archive from "./pages/Archive";
@@ -26,7 +24,6 @@ const App = () => (
           <Toaster />
           <Sonner />
           <AdMobBanner />
-          <BrowserRedirect />
           <BrowserRouter>
             <InstallPrompt />
             <Routes>

@@ -6,7 +6,7 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 export const NotificationSettings = () => {
-  const { settings, updateSettings } = useNotifications();
+  const { settings, updateSettings, permissionGranted } = useNotifications();
   const { t } = useLanguage();
 
   const handleEnableNotifications = async (enabled: boolean) => {
@@ -57,6 +57,11 @@ export const NotificationSettings = () => {
             </div>
           )}
 
+          {!permissionGranted && (
+            <p className="text-sm text-amber-600 dark:text-amber-400 pl-6">
+              {t('notifications.permissionRequired')}
+            </p>
+          )}
         </>
       )}
     </div>
