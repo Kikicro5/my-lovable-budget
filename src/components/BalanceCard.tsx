@@ -9,7 +9,6 @@ interface BalanceCardProps {
   investment?: number;
   savings?: number;
   investmentFromPrevious?: number;
-  savingsFromPrevious?: number;
 }
 
 export const BalanceCard = ({ 
@@ -19,11 +18,9 @@ export const BalanceCard = ({
   investment = 0, 
   savings = 0, 
   investmentFromPrevious = 0, 
-  savingsFromPrevious = 0,
 }: BalanceCardProps) => {
   const isPositive = balance >= 0;
   const totalInvestment = investment + investmentFromPrevious;
-  const totalSavings = savings + savingsFromPrevious;
   const { t } = useLanguage();
 
   return (
@@ -87,7 +84,7 @@ export const BalanceCard = ({
           <div>
             <p className="text-xs text-muted-foreground">{t('balance.savings')}</p>
             <p className="text-sm font-semibold text-accent">
-              {totalSavings.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+              {savings.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
             </p>
           </div>
         </div>

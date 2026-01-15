@@ -21,9 +21,8 @@ const Index = () => {
     getTotalIncome, 
     getTotalExpense, 
     getTotalInvestment, 
-    getTotalSavings, 
     getInvestmentFromPreviousPeriod, 
-    getSavingsFromPreviousPeriod, 
+    getAvailableSavings,
     getBudgetProgress, 
     applyRecurringTransactions, 
     autoCarryOverAmount, 
@@ -96,9 +95,8 @@ const Index = () => {
             income={getTotalIncome()} 
             expense={getTotalExpense()} 
             investment={getTotalInvestment()} 
-            savings={getTotalSavings()} 
+            savings={getAvailableSavings()} 
             investmentFromPrevious={getInvestmentFromPreviousPeriod()} 
-            savingsFromPrevious={getSavingsFromPreviousPeriod()}
           />
           
           {hasAnyLimit && (
