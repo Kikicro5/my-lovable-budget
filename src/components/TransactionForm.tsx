@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank, ArrowRightLeft } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank, ArrowRightLeft, CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Category } from '@/types/budget';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -10,7 +13,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 interface TransactionFormProps {
   type: 'income' | 'expense' | 'investment' | 'savings';
   categories: Category[];
-  onSubmit: (name: string, amount: number, category: string) => void;
+  onSubmit: (name: string, amount: number, category: string, date: Date) => void;
   onAddCategory: (category: Category) => void;
   availableForTransfer?: number;
   onTransferToBalance?: (amount: number) => void;
@@ -65,6 +68,7 @@ export const TransactionForm = ({
 }: TransactionFormProps) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
+  const [date, setDate] = useState<Date>(new Date());
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [showNewCategory, setShowNewCategory] = useState(false);
@@ -79,9 +83,10 @@ export const TransactionForm = ({
     e.preventDefault();
     if (!amount || !category) return;
 
-    onSubmit(category, parseFloat(amount), category);
+    onSubmit(category, parseFloat(amount), category, date);
     setAmount('');
     setCategory('');
+    setDate(new Date());
   };
 
   const handleAddCategory = () => {
@@ -120,16 +125,41 @@ export const TransactionForm = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3">
-
-        <Input
-          type="number"
-          step="0.01"
-          min="0"
-          placeholder={t('transaction.amount')}
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="bg-card border-border"
-        />
+        <div className="flex gap-2">
+          <Input
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder={t('transaction.amount')}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="bg-card border-border flex-1"
+          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  "w-[140px] justify-start text-left font-normal bg-card border-border",
+                  !date && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {date ? format(date, "dd.MM.yyyy") : <span>{t('transaction.selectDate')}</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={(newDate) => newDate && setDate(newDate)}
+                initialFocus
+                className="p-3 pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
 
         {showNewCategory ? (
           <div className="space-y-2">
