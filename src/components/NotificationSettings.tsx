@@ -105,9 +105,14 @@ export const NotificationSettings = () => {
           </div>
 
           {!permissionGranted && (
-            <p className="text-sm text-amber-600 dark:text-amber-400 pl-6">
-              {t('notifications.permissionRequired')}
-            </p>
+            <div className="pl-6 space-y-2">
+              <p className="text-sm text-destructive">
+                {t('notifications.permissionRequired')}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Ako si na Androidu i dozvola je bila odbijena, uključi je ručno u: Postavke  Aplikacije  BudgetCard  Obavijesti.
+              </p>
+            </div>
           )}
         </>
       )}

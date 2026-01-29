@@ -1,4 +1,5 @@
 import { LocalNotifications, ScheduleOptions, Channel } from '@capacitor/local-notifications';
+import { Capacitor } from '@capacitor/core';
 import { useEffect, useState } from 'react';
 import { PaymentReminder } from '@/types/budget';
 
@@ -38,10 +39,26 @@ export const useNotifications = () => {
   const initializeNotifications = async () => {
     await checkPermissions();
     await createNotificationChannel();
+
+    // Debug listeners (native only)
+    try {
+      if (Capacitor.isNativePlatform()) {
+        await LocalNotifications.removeAllListeners();
+        await LocalNotifications.addListener('localNotificationReceived', (n) => {
+          console.log('localNotificationReceived:', n);
+        });
+        await LocalNotifications.addListener('localNotificationActionPerformed', (n) => {
+          console.log('localNotificationActionPerformed:', n);
+        });
+      }
+    } catch (error) {
+      console.log('Could not register notification listeners:', error);
+    }
   };
 
   const createNotificationChannel = async () => {
     try {
+      if (!Capacitor.isNativePlatform()) return;
       const channel: Channel = {
         id: CHANNEL_ID,
         name: 'BudgetCard obavijesti',
@@ -139,9 +156,8 @@ export const useNotifications = () => {
               repeats: true,
               every: 'day',
             },
+            // NOTE: Do not set Android icon names unless they exist in the native project.
             sound: 'default',
-            smallIcon: 'ic_stat_icon_config_sample',
-            largeIcon: 'ic_stat_icon_config_sample',
           },
         ],
       };
@@ -201,8 +217,6 @@ export const useNotifications = () => {
               repeats: false,
             },
             sound: 'default',
-            smallIcon: 'ic_stat_icon_config_sample',
-            largeIcon: 'ic_stat_icon_config_sample',
             extra: { reminderId: reminder.id },
           },
         ],
@@ -255,21 +269,28 @@ export const useNotifications = () => {
           {
             id: 9999,
             title: 'Test obavijesti',
-            body: 'Ako vidiš ovu poruku, obavijesti rade! 🎉',
+            body: 'Ako vidiš ovu poruku, obavijesti rade!',
             channelId: CHANNEL_ID,
             schedule: {
               at: testTime,
               allowWhileIdle: true,
             },
             sound: 'default',
-            smallIcon: 'ic_stat_icon_config_sample',
-            largeIcon: 'ic_stat_icon_config_sample',
+            // Do not set icon names unless they exist in the native project.
           },
         ],
       };
 
       await LocalNotifications.schedule(options);
       console.log('Test notification scheduled for:', testTime);
+
+      // Helpful debug: see if it is actually pending
+      try {
+        const pending = await LocalNotifications.getPending();
+        console.log('Pending notifications count:', pending.notifications?.length ?? 0);
+      } catch (e) {
+        console.log('Could not read pending notifications:', e);
+      }
       return true;
     } catch (error) {
       console.log('Could not send test notification:', error);
