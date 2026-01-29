@@ -249,28 +249,76 @@ export const useBudget = () => {
       date: transaction.date || new Date().toISOString(),
     };
 
-    setState((prev) => ({
-      ...prev,
-      budgets: prev.budgets.map((b) =>
-        b.id === budget.id
-          ? { ...b, transactions: [...b.transactions, newTransaction] }
-          : b
-      ).concat(
-        prev.budgets.find((b) => b.id === budget.id)
-          ? []
-          : [{ ...budget, transactions: [newTransaction] }]
-      ),
-    }));
+    setState((prev) => {
+      // Update account balance if accountId is provided
+      let updatedAccounts = prev.accounts || [];
+      if (transaction.accountId) {
+        updatedAccounts = updatedAccounts.map((acc) => {
+          if (acc.id === transaction.accountId) {
+            let newBalance = acc.balance;
+            if (transaction.type === 'income') {
+              newBalance += transaction.amount;
+            } else if (transaction.type === 'expense' || transaction.type === 'investment' || transaction.type === 'savings') {
+              newBalance -= transaction.amount;
+            }
+            return { ...acc, balance: newBalance };
+          }
+          return acc;
+        });
+      }
+
+      return {
+        ...prev,
+        accounts: updatedAccounts,
+        budgets: prev.budgets.map((b) =>
+          b.id === budget.id
+            ? { ...b, transactions: [...b.transactions, newTransaction] }
+            : b
+        ).concat(
+          prev.budgets.find((b) => b.id === budget.id)
+            ? []
+            : [{ ...budget, transactions: [newTransaction] }]
+        ),
+      };
+    });
   };
 
   const removeTransaction = (transactionId: string) => {
-    setState((prev) => ({
-      ...prev,
-      budgets: prev.budgets.map((b) => ({
-        ...b,
-        transactions: b.transactions.filter((t) => t.id !== transactionId),
-      })),
-    }));
+    setState((prev) => {
+      // Find the transaction to get its details before removing
+      let transactionToRemove: Transaction | undefined;
+      for (const budget of prev.budgets) {
+        transactionToRemove = budget.transactions.find((t) => t.id === transactionId);
+        if (transactionToRemove) break;
+      }
+
+      // Revert account balance if the transaction had an accountId
+      let updatedAccounts = prev.accounts || [];
+      if (transactionToRemove?.accountId) {
+        updatedAccounts = updatedAccounts.map((acc) => {
+          if (acc.id === transactionToRemove!.accountId) {
+            let newBalance = acc.balance;
+            // Reverse the original transaction effect
+            if (transactionToRemove!.type === 'income') {
+              newBalance -= transactionToRemove!.amount;
+            } else if (transactionToRemove!.type === 'expense' || transactionToRemove!.type === 'investment' || transactionToRemove!.type === 'savings') {
+              newBalance += transactionToRemove!.amount;
+            }
+            return { ...acc, balance: newBalance };
+          }
+          return acc;
+        });
+      }
+
+      return {
+        ...prev,
+        accounts: updatedAccounts,
+        budgets: prev.budgets.map((b) => ({
+          ...b,
+          transactions: b.transactions.filter((t) => t.id !== transactionId),
+        })),
+      };
+    });
   };
 
   const addCategory = (type: 'income' | 'expense' | 'investment' | 'savings', category: Category) => {
