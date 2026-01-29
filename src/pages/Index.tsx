@@ -99,7 +99,8 @@ const Index = () => {
             expense={getTotalExpense()} 
             investment={getTotalInvestment()} 
             savings={getAvailableSavings()} 
-            investmentFromPrevious={getInvestmentFromPreviousPeriod()} 
+            investmentFromPrevious={getInvestmentFromPreviousPeriod()}
+            accounts={state.accounts || []}
           />
           
           {hasAnyLimit && (

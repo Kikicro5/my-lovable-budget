@@ -1,7 +1,8 @@
 import { cn } from '@/lib/utils';
-import { TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
+import { TrendingUp, TrendingDown, LineChart, PiggyBank, Wallet } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import { Account } from '@/types/budget';
 
 interface BalanceCardProps {
   balance: number;
@@ -10,6 +11,7 @@ interface BalanceCardProps {
   investment?: number;
   savings?: number;
   investmentFromPrevious?: number;
+  accounts?: Account[];
 }
 
 export const BalanceCard = ({ 
@@ -18,7 +20,8 @@ export const BalanceCard = ({
   expense, 
   investment = 0, 
   savings = 0, 
-  investmentFromPrevious = 0, 
+  investmentFromPrevious = 0,
+  accounts = [],
 }: BalanceCardProps) => {
   const isPositive = balance >= 0;
   const totalInvestment = investment + investmentFromPrevious;
@@ -27,17 +30,39 @@ export const BalanceCard = ({
 
   return (
     <div className="bg-card rounded-2xl p-6 shadow-card animate-slide-up">
-      <p className="text-sm text-muted-foreground font-medium mb-2 text-center">
-        {t('balance.current')}
-      </p>
-      <h2
-        className={cn(
-          'text-4xl font-display font-bold mb-6 text-center',
-          isPositive ? 'text-income' : 'text-expense'
+      <div className="flex justify-between items-start mb-6">
+        <div className="flex-1">
+          <p className="text-sm text-muted-foreground font-medium mb-2">
+            {t('balance.current')}
+          </p>
+          <h2
+            className={cn(
+              'text-4xl font-display font-bold',
+              isPositive ? 'text-income' : 'text-expense'
+            )}
+          >
+            {formatAmount(balance)}
+          </h2>
+        </div>
+        
+        {accounts.length > 0 && (
+          <div className="flex-1 text-right">
+            <p className="text-sm text-muted-foreground font-medium mb-2">
+              {t('accounts.title')}
+            </p>
+            <div className="space-y-1">
+              {accounts.map((account) => (
+                <div key={account.id} className="flex items-center justify-end gap-2">
+                  <span className="text-xs text-muted-foreground">{account.name}</span>
+                  <span className="text-sm font-semibold text-foreground">
+                    {account.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
-      >
-        {formatAmount(balance)}
-      </h2>
+      </div>
       
       <div className="grid grid-cols-2 gap-4">
         <div className="flex items-center gap-3 p-3 rounded-xl bg-income-light">
