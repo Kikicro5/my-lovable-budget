@@ -88,9 +88,16 @@ export const TransactionForm = ({
   const requiresBalanceCheck = type !== 'income' && accountId && accountId !== 'none' && selectedAccount;
   const hasInsufficientBalance = requiresBalanceCheck && selectedAccount && parseFloat(amount || '0') > selectedAccount.balance;
 
+  // Account is required for all transactions
+  const isAccountRequired = accounts.length > 0;
+  const hasValidAccount = accountId && accountId !== 'none';
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || !category) return;
+    
+    // Account is required
+    if (isAccountRequired && !hasValidAccount) return;
 
     // Check balance for expense, investment, savings
     if (requiresBalanceCheck && hasInsufficientBalance) {
@@ -99,7 +106,7 @@ export const TransactionForm = ({
     }
 
     setInsufficientBalance(false);
-    onSubmit(category, parseFloat(amount), category, date, accountId || undefined);
+    onSubmit(category, parseFloat(amount), category, date, accountId);
     setAmount('');
     setCategory('');
     setAccountId('');
@@ -247,11 +254,13 @@ export const TransactionForm = ({
           <div className="flex items-center gap-2">
             <Wallet className="w-4 h-4 text-muted-foreground" />
             <Select value={accountId} onValueChange={setAccountId}>
-              <SelectTrigger className="bg-card border-border flex-1">
+              <SelectTrigger className={cn(
+                "bg-card border-border flex-1",
+                !hasValidAccount && "border-destructive/50"
+              )}>
                 <SelectValue placeholder={t('transaction.selectAccount')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">{t('accounts.noAccount')}</SelectItem>
                 {accounts.map((acc) => (
                   <SelectItem key={acc.id} value={acc.id}>
                     <div className="flex justify-between items-center gap-2">
@@ -277,7 +286,7 @@ export const TransactionForm = ({
         <div className={cn("flex gap-2", canTransfer ? "flex-col sm:flex-row" : "")}>
           <Button
             type="submit"
-            disabled={hasInsufficientBalance}
+            disabled={hasInsufficientBalance || (isAccountRequired && !hasValidAccount)}
             className={cn(
               'flex-1 font-semibold',
               config.buttonClass
