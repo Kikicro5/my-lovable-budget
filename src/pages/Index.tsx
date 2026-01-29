@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
@@ -26,9 +25,7 @@ const Index = () => {
     getInvestmentFromPreviousPeriod, 
     getAvailableSavings,
     getBudgetProgress, 
-    applyRecurringTransactions, 
-    autoCarryOverAmount, 
-    clearAutoCarryOverAmount,
+    applyRecurringTransactions,
   } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
@@ -44,17 +41,6 @@ const Index = () => {
   const hasRecurring = state.recurringTransactions.filter(r => r.isActive).length > 0;
   const recurringApplied = currentBudget?.recurringApplied || false;
   const hasAccounts = state.accounts && state.accounts.length > 0;
-
-  // Show notification when auto carry-over happens
-  useEffect(() => {
-    if (autoCarryOverAmount !== null) {
-      toast({ 
-        title: t('toast.balance.autoTransferred'), 
-        description: `${Math.abs(autoCarryOverAmount).toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €` 
-      });
-      clearAutoCarryOverAmount();
-    }
-  }, [autoCarryOverAmount, clearAutoCarryOverAmount, t]);
 
   const handleAddExpense = (name: string, amount: number, category: string) => {
     addTransaction({ name, amount, type: 'expense', category });

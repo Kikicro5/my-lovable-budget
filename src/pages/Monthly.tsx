@@ -11,15 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, ArrowRightLeft, Wallet, AlertCircle } from 'lucide-react';
+import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, Wallet, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const Monthly = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getPreviousMonthBalance, carryOverBalance, getAvailableInvestment, getAvailableSavings, transferFromCategory, getLastDayOfPreviousMonthBalance } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getAvailableInvestment, getAvailableSavings, transferFromCategory } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
-  const previousBalance = getPreviousMonthBalance();
-  const lastDayBalance = getLastDayOfPreviousMonthBalance();
   
   const now = new Date();
   const currentMonth = now.getMonth();
@@ -27,11 +25,6 @@ const Monthly = () => {
   
   // Check if user has any accounts
   const hasAccounts = state.accounts && state.accounts.length > 0;
-  
-  // Check if carry over already happened (either manually or automatically)
-  const hasCarryOver = currentBudget?.transactions.some(
-    (t) => t.category === 'Prijenos iz prethodnog mjeseca'
-  ) || false;
 
   // Component to show when no accounts exist
   const NoAccountsPrompt = () => (
@@ -82,15 +75,6 @@ const Monthly = () => {
     toast({ title: t('toast.category.removed'), variant: 'destructive' });
   };
 
-  const handleCarryOver = () => {
-    const success = carryOverBalance();
-    if (success) {
-      toast({ title: t('toast.balance.transferred'), description: `${previousBalance.toLocaleString('hr-HR')} €` });
-    } else {
-      toast({ title: t('toast.balance.transferFailed'), description: t('toast.balance.alreadyTransferred'), variant: 'destructive' });
-    }
-  };
-
   const handleTransferFromInvestment = (amount: number) => {
     const success = transferFromCategory('investment', amount);
     if (success) {
@@ -121,13 +105,7 @@ const Monthly = () => {
             {!hasAccounts ? (
               <NoAccountsPrompt />
             ) : (
-              <>
-                <TransactionForm type="income" categories={state.savedCategories.income} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('income', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('income', cat)} />
-                <Button onClick={handleCarryOver} variant="outline" className="w-full flex items-center gap-2" disabled={hasCarryOver}>
-                  <ArrowRightLeft className="w-4 h-4" />
-                  {t('monthly.carryOver')} ({lastDayBalance.toLocaleString('hr-HR')} €)
-                </Button>
-              </>
+              <TransactionForm type="income" categories={state.savedCategories.income} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('income', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('income', cat)} />
             )}
             <TransactionList title={t('monthly.incomeThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="income" accounts={state.accounts || []} />
           </TabsContent>
