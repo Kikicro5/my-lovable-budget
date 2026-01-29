@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Languages, Check, Sun, Moon, Palette, Share2, RotateCcw, Coins, Bell, Smartphone, Globe } from 'lucide-react';
+import { Languages, Check, Sun, Moon, Palette, Share2, RotateCcw, Coins, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
@@ -7,9 +7,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
-import { NotificationSettings } from '@/components/NotificationSettings';
 import { WebPushNotificationSettings } from '@/components/WebPushNotificationSettings';
-import { Capacitor } from '@capacitor/core';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 
 const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
@@ -138,35 +136,7 @@ const Options = () => {
               <h2 className="text-lg font-semibold text-foreground">{t('notifications.title')}</h2>
             </div>
             
-            {Capacitor.isNativePlatform() ? (
-              // Native app: show Capacitor notifications
-              <NotificationSettings />
-            ) : (
-              // Web/PWA: show Web Push notifications
-              <Tabs defaultValue="web" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-4">
-                  <TabsTrigger value="web" className="gap-1">
-                    <Globe className="w-3 h-3" />
-                    Web
-                  </TabsTrigger>
-                  <TabsTrigger value="native" className="gap-1">
-                    <Smartphone className="w-3 h-3" />
-                    Native
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="web">
-                  <WebPushNotificationSettings />
-                </TabsContent>
-                <TabsContent value="native">
-                  <div className="space-y-3">
-                    <p className="text-sm text-muted-foreground">
-                      Native obavijesti rade samo u Android/iOS aplikaciji.
-                    </p>
-                    <NotificationSettings />
-                  </div>
-                </TabsContent>
-              </Tabs>
-            )}
+            <WebPushNotificationSettings />
           </div>
           <div className="bg-card rounded-xl p-4 border border-border">
             <div className="flex items-center gap-2 mb-3">
