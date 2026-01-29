@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Bell, TrendingDown } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { PaymentReminder, Account } from '@/types/budget';
@@ -23,14 +22,8 @@ export const ReminderIndicator = ({
   onRemove 
 }: ReminderIndicatorProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
-
-  const handleGoToExpense = () => {
-    setIsOpen(false);
-    navigate('/monthly?tab=expense');
-  };
 
   if (reminders.length === 0) return null;
 
@@ -111,17 +104,6 @@ export const ReminderIndicator = ({
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="pt-4 border-t border-border">
-            <Button 
-              onClick={handleGoToExpense}
-              variant="secondary"
-              className="w-full gap-2"
-            >
-              <TrendingDown className="w-4 h-4" />
-              {t('reminder.goToExpense')}
-            </Button>
           </div>
         </DialogContent>
       </Dialog>

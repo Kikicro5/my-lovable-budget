@@ -229,7 +229,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'reminder.dueTitle': 'Dospjela plaćanja',
     'reminder.dueDescription': 'Sljedeća plaćanja su dospjela i zahtijevaju pozornost.',
     'reminder.markPaid': 'Označi plaćeno',
-    'reminder.goToExpense': 'Dodaj rashod',
     'reminder.empty': 'Nema aktivnih podsjetnika',
   },
 
@@ -461,7 +460,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'reminder.dueTitle': 'Payments Due',
     'reminder.dueDescription': 'The following payments are due and require attention.',
     'reminder.markPaid': 'Mark as paid',
-    'reminder.goToExpense': 'Add expense',
     'reminder.empty': 'No active reminders',
   },
 

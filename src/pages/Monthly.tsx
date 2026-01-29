@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MonthCard } from '@/components/MonthCard';
@@ -93,7 +93,7 @@ const Monthly = () => {
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
         <div className="mb-4"><MonthCard month={currentMonth} year={currentYear} /></div>
-        <Tabs defaultValue={new URLSearchParams(window.location.search).get('tab') || 'income'} className="w-full">
+        <Tabs defaultValue="income" className="w-full">
           <TabsList className="w-full grid grid-cols-5 mb-6">
             <TabsTrigger value="income" className="flex items-center gap-1 text-xs px-2 text-income data-[state=active]:bg-income data-[state=active]:text-income-foreground"><TrendingUp className="w-5 h-5" /><span className="hidden sm:inline">{t('monthly.income')}</span></TabsTrigger>
             <TabsTrigger value="expense" className="flex items-center gap-1 text-xs px-2 text-expense data-[state=active]:bg-expense data-[state=active]:text-expense-foreground"><TrendingDown className="w-5 h-5" /><span className="hidden sm:inline">{t('monthly.expense')}</span></TabsTrigger>
