@@ -187,6 +187,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'transfer.invalidAmount': 'Unesite ispravan iznos',
     'transfer.confirm': 'Prenesi',
     'transfer.success': 'Sredstva prenesena na stanje',
+
+    // Reset
+    'reset.title': 'Resetiraj aplikaciju',
+    'reset.description': 'Obriši sve podatke i vrati aplikaciju na početne postavke.',
+    'reset.button': 'Resetiraj sve',
+    'reset.confirm': 'Jeste li sigurni?',
+    'reset.warning': 'Ova radnja će trajno obrisati sve vaše transakcije, račune, kategorije i postavke. Ova radnja se ne može poništiti.',
+    'reset.success': 'Aplikacija je resetirana',
   },
 
   en: {
@@ -375,6 +383,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'transfer.invalidAmount': 'Enter a valid amount',
     'transfer.confirm': 'Transfer',
     'transfer.success': 'Funds transferred to balance',
+
+    // Reset
+    'reset.title': 'Reset App',
+    'reset.description': 'Delete all data and restore app to default settings.',
+    'reset.button': 'Reset All',
+    'reset.confirm': 'Are you sure?',
+    'reset.warning': 'This action will permanently delete all your transactions, accounts, categories and settings. This cannot be undone.',
+    'reset.success': 'App has been reset',
   },
 
   de: {
@@ -563,6 +579,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'transfer.invalidAmount': 'Gültigen Betrag eingeben',
     'transfer.confirm': 'Überweisen',
     'transfer.success': 'Geld auf Kontostand übertragen',
+
+    // Reset
+    'reset.title': 'App zurücksetzen',
+    'reset.description': 'Alle Daten löschen und App auf Standardeinstellungen zurücksetzen.',
+    'reset.button': 'Alles zurücksetzen',
+    'reset.confirm': 'Sind Sie sicher?',
+    'reset.warning': 'Diese Aktion löscht dauerhaft alle Ihre Transaktionen, Konten, Kategorien und Einstellungen. Dies kann nicht rückgängig gemacht werden.',
+    'reset.success': 'App wurde zurückgesetzt',
   },
 
   pl: {
@@ -751,6 +775,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'transfer.invalidAmount': 'Wprowadź prawidłową kwotę',
     'transfer.confirm': 'Prześlij',
     'transfer.success': 'Środki przelane na saldo',
+
+    // Reset
+    'reset.title': 'Resetuj aplikację',
+    'reset.description': 'Usuń wszystkie dane i przywróć domyślne ustawienia.',
+    'reset.button': 'Resetuj wszystko',
+    'reset.confirm': 'Czy jesteś pewien?',
+    'reset.warning': 'Ta akcja trwale usunie wszystkie Twoje transakcje, konta, kategorie i ustawienia. Tej operacji nie można cofnąć.',
+    'reset.success': 'Aplikacja została zresetowana',
   },
 
   es: {
@@ -939,6 +971,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'transfer.invalidAmount': 'Ingrese un monto válido',
     'transfer.confirm': 'Transferir',
     'transfer.success': 'Fondos transferidos al saldo',
+
+    // Reset
+    'reset.title': 'Restablecer App',
+    'reset.description': 'Eliminar todos los datos y restaurar configuración predeterminada.',
+    'reset.button': 'Restablecer todo',
+    'reset.confirm': '¿Estás seguro?',
+    'reset.warning': 'Esta acción eliminará permanentemente todas tus transacciones, cuentas, categorías y configuraciones. Esta acción no se puede deshacer.',
+    'reset.success': 'La aplicación ha sido restablecida',
   },
 
   fr: {
@@ -1127,6 +1167,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'transfer.invalidAmount': 'Entrez un montant valide',
     'transfer.confirm': 'Transférer',
     'transfer.success': 'Fonds transférés au solde',
+
+    // Reset
+    'reset.title': 'Réinitialiser l\'application',
+    'reset.description': 'Supprimer toutes les données et restaurer les paramètres par défaut.',
+    'reset.button': 'Tout réinitialiser',
+    'reset.confirm': 'Êtes-vous sûr?',
+    'reset.warning': 'Cette action supprimera définitivement toutes vos transactions, comptes, catégories et paramètres. Cette action est irréversible.',
+    'reset.success': 'L\'application a été réinitialisée',
   },
 };
 
