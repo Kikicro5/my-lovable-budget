@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MonthCard } from '@/components/MonthCard';
@@ -6,10 +7,11 @@ import { BalanceCard } from '@/components/BalanceCard';
 import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
 import { BudgetProgress } from '@/components/BudgetProgress';
+import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Repeat } from 'lucide-react';
+import { Repeat, Wallet, AlertCircle } from 'lucide-react';
 
 const Index = () => {
   const { 
@@ -41,6 +43,7 @@ const Index = () => {
 
   const hasRecurring = state.recurringTransactions.filter(r => r.isActive).length > 0;
   const recurringApplied = currentBudget?.recurringApplied || false;
+  const hasAccounts = state.accounts && state.accounts.length > 0;
 
   // Show notification when auto carry-over happens
   useEffect(() => {
@@ -113,7 +116,29 @@ const Index = () => {
             </div>
           )}
           
-          <QuickExpenseForm categories={state.savedCategories.expense} onSubmit={handleAddExpense} />
+          {!hasAccounts ? (
+            <Card className="border-primary/30 bg-primary/5">
+              <CardContent className="py-6">
+                <div className="flex flex-col items-center text-center gap-4">
+                  <div className="p-3 rounded-full bg-primary/10">
+                    <AlertCircle className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-1">{t('accounts.required')}</h3>
+                    <p className="text-muted-foreground text-sm mb-4">{t('accounts.requiredDescription')}</p>
+                  </div>
+                  <Button asChild className="gap-2">
+                    <Link to="/accounts">
+                      <Wallet className="w-4 h-4" />
+                      {t('accounts.addFirst')}
+                    </Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <QuickExpenseForm categories={state.savedCategories.expense} onSubmit={handleAddExpense} />
+          )}
           <TransactionList title={t('transaction.lastTransactions')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} accounts={state.accounts || []} />
         </div>
       </div>
