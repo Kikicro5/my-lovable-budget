@@ -233,6 +233,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Chart
     'chart.yearlyExpenses': 'Rashodi po mjesecima',
+    'chart.month.0': 'Sij',
+    'chart.month.1': 'Velj',
+    'chart.month.2': 'Ožu',
+    'chart.month.3': 'Tra',
+    'chart.month.4': 'Svi',
+    'chart.month.5': 'Lip',
+    'chart.month.6': 'Srp',
+    'chart.month.7': 'Kol',
+    'chart.month.8': 'Ruj',
+    'chart.month.9': 'Lis',
+    'chart.month.10': 'Stu',
+    'chart.month.11': 'Pro',
   },
 
   en: {
@@ -467,6 +479,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Chart
     'chart.yearlyExpenses': 'Expenses by month',
+    'chart.month.0': 'Jan',
+    'chart.month.1': 'Feb',
+    'chart.month.2': 'Mar',
+    'chart.month.3': 'Apr',
+    'chart.month.4': 'May',
+    'chart.month.5': 'Jun',
+    'chart.month.6': 'Jul',
+    'chart.month.7': 'Aug',
+    'chart.month.8': 'Sep',
+    'chart.month.9': 'Oct',
+    'chart.month.10': 'Nov',
+    'chart.month.11': 'Dec',
   },
 
   de: {
@@ -687,6 +711,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Chart
     'chart.yearlyExpenses': 'Ausgaben nach Monat',
+    'chart.month.0': 'Jan',
+    'chart.month.1': 'Feb',
+    'chart.month.2': 'Mär',
+    'chart.month.3': 'Apr',
+    'chart.month.4': 'Mai',
+    'chart.month.5': 'Jun',
+    'chart.month.6': 'Jul',
+    'chart.month.7': 'Aug',
+    'chart.month.8': 'Sep',
+    'chart.month.9': 'Okt',
+    'chart.month.10': 'Nov',
+    'chart.month.11': 'Dez',
   },
 
   pl: {
@@ -910,6 +946,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Chart
     'chart.yearlyExpenses': 'Wydatki miesięczne',
+    'chart.month.0': 'Sty',
+    'chart.month.1': 'Lut',
+    'chart.month.2': 'Mar',
+    'chart.month.3': 'Kwi',
+    'chart.month.4': 'Maj',
+    'chart.month.5': 'Cze',
+    'chart.month.6': 'Lip',
+    'chart.month.7': 'Sie',
+    'chart.month.8': 'Wrz',
+    'chart.month.9': 'Paź',
+    'chart.month.10': 'Lis',
+    'chart.month.11': 'Gru',
   },
 
   es: {
@@ -1133,6 +1181,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Chart
     'chart.yearlyExpenses': 'Gastos por mes',
+    'chart.month.0': 'Ene',
+    'chart.month.1': 'Feb',
+    'chart.month.2': 'Mar',
+    'chart.month.3': 'Abr',
+    'chart.month.4': 'May',
+    'chart.month.5': 'Jun',
+    'chart.month.6': 'Jul',
+    'chart.month.7': 'Ago',
+    'chart.month.8': 'Sep',
+    'chart.month.9': 'Oct',
+    'chart.month.10': 'Nov',
+    'chart.month.11': 'Dic',
   },
 
   fr: {
@@ -1356,6 +1416,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Chart
     'chart.yearlyExpenses': 'Dépenses par mois',
+    'chart.month.0': 'Jan',
+    'chart.month.1': 'Fév',
+    'chart.month.2': 'Mar',
+    'chart.month.3': 'Avr',
+    'chart.month.4': 'Mai',
+    'chart.month.5': 'Jui',
+    'chart.month.6': 'Jul',
+    'chart.month.7': 'Aoû',
+    'chart.month.8': 'Sep',
+    'chart.month.9': 'Oct',
+    'chart.month.10': 'Nov',
+    'chart.month.11': 'Déc',
   },
 
   zh: {
@@ -1579,6 +1651,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Chart
     'chart.yearlyExpenses': '按月支出',
+    'chart.month.0': '1月',
+    'chart.month.1': '2月',
+    'chart.month.2': '3月',
+    'chart.month.3': '4月',
+    'chart.month.4': '5月',
+    'chart.month.5': '6月',
+    'chart.month.6': '7月',
+    'chart.month.7': '8月',
+    'chart.month.8': '9月',
+    'chart.month.9': '10月',
+    'chart.month.10': '11月',
+    'chart.month.11': '12月',
   },
 
   hi: {
@@ -1802,6 +1886,18 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Chart
     'chart.yearlyExpenses': 'मासिक व्यय',
+    'chart.month.0': 'जन',
+    'chart.month.1': 'फर',
+    'chart.month.2': 'मार्च',
+    'chart.month.3': 'अप्रैल',
+    'chart.month.4': 'मई',
+    'chart.month.5': 'जून',
+    'chart.month.6': 'जुला',
+    'chart.month.7': 'अग',
+    'chart.month.8': 'सित',
+    'chart.month.9': 'अक्टू',
+    'chart.month.10': 'नव',
+    'chart.month.11': 'दिस',
   },
 };
 
