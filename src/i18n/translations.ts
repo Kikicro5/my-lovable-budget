@@ -136,7 +136,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Recurring Transactions
     'recurring.title': 'Ponavljajuće transakcije',
-    'recurring.description': 'Transakcije koje se automatski dodaju svakog mjeseca (npr. plaća, režije, pretplate).',
+    'recurring.description': 'Transakcije koje se automatski dodaju svakog 1. u mjesecu (npr. plaća, režije, pretplate).',
     'recurring.add': 'Dodaj ponavljajuću',
     'recurring.name': 'Naziv transakcije',
     'recurring.list': 'Aktivne ponavljajuće transakcije',
@@ -306,7 +306,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Recurring Transactions
     'recurring.title': 'Recurring Transactions',
-    'recurring.description': 'Transactions that are automatically added every month (e.g., salary, bills, subscriptions).',
+    'recurring.description': 'Transactions automatically added on the 1st of each month (e.g., salary, bills, subscriptions).',
     'recurring.add': 'Add recurring',
     'recurring.name': 'Transaction name',
     'recurring.list': 'Active recurring transactions',
@@ -476,7 +476,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Recurring Transactions
     'recurring.title': 'Wiederkehrende Transaktionen',
-    'recurring.description': 'Transaktionen, die automatisch jeden Monat hinzugefügt werden (z.B. Gehalt, Rechnungen, Abonnements).',
+    'recurring.description': 'Transaktionen, die automatisch am 1. jedes Monats hinzugefügt werden (z.B. Gehalt, Rechnungen, Abonnements).',
     'recurring.add': 'Wiederkehrende hinzufügen',
     'recurring.name': 'Transaktionsname',
     'recurring.list': 'Aktive wiederkehrende Transaktionen',
@@ -646,7 +646,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Recurring Transactions
     'recurring.title': 'Transakcje cykliczne',
-    'recurring.description': 'Transakcje automatycznie dodawane co miesiąc (np. wynagrodzenie, rachunki, subskrypcje).',
+    'recurring.description': 'Transakcje automatycznie dodawane 1. dnia każdego miesiąca (np. wynagrodzenie, rachunki, subskrypcje).',
     'recurring.add': 'Dodaj cykliczną',
     'recurring.name': 'Nazwa transakcji',
     'recurring.list': 'Aktywne transakcje cykliczne',
@@ -816,7 +816,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Recurring Transactions
     'recurring.title': 'Transacciones recurrentes',
-    'recurring.description': 'Transacciones que se añaden automáticamente cada mes (ej. salario, facturas, suscripciones).',
+    'recurring.description': 'Transacciones que se añaden automáticamente el 1 de cada mes (ej. salario, facturas, suscripciones).',
     'recurring.add': 'Añadir recurrente',
     'recurring.name': 'Nombre de transacción',
     'recurring.list': 'Transacciones recurrentes activas',
@@ -986,7 +986,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Recurring Transactions
     'recurring.title': 'Transactions récurrentes',
-    'recurring.description': 'Transactions automatiquement ajoutées chaque mois (ex. salaire, factures, abonnements).',
+    'recurring.description': 'Transactions automatiquement ajoutées le 1er de chaque mois (ex. salaire, factures, abonnements).',
     'recurring.add': 'Ajouter récurrente',
     'recurring.name': 'Nom de la transaction',
     'recurring.list': 'Transactions récurrentes actives',
