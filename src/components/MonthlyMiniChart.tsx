@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
-import { BarChart, Bar, XAxis, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, ResponsiveContainer, Legend } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/i18n/LanguageContext';
-import { useCurrency } from '@/contexts/CurrencyContext';
 import { MonthlyBudget } from '@/types/budget';
 
 interface MonthlyMiniChartProps {
@@ -12,36 +11,34 @@ interface MonthlyMiniChartProps {
 
 export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps) => {
   const { t } = useLanguage();
-  const { formatAmount } = useCurrency();
 
   const chartData = useMemo(() => {
-    const currentMonth = new Date().getMonth();
-    
     return Array.from({ length: 12 }, (_, i) => {
       const budget = budgets.find(b => b.month === i && b.year === currentYear);
       const expenses = budget?.transactions
         .filter(tx => tx.type === 'expense')
         .reduce((sum, tx) => sum + tx.amount, 0) || 0;
+      const income = budget?.transactions
+        .filter(tx => tx.type === 'income')
+        .reduce((sum, tx) => sum + tx.amount, 0) || 0;
       
       return {
         month: t(`chart.month.${i}`),
+        income,
         expenses,
-        isCurrent: i === currentMonth,
       };
     });
   }, [budgets, currentYear, t]);
-
-  const maxExpense = Math.max(...chartData.map(d => d.expenses), 1);
 
   return (
     <Card className="bg-card/50 backdrop-blur-sm">
       <CardHeader className="pb-2 pt-3 px-4">
         <CardTitle className="text-sm font-medium text-muted-foreground">
-          {t('chart.yearlyExpenses')} {currentYear}
+          {t('chart.yearlyOverview')} {currentYear}
         </CardTitle>
       </CardHeader>
       <CardContent className="px-2 pb-3">
-        <div className="h-16">
+        <div className="h-20">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
               <XAxis 
@@ -52,19 +49,31 @@ export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps
                 interval={0}
               />
               <Bar 
-                dataKey="expenses" 
+                dataKey="income" 
+                fill="hsl(var(--chart-2))"
                 radius={[2, 2, 0, 0]}
-                maxBarSize={20}
-              >
-                {chartData.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`}
-                    fill={entry.isCurrent ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground) / 0.3)'}
-                  />
-                ))}
-              </Bar>
+                maxBarSize={10}
+                name={t('chart.income')}
+              />
+              <Bar 
+                dataKey="expenses" 
+                fill="hsl(var(--chart-1))"
+                radius={[2, 2, 0, 0]}
+                maxBarSize={10}
+                name={t('chart.expenses')}
+              />
             </BarChart>
           </ResponsiveContainer>
+        </div>
+        <div className="flex justify-center gap-4 mt-2 text-xs">
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 rounded-sm bg-[hsl(var(--chart-2))]" />
+            <span className="text-muted-foreground">{t('chart.income')}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 rounded-sm bg-[hsl(var(--chart-1))]" />
+            <span className="text-muted-foreground">{t('chart.expenses')}</span>
+          </div>
         </div>
       </CardContent>
     </Card>
