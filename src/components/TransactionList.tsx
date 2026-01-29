@@ -117,13 +117,13 @@ export const TransactionList = ({
                   <Icon className={cn('w-4 h-4', config.iconTextClass)} />
                 </div>
                 <div className="min-w-0 flex-1">
+                  <p className="font-medium text-foreground truncate">{transaction.name}</p>
                   <div className="flex items-center gap-2">
-                    <p className="font-medium text-foreground truncate">{transaction.name}</p>
+                    <p className="text-xs text-muted-foreground">{transaction.category}</p>
                     <span className="text-xs text-muted-foreground shrink-0">
                       {new Date(transaction.date).toLocaleDateString('hr-HR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground">{transaction.category}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
