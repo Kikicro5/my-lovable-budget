@@ -1,24 +1,32 @@
 import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
 import { useEffect, useState } from 'react';
+import { PaymentReminder } from '@/types/budget';
 
 export interface NotificationSettings {
   enabled: boolean;
   dailyReminder: boolean;
   reminderTime: string; // HH:mm format
+  paymentReminders: boolean; // New setting for payment reminders
 }
 
 const DEFAULT_SETTINGS: NotificationSettings = {
   enabled: false,
   dailyReminder: false,
   reminderTime: '20:00',
+  paymentReminders: true, // Enabled by default
 };
 
 const STORAGE_KEY = 'notification-settings';
+const PAYMENT_NOTIFICATION_BASE_ID = 1000; // Base ID for payment notifications
 
 export const useNotifications = () => {
   const [settings, setSettings] = useState<NotificationSettings>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : DEFAULT_SETTINGS;
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return { ...DEFAULT_SETTINGS, ...parsed };
+    }
+    return DEFAULT_SETTINGS;
   });
   const [permissionGranted, setPermissionGranted] = useState(false);
 
@@ -31,7 +39,7 @@ export const useNotifications = () => {
     if (settings.enabled && settings.dailyReminder) {
       scheduleDailyReminder();
     } else {
-      cancelAllNotifications();
+      cancelDailyReminder();
     }
   }, [settings]);
 
@@ -41,8 +49,6 @@ export const useNotifications = () => {
       setPermissionGranted(result.display === 'granted');
     } catch (error) {
       console.log('Notifications not available (web environment)');
-      // In web environment, we'll still allow enabling settings
-      // They just won't work until running on native
       setPermissionGranted(false);
     }
   };
@@ -55,24 +61,20 @@ export const useNotifications = () => {
       return granted;
     } catch (error) {
       console.log('Notifications not available (web environment)');
-      // Return true for web to allow settings to be saved
-      // They will work when running on native device
       return true;
     }
   };
 
   const updateSettings = async (newSettings: Partial<NotificationSettings>) => {
-    // If enabling notifications, try to request permissions
     if (newSettings.enabled === true) {
       await requestPermissions();
     }
-    // Always update settings - they'll be saved for when app runs on native
     setSettings(prev => ({ ...prev, ...newSettings }));
   };
 
   const scheduleDailyReminder = async () => {
     try {
-      await cancelAllNotifications();
+      await cancelDailyReminder();
       
       const [hours, minutes] = settings.reminderTime.split(':').map(Number);
       
@@ -80,7 +82,6 @@ export const useNotifications = () => {
       const scheduledTime = new Date();
       scheduledTime.setHours(hours, minutes, 0, 0);
       
-      // If time has passed today, schedule for tomorrow
       if (scheduledTime <= now) {
         scheduledTime.setDate(scheduledTime.getDate() + 1);
       }
@@ -110,6 +111,14 @@ export const useNotifications = () => {
     }
   };
 
+  const cancelDailyReminder = async () => {
+    try {
+      await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
+    } catch (error) {
+      console.log('Could not cancel daily reminder:', error);
+    }
+  };
+
   const cancelAllNotifications = async () => {
     try {
       const pending = await LocalNotifications.getPending();
@@ -123,10 +132,85 @@ export const useNotifications = () => {
     }
   };
 
+  // Schedule a notification for a payment reminder
+  const schedulePaymentReminder = async (reminder: PaymentReminder) => {
+    if (!settings.enabled || !settings.paymentReminders) return;
+
+    try {
+      const dueDate = new Date(reminder.dueDate);
+      dueDate.setHours(9, 0, 0, 0); // Notify at 9 AM on due date
+      
+      // Don't schedule if the date has already passed
+      if (dueDate <= new Date()) return;
+
+      // Generate a unique ID based on reminder ID hash
+      const notificationId = PAYMENT_NOTIFICATION_BASE_ID + Math.abs(hashCode(reminder.id));
+
+      const options: ScheduleOptions = {
+        notifications: [
+          {
+            id: notificationId,
+            title: 'Podsjetnik za plaćanje',
+            body: `${reminder.category}: ${reminder.amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €`,
+            schedule: {
+              at: dueDate,
+              repeats: false,
+            },
+            sound: undefined,
+            attachments: undefined,
+            actionTypeId: '',
+            extra: { reminderId: reminder.id },
+          },
+        ],
+      };
+
+      await LocalNotifications.schedule(options);
+      console.log('Payment reminder scheduled for:', dueDate);
+    } catch (error) {
+      console.log('Could not schedule payment reminder:', error);
+    }
+  };
+
+  // Cancel a specific payment reminder notification
+  const cancelPaymentReminder = async (reminderId: string) => {
+    try {
+      const notificationId = PAYMENT_NOTIFICATION_BASE_ID + Math.abs(hashCode(reminderId));
+      await LocalNotifications.cancel({ notifications: [{ id: notificationId }] });
+    } catch (error) {
+      console.log('Could not cancel payment reminder:', error);
+    }
+  };
+
+  // Schedule notifications for all active reminders
+  const scheduleAllPaymentReminders = async (reminders: PaymentReminder[]) => {
+    if (!settings.enabled || !settings.paymentReminders) return;
+
+    const activeReminders = reminders.filter(r => !r.isCompleted);
+    
+    for (const reminder of activeReminders) {
+      await schedulePaymentReminder(reminder);
+    }
+  };
+
   return {
     settings,
     updateSettings,
     permissionGranted,
     requestPermissions,
+    schedulePaymentReminder,
+    cancelPaymentReminder,
+    scheduleAllPaymentReminders,
+    cancelAllNotifications,
   };
 };
+
+// Simple hash function to generate consistent IDs
+function hashCode(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return hash;
+}

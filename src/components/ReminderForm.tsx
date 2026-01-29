@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { Category, Account, PaymentReminder } from '@/types/budget';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import { useNotifications } from '@/hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ReminderFormProps {
@@ -33,22 +34,38 @@ export const ReminderForm = ({
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
+  const { schedulePaymentReminder, cancelPaymentReminder } = useNotifications();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || !category || !accountId || !dueDate) return;
 
-    onSubmit({
+    const reminderData = {
       amount: parseFloat(amount),
       category,
       accountId,
       dueDate: dueDate.toISOString(),
+    };
+
+    onSubmit(reminderData);
+    
+    // Schedule notification for this reminder
+    schedulePaymentReminder({
+      id: crypto.randomUUID(), // Temporary ID, real ID will be assigned in useBudget
+      ...reminderData,
+      isCompleted: false,
+      createdAt: new Date().toISOString(),
     });
 
     setAmount('');
     setCategory('');
     setAccountId('');
     setDueDate(undefined);
+  };
+
+  const handleRemove = (id: string) => {
+    cancelPaymentReminder(id);
+    onRemove(id);
   };
 
   const getAccountName = (accId: string) => {
@@ -171,7 +188,7 @@ export const ReminderForm = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onRemove(reminder.id)}
+                    onClick={() => handleRemove(reminder.id)}
                     className="text-destructive hover:text-destructive"
                   >
                     {t('common.delete')}

@@ -1,4 +1,4 @@
-import { Bell, Clock } from 'lucide-react';
+import { Bell, Clock, CreditCard } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -30,6 +30,19 @@ export const NotificationSettings = () => {
 
       {settings.enabled && (
         <>
+          {/* Payment reminders */}
+          <div className="flex items-center justify-between pl-6">
+            <div className="flex items-center gap-2">
+              <CreditCard className="w-4 h-4 text-muted-foreground" />
+              <Label htmlFor="payment-reminders">{t('notifications.paymentReminders')}</Label>
+            </div>
+            <Switch
+              id="payment-reminders"
+              checked={settings.paymentReminders}
+              onCheckedChange={(checked) => updateSettings({ paymentReminders: checked })}
+            />
+          </div>
+
           {/* Daily reminder */}
           <div className="flex items-center justify-between pl-6">
             <Label htmlFor="daily-reminder">{t('notifications.dailyReminder')}</Label>
