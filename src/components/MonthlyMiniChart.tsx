@@ -40,7 +40,7 @@ export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps
       <CardContent className="px-2 pb-3">
         <div className="h-20">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }} barGap={0}>
+            <BarChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }} barGap={-1} barCategoryGap="20%">
               <XAxis 
                 dataKey="month" 
                 axisLine={false}
@@ -50,16 +50,16 @@ export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps
               />
               <Bar 
                 dataKey="income" 
-                fill="hsl(var(--chart-2))"
-                radius={[2, 2, 0, 0]}
-                maxBarSize={10}
+                fill="#3b82f6"
+                radius={[2, 0, 0, 0]}
+                maxBarSize={12}
                 name={t('chart.income')}
               />
               <Bar 
                 dataKey="expenses" 
-                fill="hsl(var(--chart-1))"
-                radius={[2, 2, 0, 0]}
-                maxBarSize={10}
+                fill="#ef4444"
+                radius={[0, 2, 0, 0]}
+                maxBarSize={12}
                 name={t('chart.expenses')}
               />
             </BarChart>
@@ -67,11 +67,11 @@ export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps
         </div>
         <div className="flex justify-center gap-4 mt-2 text-xs">
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-sm bg-[hsl(var(--chart-2))]" />
+            <div className="w-3 h-3 rounded-sm bg-blue-500" />
             <span className="text-muted-foreground">{t('chart.income')}</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-sm bg-[hsl(var(--chart-1))]" />
+            <div className="w-3 h-3 rounded-sm bg-red-500" />
             <span className="text-muted-foreground">{t('chart.expenses')}</span>
           </div>
         </div>
