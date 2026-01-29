@@ -10,8 +10,6 @@ interface MonthlyMiniChartProps {
   currentYear: number;
 }
 
-const monthNames = ['Sij', 'Velj', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro'];
-
 export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps) => {
   const { t } = useLanguage();
   const { formatAmount } = useCurrency();
@@ -26,12 +24,12 @@ export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps
         .reduce((sum, tx) => sum + tx.amount, 0) || 0;
       
       return {
-        month: monthNames[i],
+        month: t(`chart.month.${i}`),
         expenses,
         isCurrent: i === currentMonth,
       };
     });
-  }, [budgets, currentYear]);
+  }, [budgets, currentYear, t]);
 
   const maxExpense = Math.max(...chartData.map(d => d.expenses), 1);
 
