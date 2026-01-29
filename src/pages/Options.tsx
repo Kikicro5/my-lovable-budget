@@ -1,4 +1,5 @@
-import { Languages, Check, Sun, Moon, Palette, Target, Share2 } from 'lucide-react';
+import { useState } from 'react';
+import { Languages, Check, Sun, Moon, Palette, Target, Share2, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,17 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Language } from '@/i18n/translations';
 import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
@@ -114,6 +126,46 @@ const Options = () => {
               <Share2 className="w-4 h-4" />
               {t('share.button') || 'Share'}
             </Button>
+          </div>
+
+          {/* Reset App Section */}
+          <div className="bg-card rounded-xl p-4 border border-destructive/30">
+            <div className="flex items-center gap-2 mb-3">
+              <RotateCcw className="w-5 h-5 text-destructive" />
+              <h2 className="text-lg font-semibold text-foreground">{t('reset.title')}</h2>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              {t('reset.description')}
+            </p>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" className="w-full gap-2">
+                  <RotateCcw className="w-4 h-4" />
+                  {t('reset.button')}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t('reset.confirm')}</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t('reset.warning')}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t('dialog.cancel')}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => {
+                      localStorage.removeItem('monthly-budget-app');
+                      toast.success(t('reset.success'));
+                      window.location.reload();
+                    }}
+                    className="bg-destructive hover:bg-destructive/90"
+                  >
+                    {t('reset.button')}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       </div>
