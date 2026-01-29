@@ -4,19 +4,25 @@ import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Plus, Wallet, Trash2, Edit2, Check, X } from 'lucide-react';
+import { Plus, Wallet, Trash2, Edit2, Check, X, ArrowRightLeft } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { cn } from '@/lib/utils';
 
 const Accounts = () => {
-  const { state, addAccount, removeAccount, updateAccount } = useBudget();
+  const { state, addAccount, removeAccount, updateAccount, transferBetweenAccounts } = useBudget();
   const { t } = useLanguage();
   const [newAccountName, setNewAccountName] = useState('');
   const [newAccountBalance, setNewAccountBalance] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [editBalance, setEditBalance] = useState('');
+  
+  // Transfer state
+  const [fromAccountId, setFromAccountId] = useState('');
+  const [toAccountId, setToAccountId] = useState('');
+  const [transferAmount, setTransferAmount] = useState('');
 
   const handleAddAccount = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,6 +80,37 @@ const Accounts = () => {
     setEditName('');
     setEditBalance('');
   };
+
+  const handleTransfer = (e: React.FormEvent) => {
+    e.preventDefault();
+    const amount = parseFloat(transferAmount);
+    if (!fromAccountId || !toAccountId || fromAccountId === toAccountId || !amount || amount <= 0) {
+      return;
+    }
+
+    const success = transferBetweenAccounts(fromAccountId, toAccountId, amount);
+    if (success) {
+      const fromAccount = state.accounts?.find((a) => a.id === fromAccountId);
+      const toAccount = state.accounts?.find((a) => a.id === toAccountId);
+      toast({
+        title: t('accounts.transferSuccess'),
+        description: `${amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} € (${fromAccount?.name} → ${toAccount?.name})`,
+      });
+      setFromAccountId('');
+      setToAccountId('');
+      setTransferAmount('');
+    } else {
+      toast({
+        title: t('accounts.transferFailed'),
+        description: t('accounts.insufficientFunds'),
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const fromAccount = state.accounts?.find((a) => a.id === fromAccountId);
+  const canTransfer = fromAccountId && toAccountId && fromAccountId !== toAccountId && 
+    parseFloat(transferAmount) > 0 && fromAccount && parseFloat(transferAmount) <= fromAccount.balance;
 
   const totalBalance = state.accounts?.reduce((sum, acc) => sum + acc.balance, 0) || 0;
 
@@ -136,6 +173,79 @@ const Accounts = () => {
             </form>
           </CardContent>
         </Card>
+
+        {/* Transfer Between Accounts */}
+        {state.accounts && state.accounts.length >= 2 && (
+          <Card className="mb-6 shadow-soft border-primary/20">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <ArrowRightLeft className="w-5 h-5" />
+                {t('accounts.transfer')}
+              </CardTitle>
+              <CardDescription>{t('accounts.transferDescription')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleTransfer} className="space-y-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-1 block">{t('accounts.from')}</label>
+                    <Select value={fromAccountId} onValueChange={setFromAccountId}>
+                      <SelectTrigger className="bg-background">
+                        <SelectValue placeholder={t('accounts.selectAccount')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {state.accounts.filter((a) => a.id !== toAccountId).map((acc) => (
+                          <SelectItem key={acc.id} value={acc.id}>
+                            <div className="flex justify-between items-center gap-2">
+                              <span>{acc.name}</span>
+                              <span className="text-xs text-muted-foreground">
+                                ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €)
+                              </span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-1 block">{t('accounts.to')}</label>
+                    <Select value={toAccountId} onValueChange={setToAccountId}>
+                      <SelectTrigger className="bg-background">
+                        <SelectValue placeholder={t('accounts.selectAccount')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {state.accounts.filter((a) => a.id !== fromAccountId).map((acc) => (
+                          <SelectItem key={acc.id} value={acc.id}>
+                            <div className="flex justify-between items-center gap-2">
+                              <span>{acc.name}</span>
+                              <span className="text-xs text-muted-foreground">
+                                ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €)
+                              </span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  max={fromAccount?.balance || 0}
+                  placeholder={t('accounts.transferAmount')}
+                  value={transferAmount}
+                  onChange={(e) => setTransferAmount(e.target.value)}
+                  className="bg-background"
+                />
+                <Button type="submit" className="w-full" disabled={!canTransfer}>
+                  <ArrowRightLeft className="w-4 h-4 mr-2" />
+                  {t('accounts.transferButton')}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Accounts List */}
         <Card className="shadow-soft">
