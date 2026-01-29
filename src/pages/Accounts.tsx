@@ -6,10 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Plus, Wallet, Trash2, Edit2, Check, X, ArrowRightLeft } from 'lucide-react';
+import { Plus, Wallet, Trash2, Edit2, Check, X, ArrowRightLeft, Target } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { cn } from '@/lib/utils';
+import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
 
 const Accounts = () => {
   const { state, addAccount, removeAccount, updateAccount, transferBetweenAccounts } = useBudget();
@@ -248,6 +249,20 @@ const Accounts = () => {
             </CardContent>
           </Card>
         )}
+
+        {/* Budget Limits */}
+        <Card className="mb-6 shadow-soft">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Target className="w-5 h-5 text-primary" />
+              {t('limits.title')}
+            </CardTitle>
+            <CardDescription>{t('limits.description')}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <BudgetLimitsForm />
+          </CardContent>
+        </Card>
 
         {/* Accounts List */}
         <Card className="shadow-soft">
