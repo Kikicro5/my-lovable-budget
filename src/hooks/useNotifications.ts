@@ -13,7 +13,7 @@ const DEFAULT_SETTINGS: NotificationSettings = {
   enabled: false,
   dailyReminder: false,
   reminderTime: '20:00',
-  paymentReminders: true, // Enabled by default
+  paymentReminders: false, // Disabled by default - user must enable manually
 };
 
 const STORAGE_KEY = 'notification-settings';
