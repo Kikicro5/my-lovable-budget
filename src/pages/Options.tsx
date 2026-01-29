@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Languages, Check, Sun, Moon, Palette, Share2, RotateCcw, Coins } from 'lucide-react';
+import { Languages, Check, Sun, Moon, Palette, Share2, RotateCcw, Coins, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
+import { NotificationSettings } from '@/components/NotificationSettings';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -127,7 +128,14 @@ const Options = () => {
             </div>
           </div>
 
-          {/* Share Section */}
+          {/* Notifications Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <Bell className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('notifications.title')}</h2>
+            </div>
+            <NotificationSettings />
+          </div>
           <div className="bg-card rounded-xl p-4 border border-border">
             <div className="flex items-center gap-2 mb-3">
               <Share2 className="w-5 h-5 text-primary" />
