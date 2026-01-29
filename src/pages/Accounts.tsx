@@ -250,22 +250,8 @@ const Accounts = () => {
           </Card>
         )}
 
-        {/* Budget Limits */}
-        <Card className="mb-6 shadow-soft">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Target className="w-5 h-5 text-primary" />
-              {t('limits.title')}
-            </CardTitle>
-            <CardDescription>{t('limits.description')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <BudgetLimitsForm />
-          </CardContent>
-        </Card>
-
         {/* Accounts List */}
-        <Card className="shadow-soft">
+        <Card className="mb-6 shadow-soft">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">{t('accounts.list')}</CardTitle>
           </CardHeader>
@@ -344,6 +330,20 @@ const Accounts = () => {
                 ))}
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        {/* Budget Limits */}
+        <Card className="shadow-soft">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Target className="w-5 h-5 text-primary" />
+              {t('limits.title')}
+            </CardTitle>
+            <CardDescription>{t('limits.description')}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <BudgetLimitsForm />
           </CardContent>
         </Card>
       </div>
