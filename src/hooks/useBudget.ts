@@ -87,11 +87,12 @@ export const useBudget = () => {
   // Track if auto carry-over happened
   const [autoCarryOverAmount, setAutoCarryOverAmount] = useState<number | null>(null);
 
-  // Auto-archive previous month and carry over balance when month changes
+  // Auto-archive previous month, carry over balance, and apply recurring transactions on the 1st
   useEffect(() => {
     const now = new Date();
     const realMonth = now.getMonth();
     const realYear = now.getFullYear();
+    const isFirstDayOfMonth = now.getDate() === 1;
 
     // Check if state month/year is behind real date
     const isNewMonth = 
@@ -153,6 +154,49 @@ export const useBudget = () => {
 
           // Set the amount for notification
           setAutoCarryOverAmount(previousBalance);
+        }
+
+        // Apply recurring transactions on the 1st of the month
+        const currentBudget = updatedBudgets.find((b) => b.month === realMonth && b.year === realYear);
+        const activeRecurring = prev.recurringTransactions.filter((r) => r.isActive);
+        
+        if (isFirstDayOfMonth && activeRecurring.length > 0 && currentBudget && !currentBudget.recurringApplied) {
+          const firstOfMonth = new Date(realYear, realMonth, 1);
+          const recurringTransactions: Transaction[] = activeRecurring.map((r) => ({
+            id: crypto.randomUUID(),
+            name: r.name,
+            amount: r.amount,
+            type: r.type,
+            category: r.category,
+            date: firstOfMonth.toISOString(),
+          }));
+
+          updatedBudgets = updatedBudgets.map((b) =>
+            b.id === currentBudget.id
+              ? { ...b, transactions: [...b.transactions, ...recurringTransactions], recurringApplied: true }
+              : b
+          );
+        } else if (isFirstDayOfMonth && activeRecurring.length > 0 && !currentBudget) {
+          // Create new budget with recurring transactions
+          const firstOfMonth = new Date(realYear, realMonth, 1);
+          const recurringTransactions: Transaction[] = activeRecurring.map((r) => ({
+            id: crypto.randomUUID(),
+            name: r.name,
+            amount: r.amount,
+            type: r.type,
+            category: r.category,
+            date: firstOfMonth.toISOString(),
+          }));
+
+          const newBudget: MonthlyBudget = {
+            id: newBudgetId,
+            month: realMonth,
+            year: realYear,
+            transactions: recurringTransactions,
+            savedCategories: { ...prev.savedCategories },
+            recurringApplied: true,
+          };
+          updatedBudgets = [...updatedBudgets, newBudget];
         }
 
         return {
@@ -494,13 +538,16 @@ export const useBudget = () => {
     const activeRecurring = state.recurringTransactions.filter((r) => r.isActive);
     if (activeRecurring.length === 0) return false;
 
+    // Use the first day of current month as the date
+    const firstOfMonth = new Date(state.currentYear, state.currentMonth, 1);
+    
     const newTransactions: Transaction[] = activeRecurring.map((r) => ({
       id: crypto.randomUUID(),
       name: r.name,
       amount: r.amount,
       type: r.type,
       category: r.category,
-      date: new Date().toISOString(),
+      date: firstOfMonth.toISOString(),
     }));
 
     setState((prev) => ({
