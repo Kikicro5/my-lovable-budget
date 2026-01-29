@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits, RecurringTransaction, Account } from '@/types/budget';
+import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits, RecurringTransaction, Account, PaymentReminder } from '@/types/budget';
 
 const STORAGE_KEY = 'monthly-budget-app';
 
@@ -49,6 +49,7 @@ const getInitialState = (): BudgetState => {
     defaultLimits: DEFAULT_LIMITS,
     recurringTransactions: [],
     accounts: [],
+    reminders: [],
   };
 };
 
@@ -78,6 +79,7 @@ export const useBudget = () => {
           defaultLimits: parsed.defaultLimits || DEFAULT_LIMITS,
           recurringTransactions: parsed.recurringTransactions || [],
           accounts: parsed.accounts || [],
+          reminders: parsed.reminders || [],
         };
       } catch {
         return getInitialState();
@@ -698,6 +700,60 @@ export const useBudget = () => {
     return true;
   };
 
+  const addReminder = (reminder: Omit<PaymentReminder, 'id' | 'isCompleted' | 'createdAt'>) => {
+    const newReminder: PaymentReminder = {
+      ...reminder,
+      id: crypto.randomUUID(),
+      isCompleted: false,
+      createdAt: new Date().toISOString(),
+    };
+
+    setState((prev) => ({
+      ...prev,
+      reminders: [...(prev.reminders || []), newReminder],
+    }));
+  };
+
+  const removeReminder = (reminderId: string) => {
+    setState((prev) => ({
+      ...prev,
+      reminders: (prev.reminders || []).filter((r) => r.id !== reminderId),
+    }));
+  };
+
+  const completeReminder = (reminderId: string) => {
+    setState((prev) => ({
+      ...prev,
+      reminders: (prev.reminders || []).map((r) =>
+        r.id === reminderId ? { ...r, isCompleted: true } : r
+      ),
+    }));
+  };
+
+  const getActiveReminders = (): PaymentReminder[] => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    return (state.reminders || []).filter((r) => {
+      if (r.isCompleted) return false;
+      const dueDate = new Date(r.dueDate);
+      dueDate.setHours(0, 0, 0, 0);
+      return dueDate <= today;
+    });
+  };
+
+  const getUpcomingReminders = (): PaymentReminder[] => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    return (state.reminders || []).filter((r) => {
+      if (r.isCompleted) return false;
+      const dueDate = new Date(r.dueDate);
+      dueDate.setHours(0, 0, 0, 0);
+      return dueDate > today;
+    });
+  };
+
   return {
     state,
     getCurrentBudget,
@@ -734,5 +790,10 @@ export const useBudget = () => {
     removeAccount,
     updateAccount,
     transferBetweenAccounts,
+    addReminder,
+    removeReminder,
+    completeReminder,
+    getActiveReminders,
+    getUpcomingReminders,
   };
 };

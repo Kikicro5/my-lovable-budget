@@ -26,6 +26,9 @@ const Index = () => {
     getAvailableSavings,
     getBudgetProgress, 
     applyRecurringTransactions,
+    getActiveReminders,
+    completeReminder,
+    removeReminder,
   } = useBudget();
   const { t } = useLanguage();
   const currentBudget = getCurrentBudget();
@@ -37,6 +40,7 @@ const Index = () => {
   const expenseProgress = getBudgetProgress('expense');
   const investmentProgress = getBudgetProgress('investment');
   const savingsProgress = getBudgetProgress('savings');
+  const activeReminders = getActiveReminders();
 
   const hasRecurring = state.recurringTransactions.filter(r => r.isActive).length > 0;
   const recurringApplied = currentBudget?.recurringApplied || false;
@@ -69,7 +73,14 @@ const Index = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <MonthCard month={currentMonth} year={currentYear} />
+              <MonthCard 
+                month={currentMonth} 
+                year={currentYear}
+                activeReminders={activeReminders}
+                accounts={state.accounts || []}
+                onCompleteReminder={completeReminder}
+                onRemoveReminder={removeReminder}
+              />
             </div>
             {hasRecurring && !recurringApplied && (
               <Button variant="outline" size="sm" className="gap-2" onClick={handleApplyRecurring}>

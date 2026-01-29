@@ -11,9 +11,10 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { cn } from '@/lib/utils';
 import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
+import { ReminderForm } from '@/components/ReminderForm';
 
 const Accounts = () => {
-  const { state, addAccount, removeAccount, updateAccount, transferBetweenAccounts } = useBudget();
+  const { state, addAccount, removeAccount, updateAccount, transferBetweenAccounts, addReminder, removeReminder } = useBudget();
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
   const [newAccountName, setNewAccountName] = useState('');
@@ -332,6 +333,23 @@ const Accounts = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Payment Reminders */}
+        {state.accounts && state.accounts.length > 0 && (
+          <ReminderForm
+            categories={state.savedCategories.expense}
+            accounts={state.accounts}
+            reminders={state.reminders || []}
+            onSubmit={(reminder) => {
+              addReminder(reminder);
+              toast({ title: t('reminder.add') });
+            }}
+            onRemove={(id) => {
+              removeReminder(id);
+              toast({ title: t('common.delete'), variant: 'destructive' });
+            }}
+          />
+        )}
 
         {/* Budget Limits */}
         <Card className="shadow-soft">
