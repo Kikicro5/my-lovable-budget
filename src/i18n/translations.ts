@@ -688,6 +688,8 @@ export const translations: Record<Language, Record<string, string>> = {
     // Chart
     'chart.yearlyExpenses': 'Ausgaben nach Monat',
   },
+
+  pl: {
     // Navigation
     'nav.home': 'Strona główna',
     'nav.monthly': 'Miesięcznie',
