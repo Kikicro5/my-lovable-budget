@@ -86,10 +86,7 @@ export const useBudget = () => {
     return getInitialState();
   });
 
-  // Track if auto carry-over happened
-  const [autoCarryOverAmount, setAutoCarryOverAmount] = useState<number | null>(null);
-
-  // Auto-archive previous month, carry over balance, and apply recurring transactions on the 1st
+  // Auto-apply recurring transactions on the 1st of the month
   useEffect(() => {
     const now = new Date();
     const realMonth = now.getMonth();
@@ -102,61 +99,10 @@ export const useBudget = () => {
       (realYear === state.currentYear && realMonth > state.currentMonth);
 
     if (isNewMonth) {
-      // Get the previous period (which was the "current" in state)
-      const previousBudget = state.budgets.find(
-        (b) => b.month === state.currentMonth && b.year === state.currentYear
-      );
-      
-      const previousBalance = previousBudget 
-        ? previousBudget.transactions.reduce((acc, t) => {
-            if (t.isFromPreviousPeriod) return acc;
-            if (t.type === 'income') return acc + t.amount;
-            if (t.type === 'expense' || t.type === 'investment' || t.type === 'savings') return acc - t.amount;
-            return acc;
-          }, 0)
-        : 0;
-
-      // Check if carry-over already exists in the new month
       const newBudgetId = `${realYear}-${realMonth}`;
-      const existingNewBudget = state.budgets.find((b) => b.month === realMonth && b.year === realYear);
-      const hasCarryOver = existingNewBudget?.transactions.some(
-        (t) => t.category === 'Prijenos iz prethodnog mjeseca'
-      );
 
-      // Update to current real month and create carry-over transaction if there's a balance
       setState((prev) => {
         let updatedBudgets = prev.budgets;
-
-        if (previousBalance !== 0 && !hasCarryOver) {
-          const carryOverTransaction: Transaction = {
-            id: crypto.randomUUID(),
-            name: 'Prijenos iz prethodnog mjeseca',
-            amount: Math.abs(previousBalance),
-            type: previousBalance > 0 ? 'income' : 'expense',
-            category: 'Prijenos iz prethodnog mjeseca',
-            date: new Date().toISOString(),
-          };
-
-          if (existingNewBudget) {
-            updatedBudgets = prev.budgets.map((b) =>
-              b.id === newBudgetId
-                ? { ...b, transactions: [...b.transactions, carryOverTransaction] }
-                : b
-            );
-          } else {
-            const newBudget: MonthlyBudget = {
-              id: newBudgetId,
-              month: realMonth,
-              year: realYear,
-              transactions: [carryOverTransaction],
-              savedCategories: { ...prev.savedCategories },
-            };
-            updatedBudgets = [...prev.budgets, newBudget];
-          }
-
-          // Set the amount for notification
-          setAutoCarryOverAmount(previousBalance);
-        }
 
         // Apply recurring transactions on the 1st of the month
         const currentBudget = updatedBudgets.find((b) => b.month === realMonth && b.year === realYear);
@@ -784,8 +730,6 @@ export const useBudget = () => {
     transferFromCategory,
     getAvailableInvestment,
     getAvailableSavings,
-    autoCarryOverAmount,
-    clearAutoCarryOverAmount: () => setAutoCarryOverAmount(null),
     addAccount,
     removeAccount,
     updateAccount,
