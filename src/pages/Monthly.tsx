@@ -95,21 +95,21 @@ const Monthly = () => {
               <ArrowRightLeft className="w-4 h-4" />
               {t('monthly.carryOver')} ({lastDayBalance.toLocaleString('hr-HR')} €)
             </Button>
-            <TransactionList title={t('monthly.incomeThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="income" />
+            <TransactionList title={t('monthly.incomeThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="income" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="expense" className="space-y-4">
             <TransactionForm type="expense" categories={state.savedCategories.expense} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('expense', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('expense', cat)} />
-            <TransactionList title={t('monthly.expenseThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="expense" />
+            <TransactionList title={t('monthly.expenseThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="expense" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="investment" className="space-y-4">
             <TransactionForm type="investment" categories={state.savedCategories.investment} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('investment', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('investment', cat)} availableForTransfer={getAvailableInvestment()} onTransferToBalance={handleTransferFromInvestment} />
             <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('investment', amount)} />
-            <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" />
+            <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="savings" className="space-y-4">
             <TransactionForm type="savings" categories={state.savedCategories.savings} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('savings', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('savings', cat)} availableForTransfer={getAvailableSavings()} onTransferToBalance={handleTransferFromSavings} />
             <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('savings', amount)} />
-            <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" />
+            <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="categories" className="space-y-4">
             <RecurringTransactionsManager />

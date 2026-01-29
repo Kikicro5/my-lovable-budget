@@ -1,5 +1,5 @@
-import { Transaction } from '@/types/budget';
-import { Trash2, TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
+import { Transaction, Account } from '@/types/budget';
+import { Trash2, TrendingUp, TrendingDown, LineChart, PiggyBank, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -20,6 +20,7 @@ interface TransactionListProps {
   onRemove: (id: string) => void;
   title?: string;
   filterType?: 'income' | 'expense' | 'investment' | 'savings';
+  accounts?: Account[];
 }
 
 const typeConfig = {
@@ -62,8 +63,15 @@ export const TransactionList = ({
   onRemove,
   title,
   filterType,
+  accounts = [],
 }: TransactionListProps) => {
   const { t } = useLanguage();
+  
+  const getAccountName = (accountId?: string) => {
+    if (!accountId || accountId === 'none') return null;
+    const account = accounts.find((a) => a.id === accountId);
+    return account?.name || null;
+  };
   
   // When viewing all transactions on home page (no filter), hide withdrawal transactions
   // When viewing specific category (investment/savings), show all transactions including withdrawals
@@ -118,11 +126,17 @@ export const TransactionList = ({
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="font-medium text-foreground truncate">{transaction.name}</p>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <p className="text-xs text-muted-foreground">{transaction.category}</p>
                     <span className="text-xs text-muted-foreground shrink-0">
                       {new Date(transaction.date).toLocaleDateString('hr-HR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                     </span>
+                    {getAccountName(transaction.accountId) && (
+                      <span className="text-xs text-muted-foreground flex items-center gap-1 shrink-0">
+                        <Wallet className="w-3 h-3" />
+                        {getAccountName(transaction.accountId)}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
