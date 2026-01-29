@@ -2,6 +2,7 @@ import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MonthCard } from '@/components/MonthCard';
 import { TransactionForm } from '@/components/TransactionForm';
+import { RecurringTransactionsManager } from '@/components/RecurringTransactionsManager';
 import { TransactionList } from '@/components/TransactionList';
 import { CategoryManager } from '@/components/CategoryManager';
 import { PreviousPeriodInput } from '@/components/PreviousPeriodInput';
@@ -111,6 +112,7 @@ const Monthly = () => {
             <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" />
           </TabsContent>
           <TabsContent value="categories" className="space-y-4">
+            <RecurringTransactionsManager />
             <CategoryManager type="income" categories={state.savedCategories.income} onAdd={(cat) => handleAddCategory('income', cat)} onRemove={(cat) => handleRemoveCategory('income', cat)} />
             <CategoryManager type="expense" categories={state.savedCategories.expense} onAdd={(cat) => handleAddCategory('expense', cat)} onRemove={(cat) => handleRemoveCategory('expense', cat)} />
             <CategoryManager type="investment" categories={state.savedCategories.investment} onAdd={(cat) => handleAddCategory('investment', cat)} onRemove={(cat) => handleRemoveCategory('investment', cat)} />

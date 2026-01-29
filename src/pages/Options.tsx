@@ -1,11 +1,10 @@
-import { Languages, Check, Sun, Moon, Palette, Repeat, Target, Share2 } from 'lucide-react';
+import { Languages, Check, Sun, Moon, Palette, Target, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Language } from '@/i18n/translations';
-import { RecurringTransactionsManager } from '@/components/RecurringTransactionsManager';
 import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
 
 const Options = () => {
@@ -103,18 +102,6 @@ const Options = () => {
               {t('limits.description')}
             </p>
             <BudgetLimitsForm />
-          </div>
-
-          {/* Recurring Transactions Section */}
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <div className="flex items-center gap-2 mb-4">
-              <Repeat className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">{t('recurring.title')}</h2>
-            </div>
-            <p className="text-sm text-muted-foreground mb-3">
-              {t('recurring.description')}
-            </p>
-            <RecurringTransactionsManager />
           </div>
 
           {/* Share Section */}
