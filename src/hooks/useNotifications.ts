@@ -1,4 +1,4 @@
-import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
+import { LocalNotifications, ScheduleOptions, Channel } from '@capacitor/local-notifications';
 import { useEffect, useState } from 'react';
 import { PaymentReminder } from '@/types/budget';
 
@@ -6,18 +6,19 @@ export interface NotificationSettings {
   enabled: boolean;
   dailyReminder: boolean;
   reminderTime: string; // HH:mm format
-  paymentReminders: boolean; // New setting for payment reminders
+  paymentReminders: boolean;
 }
 
 const DEFAULT_SETTINGS: NotificationSettings = {
   enabled: false,
   dailyReminder: false,
   reminderTime: '20:00',
-  paymentReminders: false, // Disabled by default - user must enable manually
+  paymentReminders: false,
 };
 
 const STORAGE_KEY = 'notification-settings';
-const PAYMENT_NOTIFICATION_BASE_ID = 1000; // Base ID for payment notifications
+const PAYMENT_NOTIFICATION_BASE_ID = 1000;
+const CHANNEL_ID = 'budgetcard-notifications';
 
 export const useNotifications = () => {
   const [settings, setSettings] = useState<NotificationSettings>(() => {
@@ -31,17 +32,32 @@ export const useNotifications = () => {
   const [permissionGranted, setPermissionGranted] = useState(false);
 
   useEffect(() => {
-    checkPermissions();
+    initializeNotifications();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-    if (settings.enabled && settings.dailyReminder) {
-      scheduleDailyReminder();
-    } else {
-      cancelDailyReminder();
+  const initializeNotifications = async () => {
+    await checkPermissions();
+    await createNotificationChannel();
+  };
+
+  const createNotificationChannel = async () => {
+    try {
+      const channel: Channel = {
+        id: CHANNEL_ID,
+        name: 'BudgetCard obavijesti',
+        description: 'Podsjetnici za unos troškova i plaćanja',
+        importance: 4, // HIGH importance
+        visibility: 1, // PUBLIC
+        sound: 'default',
+        vibration: true,
+        lights: true,
+      };
+      await LocalNotifications.createChannel(channel);
+      console.log('Notification channel created:', CHANNEL_ID);
+    } catch (error) {
+      console.log('Could not create notification channel (web environment):', error);
     }
-  }, [settings]);
+  };
 
   const checkPermissions = async () => {
     try {
@@ -116,21 +132,22 @@ export const useNotifications = () => {
             id: 1,
             title: 'BudgetCard',
             body: 'Ne zaboravi unijeti današnje troškove!',
+            channelId: CHANNEL_ID,
             schedule: {
               at: scheduledTime,
               allowWhileIdle: true,
               repeats: true,
               every: 'day',
             },
-            sound: undefined,
-            attachments: undefined,
-            actionTypeId: '',
-            extra: null,
+            sound: 'default',
+            smallIcon: 'ic_stat_icon_config_sample',
+            largeIcon: 'ic_stat_icon_config_sample',
           },
         ],
       };
 
       await LocalNotifications.schedule(options);
+      console.log('Daily reminder scheduled for:', scheduledTime);
     } catch (error) {
       console.log('Could not schedule notification:', error);
     }
@@ -177,14 +194,15 @@ export const useNotifications = () => {
             id: notificationId,
             title: 'Podsjetnik za plaćanje',
             body: `${reminder.category}: ${reminder.amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €`,
+            channelId: CHANNEL_ID,
             schedule: {
               at: dueDate,
               allowWhileIdle: true,
               repeats: false,
             },
-            sound: undefined,
-            attachments: undefined,
-            actionTypeId: '',
+            sound: 'default',
+            smallIcon: 'ic_stat_icon_config_sample',
+            largeIcon: 'ic_stat_icon_config_sample',
             extra: { reminderId: reminder.id },
           },
         ],
@@ -218,6 +236,59 @@ export const useNotifications = () => {
     }
   };
 
+  // Test notification - fires in 5 seconds
+  const sendTestNotification = async (): Promise<boolean> => {
+    try {
+      const granted = await requestPermissions();
+      if (!granted) {
+        console.log('Cannot send test notification - permission denied');
+        return false;
+      }
+
+      await createNotificationChannel();
+
+      const testTime = new Date();
+      testTime.setSeconds(testTime.getSeconds() + 5);
+
+      const options: ScheduleOptions = {
+        notifications: [
+          {
+            id: 9999,
+            title: 'Test obavijesti',
+            body: 'Ako vidiš ovu poruku, obavijesti rade! 🎉',
+            channelId: CHANNEL_ID,
+            schedule: {
+              at: testTime,
+              allowWhileIdle: true,
+            },
+            sound: 'default',
+            smallIcon: 'ic_stat_icon_config_sample',
+            largeIcon: 'ic_stat_icon_config_sample',
+          },
+        ],
+      };
+
+      await LocalNotifications.schedule(options);
+      console.log('Test notification scheduled for:', testTime);
+      return true;
+    } catch (error) {
+      console.log('Could not send test notification:', error);
+      return false;
+    }
+  };
+
+  // Get pending notifications for debugging
+  const getPendingNotifications = async () => {
+    try {
+      const pending = await LocalNotifications.getPending();
+      console.log('Pending notifications:', pending.notifications);
+      return pending.notifications;
+    } catch (error) {
+      console.log('Could not get pending notifications:', error);
+      return [];
+    }
+  };
+
   return {
     settings,
     updateSettings,
@@ -227,6 +298,8 @@ export const useNotifications = () => {
     cancelPaymentReminder,
     scheduleAllPaymentReminders,
     cancelAllNotifications,
+    sendTestNotification,
+    getPendingNotifications,
   };
 };
 

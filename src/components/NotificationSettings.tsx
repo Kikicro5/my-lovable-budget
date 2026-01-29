@@ -1,16 +1,36 @@
-import { Bell, Clock, CreditCard } from 'lucide-react';
+import { useState } from 'react';
+import { Bell, Clock, CreditCard, TestTube } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { toast } from 'sonner';
 
 export const NotificationSettings = () => {
-  const { settings, updateSettings, permissionGranted } = useNotifications();
+  const { settings, updateSettings, permissionGranted, sendTestNotification } = useNotifications();
   const { t } = useLanguage();
+  const [isTestingNotification, setIsTestingNotification] = useState(false);
 
   const handleEnableNotifications = async (enabled: boolean) => {
     await updateSettings({ enabled });
+  };
+
+  const handleTestNotification = async () => {
+    setIsTestingNotification(true);
+    try {
+      const success = await sendTestNotification();
+      if (success) {
+        toast.success('Test obavijest zakazana za 5 sekundi!');
+      } else {
+        toast.error('Nije moguće poslati test obavijest. Provjeri dozvole.');
+      }
+    } catch (error) {
+      toast.error('Greška pri slanju test obavijesti');
+    } finally {
+      setIsTestingNotification(false);
+    }
   };
 
   return (
@@ -69,6 +89,20 @@ export const NotificationSettings = () => {
               />
             </div>
           )}
+
+          {/* Test notification button */}
+          <div className="pl-6 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleTestNotification}
+              disabled={isTestingNotification}
+              className="w-full"
+            >
+              <TestTube className="w-4 h-4 mr-2" />
+              {isTestingNotification ? 'Šaljem...' : 'Test obavijesti (5 sek)'}
+            </Button>
+          </div>
 
           {!permissionGranted && (
             <p className="text-sm text-amber-600 dark:text-amber-400 pl-6">
