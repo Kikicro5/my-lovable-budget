@@ -13,7 +13,6 @@ export const RecurringTransactionsManager = () => {
   const { state, addRecurringTransaction, removeRecurringTransaction, toggleRecurringTransaction } = useBudget();
   const { t } = useLanguage();
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [type, setType] = useState<'income' | 'expense' | 'investment' | 'savings'>('expense');
   const [category, setCategory] = useState('');
@@ -21,16 +20,15 @@ export const RecurringTransactionsManager = () => {
   const categories = state.savedCategories[type];
 
   const handleAdd = () => {
-    if (!name || !amount || !category) return;
+    if (!amount || !category) return;
     
     addRecurringTransaction({
-      name,
+      name: category,
       amount: parseFloat(amount),
       type,
       category,
     });
     
-    setName('');
     setAmount('');
     setCategory('');
   };
@@ -70,19 +68,6 @@ export const RecurringTransactionsManager = () => {
           <div className="space-y-3 p-3 bg-muted/50 rounded-lg">
             <h4 className="font-medium text-sm">{t('recurring.add')}</h4>
             
-            <Input
-              placeholder={t('recurring.name')}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            
-            <Input
-              type="number"
-              placeholder={t('transaction.amount')}
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-            
             <Select value={type} onValueChange={(v: typeof type) => { setType(v); setCategory(''); }}>
               <SelectTrigger>
                 <SelectValue />
@@ -108,7 +93,14 @@ export const RecurringTransactionsManager = () => {
               </SelectContent>
             </Select>
             
-            <Button onClick={handleAdd} className="w-full" disabled={!name || !amount || !category}>
+            <Input
+              type="number"
+              placeholder={t('transaction.amount')}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            
+            <Button onClick={handleAdd} className="w-full" disabled={!amount || !category}>
               <Plus className="w-4 h-4 mr-2" />
               {t('recurring.add')}
             </Button>
