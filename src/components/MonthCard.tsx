@@ -22,14 +22,14 @@ export const MonthCard = ({
   const { t } = useLanguage();
   
   return (
-    <div className="bg-card rounded-2xl p-4 shadow-card animate-slide-up">
+    <div className="bg-card rounded-xl p-2.5 shadow-card animate-slide-up">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-display font-bold text-foreground">
-          <span className="flex items-center gap-3">
+        <h1 className="text-base font-display font-bold text-foreground">
+          <span className="flex items-center gap-2">
             <img
               src="/icon-192.png?v=2"
               alt="Budget Card ikona"
-              className="h-12 w-12 rounded-xl"
+              className="h-8 w-8 rounded-lg"
               loading="lazy"
             />
             <span>{t(`month.${month}`)} {year}</span>
