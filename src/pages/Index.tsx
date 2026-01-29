@@ -114,7 +114,7 @@ const Index = () => {
           )}
           
           <QuickExpenseForm categories={state.savedCategories.expense} onSubmit={handleAddExpense} />
-          <TransactionList title={t('transaction.lastTransactions')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} />
+          <TransactionList title={t('transaction.lastTransactions')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} accounts={state.accounts || []} />
         </div>
       </div>
       <BottomNavigation />
