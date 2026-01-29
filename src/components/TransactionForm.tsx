@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank, ArrowRightLeft, CalendarIcon, Wallet } from 'lucide-react';
+import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank, ArrowRightLeft, CalendarIcon, Wallet, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Category, Account } from '@/types/budget';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -76,16 +76,29 @@ export const TransactionForm = ({
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [showNewCategory, setShowNewCategory] = useState(false);
   const [transferAmount, setTransferAmount] = useState('');
+  const [insufficientBalance, setInsufficientBalance] = useState(false);
   const { t } = useLanguage();
 
   const config = typeConfig[type];
   const Icon = config.icon;
   const canTransfer = (type === 'investment' || type === 'savings') && availableForTransfer > 0 && onTransferToBalance;
 
+  // Check if selected account has sufficient balance for expense/investment/savings
+  const selectedAccount = accounts.find((a) => a.id === accountId);
+  const requiresBalanceCheck = type !== 'income' && accountId && accountId !== 'none' && selectedAccount;
+  const hasInsufficientBalance = requiresBalanceCheck && selectedAccount && parseFloat(amount || '0') > selectedAccount.balance;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || !category) return;
 
+    // Check balance for expense, investment, savings
+    if (requiresBalanceCheck && hasInsufficientBalance) {
+      setInsufficientBalance(true);
+      return;
+    }
+
+    setInsufficientBalance(false);
     onSubmit(category, parseFloat(amount), category, date, accountId || undefined);
     setAmount('');
     setCategory('');
@@ -254,9 +267,17 @@ export const TransactionForm = ({
           </div>
         )}
 
+        {(insufficientBalance || hasInsufficientBalance) && amount && (
+          <div className="flex items-center gap-2 p-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{t('transaction.insufficientBalance')}</span>
+          </div>
+        )}
+
         <div className={cn("flex gap-2", canTransfer ? "flex-col sm:flex-row" : "")}>
           <Button
             type="submit"
+            disabled={hasInsufficientBalance}
             className={cn(
               'flex-1 font-semibold',
               config.buttonClass

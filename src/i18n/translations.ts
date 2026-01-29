@@ -64,6 +64,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'transaction.noTransactions': 'Nema transakcija',
     'transaction.lastTransactions': 'Posljednje transakcije',
     'transaction.allTransactions': 'Sve transakcije',
+    'transaction.insufficientBalance': 'Nedovoljan saldo na odabranom računu',
 
     // Quick expense
     'quickExpense.title': 'Brzi unos troška',
@@ -260,6 +261,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'transaction.noTransactions': 'No transactions',
     'transaction.lastTransactions': 'Recent transactions',
     'transaction.allTransactions': 'All transactions',
+    'transaction.insufficientBalance': 'Insufficient balance on selected account',
 
     // Quick expense
     'quickExpense.title': 'Quick Expense',
@@ -456,6 +458,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'transaction.noTransactions': 'Keine Transaktionen',
     'transaction.lastTransactions': 'Letzte Transaktionen',
     'transaction.allTransactions': 'Alle Transaktionen',
+    'transaction.insufficientBalance': 'Unzureichendes Guthaben auf dem ausgewählten Konto',
 
     // Quick expense
     'quickExpense.title': 'Schnelle Ausgabe',
@@ -652,6 +655,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'transaction.noTransactions': 'Brak transakcji',
     'transaction.lastTransactions': 'Ostatnie transakcje',
     'transaction.allTransactions': 'Wszystkie transakcje',
+    'transaction.insufficientBalance': 'Niewystarczające saldo na wybranym koncie',
 
     // Quick expense
     'quickExpense.title': 'Szybki wydatek',
@@ -848,6 +852,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'transaction.noTransactions': 'Sin transacciones',
     'transaction.lastTransactions': 'Transacciones recientes',
     'transaction.allTransactions': 'Todas las transacciones',
+    'transaction.insufficientBalance': 'Saldo insuficiente en la cuenta seleccionada',
 
     // Quick expense
     'quickExpense.title': 'Gasto rápido',
@@ -1044,6 +1049,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'transaction.noTransactions': 'Aucune transaction',
     'transaction.lastTransactions': 'Transactions récentes',
     'transaction.allTransactions': 'Toutes les transactions',
+    'transaction.insufficientBalance': 'Solde insuffisant sur le compte sélectionné',
 
     // Quick expense
     'quickExpense.title': 'Dépense rapide',
