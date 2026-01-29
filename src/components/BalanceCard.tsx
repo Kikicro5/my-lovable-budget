@@ -47,7 +47,7 @@ export const BalanceCard = ({
         
         {accounts.length > 0 && (
           <div className="flex-1 text-right">
-            <div className="space-y-1 mt-6">
+            <div className="space-y-1">
               {accounts.map((account) => (
                 <div key={account.id} className="flex items-center justify-end gap-2">
                   <span className="text-xs text-muted-foreground">{account.name}</span>
