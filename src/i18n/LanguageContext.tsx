@@ -11,7 +11,7 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'app-language';
-const SUPPORTED_LANGUAGES: Language[] = ['hr', 'en', 'de', 'pl', 'es', 'fr'];
+const SUPPORTED_LANGUAGES: Language[] = ['hr', 'en', 'de', 'pl', 'es', 'fr', 'zh', 'hi'];
 
 const detectBrowserLanguage = (): Language => {
   const browserLang = navigator.language.split('-')[0].toLowerCase();
