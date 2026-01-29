@@ -55,19 +55,43 @@ export const useNotifications = () => {
 
   const requestPermissions = async (): Promise<boolean> => {
     try {
+      // First check current status
+      const currentStatus = await LocalNotifications.checkPermissions();
+      console.log('Current notification permission status:', currentStatus.display);
+      
+      if (currentStatus.display === 'granted') {
+        setPermissionGranted(true);
+        return true;
+      }
+      
+      // Request permissions - this triggers the system dialog on Android/iOS
       const result = await LocalNotifications.requestPermissions();
+      console.log('Permission request result:', result.display);
+      
       const granted = result.display === 'granted';
       setPermissionGranted(granted);
+      
+      if (!granted) {
+        console.log('Notification permission denied by user');
+      }
+      
       return granted;
     } catch (error) {
-      console.log('Notifications not available (web environment)');
-      return true;
+      console.log('Notifications not available (web environment):', error);
+      return false; // Return false on web since notifications won't work
     }
   };
 
   const updateSettings = async (newSettings: Partial<NotificationSettings>) => {
     if (newSettings.enabled === true) {
-      await requestPermissions();
+      const granted = await requestPermissions();
+      console.log('Permission granted after toggle:', granted);
+      
+      if (!granted) {
+        // Don't enable if permission was denied
+        console.log('Cannot enable notifications - permission denied');
+        return;
+      }
     }
     setSettings(prev => ({ ...prev, ...newSettings }));
   };
