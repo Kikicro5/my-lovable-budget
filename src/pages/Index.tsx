@@ -115,8 +115,6 @@ const Index = () => {
             </div>
           )}
           
-          <MonthlyMiniChart budgets={state.budgets} currentYear={currentYear} />
-          
           {!hasAccounts ? (
             <Card className="border-primary/30 bg-primary/5">
               <CardContent className="py-6">
@@ -140,6 +138,9 @@ const Index = () => {
           ) : (
             <QuickExpenseForm categories={state.savedCategories.expense} onSubmit={handleAddExpense} />
           )}
+          
+          <MonthlyMiniChart budgets={state.budgets} currentYear={currentYear} />
+          
           <TransactionList title={t('transaction.lastTransactions')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} accounts={state.accounts || []} />
         </div>
       </div>
