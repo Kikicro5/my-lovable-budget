@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits, RecurringTransaction } from '@/types/budget';
+import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits, RecurringTransaction, Account } from '@/types/budget';
 
 const STORAGE_KEY = 'monthly-budget-app';
 
@@ -48,6 +48,7 @@ const getInitialState = (): BudgetState => {
     },
     defaultLimits: DEFAULT_LIMITS,
     recurringTransactions: [],
+    accounts: [],
   };
 };
 
@@ -76,6 +77,7 @@ export const useBudget = () => {
           },
           defaultLimits: parsed.defaultLimits || DEFAULT_LIMITS,
           recurringTransactions: parsed.recurringTransactions || [],
+          accounts: parsed.accounts || [],
         };
       } catch {
         return getInitialState();
@@ -650,6 +652,34 @@ export const useBudget = () => {
     return Math.max(0, saved - withdrawn);
   };
 
+  const addAccount = (account: Omit<Account, 'id'>) => {
+    const newAccount: Account = {
+      ...account,
+      id: crypto.randomUUID(),
+    };
+
+    setState((prev) => ({
+      ...prev,
+      accounts: [...(prev.accounts || []), newAccount],
+    }));
+  };
+
+  const removeAccount = (accountId: string) => {
+    setState((prev) => ({
+      ...prev,
+      accounts: (prev.accounts || []).filter((a) => a.id !== accountId),
+    }));
+  };
+
+  const updateAccount = (accountId: string, updates: Partial<Omit<Account, 'id'>>) => {
+    setState((prev) => ({
+      ...prev,
+      accounts: (prev.accounts || []).map((a) =>
+        a.id === accountId ? { ...a, ...updates } : a
+      ),
+    }));
+  };
+
   return {
     state,
     getCurrentBudget,
@@ -684,5 +714,8 @@ export const useBudget = () => {
     getAvailableSavings,
     autoCarryOverAmount,
     clearAutoCarryOverAmount: () => setAutoCarryOverAmount(null),
+    addAccount,
+    removeAccount,
+    updateAccount,
   };
 };

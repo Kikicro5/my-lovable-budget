@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, FileText, Archive, Settings } from 'lucide-react';
+import { Home, FileText, Wallet, Archive, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const navItems = [
   { path: '/', icon: Home, labelKey: 'nav.home' },
   { path: '/monthly', icon: FileText, labelKey: 'nav.monthly' },
+  { path: '/accounts', icon: Wallet, labelKey: 'nav.accounts' },
   { path: '/archive', icon: Archive, labelKey: 'nav.archive' },
   { path: '/options', icon: Settings, labelKey: 'nav.options' },
 ];
