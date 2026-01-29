@@ -24,6 +24,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'accounts.totalBalance': 'Ukupno stanje',
     'accounts.selectAccount': 'Odaberi račun',
     'accounts.noAccount': 'Bez računa',
+    'accounts.required': 'Potreban je račun',
+    'accounts.requiredDescription': 'Prije unosa transakcija potrebno je dodati barem jedan račun.',
+    'accounts.addFirst': 'Dodaj račun',
     'transaction.selectAccount': 'Odaberi račun',
 
     // Month names
@@ -221,6 +224,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'accounts.totalBalance': 'Total balance',
     'accounts.selectAccount': 'Select account',
     'accounts.noAccount': 'No account',
+    'accounts.required': 'Account required',
+    'accounts.requiredDescription': 'Please add at least one account before entering transactions.',
+    'accounts.addFirst': 'Add account',
     'transaction.selectAccount': 'Select account',
 
     // Month names
@@ -418,6 +424,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'accounts.totalBalance': 'Gesamtkontostand',
     'accounts.selectAccount': 'Konto auswählen',
     'accounts.noAccount': 'Kein Konto',
+    'accounts.required': 'Konto erforderlich',
+    'accounts.requiredDescription': 'Bitte fügen Sie mindestens ein Konto hinzu, bevor Sie Transaktionen eingeben.',
+    'accounts.addFirst': 'Konto hinzufügen',
     'transaction.selectAccount': 'Konto auswählen',
 
     // Month names
@@ -615,6 +624,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'accounts.totalBalance': 'Saldo całkowite',
     'accounts.selectAccount': 'Wybierz konto',
     'accounts.noAccount': 'Brak konta',
+    'accounts.required': 'Wymagane konto',
+    'accounts.requiredDescription': 'Przed wprowadzeniem transakcji należy dodać co najmniej jedno konto.',
+    'accounts.addFirst': 'Dodaj konto',
     'transaction.selectAccount': 'Wybierz konto',
 
     // Month names
@@ -812,6 +824,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'accounts.totalBalance': 'Saldo total',
     'accounts.selectAccount': 'Seleccionar cuenta',
     'accounts.noAccount': 'Sin cuenta',
+    'accounts.required': 'Cuenta requerida',
+    'accounts.requiredDescription': 'Por favor agregue al menos una cuenta antes de ingresar transacciones.',
+    'accounts.addFirst': 'Agregar cuenta',
     'transaction.selectAccount': 'Seleccionar cuenta',
 
     // Month names
@@ -1009,6 +1024,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'accounts.totalBalance': 'Solde total',
     'accounts.selectAccount': 'Sélectionner un compte',
     'accounts.noAccount': 'Aucun compte',
+    'accounts.required': 'Compte requis',
+    'accounts.requiredDescription': 'Veuillez ajouter au moins un compte avant de saisir des transactions.',
+    'accounts.addFirst': 'Ajouter un compte',
     'transaction.selectAccount': 'Sélectionner un compte',
 
     // Month names

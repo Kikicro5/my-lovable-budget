@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MonthCard } from '@/components/MonthCard';
@@ -8,8 +9,9 @@ import { CategoryManager } from '@/components/CategoryManager';
 import { PreviousPeriodInput } from '@/components/PreviousPeriodInput';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, ArrowRightLeft } from 'lucide-react';
+import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, ArrowRightLeft, Wallet, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const Monthly = () => {
@@ -23,10 +25,36 @@ const Monthly = () => {
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
   
+  // Check if user has any accounts
+  const hasAccounts = state.accounts && state.accounts.length > 0;
+  
   // Check if carry over already happened (either manually or automatically)
   const hasCarryOver = currentBudget?.transactions.some(
     (t) => t.category === 'Prijenos iz prethodnog mjeseca'
   ) || false;
+
+  // Component to show when no accounts exist
+  const NoAccountsPrompt = () => (
+    <Card className="border-primary/30 bg-primary/5">
+      <CardContent className="py-6">
+        <div className="flex flex-col items-center text-center gap-4">
+          <div className="p-3 rounded-full bg-primary/10">
+            <AlertCircle className="w-8 h-8 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg mb-1">{t('accounts.required')}</h3>
+            <p className="text-muted-foreground text-sm mb-4">{t('accounts.requiredDescription')}</p>
+          </div>
+          <Button asChild className="gap-2">
+            <Link to="/accounts">
+              <Wallet className="w-4 h-4" />
+              {t('accounts.addFirst')}
+            </Link>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   const handleAddTransaction = (type: 'income' | 'expense' | 'investment' | 'savings', name: string, amount: number, category: string, date: Date, accountId?: string) => {
     addTransaction({ name, amount, type, category, date: date.toISOString(), accountId });
@@ -90,25 +118,47 @@ const Monthly = () => {
             <TabsTrigger value="categories" className="flex items-center gap-1 text-xs px-2 text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground"><Tags className="w-5 h-5" /><span className="hidden sm:inline">{t('monthly.categories')}</span></TabsTrigger>
           </TabsList>
           <TabsContent value="income" className="space-y-4">
-            <TransactionForm type="income" categories={state.savedCategories.income} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('income', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('income', cat)} />
-            <Button onClick={handleCarryOver} variant="outline" className="w-full flex items-center gap-2" disabled={hasCarryOver}>
-              <ArrowRightLeft className="w-4 h-4" />
-              {t('monthly.carryOver')} ({lastDayBalance.toLocaleString('hr-HR')} €)
-            </Button>
+            {!hasAccounts ? (
+              <NoAccountsPrompt />
+            ) : (
+              <>
+                <TransactionForm type="income" categories={state.savedCategories.income} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('income', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('income', cat)} />
+                <Button onClick={handleCarryOver} variant="outline" className="w-full flex items-center gap-2" disabled={hasCarryOver}>
+                  <ArrowRightLeft className="w-4 h-4" />
+                  {t('monthly.carryOver')} ({lastDayBalance.toLocaleString('hr-HR')} €)
+                </Button>
+              </>
+            )}
             <TransactionList title={t('monthly.incomeThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="income" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="expense" className="space-y-4">
-            <TransactionForm type="expense" categories={state.savedCategories.expense} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('expense', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('expense', cat)} />
+            {!hasAccounts ? (
+              <NoAccountsPrompt />
+            ) : (
+              <TransactionForm type="expense" categories={state.savedCategories.expense} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('expense', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('expense', cat)} />
+            )}
             <TransactionList title={t('monthly.expenseThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="expense" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="investment" className="space-y-4">
-            <TransactionForm type="investment" categories={state.savedCategories.investment} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('investment', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('investment', cat)} availableForTransfer={getAvailableInvestment()} onTransferToBalance={handleTransferFromInvestment} />
-            <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('investment', amount)} />
+            {!hasAccounts ? (
+              <NoAccountsPrompt />
+            ) : (
+              <>
+                <TransactionForm type="investment" categories={state.savedCategories.investment} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('investment', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('investment', cat)} availableForTransfer={getAvailableInvestment()} onTransferToBalance={handleTransferFromInvestment} />
+                <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('investment', amount)} />
+              </>
+            )}
             <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="savings" className="space-y-4">
-            <TransactionForm type="savings" categories={state.savedCategories.savings} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('savings', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('savings', cat)} availableForTransfer={getAvailableSavings()} onTransferToBalance={handleTransferFromSavings} />
-            <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('savings', amount)} />
+            {!hasAccounts ? (
+              <NoAccountsPrompt />
+            ) : (
+              <>
+                <TransactionForm type="savings" categories={state.savedCategories.savings} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('savings', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('savings', cat)} availableForTransfer={getAvailableSavings()} onTransferToBalance={handleTransferFromSavings} />
+                <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('savings', amount)} />
+              </>
+            )}
             <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="categories" className="space-y-4">
