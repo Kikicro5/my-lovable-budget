@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import { TrendingUp, TrendingDown, LineChart, PiggyBank } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface BalanceCardProps {
   balance: number;
@@ -22,6 +23,7 @@ export const BalanceCard = ({
   const isPositive = balance >= 0;
   const totalInvestment = investment + investmentFromPrevious;
   const { t } = useLanguage();
+  const { formatAmount, currencySymbol } = useCurrency();
 
   return (
     <div className="bg-card rounded-2xl p-6 shadow-card animate-slide-up">
@@ -34,10 +36,7 @@ export const BalanceCard = ({
           isPositive ? 'text-income' : 'text-expense'
         )}
       >
-        {balance.toLocaleString('hr-HR', {
-          style: 'currency',
-          currency: 'EUR',
-        })}
+        {formatAmount(balance)}
       </h2>
       
       <div className="grid grid-cols-2 gap-4">
@@ -48,7 +47,7 @@ export const BalanceCard = ({
           <div>
             <p className="text-xs text-muted-foreground">{t('balance.income')}</p>
             <p className="text-sm font-semibold text-income">
-              +{income.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+              +{income.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
             </p>
           </div>
         </div>
@@ -60,7 +59,7 @@ export const BalanceCard = ({
           <div>
             <p className="text-xs text-muted-foreground">{t('balance.expense')}</p>
             <p className="text-sm font-semibold text-expense">
-              -{expense.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+              -{expense.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
             </p>
           </div>
         </div>
@@ -72,7 +71,7 @@ export const BalanceCard = ({
           <div>
             <p className="text-xs text-muted-foreground">{t('balance.investment')}</p>
             <p className="text-sm font-semibold text-primary">
-              {totalInvestment.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+              {totalInvestment.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
             </p>
           </div>
         </div>
@@ -84,7 +83,7 @@ export const BalanceCard = ({
           <div>
             <p className="text-xs text-muted-foreground">{t('balance.savings')}</p>
             <p className="text-sm font-semibold text-accent">
-              {savings.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+              {savings.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
             </p>
           </div>
         </div>
