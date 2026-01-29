@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { Progress } from '@/components/ui/progress';
 import { AlertTriangle, TrendingDown } from 'lucide-react';
 
@@ -11,6 +12,7 @@ interface BudgetProgressProps {
 
 export const BudgetProgress = ({ spent, limit, type }: BudgetProgressProps) => {
   const { t } = useLanguage();
+  const { currencySymbol } = useCurrency();
   
   if (limit <= 0) return null;
   
@@ -68,16 +70,16 @@ export const BudgetProgress = ({ spent, limit, type }: BudgetProgressProps) => {
       
       <div className="flex items-center justify-between text-xs">
         <span className={cn('font-medium', getStatusColor())}>
-          {t('limits.spent')}: {spent.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+          {t('limits.spent')}: {spent.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
         </span>
         <span className="text-muted-foreground">
-          {t('limits.of')} {limit.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+          {t('limits.of')} {limit.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
         </span>
       </div>
       
       {!isExceeded && (
         <div className="mt-1 text-xs text-muted-foreground">
-          {t('limits.remaining')}: {remaining.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+          {t('limits.remaining')}: {remaining.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
         </div>
       )}
     </div>

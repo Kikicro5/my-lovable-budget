@@ -8,11 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from '@/hooks/use-toast';
 import { Plus, Wallet, Trash2, Edit2, Check, X, ArrowRightLeft } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { cn } from '@/lib/utils';
 
 const Accounts = () => {
   const { state, addAccount, removeAccount, updateAccount, transferBetweenAccounts } = useBudget();
   const { t } = useLanguage();
+  const { currencySymbol } = useCurrency();
   const [newAccountName, setNewAccountName] = useState('');
   const [newAccountBalance, setNewAccountBalance] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -94,7 +96,7 @@ const Accounts = () => {
       const toAccount = state.accounts?.find((a) => a.id === toAccountId);
       toast({
         title: t('accounts.transferSuccess'),
-        description: `${amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} € (${fromAccount?.name} → ${toAccount?.name})`,
+        description: `${amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} ${currencySymbol} (${fromAccount?.name} → ${toAccount?.name})`,
       });
       setFromAccountId('');
       setToAccountId('');
@@ -133,7 +135,7 @@ const Accounts = () => {
                 <div>
                   <p className="text-sm text-muted-foreground">{t('accounts.totalBalance')}</p>
                   <p className="text-xl font-bold text-foreground">
-                    {totalBalance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+                    {totalBalance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
                   </p>
                 </div>
               </div>
@@ -199,7 +201,7 @@ const Accounts = () => {
                             <div className="flex justify-between items-center gap-2">
                               <span>{acc.name}</span>
                               <span className="text-xs text-muted-foreground">
-                                ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €)
+                                ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
                               </span>
                             </div>
                           </SelectItem>
@@ -219,7 +221,7 @@ const Accounts = () => {
                             <div className="flex justify-between items-center gap-2">
                               <span>{acc.name}</span>
                               <span className="text-xs text-muted-foreground">
-                                ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €)
+                                ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
                               </span>
                             </div>
                           </SelectItem>
@@ -299,7 +301,7 @@ const Accounts = () => {
                               "text-sm",
                               account.balance >= 0 ? "text-income" : "text-expense"
                             )}>
-                              {account.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €
+                              {account.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
                             </p>
                           </div>
                         </div>

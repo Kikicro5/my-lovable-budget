@@ -7,6 +7,7 @@ import { Calendar, ChevronRight, TrendingUp, TrendingDown, Wallet, Download, Tra
 import { cn } from '@/lib/utils';
 import { MonthCard } from '@/components/MonthCard';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { Button } from '@/components/ui/button';
 import { exportBudgetToPDF } from '@/utils/exportPdf';
 import { toast } from '@/hooks/use-toast';
@@ -26,6 +27,7 @@ const Archive = () => {
   const { getPastBudgets, getBalance, getTotalIncome, getTotalExpense, removeTransaction, removeBudget } = useBudget();
   const [selectedBudget, setSelectedBudget] = useState<MonthlyBudget | null>(null);
   const { t } = useLanguage();
+  const { currencySymbol } = useCurrency();
   const pastBudgets = getPastBudgets();
 
   const handleExportPDF = (budget: MonthlyBudget, e?: React.MouseEvent) => {
@@ -117,9 +119,9 @@ const Archive = () => {
           <div className="mb-4"><MonthCard month={selectedBudget.month} year={selectedBudget.year} /></div>
           <div className="bg-card rounded-xl p-5 shadow-soft mb-4 animate-fade-in">
             <div className="grid grid-cols-3 gap-4 text-center">
-              <div><p className="text-xs text-muted-foreground mb-1">{t('balance.income')}</p><p className="text-lg font-semibold text-income">+{income.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €</p></div>
-              <div><p className="text-xs text-muted-foreground mb-1">{t('balance.expense')}</p><p className="text-lg font-semibold text-expense">-{expense.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €</p></div>
-              <div><p className="text-xs text-muted-foreground mb-1">{t('balance.current')}</p><p className={cn('text-lg font-semibold', balance >= 0 ? 'text-income' : 'text-expense')}>{balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €</p></div>
+              <div><p className="text-xs text-muted-foreground mb-1">{t('balance.income')}</p><p className="text-lg font-semibold text-income">+{income.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}</p></div>
+              <div><p className="text-xs text-muted-foreground mb-1">{t('balance.expense')}</p><p className="text-lg font-semibold text-expense">-{expense.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}</p></div>
+              <div><p className="text-xs text-muted-foreground mb-1">{t('balance.current')}</p><p className={cn('text-lg font-semibold', balance >= 0 ? 'text-income' : 'text-expense')}>{balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}</p></div>
             </div>
           </div>
           <TransactionList title={t('transaction.allTransactions')} transactions={selectedBudget.transactions} onRemove={removeTransaction} />
@@ -185,9 +187,9 @@ const Archive = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-income-light"><TrendingUp className="w-3 h-3 text-income" /></div><span className="text-sm text-income font-medium">+{income.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} €</span></div>
-                    <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-expense-light"><TrendingDown className="w-3 h-3 text-expense" /></div><span className="text-sm text-expense font-medium">-{expense.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} €</span></div>
-                    <div className="flex items-center gap-2"><div className={cn('p-1.5 rounded-lg', balance >= 0 ? 'bg-income-light' : 'bg-expense-light')}><Wallet className={cn('w-3 h-3', balance >= 0 ? 'text-income' : 'text-expense')} /></div><span className={cn('text-sm font-medium', balance >= 0 ? 'text-income' : 'text-expense')}>{balance.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} €</span></div>
+                    <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-income-light"><TrendingUp className="w-3 h-3 text-income" /></div><span className="text-sm text-income font-medium">+{income.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
+                    <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-expense-light"><TrendingDown className="w-3 h-3 text-expense" /></div><span className="text-sm text-expense font-medium">-{expense.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
+                    <div className="flex items-center gap-2"><div className={cn('p-1.5 rounded-lg', balance >= 0 ? 'bg-income-light' : 'bg-expense-light')}><Wallet className={cn('w-3 h-3', balance >= 0 ? 'text-income' : 'text-expense')} /></div><span className={cn('text-sm font-medium', balance >= 0 ? 'text-income' : 'text-expense')}>{balance.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
                   </div>
                 </div>
               );

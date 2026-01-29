@@ -9,6 +9,7 @@ import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank, ArrowRightLeft
 import { cn } from '@/lib/utils';
 import { Category, Account } from '@/types/budget';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface TransactionFormProps {
   type: 'income' | 'expense' | 'investment' | 'savings';
@@ -78,6 +79,7 @@ export const TransactionForm = ({
   const [transferAmount, setTransferAmount] = useState('');
   const [insufficientBalance, setInsufficientBalance] = useState(false);
   const { t } = useLanguage();
+  const { currencySymbol } = useCurrency();
 
   const config = typeConfig[type];
   const Icon = config.icon;
@@ -266,7 +268,7 @@ export const TransactionForm = ({
                     <div className="flex justify-between items-center gap-2">
                       <span>{acc.name}</span>
                       <span className="text-xs text-muted-foreground">
-                        ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €)
+                        ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
                       </span>
                     </div>
                   </SelectItem>
@@ -303,7 +305,7 @@ export const TransactionForm = ({
           <div className="flex items-center gap-2 mb-2">
             <ArrowRightLeft className="w-4 h-4 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">
-              {t('transfer.toBalance')} ({t('transfer.available')}: {availableForTransfer.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €)
+              {t('transfer.toBalance')} ({t('transfer.available')}: {availableForTransfer.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
             </span>
           </div>
           <div className="flex gap-2">
