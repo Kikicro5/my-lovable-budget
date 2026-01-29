@@ -5,8 +5,26 @@ export const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Početna',
     'nav.monthly': 'Mjesečno',
+    'nav.accounts': 'Računi',
     'nav.archive': 'Arhiva',
     'nav.options': 'Opcije',
+
+    // Accounts
+    'accounts.title': 'Računi',
+    'accounts.description': 'Upravljaj bankovnim računima i novčanicima',
+    'accounts.add': 'Dodaj račun',
+    'accounts.addDescription': 'Dodaj novi bankovni račun ili novčanik',
+    'accounts.name': 'Naziv računa',
+    'accounts.balance': 'Stanje (€)',
+    'accounts.list': 'Moji računi',
+    'accounts.empty': 'Nema dodanih računa',
+    'accounts.added': 'Račun dodan',
+    'accounts.removed': 'Račun uklonjen',
+    'accounts.updated': 'Račun ažuriran',
+    'accounts.totalBalance': 'Ukupno stanje',
+    'accounts.selectAccount': 'Odaberi račun',
+    'accounts.noAccount': 'Bez računa',
+    'transaction.selectAccount': 'Odaberi račun',
 
     // Month names
     'month.0': 'Siječanj',
@@ -175,8 +193,26 @@ export const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Home',
     'nav.monthly': 'Monthly',
+    'nav.accounts': 'Accounts',
     'nav.archive': 'Archive',
     'nav.options': 'Options',
+
+    // Accounts
+    'accounts.title': 'Accounts',
+    'accounts.description': 'Manage bank accounts and wallets',
+    'accounts.add': 'Add account',
+    'accounts.addDescription': 'Add a new bank account or wallet',
+    'accounts.name': 'Account name',
+    'accounts.balance': 'Balance (€)',
+    'accounts.list': 'My accounts',
+    'accounts.empty': 'No accounts added',
+    'accounts.added': 'Account added',
+    'accounts.removed': 'Account removed',
+    'accounts.updated': 'Account updated',
+    'accounts.totalBalance': 'Total balance',
+    'accounts.selectAccount': 'Select account',
+    'accounts.noAccount': 'No account',
+    'transaction.selectAccount': 'Select account',
 
     // Month names
     'month.0': 'January',
@@ -345,8 +381,26 @@ export const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Startseite',
     'nav.monthly': 'Monatlich',
+    'nav.accounts': 'Konten',
     'nav.archive': 'Archiv',
     'nav.options': 'Optionen',
+
+    // Accounts
+    'accounts.title': 'Konten',
+    'accounts.description': 'Verwalten Sie Bankkonten und Geldbörsen',
+    'accounts.add': 'Konto hinzufügen',
+    'accounts.addDescription': 'Neues Bankkonto oder Geldbörse hinzufügen',
+    'accounts.name': 'Kontoname',
+    'accounts.balance': 'Kontostand (€)',
+    'accounts.list': 'Meine Konten',
+    'accounts.empty': 'Keine Konten hinzugefügt',
+    'accounts.added': 'Konto hinzugefügt',
+    'accounts.removed': 'Konto entfernt',
+    'accounts.updated': 'Konto aktualisiert',
+    'accounts.totalBalance': 'Gesamtkontostand',
+    'accounts.selectAccount': 'Konto auswählen',
+    'accounts.noAccount': 'Kein Konto',
+    'transaction.selectAccount': 'Konto auswählen',
 
     // Month names
     'month.0': 'Januar',
@@ -515,8 +569,26 @@ export const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Strona główna',
     'nav.monthly': 'Miesięcznie',
+    'nav.accounts': 'Konta',
     'nav.archive': 'Archiwum',
     'nav.options': 'Opcje',
+
+    // Accounts
+    'accounts.title': 'Konta',
+    'accounts.description': 'Zarządzaj kontami bankowymi i portfelami',
+    'accounts.add': 'Dodaj konto',
+    'accounts.addDescription': 'Dodaj nowe konto bankowe lub portfel',
+    'accounts.name': 'Nazwa konta',
+    'accounts.balance': 'Saldo (€)',
+    'accounts.list': 'Moje konta',
+    'accounts.empty': 'Brak dodanych kont',
+    'accounts.added': 'Konto dodane',
+    'accounts.removed': 'Konto usunięte',
+    'accounts.updated': 'Konto zaktualizowane',
+    'accounts.totalBalance': 'Saldo całkowite',
+    'accounts.selectAccount': 'Wybierz konto',
+    'accounts.noAccount': 'Brak konta',
+    'transaction.selectAccount': 'Wybierz konto',
 
     // Month names
     'month.0': 'Styczeń',
@@ -685,8 +757,26 @@ export const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Inicio',
     'nav.monthly': 'Mensual',
+    'nav.accounts': 'Cuentas',
     'nav.archive': 'Archivo',
     'nav.options': 'Opciones',
+
+    // Accounts
+    'accounts.title': 'Cuentas',
+    'accounts.description': 'Gestiona cuentas bancarias y billeteras',
+    'accounts.add': 'Añadir cuenta',
+    'accounts.addDescription': 'Añadir nueva cuenta bancaria o billetera',
+    'accounts.name': 'Nombre de cuenta',
+    'accounts.balance': 'Saldo (€)',
+    'accounts.list': 'Mis cuentas',
+    'accounts.empty': 'No hay cuentas añadidas',
+    'accounts.added': 'Cuenta añadida',
+    'accounts.removed': 'Cuenta eliminada',
+    'accounts.updated': 'Cuenta actualizada',
+    'accounts.totalBalance': 'Saldo total',
+    'accounts.selectAccount': 'Seleccionar cuenta',
+    'accounts.noAccount': 'Sin cuenta',
+    'transaction.selectAccount': 'Seleccionar cuenta',
 
     // Month names
     'month.0': 'Enero',
@@ -855,8 +945,26 @@ export const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Accueil',
     'nav.monthly': 'Mensuel',
+    'nav.accounts': 'Comptes',
     'nav.archive': 'Archives',
     'nav.options': 'Options',
+
+    // Accounts
+    'accounts.title': 'Comptes',
+    'accounts.description': 'Gérer les comptes bancaires et portefeuilles',
+    'accounts.add': 'Ajouter un compte',
+    'accounts.addDescription': 'Ajouter un nouveau compte bancaire ou portefeuille',
+    'accounts.name': 'Nom du compte',
+    'accounts.balance': 'Solde (€)',
+    'accounts.list': 'Mes comptes',
+    'accounts.empty': 'Aucun compte ajouté',
+    'accounts.added': 'Compte ajouté',
+    'accounts.removed': 'Compte supprimé',
+    'accounts.updated': 'Compte mis à jour',
+    'accounts.totalBalance': 'Solde total',
+    'accounts.selectAccount': 'Sélectionner un compte',
+    'accounts.noAccount': 'Aucun compte',
+    'transaction.selectAccount': 'Sélectionner un compte',
 
     // Month names
     'month.0': 'Janvier',

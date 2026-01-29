@@ -9,6 +9,7 @@ import InstallPrompt from "@/components/InstallPrompt";
 import { AdMobBanner } from "@/components/AdMobBanner";
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
+import Accounts from "./pages/Accounts";
 import Archive from "./pages/Archive";
 import Options from "./pages/Options";
 import Install from "./pages/Install";
@@ -29,6 +30,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/monthly" element={<Monthly />} />
+              <Route path="/accounts" element={<Accounts />} />
               <Route path="/archive" element={<Archive />} />
               <Route path="/options" element={<Options />} />
               <Route path="/install" element={<Install />} />

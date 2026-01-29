@@ -1,3 +1,9 @@
+export interface Account {
+  id: string;
+  name: string;
+  balance: number;
+}
+
 export interface Transaction {
   id: string;
   name: string;
@@ -5,6 +11,7 @@ export interface Transaction {
   type: 'income' | 'expense' | 'investment' | 'savings';
   category: string;
   date: string;
+  accountId?: string;
   isFromPreviousPeriod?: boolean;
   isWithdrawal?: boolean;
 }
@@ -56,4 +63,5 @@ export interface BudgetState {
   };
   defaultLimits: BudgetLimits;
   recurringTransactions: RecurringTransaction[];
+  accounts: Account[];
 }

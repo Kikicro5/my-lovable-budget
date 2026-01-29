@@ -5,15 +5,16 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank, ArrowRightLeft, CalendarIcon } from 'lucide-react';
+import { Plus, TrendingUp, TrendingDown, X, LineChart, PiggyBank, ArrowRightLeft, CalendarIcon, Wallet } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Category } from '@/types/budget';
+import { Category, Account } from '@/types/budget';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 interface TransactionFormProps {
   type: 'income' | 'expense' | 'investment' | 'savings';
   categories: Category[];
-  onSubmit: (name: string, amount: number, category: string, date: Date) => void;
+  accounts?: Account[];
+  onSubmit: (name: string, amount: number, category: string, date: Date, accountId?: string) => void;
   onAddCategory: (category: Category) => void;
   availableForTransfer?: number;
   onTransferToBalance?: (amount: number) => void;
@@ -61,6 +62,7 @@ const typeConfig = {
 export const TransactionForm = ({
   type,
   categories,
+  accounts = [],
   onSubmit,
   onAddCategory,
   availableForTransfer = 0,
@@ -68,6 +70,7 @@ export const TransactionForm = ({
 }: TransactionFormProps) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
+  const [accountId, setAccountId] = useState('');
   const [date, setDate] = useState<Date>(new Date());
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
@@ -83,9 +86,10 @@ export const TransactionForm = ({
     e.preventDefault();
     if (!amount || !category) return;
 
-    onSubmit(category, parseFloat(amount), category, date);
+    onSubmit(category, parseFloat(amount), category, date, accountId || undefined);
     setAmount('');
     setCategory('');
+    setAccountId('');
     setDate(new Date());
   };
 
@@ -223,6 +227,30 @@ export const TransactionForm = ({
             >
               <Plus className="w-4 h-4" />
             </Button>
+          </div>
+        )}
+
+        {accounts.length > 0 && (
+          <div className="flex items-center gap-2">
+            <Wallet className="w-4 h-4 text-muted-foreground" />
+            <Select value={accountId} onValueChange={setAccountId}>
+              <SelectTrigger className="bg-card border-border flex-1">
+                <SelectValue placeholder={t('transaction.selectAccount')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">{t('accounts.noAccount')}</SelectItem>
+                {accounts.map((acc) => (
+                  <SelectItem key={acc.id} value={acc.id}>
+                    <div className="flex justify-between items-center gap-2">
+                      <span>{acc.name}</span>
+                      <span className="text-xs text-muted-foreground">
+                        ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €)
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         )}
 
