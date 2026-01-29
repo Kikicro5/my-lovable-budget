@@ -196,6 +196,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Vrijeme podsjetnika',
     'notifications.budgetWarnings': 'Upozorenja o budžetu',
     'notifications.permissionRequired': 'Potrebna je dozvola za obavijesti.',
+    'notifications.notSupported': 'Web Push obavijesti nisu podržane u ovom pregledniku.',
+    'notifications.blocked': 'Obavijesti su blokirane',
+    'notifications.blockedHint': 'Klikni na ikonu lokota u adresnoj traci preglednika → Dozvole → Obavijesti → Dopusti',
+    'notifications.requestAgain': 'Zatraži dozvolu ponovno',
+    'notifications.enableFailed': 'Nije moguće uključiti obavijesti. Provjeri dozvole preglednika.',
+    'notifications.permissionGranted': 'Dozvola za obavijesti odobrena!',
+    'notifications.permissionDenied': 'Dozvola za obavijesti odbijena.',
+    'notifications.dailyReminderNote': 'Napomena: Dnevni podsjetnik radi samo dok je aplikacija otvorena u pregledniku.',
 
     // Install
     'install.title': 'Instaliraj aplikaciju',
@@ -428,6 +436,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Reminder time',
     'notifications.budgetWarnings': 'Budget warnings',
     'notifications.permissionRequired': 'Notification permission required.',
+    'notifications.notSupported': 'Web Push notifications are not supported in this browser.',
+    'notifications.blocked': 'Notifications are blocked',
+    'notifications.blockedHint': 'Click the lock icon in the browser address bar → Permissions → Notifications → Allow',
+    'notifications.requestAgain': 'Request permission again',
+    'notifications.enableFailed': 'Unable to enable notifications. Check browser permissions.',
+    'notifications.permissionGranted': 'Notification permission granted!',
+    'notifications.permissionDenied': 'Notification permission denied.',
+    'notifications.dailyReminderNote': 'Note: Daily reminder only works while the app is open in the browser.',
 
     // Install
     'install.title': 'Install App',
@@ -657,6 +673,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Erinnerungszeit',
     'notifications.budgetWarnings': 'Budgetwarnungen',
     'notifications.permissionRequired': 'Benachrichtigungsberechtigung erforderlich.',
+    'notifications.notSupported': 'Web Push Benachrichtigungen werden in diesem Browser nicht unterstützt.',
+    'notifications.blocked': 'Benachrichtigungen sind blockiert',
+    'notifications.blockedHint': 'Klicke auf das Schloss-Symbol in der Adressleiste → Berechtigungen → Benachrichtigungen → Zulassen',
+    'notifications.requestAgain': 'Berechtigung erneut anfordern',
+    'notifications.enableFailed': 'Benachrichtigungen konnten nicht aktiviert werden. Überprüfe die Browser-Berechtigungen.',
+    'notifications.permissionGranted': 'Benachrichtigungsberechtigung erteilt!',
+    'notifications.permissionDenied': 'Benachrichtigungsberechtigung verweigert.',
+    'notifications.dailyReminderNote': 'Hinweis: Die tägliche Erinnerung funktioniert nur, wenn die App im Browser geöffnet ist.',
 
     // Install
     'install.title': 'App installieren',
@@ -878,6 +902,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Czas przypomnienia',
     'notifications.budgetWarnings': 'Ostrzeżenia o budżecie',
     'notifications.permissionRequired': 'Wymagana zgoda na powiadomienia.',
+    'notifications.notSupported': 'Powiadomienia Web Push nie są obsługiwane w tej przeglądarce.',
+    'notifications.blocked': 'Powiadomienia są zablokowane',
+    'notifications.blockedHint': 'Kliknij ikonę kłódki na pasku adresu → Uprawnienia → Powiadomienia → Zezwól',
+    'notifications.requestAgain': 'Poproś ponownie o zgodę',
+    'notifications.enableFailed': 'Nie można włączyć powiadomień. Sprawdź uprawnienia przeglądarki.',
+    'notifications.permissionGranted': 'Zgoda na powiadomienia udzielona!',
+    'notifications.permissionDenied': 'Zgoda na powiadomienia odrzucona.',
+    'notifications.dailyReminderNote': 'Uwaga: Codzienne przypomnienie działa tylko gdy aplikacja jest otwarta w przeglądarce.',
 
     // Install
     'install.title': 'Zainstaluj aplikację',
@@ -1099,6 +1131,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Hora del recordatorio',
     'notifications.budgetWarnings': 'Alertas de presupuesto',
     'notifications.permissionRequired': 'Se requiere permiso de notificaciones.',
+    'notifications.notSupported': 'Las notificaciones Web Push no son compatibles con este navegador.',
+    'notifications.blocked': 'Las notificaciones están bloqueadas',
+    'notifications.blockedHint': 'Haz clic en el icono del candado en la barra de direcciones → Permisos → Notificaciones → Permitir',
+    'notifications.requestAgain': 'Solicitar permiso nuevamente',
+    'notifications.enableFailed': 'No se pueden habilitar las notificaciones. Verifica los permisos del navegador.',
+    'notifications.permissionGranted': '¡Permiso de notificaciones concedido!',
+    'notifications.permissionDenied': 'Permiso de notificaciones denegado.',
+    'notifications.dailyReminderNote': 'Nota: El recordatorio diario solo funciona mientras la aplicación está abierta en el navegador.',
 
     // Install
     'install.title': 'Instalar aplicación',
@@ -1320,6 +1360,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'Heure du rappel',
     'notifications.budgetWarnings': 'Alertes de budget',
     'notifications.permissionRequired': 'Autorisation de notification requise.',
+    'notifications.notSupported': 'Les notifications Web Push ne sont pas prises en charge dans ce navigateur.',
+    'notifications.blocked': 'Les notifications sont bloquées',
+    'notifications.blockedHint': 'Cliquez sur l\'icône du cadenas dans la barre d\'adresse → Autorisations → Notifications → Autoriser',
+    'notifications.requestAgain': 'Demander à nouveau l\'autorisation',
+    'notifications.enableFailed': 'Impossible d\'activer les notifications. Vérifiez les autorisations du navigateur.',
+    'notifications.permissionGranted': 'Autorisation de notification accordée!',
+    'notifications.permissionDenied': 'Autorisation de notification refusée.',
+    'notifications.dailyReminderNote': 'Remarque: Le rappel quotidien ne fonctionne que lorsque l\'application est ouverte dans le navigateur.',
 
     // Install
     'install.title': 'Installer l\'application',
@@ -1541,6 +1589,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': '提醒时间',
     'notifications.budgetWarnings': '预算警告',
     'notifications.permissionRequired': '需要通知权限。',
+    'notifications.notSupported': '此浏览器不支持 Web Push 通知。',
+    'notifications.blocked': '通知已被阻止',
+    'notifications.blockedHint': '点击浏览器地址栏中的锁图标 → 权限 → 通知 → 允许',
+    'notifications.requestAgain': '再次请求权限',
+    'notifications.enableFailed': '无法启用通知。请检查浏览器权限。',
+    'notifications.permissionGranted': '通知权限已授予！',
+    'notifications.permissionDenied': '通知权限被拒绝。',
+    'notifications.dailyReminderNote': '注意：每日提醒仅在应用程序在浏览器中打开时有效。',
 
     // Install
     'install.title': '安装应用',
@@ -1762,6 +1818,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'notifications.reminderTime': 'अनुस्मारक समय',
     'notifications.budgetWarnings': 'बजट चेतावनियाँ',
     'notifications.permissionRequired': 'सूचना अनुमति आवश्यक।',
+    'notifications.notSupported': 'इस ब्राउज़र में Web Push सूचनाएं समर्थित नहीं हैं।',
+    'notifications.blocked': 'सूचनाएं अवरुद्ध हैं',
+    'notifications.blockedHint': 'ब्राउज़र पता बार में लॉक आइकन पर क्लिक करें → अनुमतियाँ → सूचनाएं → अनुमति दें',
+    'notifications.requestAgain': 'फिर से अनुमति मांगें',
+    'notifications.enableFailed': 'सूचनाएं सक्षम करने में असमर्थ। ब्राउज़र अनुमतियाँ जांचें।',
+    'notifications.permissionGranted': 'सूचना अनुमति प्रदान की गई!',
+    'notifications.permissionDenied': 'सूचना अनुमति अस्वीकृत।',
+    'notifications.dailyReminderNote': 'नोट: दैनिक अनुस्मारक केवल तभी काम करता है जब ऐप ब्राउज़र में खुला हो।',
 
     // Install
     'install.title': 'ऐप इंस्टॉल करें',

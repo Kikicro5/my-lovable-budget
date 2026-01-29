@@ -22,17 +22,16 @@ export const WebPushNotificationSettings = () => {
   const handleEnableNotifications = async (enabled: boolean) => {
     const success = await updateSettings({ enabled });
     if (!success && enabled) {
-      toast.error('Nije moguće uključiti obavijesti. Provjeri dozvole preglednika.');
+      toast.error(t('notifications.enableFailed'));
     }
   };
-
 
   const handleRequestPermission = async () => {
     const granted = await requestPermission();
     if (granted) {
-      toast.success('Dozvola za obavijesti odobrena!');
+      toast.success(t('notifications.permissionGranted'));
     } else {
-      toast.error('Dozvola za obavijesti odbijena.');
+      toast.error(t('notifications.permissionDenied'));
     }
   };
 
@@ -40,7 +39,7 @@ export const WebPushNotificationSettings = () => {
     return (
       <div className="flex items-center gap-2 text-muted-foreground">
         <AlertTriangle className="w-4 h-4" />
-        <p className="text-sm">Web Push notifikacije nisu podržane u ovom pregledniku.</p>
+        <p className="text-sm">{t('notifications.notSupported')}</p>
       </div>
     );
   }
@@ -52,13 +51,13 @@ export const WebPushNotificationSettings = () => {
         <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 space-y-2">
           <div className="flex items-center gap-2 text-destructive">
             <AlertTriangle className="w-4 h-4" />
-            <p className="text-sm font-medium">Obavijesti su blokirane</p>
+            <p className="text-sm font-medium">{t('notifications.blocked')}</p>
           </div>
           <p className="text-xs text-muted-foreground">
-            Klikni na ikonu lokota u adresnoj traci preglednika → Dozvole → Obavijesti → Dopusti
+            {t('notifications.blockedHint')}
           </p>
           <Button variant="outline" size="sm" onClick={handleRequestPermission}>
-            Zatraži dozvolu ponovno
+            {t('notifications.requestAgain')}
           </Button>
         </div>
       )}
@@ -118,10 +117,9 @@ export const WebPushNotificationSettings = () => {
             </div>
           )}
 
-          {/* Note about daily reminders */}
           {settings.dailyReminder && (
             <p className="text-xs text-muted-foreground pl-6">
-              Napomena: Dnevni podsjetnik radi samo dok je aplikacija otvorena u pregledniku.
+              {t('notifications.dailyReminderNote')}
             </p>
           )}
 
