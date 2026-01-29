@@ -112,12 +112,17 @@ export const TransactionList = ({
                 config.bgClass
               )}
             >
-              <div className="flex items-center gap-3">
-                <div className={cn('p-2 rounded-lg', config.iconBgClass)}>
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className={cn('p-2 rounded-lg shrink-0', config.iconBgClass)}>
                   <Icon className={cn('w-4 h-4', config.iconTextClass)} />
                 </div>
-                <div>
-                  <p className="font-medium text-foreground">{transaction.name}</p>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium text-foreground truncate">{transaction.name}</p>
+                    <span className="text-xs text-muted-foreground shrink-0">
+                      {new Date(transaction.date).toLocaleDateString('hr-HR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                    </span>
+                  </div>
                   <p className="text-xs text-muted-foreground">{transaction.category}</p>
                 </div>
               </div>
