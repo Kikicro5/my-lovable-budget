@@ -232,7 +232,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reminder.empty': 'Nema aktivnih podsjetnika',
 
     // Chart
-    'chart.yearlyExpenses': 'Rashodi po mjesecima',
+    'chart.yearlyOverview': 'Pregled po mjesecima',
+    'chart.income': 'Prihodi',
+    'chart.expenses': 'Rashodi',
     'chart.month.0': 'Sij',
     'chart.month.1': 'Velj',
     'chart.month.2': 'Ožu',
@@ -478,7 +480,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reminder.empty': 'No active reminders',
 
     // Chart
-    'chart.yearlyExpenses': 'Expenses by month',
+    'chart.yearlyOverview': 'Monthly overview',
+    'chart.income': 'Income',
+    'chart.expenses': 'Expenses',
     'chart.month.0': 'Jan',
     'chart.month.1': 'Feb',
     'chart.month.2': 'Mar',
@@ -710,7 +714,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.success': 'App wurde zurückgesetzt',
 
     // Chart
-    'chart.yearlyExpenses': 'Ausgaben nach Monat',
+    'chart.yearlyOverview': 'Monatsübersicht',
+    'chart.income': 'Einnahmen',
+    'chart.expenses': 'Ausgaben',
     'chart.month.0': 'Jan',
     'chart.month.1': 'Feb',
     'chart.month.2': 'Mär',
@@ -945,7 +951,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.success': 'Aplikacja została zresetowana',
 
     // Chart
-    'chart.yearlyExpenses': 'Wydatki miesięczne',
+    'chart.yearlyOverview': 'Przegląd miesięczny',
+    'chart.income': 'Przychody',
+    'chart.expenses': 'Wydatki',
     'chart.month.0': 'Sty',
     'chart.month.1': 'Lut',
     'chart.month.2': 'Mar',
@@ -1180,7 +1188,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.success': 'La aplicación ha sido restablecida',
 
     // Chart
-    'chart.yearlyExpenses': 'Gastos por mes',
+    'chart.yearlyOverview': 'Resumen mensual',
+    'chart.income': 'Ingresos',
+    'chart.expenses': 'Gastos',
     'chart.month.0': 'Ene',
     'chart.month.1': 'Feb',
     'chart.month.2': 'Mar',
@@ -1415,7 +1425,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.success': 'L\'application a été réinitialisée',
 
     // Chart
-    'chart.yearlyExpenses': 'Dépenses par mois',
+    'chart.yearlyOverview': 'Aperçu mensuel',
+    'chart.income': 'Revenus',
+    'chart.expenses': 'Dépenses',
     'chart.month.0': 'Jan',
     'chart.month.1': 'Fév',
     'chart.month.2': 'Mar',
@@ -1650,7 +1662,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.success': '应用已重置',
 
     // Chart
-    'chart.yearlyExpenses': '按月支出',
+    'chart.yearlyOverview': '月度概览',
+    'chart.income': '收入',
+    'chart.expenses': '支出',
     'chart.month.0': '1月',
     'chart.month.1': '2月',
     'chart.month.2': '3月',
@@ -1885,7 +1899,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.success': 'ऐप रीसेट हो गया',
 
     // Chart
-    'chart.yearlyExpenses': 'मासिक व्यय',
+    'chart.yearlyOverview': 'मासिक अवलोकन',
+    'chart.income': 'आय',
+    'chart.expenses': 'व्यय',
     'chart.month.0': 'जन',
     'chart.month.1': 'फर',
     'chart.month.2': 'मार्च',
