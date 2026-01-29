@@ -1,4 +1,4 @@
-export type Language = 'hr' | 'en' | 'de' | 'pl' | 'es' | 'fr';
+export type Language = 'hr' | 'en' | 'de' | 'pl' | 'es' | 'fr' | 'zh' | 'hi';
 
 export const translations: Record<Language, Record<string, string>> = {
   hr: {
@@ -1320,6 +1320,446 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Cette action supprimera définitivement toutes vos transactions, comptes, catégories et paramètres. Cette action est irréversible.',
     'reset.success': 'L\'application a été réinitialisée',
   },
+
+  zh: {
+    // Navigation
+    'nav.home': '首页',
+    'nav.monthly': '月度',
+    'nav.accounts': '账户',
+    'nav.archive': '存档',
+    'nav.options': '设置',
+
+    // Accounts
+    'accounts.title': '账户',
+    'accounts.description': '管理银行账户和钱包',
+    'accounts.add': '添加账户',
+    'accounts.addDescription': '添加新的银行账户或钱包',
+    'accounts.name': '账户名称',
+    'accounts.balance': '余额 (€)',
+    'accounts.list': '我的账户',
+    'accounts.empty': '暂无账户',
+    'accounts.added': '账户已添加',
+    'accounts.removed': '账户已删除',
+    'accounts.updated': '账户已更新',
+    'accounts.totalBalance': '总余额',
+    'accounts.selectAccount': '选择账户',
+    'accounts.noAccount': '无账户',
+    'accounts.required': '需要账户',
+    'accounts.requiredDescription': '请先添加至少一个账户再进行交易。',
+    'accounts.addFirst': '添加账户',
+    'accounts.transfer': '账户间转账',
+    'accounts.transferDescription': '在账户之间转移资金',
+    'accounts.from': '从账户',
+    'accounts.to': '到账户',
+    'accounts.transferAmount': '转账金额 (€)',
+    'accounts.transferButton': '转账',
+    'accounts.transferSuccess': '转账成功',
+    'accounts.transferFailed': '转账失败',
+    'accounts.insufficientFunds': '源账户余额不足',
+    'transaction.selectAccount': '选择账户',
+
+    // Month names
+    'month.0': '一月',
+    'month.1': '二月',
+    'month.2': '三月',
+    'month.3': '四月',
+    'month.4': '五月',
+    'month.5': '六月',
+    'month.6': '七月',
+    'month.7': '八月',
+    'month.8': '九月',
+    'month.9': '十月',
+    'month.10': '十一月',
+    'month.11': '十二月',
+
+    // Balance card
+    'balance.current': '当前余额',
+    'balance.income': '收入',
+    'balance.expense': '支出',
+    'balance.investment': '投资',
+    'balance.savings': '储蓄',
+
+    // Transactions
+    'transaction.add.income': '添加收入',
+    'transaction.add.expense': '添加支出',
+    'transaction.add.investment': '添加投资',
+    'transaction.add.savings': '添加储蓄',
+    'transaction.button.income': '收入',
+    'transaction.button.expense': '支出',
+    'transaction.button.investment': '投资',
+    'transaction.button.savings': '储蓄',
+    'transaction.amount': '金额 (€)',
+    'transaction.category': '类别',
+    'transaction.selectCategory': '选择类别',
+    'transaction.categoryName': '类别名称',
+    'transaction.categoryDesc': '类别描述（可选）',
+    'transaction.noTransactions': '暂无交易',
+    'transaction.lastTransactions': '最近交易',
+    'transaction.allTransactions': '所有交易',
+    'transaction.insufficientBalance': '所选账户余额不足',
+
+    // Quick expense
+    'quickExpense.title': '快速记账',
+    'quickExpense.add': '添加支出',
+
+    // Toasts
+    'toast.income.added': '收入已添加',
+    'toast.expense.added': '支出已添加',
+    'toast.investment.added': '投资已添加',
+    'toast.savings.added': '储蓄已添加',
+    'toast.transaction.removed': '交易已删除',
+    'toast.category.added': '类别已添加',
+    'toast.category.removed': '类别已删除',
+    'toast.balance.transferred': '余额已转移',
+    'toast.balance.transferFailed': '无法转移',
+    'toast.balance.alreadyTransferred': '余额已转移或无余额可转移',
+    'toast.balance.autoTransferred': '上月余额已自动转入',
+
+    // Monthly page
+    'monthly.income': '收入',
+    'monthly.expense': '支出',
+    'monthly.investment': '投资',
+    'monthly.savings': '储蓄',
+    'monthly.categories': '类别',
+    'monthly.incomeThisMonth': '本月收入',
+    'monthly.expenseThisMonth': '本月支出',
+    'monthly.investmentThisMonth': '本月投资',
+    'monthly.savingsThisMonth': '本月储蓄',
+    'monthly.carryOver': '从上月结转余额',
+    'monthly.fromPreviousPeriod': '上期结转',
+    'monthly.addFromPrevious': '添加',
+
+    // Categories
+    'category.income': '收入类别',
+    'category.expense': '支出类别',
+    'category.investment': '投资类别',
+    'category.savings': '储蓄类别',
+
+    // Archive
+    'archive.title': '存档',
+    'archive.subtitle': '浏览历史月份',
+    'archive.noArchived': '暂无存档月份',
+    'archive.willAppear': '过去的月份将自动显示在这里',
+    'archive.backToArchive': '返回存档',
+    'archive.deleted': '月份已删除',
+    'archive.deleteConfirm': '删除月份？',
+    'archive.deleteWarning': '此操作将永久删除以下月份的所有数据',
+
+    // Common
+    'common.cancel': '取消',
+    'common.delete': '删除',
+
+    // Dialog
+    'dialog.confirm': '确定吗？',
+    'dialog.deleteTransaction': '此操作将永久删除该交易',
+    'dialog.cancel': '取消',
+    'dialog.delete': '删除',
+
+    // Options
+    'options.title': '设置',
+    'options.language': '语言',
+    'options.theme': '主题',
+    'options.theme.light': '浅色',
+    'options.theme.dark': '深色',
+    'options.currency': '货币',
+    'currency.EUR': '欧元',
+    'currency.USD': '美元',
+    'currency.GBP': '英镑',
+    'currency.CNY': '人民币',
+    'currency.CAD': '加元',
+    'currency.PLN': '波兰兹罗提',
+    'currency.CZK': '捷克克朗',
+    'currency.HUF': '匈牙利福林',
+    'currency.SEK': '瑞典克朗',
+    'currency.INR': '印度卢比',
+
+    // PDF Export
+    'pdf.export': '下载PDF',
+    'pdf.summary': '摘要',
+    'pdf.transactions': '交易记录',
+    'pdf.name': '名称',
+    'pdf.type': '类型',
+    'pdf.date': '日期',
+
+    // Budget Limits
+    'limits.title': '月度限额',
+    'limits.description': '设置限额以跟踪支出和储蓄目标。',
+    'limits.expense': '支出限额',
+    'limits.investment': '投资限额',
+    'limits.savings': '储蓄目标',
+    'limits.set': '设置限额',
+    'limits.save': '保存',
+    'limits.noLimit': '无限额',
+    'limits.spent': '已花费',
+    'limits.of': '共',
+    'limits.warning': '接近限额！',
+    'limits.exceeded': '已超限额！',
+    'limits.remaining': '剩余',
+
+    // Recurring Transactions
+    'recurring.title': '定期交易',
+    'recurring.description': '每月1日自动添加的交易（如工资、账单、订阅）。',
+    'recurring.add': '添加定期交易',
+    'recurring.name': '交易名称',
+    'recurring.list': '活跃的定期交易',
+    'recurring.empty': '暂无定期交易',
+    'recurring.apply': '应用定期交易',
+    'recurring.applied': '定期交易已应用',
+    'recurring.alreadyApplied': '本月已应用',
+
+    // Notifications
+    'notifications.title': '通知',
+    'notifications.description': '设置支出提醒和预算警告。',
+    'notifications.enable': '启用通知',
+    'notifications.dailyReminder': '每日提醒',
+    'notifications.reminderTime': '提醒时间',
+    'notifications.budgetWarnings': '预算警告',
+    'notifications.permissionRequired': '需要通知权限。',
+
+    // Install
+    'install.title': '安装应用',
+    'install.settingsDescription': '将应用安装到设备以便快速访问。',
+    'install.openInstructions': '安装说明',
+
+    // Transfer
+    'transfer.toBalance': '转入余额',
+    'transfer.fromInvestment': '从投资转出',
+    'transfer.fromSavings': '从储蓄转出',
+    'transfer.available': '可用',
+    'transfer.enterAmount': '输入金额',
+    'transfer.exceedsAvailable': '金额超过可用余额',
+    'transfer.invalidAmount': '请输入有效金额',
+    'transfer.confirm': '转账',
+    'transfer.success': '资金已转入余额',
+
+    // Reset
+    'reset.title': '重置应用',
+    'reset.description': '删除所有数据并恢复默认设置。',
+    'reset.button': '全部重置',
+    'reset.confirm': '确定吗？',
+    'reset.warning': '此操作将永久删除您的所有交易、账户、类别和设置。此操作无法撤销。',
+    'reset.success': '应用已重置',
+  },
+
+  hi: {
+    // Navigation
+    'nav.home': 'होम',
+    'nav.monthly': 'मासिक',
+    'nav.accounts': 'खाते',
+    'nav.archive': 'संग्रह',
+    'nav.options': 'विकल्प',
+
+    // Accounts
+    'accounts.title': 'खाते',
+    'accounts.description': 'बैंक खाते और वॉलेट प्रबंधित करें',
+    'accounts.add': 'खाता जोड़ें',
+    'accounts.addDescription': 'नया बैंक खाता या वॉलेट जोड़ें',
+    'accounts.name': 'खाते का नाम',
+    'accounts.balance': 'शेष (€)',
+    'accounts.list': 'मेरे खाते',
+    'accounts.empty': 'कोई खाता नहीं जोड़ा गया',
+    'accounts.added': 'खाता जोड़ा गया',
+    'accounts.removed': 'खाता हटाया गया',
+    'accounts.updated': 'खाता अपडेट किया गया',
+    'accounts.totalBalance': 'कुल शेष',
+    'accounts.selectAccount': 'खाता चुनें',
+    'accounts.noAccount': 'कोई खाता नहीं',
+    'accounts.required': 'खाता आवश्यक',
+    'accounts.requiredDescription': 'लेनदेन दर्ज करने से पहले कृपया कम से कम एक खाता जोड़ें।',
+    'accounts.addFirst': 'खाता जोड़ें',
+    'accounts.transfer': 'खातों के बीच स्थानांतरण',
+    'accounts.transferDescription': 'एक खाते से दूसरे खाते में धन स्थानांतरित करें',
+    'accounts.from': 'खाते से',
+    'accounts.to': 'खाते में',
+    'accounts.transferAmount': 'स्थानांतरण राशि (€)',
+    'accounts.transferButton': 'धन स्थानांतरित करें',
+    'accounts.transferSuccess': 'स्थानांतरण सफल',
+    'accounts.transferFailed': 'स्थानांतरण विफल',
+    'accounts.insufficientFunds': 'स्रोत खाते में अपर्याप्त धन',
+    'transaction.selectAccount': 'खाता चुनें',
+
+    // Month names
+    'month.0': 'जनवरी',
+    'month.1': 'फ़रवरी',
+    'month.2': 'मार्च',
+    'month.3': 'अप्रैल',
+    'month.4': 'मई',
+    'month.5': 'जून',
+    'month.6': 'जुलाई',
+    'month.7': 'अगस्त',
+    'month.8': 'सितंबर',
+    'month.9': 'अक्टूबर',
+    'month.10': 'नवंबर',
+    'month.11': 'दिसंबर',
+
+    // Balance card
+    'balance.current': 'वर्तमान शेष',
+    'balance.income': 'आय',
+    'balance.expense': 'व्यय',
+    'balance.investment': 'निवेश',
+    'balance.savings': 'बचत',
+
+    // Transactions
+    'transaction.add.income': 'आय जोड़ें',
+    'transaction.add.expense': 'व्यय जोड़ें',
+    'transaction.add.investment': 'निवेश जोड़ें',
+    'transaction.add.savings': 'बचत जोड़ें',
+    'transaction.button.income': 'आय',
+    'transaction.button.expense': 'व्यय',
+    'transaction.button.investment': 'निवेश',
+    'transaction.button.savings': 'बचत',
+    'transaction.amount': 'राशि (€)',
+    'transaction.category': 'श्रेणी',
+    'transaction.selectCategory': 'श्रेणी चुनें',
+    'transaction.categoryName': 'श्रेणी का नाम',
+    'transaction.categoryDesc': 'श्रेणी विवरण (वैकल्पिक)',
+    'transaction.noTransactions': 'कोई लेनदेन नहीं',
+    'transaction.lastTransactions': 'हाल के लेनदेन',
+    'transaction.allTransactions': 'सभी लेनदेन',
+    'transaction.insufficientBalance': 'चयनित खाते में अपर्याप्त शेष',
+
+    // Quick expense
+    'quickExpense.title': 'त्वरित व्यय',
+    'quickExpense.add': 'व्यय जोड़ें',
+
+    // Toasts
+    'toast.income.added': 'आय जोड़ी गई',
+    'toast.expense.added': 'व्यय जोड़ा गया',
+    'toast.investment.added': 'निवेश जोड़ा गया',
+    'toast.savings.added': 'बचत जोड़ी गई',
+    'toast.transaction.removed': 'लेनदेन हटाया गया',
+    'toast.category.added': 'श्रेणी जोड़ी गई',
+    'toast.category.removed': 'श्रेणी हटाई गई',
+    'toast.balance.transferred': 'शेष स्थानांतरित',
+    'toast.balance.transferFailed': 'स्थानांतरण नहीं हो सका',
+    'toast.balance.alreadyTransferred': 'शेष पहले ही स्थानांतरित या स्थानांतरित करने के लिए कोई शेष नहीं',
+    'toast.balance.autoTransferred': 'पिछले महीने का शेष स्वचालित रूप से स्थानांतरित',
+
+    // Monthly page
+    'monthly.income': 'आय',
+    'monthly.expense': 'व्यय',
+    'monthly.investment': 'निवेश',
+    'monthly.savings': 'बचत',
+    'monthly.categories': 'श्रेणियाँ',
+    'monthly.incomeThisMonth': 'इस महीने की आय',
+    'monthly.expenseThisMonth': 'इस महीने का व्यय',
+    'monthly.investmentThisMonth': 'इस महीने का निवेश',
+    'monthly.savingsThisMonth': 'इस महीने की बचत',
+    'monthly.carryOver': 'पिछले महीने से शेष लाएं',
+    'monthly.fromPreviousPeriod': 'पिछली अवधि से',
+    'monthly.addFromPrevious': 'जोड़ें',
+
+    // Categories
+    'category.income': 'आय श्रेणियाँ',
+    'category.expense': 'व्यय श्रेणियाँ',
+    'category.investment': 'निवेश श्रेणियाँ',
+    'category.savings': 'बचत श्रेणियाँ',
+
+    // Archive
+    'archive.title': 'संग्रह',
+    'archive.subtitle': 'पिछले महीने देखें',
+    'archive.noArchived': 'कोई संग्रहित महीना नहीं',
+    'archive.willAppear': 'पिछले महीने यहाँ स्वचालित रूप से दिखाई देंगे',
+    'archive.backToArchive': 'संग्रह पर वापस',
+    'archive.deleted': 'महीना हटाया गया',
+    'archive.deleteConfirm': 'महीना हटाएं?',
+    'archive.deleteWarning': 'यह क्रिया स्थायी रूप से हटा देगी सभी डेटा',
+
+    // Common
+    'common.cancel': 'रद्द करें',
+    'common.delete': 'हटाएं',
+
+    // Dialog
+    'dialog.confirm': 'क्या आप सुनिश्चित हैं?',
+    'dialog.deleteTransaction': 'यह क्रिया स्थायी रूप से लेनदेन हटा देगी',
+    'dialog.cancel': 'रद्द करें',
+    'dialog.delete': 'हटाएं',
+
+    // Options
+    'options.title': 'विकल्प',
+    'options.language': 'भाषा',
+    'options.theme': 'थीम',
+    'options.theme.light': 'लाइट',
+    'options.theme.dark': 'डार्क',
+    'options.currency': 'मुद्रा',
+    'currency.EUR': 'यूरो',
+    'currency.USD': 'अमेरिकी डॉलर',
+    'currency.GBP': 'ब्रिटिश पाउंड',
+    'currency.CNY': 'चीनी युआन',
+    'currency.CAD': 'कनाडाई डॉलर',
+    'currency.PLN': 'पोलिश ज़्लॉटी',
+    'currency.CZK': 'चेक कोरुना',
+    'currency.HUF': 'हंगेरियन फ़ोरिंट',
+    'currency.SEK': 'स्वीडिश क्रोना',
+    'currency.INR': 'भारतीय रुपया',
+
+    // PDF Export
+    'pdf.export': 'PDF डाउनलोड करें',
+    'pdf.summary': 'सारांश',
+    'pdf.transactions': 'लेनदेन',
+    'pdf.name': 'नाम',
+    'pdf.type': 'प्रकार',
+    'pdf.date': 'तारीख',
+
+    // Budget Limits
+    'limits.title': 'मासिक सीमाएं',
+    'limits.description': 'खर्च और बचत लक्ष्यों को ट्रैक करने के लिए सीमाएं निर्धारित करें।',
+    'limits.expense': 'व्यय सीमा',
+    'limits.investment': 'निवेश सीमा',
+    'limits.savings': 'बचत लक्ष्य',
+    'limits.set': 'सीमाएं निर्धारित करें',
+    'limits.save': 'सहेजें',
+    'limits.noLimit': 'कोई सीमा नहीं',
+    'limits.spent': 'खर्च किया',
+    'limits.of': 'में से',
+    'limits.warning': 'सीमा के करीब!',
+    'limits.exceeded': 'सीमा पार!',
+    'limits.remaining': 'शेष',
+
+    // Recurring Transactions
+    'recurring.title': 'आवर्ती लेनदेन',
+    'recurring.description': 'हर महीने की पहली तारीख को स्वचालित रूप से जोड़े जाने वाले लेनदेन (जैसे वेतन, बिल, सदस्यता)।',
+    'recurring.add': 'आवर्ती जोड़ें',
+    'recurring.name': 'लेनदेन का नाम',
+    'recurring.list': 'सक्रिय आवर्ती लेनदेन',
+    'recurring.empty': 'कोई आवर्ती लेनदेन नहीं',
+    'recurring.apply': 'आवर्ती लागू करें',
+    'recurring.applied': 'आवर्ती लेनदेन लागू किए गए',
+    'recurring.alreadyApplied': 'इस महीने पहले से लागू',
+
+    // Notifications
+    'notifications.title': 'सूचनाएं',
+    'notifications.description': 'व्यय ट्रैकिंग और बजट चेतावनियों के लिए अनुस्मारक सेट करें।',
+    'notifications.enable': 'सूचनाएं सक्षम करें',
+    'notifications.dailyReminder': 'दैनिक अनुस्मारक',
+    'notifications.reminderTime': 'अनुस्मारक समय',
+    'notifications.budgetWarnings': 'बजट चेतावनियाँ',
+    'notifications.permissionRequired': 'सूचना अनुमति आवश्यक।',
+
+    // Install
+    'install.title': 'ऐप इंस्टॉल करें',
+    'install.settingsDescription': 'त्वरित पहुंच के लिए अपने डिवाइस पर ऐप इंस्टॉल करें।',
+    'install.openInstructions': 'इंस्टॉलेशन निर्देश',
+
+    // Transfer
+    'transfer.toBalance': 'शेष में',
+    'transfer.fromInvestment': 'निवेश से स्थानांतरण',
+    'transfer.fromSavings': 'बचत से स्थानांतरण',
+    'transfer.available': 'उपलब्ध',
+    'transfer.enterAmount': 'राशि दर्ज करें',
+    'transfer.exceedsAvailable': 'राशि उपलब्ध शेष से अधिक है',
+    'transfer.invalidAmount': 'मान्य राशि दर्ज करें',
+    'transfer.confirm': 'स्थानांतरण',
+    'transfer.success': 'धन शेष में स्थानांतरित',
+
+    // Reset
+    'reset.title': 'ऐप रीसेट करें',
+    'reset.description': 'सभी डेटा हटाएं और ऐप को डिफ़ॉल्ट सेटिंग्स पर पुनर्स्थापित करें।',
+    'reset.button': 'सब रीसेट करें',
+    'reset.confirm': 'क्या आप सुनिश्चित हैं?',
+    'reset.warning': 'यह क्रिया आपके सभी लेनदेन, खाते, श्रेणियाँ और सेटिंग्स स्थायी रूप से हटा देगी। इसे पूर्ववत नहीं किया जा सकता।',
+    'reset.success': 'ऐप रीसेट हो गया',
+  },
 };
 
 export const languageNames: Record<Language, { name: string; flag: string }> = {
@@ -1329,4 +1769,6 @@ export const languageNames: Record<Language, { name: string; flag: string }> = {
   pl: { name: 'Polski', flag: '🇵🇱' },
   es: { name: 'Español', flag: '🇪🇸' },
   fr: { name: 'Français', flag: '🇫🇷' },
+  zh: { name: '中文', flag: '🇨🇳' },
+  hi: { name: 'हिन्दी', flag: '🇮🇳' },
 };
