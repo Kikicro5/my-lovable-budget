@@ -1,80 +1,39 @@
-import { LocalNotifications, ScheduleOptions, Channel } from '@capacitor/local-notifications';
-import { Capacitor } from '@capacitor/core';
+import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
 import { useEffect, useState } from 'react';
-import { PaymentReminder } from '@/types/budget';
 
 export interface NotificationSettings {
   enabled: boolean;
   dailyReminder: boolean;
   reminderTime: string; // HH:mm format
-  paymentReminders: boolean;
 }
 
 const DEFAULT_SETTINGS: NotificationSettings = {
   enabled: false,
   dailyReminder: false,
   reminderTime: '20:00',
-  paymentReminders: false,
 };
 
 const STORAGE_KEY = 'notification-settings';
-const PAYMENT_NOTIFICATION_BASE_ID = 1000;
-const CHANNEL_ID = 'budgetcard-notifications';
 
 export const useNotifications = () => {
   const [settings, setSettings] = useState<NotificationSettings>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      return { ...DEFAULT_SETTINGS, ...parsed };
-    }
-    return DEFAULT_SETTINGS;
+    return stored ? JSON.parse(stored) : DEFAULT_SETTINGS;
   });
   const [permissionGranted, setPermissionGranted] = useState(false);
 
   useEffect(() => {
-    initializeNotifications();
+    checkPermissions();
   }, []);
 
-  const initializeNotifications = async () => {
-    await checkPermissions();
-    await createNotificationChannel();
-
-    // Debug listeners (native only)
-    try {
-      if (Capacitor.isNativePlatform()) {
-        await LocalNotifications.removeAllListeners();
-        await LocalNotifications.addListener('localNotificationReceived', (n) => {
-          console.log('localNotificationReceived:', n);
-        });
-        await LocalNotifications.addListener('localNotificationActionPerformed', (n) => {
-          console.log('localNotificationActionPerformed:', n);
-        });
-      }
-    } catch (error) {
-      console.log('Could not register notification listeners:', error);
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    if (settings.enabled && settings.dailyReminder) {
+      scheduleDailyReminder();
+    } else {
+      cancelAllNotifications();
     }
-  };
-
-  const createNotificationChannel = async () => {
-    try {
-      if (!Capacitor.isNativePlatform()) return;
-      const channel: Channel = {
-        id: CHANNEL_ID,
-        name: 'BudgetCard obavijesti',
-        description: 'Podsjetnici za unos troškova i plaćanja',
-        importance: 4, // HIGH importance
-        visibility: 1, // PUBLIC
-        sound: 'default',
-        vibration: true,
-        lights: true,
-      };
-      await LocalNotifications.createChannel(channel);
-      console.log('Notification channel created:', CHANNEL_ID);
-    } catch (error) {
-      console.log('Could not create notification channel (web environment):', error);
-    }
-  };
+  }, [settings]);
 
   const checkPermissions = async () => {
     try {
@@ -82,56 +41,38 @@ export const useNotifications = () => {
       setPermissionGranted(result.display === 'granted');
     } catch (error) {
       console.log('Notifications not available (web environment)');
+      // In web environment, we'll still allow enabling settings
+      // They just won't work until running on native
       setPermissionGranted(false);
     }
   };
 
   const requestPermissions = async (): Promise<boolean> => {
     try {
-      // First check current status
-      const currentStatus = await LocalNotifications.checkPermissions();
-      console.log('Current notification permission status:', currentStatus.display);
-      
-      if (currentStatus.display === 'granted') {
-        setPermissionGranted(true);
-        return true;
-      }
-      
-      // Request permissions - this triggers the system dialog on Android/iOS
       const result = await LocalNotifications.requestPermissions();
-      console.log('Permission request result:', result.display);
-      
       const granted = result.display === 'granted';
       setPermissionGranted(granted);
-      
-      if (!granted) {
-        console.log('Notification permission denied by user');
-      }
-      
       return granted;
     } catch (error) {
-      console.log('Notifications not available (web environment):', error);
-      return false; // Return false on web since notifications won't work
+      console.log('Notifications not available (web environment)');
+      // Return true for web to allow settings to be saved
+      // They will work when running on native device
+      return true;
     }
   };
 
   const updateSettings = async (newSettings: Partial<NotificationSettings>) => {
+    // If enabling notifications, try to request permissions
     if (newSettings.enabled === true) {
-      const granted = await requestPermissions();
-      console.log('Permission granted after toggle:', granted);
-      
-      if (!granted) {
-        // Don't enable if permission was denied
-        console.log('Cannot enable notifications - permission denied');
-        return;
-      }
+      await requestPermissions();
     }
+    // Always update settings - they'll be saved for when app runs on native
     setSettings(prev => ({ ...prev, ...newSettings }));
   };
 
   const scheduleDailyReminder = async () => {
     try {
-      await cancelDailyReminder();
+      await cancelAllNotifications();
       
       const [hours, minutes] = settings.reminderTime.split(':').map(Number);
       
@@ -139,6 +80,7 @@ export const useNotifications = () => {
       const scheduledTime = new Date();
       scheduledTime.setHours(hours, minutes, 0, 0);
       
+      // If time has passed today, schedule for tomorrow
       if (scheduledTime <= now) {
         scheduledTime.setDate(scheduledTime.getDate() + 1);
       }
@@ -149,31 +91,22 @@ export const useNotifications = () => {
             id: 1,
             title: 'BudgetCard',
             body: 'Ne zaboravi unijeti današnje troškove!',
-            channelId: CHANNEL_ID,
             schedule: {
               at: scheduledTime,
-              allowWhileIdle: true,
               repeats: true,
               every: 'day',
             },
-            // NOTE: Do not set Android icon names unless they exist in the native project.
-            sound: 'default',
+            sound: undefined,
+            attachments: undefined,
+            actionTypeId: '',
+            extra: null,
           },
         ],
       };
 
       await LocalNotifications.schedule(options);
-      console.log('Daily reminder scheduled for:', scheduledTime);
     } catch (error) {
       console.log('Could not schedule notification:', error);
-    }
-  };
-
-  const cancelDailyReminder = async () => {
-    try {
-      await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
-    } catch (error) {
-      console.log('Could not cancel daily reminder:', error);
     }
   };
 
@@ -190,147 +123,10 @@ export const useNotifications = () => {
     }
   };
 
-  // Schedule a notification for a payment reminder
-  const schedulePaymentReminder = async (reminder: PaymentReminder) => {
-    if (!settings.enabled || !settings.paymentReminders) return;
-
-    try {
-      const dueDate = new Date(reminder.dueDate);
-      dueDate.setHours(9, 0, 0, 0); // Notify at 9 AM on due date
-      
-      // Don't schedule if the date has already passed
-      if (dueDate <= new Date()) return;
-
-      // Generate a unique ID based on reminder ID hash
-      const notificationId = PAYMENT_NOTIFICATION_BASE_ID + Math.abs(hashCode(reminder.id));
-
-      const options: ScheduleOptions = {
-        notifications: [
-          {
-            id: notificationId,
-            title: 'Podsjetnik za plaćanje',
-            body: `${reminder.category}: ${reminder.amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €`,
-            channelId: CHANNEL_ID,
-            schedule: {
-              at: dueDate,
-              allowWhileIdle: true,
-              repeats: false,
-            },
-            sound: 'default',
-            extra: { reminderId: reminder.id },
-          },
-        ],
-      };
-
-      await LocalNotifications.schedule(options);
-      console.log('Payment reminder scheduled for:', dueDate);
-    } catch (error) {
-      console.log('Could not schedule payment reminder:', error);
-    }
-  };
-
-  // Cancel a specific payment reminder notification
-  const cancelPaymentReminder = async (reminderId: string) => {
-    try {
-      const notificationId = PAYMENT_NOTIFICATION_BASE_ID + Math.abs(hashCode(reminderId));
-      await LocalNotifications.cancel({ notifications: [{ id: notificationId }] });
-    } catch (error) {
-      console.log('Could not cancel payment reminder:', error);
-    }
-  };
-
-  // Schedule notifications for all active reminders
-  const scheduleAllPaymentReminders = async (reminders: PaymentReminder[]) => {
-    if (!settings.enabled || !settings.paymentReminders) return;
-
-    const activeReminders = reminders.filter(r => !r.isCompleted);
-    
-    for (const reminder of activeReminders) {
-      await schedulePaymentReminder(reminder);
-    }
-  };
-
-  // Test notification - fires in 5 seconds
-  const sendTestNotification = async (): Promise<boolean> => {
-    try {
-      const granted = await requestPermissions();
-      if (!granted) {
-        console.log('Cannot send test notification - permission denied');
-        return false;
-      }
-
-      await createNotificationChannel();
-
-      const testTime = new Date();
-      testTime.setSeconds(testTime.getSeconds() + 5);
-
-      const options: ScheduleOptions = {
-        notifications: [
-          {
-            id: 9999,
-            title: 'Test obavijesti',
-            body: 'Ako vidiš ovu poruku, obavijesti rade!',
-            channelId: CHANNEL_ID,
-            schedule: {
-              at: testTime,
-              allowWhileIdle: true,
-            },
-            sound: 'default',
-            // Do not set icon names unless they exist in the native project.
-          },
-        ],
-      };
-
-      await LocalNotifications.schedule(options);
-      console.log('Test notification scheduled for:', testTime);
-
-      // Helpful debug: see if it is actually pending
-      try {
-        const pending = await LocalNotifications.getPending();
-        console.log('Pending notifications count:', pending.notifications?.length ?? 0);
-      } catch (e) {
-        console.log('Could not read pending notifications:', e);
-      }
-      return true;
-    } catch (error) {
-      console.log('Could not send test notification:', error);
-      return false;
-    }
-  };
-
-  // Get pending notifications for debugging
-  const getPendingNotifications = async () => {
-    try {
-      const pending = await LocalNotifications.getPending();
-      console.log('Pending notifications:', pending.notifications);
-      return pending.notifications;
-    } catch (error) {
-      console.log('Could not get pending notifications:', error);
-      return [];
-    }
-  };
-
   return {
     settings,
     updateSettings,
     permissionGranted,
     requestPermissions,
-    schedulePaymentReminder,
-    cancelPaymentReminder,
-    scheduleAllPaymentReminders,
-    cancelAllNotifications,
-    sendTestNotification,
-    getPendingNotifications,
   };
 };
-
-// Simple hash function to generate consistent IDs
-function hashCode(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return hash;
-}
