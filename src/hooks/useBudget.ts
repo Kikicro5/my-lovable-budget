@@ -195,12 +195,12 @@ export const useBudget = () => {
     return newBudget;
   };
 
-  const addTransaction = (transaction: Omit<Transaction, 'id' | 'date'>) => {
+  const addTransaction = (transaction: Omit<Transaction, 'id' | 'date'> & { date?: string }) => {
     const budget = getOrCreateCurrentBudget();
     const newTransaction: Transaction = {
       ...transaction,
       id: crypto.randomUUID(),
-      date: new Date().toISOString(),
+      date: transaction.date || new Date().toISOString(),
     };
 
     setState((prev) => ({
