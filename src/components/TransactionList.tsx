@@ -3,6 +3,7 @@ import { Trash2, TrendingUp, TrendingDown, LineChart, PiggyBank, Wallet } from '
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -66,6 +67,7 @@ export const TransactionList = ({
   accounts = [],
 }: TransactionListProps) => {
   const { t } = useLanguage();
+  const { currencySymbol } = useCurrency();
   
   const getAccountName = (accountId?: string) => {
     if (!accountId || accountId === 'none') return null;
@@ -146,7 +148,7 @@ export const TransactionList = ({
                   {transaction.amount.toLocaleString('hr-HR', {
                     minimumFractionDigits: 2,
                   })}{' '}
-                  €
+                  {currencySymbol}
                 </span>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>

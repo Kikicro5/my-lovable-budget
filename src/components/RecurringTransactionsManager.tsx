@@ -6,12 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { useBudget } from '@/hooks/useBudget';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { RecurringTransaction } from '@/types/budget';
 import { cn } from '@/lib/utils';
 
 export const RecurringTransactionsManager = () => {
   const { state, addRecurringTransaction, removeRecurringTransaction, toggleRecurringTransaction, updateRecurringTransaction } = useBudget();
   const { t } = useLanguage();
+  const { currencySymbol } = useCurrency();
   const [amount, setAmount] = useState('');
   const [type, setType] = useState<'income' | 'expense' | 'investment' | 'savings'>('expense');
   const [category, setCategory] = useState('');
@@ -204,7 +206,7 @@ export const RecurringTransactionsManager = () => {
                       'px-2 py-0.5 rounded-full text-xs font-medium',
                       getTypeColor(rt.type)
                     )}>
-                      {rt.type === 'income' ? '+' : '-'}{rt.amount.toLocaleString('hr-HR')} €
+                      {rt.type === 'income' ? '+' : '-'}{rt.amount.toLocaleString('hr-HR')} {currencySymbol}
                     </span>
                     <span className="font-medium text-sm truncate">{rt.name}</span>
                   </div>

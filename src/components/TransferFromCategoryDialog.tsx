@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { ArrowRightLeft, LineChart, PiggyBank } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { cn } from '@/lib/utils';
 
 interface TransferFromCategoryDialogProps {
@@ -28,6 +29,7 @@ export const TransferFromCategoryDialog = ({
   const [amount, setAmount] = useState('');
   const [open, setOpen] = useState(false);
   const { t } = useLanguage();
+  const { currencySymbol } = useCurrency();
 
   const Icon = type === 'investment' ? LineChart : PiggyBank;
   const label = type === 'investment' ? t('transfer.fromInvestment') : t('transfer.fromSavings');
@@ -79,7 +81,7 @@ export const TransferFromCategoryDialog = ({
             {label}
           </DialogTitle>
           <DialogDescription>
-            {t('transfer.available')}: <span className="font-semibold">{availableAmount.toFixed(2)} €</span>
+            {t('transfer.available')}: <span className="font-semibold">{availableAmount.toFixed(2)} {currencySymbol}</span>
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
