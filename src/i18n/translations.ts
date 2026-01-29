@@ -684,9 +684,10 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Sind Sie sicher?',
     'reset.warning': 'Diese Aktion löscht dauerhaft alle Ihre Transaktionen, Konten, Kategorien und Einstellungen. Dies kann nicht rückgängig gemacht werden.',
     'reset.success': 'App wurde zurückgesetzt',
-  },
 
-  pl: {
+    // Chart
+    'chart.yearlyExpenses': 'Ausgaben nach Monat',
+  },
     // Navigation
     'nav.home': 'Strona główna',
     'nav.monthly': 'Miesięcznie',
@@ -904,6 +905,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Czy jesteś pewien?',
     'reset.warning': 'Ta akcja trwale usunie wszystkie Twoje transakcje, konta, kategorie i ustawienia. Tej operacji nie można cofnąć.',
     'reset.success': 'Aplikacja została zresetowana',
+
+    // Chart
+    'chart.yearlyExpenses': 'Wydatki miesięczne',
   },
 
   es: {
@@ -1124,6 +1128,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': '¿Estás seguro?',
     'reset.warning': 'Esta acción eliminará permanentemente todas tus transacciones, cuentas, categorías y configuraciones. Esta acción no se puede deshacer.',
     'reset.success': 'La aplicación ha sido restablecida',
+
+    // Chart
+    'chart.yearlyExpenses': 'Gastos por mes',
   },
 
   fr: {
@@ -1344,6 +1351,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Êtes-vous sûr?',
     'reset.warning': 'Cette action supprimera définitivement toutes vos transactions, comptes, catégories et paramètres. Cette action est irréversible.',
     'reset.success': 'L\'application a été réinitialisée',
+
+    // Chart
+    'chart.yearlyExpenses': 'Dépenses par mois',
   },
 
   zh: {
@@ -1564,6 +1574,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': '确定吗？',
     'reset.warning': '此操作将永久删除您的所有交易、账户、类别和设置。此操作无法撤销。',
     'reset.success': '应用已重置',
+
+    // Chart
+    'chart.yearlyExpenses': '按月支出',
   },
 
   hi: {
@@ -1784,6 +1797,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'क्या आप सुनिश्चित हैं?',
     'reset.warning': 'यह क्रिया आपके सभी लेनदेन, खाते, श्रेणियाँ और सेटिंग्स स्थायी रूप से हटा देगी। इसे पूर्ववत नहीं किया जा सकता।',
     'reset.success': 'ऐप रीसेट हो गया',
+
+    // Chart
+    'chart.yearlyExpenses': 'मासिक व्यय',
   },
 };
 
