@@ -476,6 +476,15 @@ export const useBudget = () => {
     }));
   };
 
+  const updateRecurringTransaction = (id: string, updates: Partial<Omit<RecurringTransaction, 'id'>>) => {
+    setState((prev) => ({
+      ...prev,
+      recurringTransactions: prev.recurringTransactions.map((r) =>
+        r.id === id ? { ...r, ...updates } : r
+      ),
+    }));
+  };
+
   const applyRecurringTransactions = () => {
     const budget = getOrCreateCurrentBudget();
     
@@ -620,6 +629,7 @@ export const useBudget = () => {
     addRecurringTransaction,
     removeRecurringTransaction,
     toggleRecurringTransaction,
+    updateRecurringTransaction,
     applyRecurringTransactions,
     removeBudget,
     transferFromCategory,
