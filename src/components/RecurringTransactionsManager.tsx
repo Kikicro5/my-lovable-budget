@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Repeat, Plus, Trash2, Check, X } from 'lucide-react';
+import { Repeat, Plus, Trash2, Pencil, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -10,14 +10,21 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { RecurringTransaction } from '@/types/budget';
 
 export const RecurringTransactionsManager = () => {
-  const { state, addRecurringTransaction, removeRecurringTransaction, toggleRecurringTransaction } = useBudget();
+  const { state, addRecurringTransaction, removeRecurringTransaction, toggleRecurringTransaction, updateRecurringTransaction } = useBudget();
   const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState('');
   const [type, setType] = useState<'income' | 'expense' | 'investment' | 'savings'>('expense');
   const [category, setCategory] = useState('');
+  
+  // Edit state
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editAmount, setEditAmount] = useState('');
+  const [editType, setEditType] = useState<'income' | 'expense' | 'investment' | 'savings'>('expense');
+  const [editCategory, setEditCategory] = useState('');
 
   const categories = state.savedCategories[type];
+  const editCategories = state.savedCategories[editType];
 
   const handleAdd = () => {
     if (!amount || !category) return;
@@ -31,6 +38,33 @@ export const RecurringTransactionsManager = () => {
     
     setAmount('');
     setCategory('');
+  };
+
+  const handleStartEdit = (rt: RecurringTransaction) => {
+    setEditingId(rt.id);
+    setEditAmount(rt.amount.toString());
+    setEditType(rt.type);
+    setEditCategory(rt.category);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditAmount('');
+    setEditType('expense');
+    setEditCategory('');
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingId || !editAmount || !editCategory) return;
+    
+    updateRecurringTransaction(editingId, {
+      name: editCategory,
+      amount: parseFloat(editAmount),
+      type: editType,
+      category: editCategory,
+    });
+    
+    handleCancelEdit();
   };
 
   const getTypeColor = (type: string) => {
@@ -119,36 +153,95 @@ export const RecurringTransactionsManager = () => {
                 {state.recurringTransactions.map((rt) => (
                   <div
                     key={rt.id}
-                    className={`flex items-center justify-between p-3 rounded-lg border ${
+                    className={`p-3 rounded-lg border ${
                       rt.isActive ? 'bg-card' : 'bg-muted/30 opacity-60'
                     }`}
                   >
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium truncate">{rt.name}</span>
-                        <span className={`text-sm ${getTypeColor(rt.type)}`}>
-                          {rt.type === 'income' ? '+' : '-'}{rt.amount.toLocaleString('hr-HR')} €
-                        </span>
+                    {editingId === rt.id ? (
+                      // Edit mode
+                      <div className="space-y-3">
+                        <Select value={editType} onValueChange={(v: typeof editType) => { setEditType(v); setEditCategory(''); }}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="income">{t('monthly.income')}</SelectItem>
+                            <SelectItem value="expense">{t('monthly.expense')}</SelectItem>
+                            <SelectItem value="investment">{t('monthly.investment')}</SelectItem>
+                            <SelectItem value="savings">{t('monthly.savings')}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        
+                        <Select value={editCategory} onValueChange={setEditCategory}>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t('transaction.selectCategory')} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {editCategories.map((cat) => (
+                              <SelectItem key={cat.name} value={cat.name}>
+                                {cat.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        
+                        <Input
+                          type="number"
+                          placeholder={t('transaction.amount')}
+                          value={editAmount}
+                          onChange={(e) => setEditAmount(e.target.value)}
+                        />
+                        
+                        <div className="flex gap-2">
+                          <Button onClick={handleSaveEdit} size="sm" className="flex-1 gap-1" disabled={!editAmount || !editCategory}>
+                            <Check className="w-4 h-4" />
+                            {t('common.save') || 'Spremi'}
+                          </Button>
+                          <Button onClick={handleCancelEdit} size="sm" variant="outline" className="flex-1 gap-1">
+                            <X className="w-4 h-4" />
+                            {t('common.cancel') || 'Odustani'}
+                          </Button>
+                        </div>
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        {rt.category} • {t(`monthly.${rt.type}`)}
+                    ) : (
+                      // View mode
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium truncate">{rt.name}</span>
+                            <span className={`text-sm ${getTypeColor(rt.type)}`}>
+                              {rt.type === 'income' ? '+' : '-'}{rt.amount.toLocaleString('hr-HR')} €
+                            </span>
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {rt.category} • {t(`monthly.${rt.type}`)}
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          <Switch
+                            checked={rt.isActive}
+                            onCheckedChange={() => toggleRecurringTransaction(rt.id)}
+                          />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => handleStartEdit(rt)}
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive hover:text-destructive"
+                            onClick={() => removeRecurringTransaction(rt.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <Switch
-                        checked={rt.isActive}
-                        onCheckedChange={() => toggleRecurringTransaction(rt.id)}
-                      />
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-destructive hover:text-destructive"
-                        onClick={() => removeRecurringTransaction(rt.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>
