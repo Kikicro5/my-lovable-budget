@@ -121,7 +121,7 @@ const Options = () => {
                   onClick={() => setCurrency(curr.code)}
                 >
                   <span className="text-lg font-medium">{curr.symbol}</span>
-                  <span>{curr.code}</span>
+                  <span>{t(`currency.${curr.code}`)}</span>
                   {currency === curr.code && <Check className="w-4 h-4 ml-auto" />}
                 </Button>
               ))}
