@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Bell, Clock, CreditCard, TestTube, AlertTriangle } from 'lucide-react';
+import { Bell, Clock, CreditCard, AlertTriangle } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,11 +15,9 @@ export const WebPushNotificationSettings = () => {
     isPermissionGranted,
     isPermissionDenied,
     requestPermission,
-    sendTestNotification,
   } = useWebPushNotifications();
   
   const { t } = useLanguage();
-  const [isTestingNotification, setIsTestingNotification] = useState(false);
 
   const handleEnableNotifications = async (enabled: boolean) => {
     const success = await updateSettings({ enabled });
@@ -29,21 +26,6 @@ export const WebPushNotificationSettings = () => {
     }
   };
 
-  const handleTestNotification = async () => {
-    setIsTestingNotification(true);
-    try {
-      const success = await sendTestNotification();
-      if (success) {
-        toast.success('Test obavijest će stići za 3 sekunde!');
-      } else {
-        toast.error('Nije moguće poslati test obavijest. Provjeri dozvole.');
-      }
-    } catch (error) {
-      toast.error('Greška pri slanju test obavijesti');
-    } finally {
-      setIsTestingNotification(false);
-    }
-  };
 
   const handleRequestPermission = async () => {
     const granted = await requestPermission();
@@ -143,19 +125,6 @@ export const WebPushNotificationSettings = () => {
             </p>
           )}
 
-          {/* Test notification button */}
-          <div className="pl-6 pt-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleTestNotification}
-              disabled={isTestingNotification || !isPermissionGranted}
-              className="w-full"
-            >
-              <TestTube className="w-4 h-4 mr-2" />
-              {isTestingNotification ? 'Šaljem...' : 'Test obavijesti (3 sek)'}
-            </Button>
-          </div>
 
           {/* Permission status */}
           {!isPermissionGranted && !isPermissionDenied && (
