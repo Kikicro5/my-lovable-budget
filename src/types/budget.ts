@@ -51,6 +51,16 @@ export interface MonthlyBudget {
   recurringApplied?: boolean;
 }
 
+export interface PaymentReminder {
+  id: string;
+  amount: number;
+  category: string;
+  accountId: string;
+  dueDate: string;
+  isCompleted: boolean;
+  createdAt: string;
+}
+
 export interface BudgetState {
   currentMonth: number;
   currentYear: number;
@@ -64,4 +74,5 @@ export interface BudgetState {
   defaultLimits: BudgetLimits;
   recurringTransactions: RecurringTransaction[];
   accounts: Account[];
+  reminders: PaymentReminder[];
 }

@@ -219,6 +219,17 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Jeste li sigurni?',
     'reset.warning': 'Ova radnja će trajno obrisati sve vaše transakcije, račune, kategorije i postavke. Ova radnja se ne može poništiti.',
     'reset.success': 'Aplikacija je resetirana',
+
+    // Reminders
+    'reminder.title': 'Podsjetnici za plaćanje',
+    'reminder.description': 'Postavi podsjetnike za nadolazeća plaćanja.',
+    'reminder.add': 'Dodaj podsjetnik',
+    'reminder.list': 'Aktivni podsjetnici',
+    'reminder.selectDate': 'Datum dospijeća',
+    'reminder.dueTitle': 'Dospjela plaćanja',
+    'reminder.dueDescription': 'Sljedeća plaćanja su dospjela i zahtijevaju pozornost.',
+    'reminder.markPaid': 'Označi plaćeno',
+    'reminder.empty': 'Nema aktivnih podsjetnika',
   },
 
   en: {
@@ -439,12 +450,20 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Are you sure?',
     'reset.warning': 'This action will permanently delete all your transactions, accounts, categories and settings. This cannot be undone.',
     'reset.success': 'App has been reset',
+
+    // Reminders
+    'reminder.title': 'Payment Reminders',
+    'reminder.description': 'Set reminders for upcoming payments.',
+    'reminder.add': 'Add reminder',
+    'reminder.list': 'Active reminders',
+    'reminder.selectDate': 'Due date',
+    'reminder.dueTitle': 'Payments Due',
+    'reminder.dueDescription': 'The following payments are due and require attention.',
+    'reminder.markPaid': 'Mark as paid',
+    'reminder.empty': 'No active reminders',
   },
 
   de: {
-    // Navigation
-    'nav.home': 'Startseite',
-    'nav.monthly': 'Monatlich',
     'nav.accounts': 'Konten',
     'nav.archive': 'Archiv',
     'nav.options': 'Optionen',
