@@ -118,6 +118,7 @@ export const useNotifications = () => {
             body: 'Ne zaboravi unijeti današnje troškove!',
             schedule: {
               at: scheduledTime,
+              allowWhileIdle: true,
               repeats: true,
               every: 'day',
             },
@@ -178,6 +179,7 @@ export const useNotifications = () => {
             body: `${reminder.category}: ${reminder.amount.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} €`,
             schedule: {
               at: dueDate,
+              allowWhileIdle: true,
               repeats: false,
             },
             sound: undefined,
