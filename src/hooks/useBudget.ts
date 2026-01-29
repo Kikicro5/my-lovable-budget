@@ -728,6 +728,30 @@ export const useBudget = () => {
     }));
   };
 
+  const transferBetweenAccounts = (fromAccountId: string, toAccountId: string, amount: number): boolean => {
+    const fromAccount = state.accounts?.find((a) => a.id === fromAccountId);
+    const toAccount = state.accounts?.find((a) => a.id === toAccountId);
+
+    if (!fromAccount || !toAccount || amount <= 0 || fromAccount.balance < amount) {
+      return false;
+    }
+
+    setState((prev) => ({
+      ...prev,
+      accounts: (prev.accounts || []).map((acc) => {
+        if (acc.id === fromAccountId) {
+          return { ...acc, balance: acc.balance - amount };
+        }
+        if (acc.id === toAccountId) {
+          return { ...acc, balance: acc.balance + amount };
+        }
+        return acc;
+      }),
+    }));
+
+    return true;
+  };
+
   return {
     state,
     getCurrentBudget,
@@ -765,5 +789,6 @@ export const useBudget = () => {
     addAccount,
     removeAccount,
     updateAccount,
+    transferBetweenAccounts,
   };
 };
