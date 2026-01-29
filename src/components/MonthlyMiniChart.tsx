@@ -33,12 +33,24 @@ export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps
   return (
     <Card className="bg-card/50 backdrop-blur-sm">
       <CardHeader className="pb-2 pt-3 px-4">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {t('chart.yearlyOverview')} {currentYear}
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-sm font-medium text-muted-foreground">
+            {t('chart.yearlyOverview')} {currentYear}
+          </CardTitle>
+          <div className="flex gap-3 text-xs">
+            <div className="flex items-center gap-1">
+              <div className="w-2.5 h-2.5 rounded-sm bg-blue-500" />
+              <span className="text-muted-foreground">{t('chart.income')}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2.5 h-2.5 rounded-sm bg-red-500" />
+              <span className="text-muted-foreground">{t('chart.expenses')}</span>
+            </div>
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="px-2 pb-3">
-        <div className="h-20">
+        <div className="h-16">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }} barGap={-1} barCategoryGap="20%">
               <XAxis 
@@ -64,16 +76,6 @@ export const MonthlyMiniChart = ({ budgets, currentYear }: MonthlyMiniChartProps
               />
             </BarChart>
           </ResponsiveContainer>
-        </div>
-        <div className="flex justify-center gap-4 mt-2 text-xs">
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-sm bg-blue-500" />
-            <span className="text-muted-foreground">{t('chart.income')}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-sm bg-red-500" />
-            <span className="text-muted-foreground">{t('chart.expenses')}</span>
-          </div>
         </div>
       </CardContent>
     </Card>
