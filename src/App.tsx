@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import InstallPrompt from "@/components/InstallPrompt";
 import { AdMobBanner } from "@/components/AdMobBanner";
 import Index from "./pages/Index";
@@ -20,25 +21,27 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
-      <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <AdMobBanner />
-          <BrowserRouter>
-            <InstallPrompt />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/monthly" element={<Monthly />} />
-              <Route path="/accounts" element={<Accounts />} />
-              <Route path="/archive" element={<Archive />} />
-              <Route path="/options" element={<Options />} />
-              <Route path="/install" element={<Install />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </LanguageProvider>
+      <CurrencyProvider>
+        <LanguageProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <AdMobBanner />
+            <BrowserRouter>
+              <InstallPrompt />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/monthly" element={<Monthly />} />
+                <Route path="/accounts" element={<Accounts />} />
+                <Route path="/archive" element={<Archive />} />
+                <Route path="/options" element={<Options />} />
+                <Route path="/install" element={<Install />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </LanguageProvider>
+      </CurrencyProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );

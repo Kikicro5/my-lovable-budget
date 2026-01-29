@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Languages, Check, Sun, Moon, Palette, Target, Share2, RotateCcw } from 'lucide-react';
+import { Languages, Check, Sun, Moon, Palette, Target, Share2, RotateCcw, Coins } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
 import {
@@ -22,6 +23,7 @@ import {
 const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
+  const { currency, setCurrency } = useCurrency();
 
   const handleLanguageSelect = (code: Language) => {
     setLanguage(code);
@@ -104,7 +106,27 @@ const Options = () => {
             </div>
           </div>
 
-          {/* Budget Limits Section */}
+          {/* Currency Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <Coins className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('options.currency')}</h2>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {currencies.map((curr) => (
+                <Button
+                  key={curr.code}
+                  variant={currency === curr.code ? 'default' : 'outline'}
+                  className="justify-start gap-2"
+                  onClick={() => setCurrency(curr.code)}
+                >
+                  <span className="text-lg font-medium">{curr.symbol}</span>
+                  <span>{curr.code}</span>
+                  {currency === curr.code && <Check className="w-4 h-4 ml-auto" />}
+                </Button>
+              ))}
+            </div>
+          </div>
           <div className="bg-card rounded-xl p-4 border border-border">
             <div className="flex items-center gap-2 mb-4">
               <Target className="w-5 h-5 text-primary" />

@@ -141,6 +141,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'options.theme': 'Tema',
     'options.theme.light': 'Svijetla',
     'options.theme.dark': 'Tamna',
+    'options.currency': 'Valuta',
 
     // PDF Export
     'pdf.export': 'Preuzmi PDF',
@@ -350,6 +351,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'options.theme': 'Theme',
     'options.theme.light': 'Light',
     'options.theme.dark': 'Dark',
+    'options.currency': 'Currency',
 
     // PDF Export
     'pdf.export': 'Download PDF',
@@ -559,6 +561,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'options.theme': 'Thema',
     'options.theme.light': 'Hell',
     'options.theme.dark': 'Dunkel',
+    'options.currency': 'Währung',
 
     // PDF Export
     'pdf.export': 'PDF herunterladen',
@@ -768,6 +771,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'options.theme': 'Motyw',
     'options.theme.light': 'Jasny',
     'options.theme.dark': 'Ciemny',
+    'options.currency': 'Waluta',
 
     // PDF Export
     'pdf.export': 'Pobierz PDF',
@@ -977,6 +981,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'options.theme': 'Tema',
     'options.theme.light': 'Claro',
     'options.theme.dark': 'Oscuro',
+    'options.currency': 'Moneda',
 
     // PDF Export
     'pdf.export': 'Descargar PDF',
@@ -1186,6 +1191,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'options.theme': 'Thème',
     'options.theme.light': 'Clair',
     'options.theme.dark': 'Sombre',
+    'options.currency': 'Devise',
 
     // PDF Export
     'pdf.export': 'Télécharger PDF',
