@@ -6,6 +6,7 @@ import { BalanceCard } from '@/components/BalanceCard';
 import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
 import { BudgetProgress } from '@/components/BudgetProgress';
+import { MonthlyMiniChart } from '@/components/MonthlyMiniChart';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -113,6 +114,8 @@ const Index = () => {
               )}
             </div>
           )}
+          
+          <MonthlyMiniChart budgets={state.budgets} currentYear={currentYear} />
           
           {!hasAccounts ? (
             <Card className="border-primary/30 bg-primary/5">
