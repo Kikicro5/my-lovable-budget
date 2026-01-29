@@ -47,10 +47,7 @@ export const BalanceCard = ({
         
         {accounts.length > 0 && (
           <div className="flex-1 text-right">
-            <p className="text-sm text-muted-foreground font-medium mb-2">
-              {t('accounts.title')}
-            </p>
-            <div className="space-y-1">
+            <div className="space-y-1 mt-6">
               {accounts.map((account) => (
                 <div key={account.id} className="flex items-center justify-end gap-2">
                   <span className="text-xs text-muted-foreground">{account.name}</span>
