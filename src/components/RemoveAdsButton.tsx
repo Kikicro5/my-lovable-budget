@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Ban, Check, Loader2, CreditCard } from 'lucide-react';
+import { Ban, Check, Loader2, CreditCard, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useAdFreePurchase } from '@/hooks/useAdFreePurchase';
@@ -41,8 +41,8 @@ const PRICE = '2.99';
 const CURRENCY = 'EUR';
 
 export const RemoveAdsButton = () => {
-  const { t } = useLanguage();
-  const { isAdFree, isLoading, isPurchasing, verifyAndSavePurchase } = useAdFreePurchase();
+  const { t, language } = useLanguage();
+  const { isAdFree, isLoading, isPurchasing, expiresAt, daysRemaining, verifyAndSavePurchase } = useAdFreePurchase();
   const [showPayPal, setShowPayPal] = useState(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
 
@@ -88,7 +88,7 @@ export const RemoveAdsButton = () => {
                   value: PRICE,
                   currency_code: CURRENCY,
                 },
-                description: 'Budget Card - Remove Ads (Lifetime)',
+                description: 'Budget Card - Remove Ads (1 Year)',
               }],
             });
           },
@@ -113,6 +113,15 @@ export const RemoveAdsButton = () => {
     }
   }, [paypalLoaded, showPayPal, verifyAndSavePurchase, t]);
 
+  // Format expiration date
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString(language === 'hr' ? 'hr-HR' : language === 'de' ? 'de-DE' : 'en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="bg-card rounded-xl p-4 border border-border">
@@ -123,7 +132,7 @@ export const RemoveAdsButton = () => {
     );
   }
 
-  if (isAdFree) {
+  if (isAdFree && expiresAt) {
     return (
       <div className="bg-card rounded-xl p-4 border border-primary/30">
         <div className="flex items-center gap-2 mb-2">
@@ -132,9 +141,45 @@ export const RemoveAdsButton = () => {
             {t('removeAds.purchased') || 'Ad-Free Version'}
           </h2>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground mb-2">
           {t('removeAds.thankYou') || 'Thank you for your purchase! You are using the ad-free version.'}
         </p>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 rounded-lg p-2">
+          <Calendar className="w-4 h-4" />
+          <span>
+            {t('removeAds.expiresOn') || 'Expires on'}: {formatDate(expiresAt)} 
+            ({daysRemaining} {t('removeAds.daysLeft') || 'days left'})
+          </span>
+        </div>
+        {daysRemaining !== null && daysRemaining <= 30 && (
+          <Button 
+            onClick={() => setShowPayPal(true)} 
+            className="w-full gap-2 mt-3"
+            variant="outline"
+          >
+            <CreditCard className="w-4 h-4" />
+            {t('removeAds.renew') || 'Renew Subscription'}
+          </Button>
+        )}
+        
+        {showPayPal && (
+          <div className="space-y-3 mt-3">
+            <div id="paypal-button-container" className="min-h-[50px]">
+              {!paypalLoaded && (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                </div>
+              )}
+            </div>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowPayPal(false)} 
+              className="w-full"
+            >
+              {t('dialog.cancel') || 'Cancel'}
+            </Button>
+          </div>
+        )}
       </div>
     );
   }
@@ -148,7 +193,7 @@ export const RemoveAdsButton = () => {
         </h2>
       </div>
       <p className="text-sm text-muted-foreground mb-3">
-        {t('removeAds.description') || 'Enjoy an ad-free experience with a one-time purchase.'}
+        {t('removeAds.description') || 'Enjoy an ad-free experience with an annual subscription.'}
       </p>
       
       {!showPayPal ? (
@@ -158,7 +203,7 @@ export const RemoveAdsButton = () => {
           disabled={isPurchasing}
         >
           <CreditCard className="w-4 h-4" />
-          {t('removeAds.buyButton') || `Remove Ads - €${PRICE}`}
+          {t('removeAds.buyButton') || `Remove Ads - €${PRICE}/year`}
         </Button>
       ) : (
         <div className="space-y-3">

@@ -95,6 +95,10 @@ serve(async (req) => {
     const amount = parseFloat(capture?.amount?.value || '0');
     const currency = capture?.amount?.currency_code || 'EUR';
 
+    // Calculate expiration date (1 year from now)
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
     // Save purchase to database using service role
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -108,6 +112,8 @@ serve(async (req) => {
         paypal_order_id: orderId,
         amount,
         currency,
+        purchased_at: new Date().toISOString(),
+        expires_at: expiresAt.toISOString(),
       }, { onConflict: 'device_id' })
       .select()
       .single();

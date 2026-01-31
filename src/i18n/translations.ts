@@ -288,13 +288,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Remove Ads
     'removeAds.title': 'Ukloni reklame',
-    'removeAds.description': 'Uživaj u iskustvu bez reklama jednokratnom kupnjom.',
-    'removeAds.buyButton': 'Ukloni reklame - €2,99',
+    'removeAds.description': 'Uživaj u iskustvu bez reklama s godišnjom pretplatom.',
+    'removeAds.buyButton': 'Ukloni reklame - €2,99/god',
     'removeAds.purchased': 'Verzija bez reklama',
     'removeAds.thankYou': 'Hvala na kupnji! Koristiš verziju bez reklama.',
     'removeAds.success': 'Reklame su uspješno uklonjene! Hvala na kupnji.',
     'removeAds.error': 'Verifikacija plaćanja nije uspjela. Molimo kontaktirajte podršku.',
     'removeAds.cancelled': 'Plaćanje je otkazano.',
+    'removeAds.expiresOn': 'Istječe',
+    'removeAds.daysLeft': 'dana preostalo',
+    'removeAds.renew': 'Obnovi pretplatu',
 
     // Reminders
     'reminder.title': 'Podsjetnici za plaćanje',
@@ -651,13 +654,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Remove Ads
     'removeAds.title': 'Remove Ads',
-    'removeAds.description': 'Enjoy an ad-free experience with a one-time purchase.',
-    'removeAds.buyButton': 'Remove Ads - €2.99',
+    'removeAds.description': 'Enjoy an ad-free experience with an annual subscription.',
+    'removeAds.buyButton': 'Remove Ads - €2.99/year',
     'removeAds.purchased': 'Ad-Free Version',
     'removeAds.thankYou': 'Thank you for your purchase! You are using the ad-free version.',
     'removeAds.success': 'Ads removed successfully! Thank you for your purchase.',
     'removeAds.error': 'Payment verification failed. Please contact support.',
     'removeAds.cancelled': 'Payment cancelled.',
+    'removeAds.expiresOn': 'Expires on',
+    'removeAds.daysLeft': 'days left',
+    'removeAds.renew': 'Renew Subscription',
 
     // Reminders
     'reminder.title': 'Payment Reminders',
@@ -1011,13 +1017,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Remove Ads
     'removeAds.title': 'Werbung entfernen',
-    'removeAds.description': 'Genieße ein werbefreies Erlebnis mit einem einmaligen Kauf.',
-    'removeAds.buyButton': 'Werbung entfernen - €2,99',
+    'removeAds.description': 'Genieße ein werbefreies Erlebnis mit einem Jahresabo.',
+    'removeAds.buyButton': 'Werbung entfernen - €2,99/Jahr',
     'removeAds.purchased': 'Werbefreie Version',
     'removeAds.thankYou': 'Vielen Dank für deinen Kauf! Du nutzt die werbefreie Version.',
     'removeAds.success': 'Werbung erfolgreich entfernt! Vielen Dank für deinen Kauf.',
     'removeAds.error': 'Zahlungsverifizierung fehlgeschlagen. Bitte kontaktiere den Support.',
     'removeAds.cancelled': 'Zahlung abgebrochen.',
+    'removeAds.expiresOn': 'Läuft ab am',
+    'removeAds.daysLeft': 'Tage übrig',
+    'removeAds.renew': 'Abo verlängern',
 
     // Chart
     'chart.yearlyOverview': 'Monatsübersicht',
@@ -1363,13 +1372,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Remove Ads
     'removeAds.title': 'Usuń reklamy',
-    'removeAds.description': 'Ciesz się aplikacją bez reklam dzięki jednorazowemu zakupowi.',
-    'removeAds.buyButton': 'Usuń reklamy - €2,99',
+    'removeAds.description': 'Ciesz się aplikacją bez reklam z roczną subskrypcją.',
+    'removeAds.buyButton': 'Usuń reklamy - €2,99/rok',
     'removeAds.purchased': 'Wersja bez reklam',
     'removeAds.thankYou': 'Dziękujemy za zakup! Korzystasz z wersji bez reklam.',
     'removeAds.success': 'Reklamy zostały usunięte! Dziękujemy za zakup.',
     'removeAds.error': 'Weryfikacja płatności nie powiodła się. Skontaktuj się z pomocą techniczną.',
     'removeAds.cancelled': 'Płatność anulowana.',
+    'removeAds.expiresOn': 'Wygasa',
+    'removeAds.daysLeft': 'dni pozostało',
+    'removeAds.renew': 'Odnów subskrypcję',
 
     // Chart
     'chart.yearlyOverview': 'Przegląd miesięczny',
@@ -1715,13 +1727,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Remove Ads
     'removeAds.title': 'Eliminar anuncios',
-    'removeAds.description': 'Disfruta de una experiencia sin anuncios con una compra única.',
-    'removeAds.buyButton': 'Eliminar anuncios - €2,99',
+    'removeAds.description': 'Disfruta de una experiencia sin anuncios con una suscripción anual.',
+    'removeAds.buyButton': 'Eliminar anuncios - €2,99/año',
     'removeAds.purchased': 'Versión sin anuncios',
     'removeAds.thankYou': '¡Gracias por tu compra! Estás usando la versión sin anuncios.',
     'removeAds.success': '¡Anuncios eliminados con éxito! Gracias por tu compra.',
     'removeAds.error': 'La verificación del pago falló. Por favor contacta al soporte.',
     'removeAds.cancelled': 'Pago cancelado.',
+    'removeAds.expiresOn': 'Expira el',
+    'removeAds.daysLeft': 'días restantes',
+    'removeAds.renew': 'Renovar suscripción',
 
     // Chart
     'chart.yearlyOverview': 'Resumen mensual',
@@ -2067,13 +2082,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Remove Ads
     'removeAds.title': 'Supprimer les publicités',
-    'removeAds.description': 'Profitez d\'une expérience sans publicités avec un achat unique.',
-    'removeAds.buyButton': 'Supprimer les pubs - €2,99',
+    'removeAds.description': 'Profitez d\'une expérience sans publicités avec un abonnement annuel.',
+    'removeAds.buyButton': 'Supprimer les pubs - €2,99/an',
     'removeAds.purchased': 'Version sans publicités',
     'removeAds.thankYou': 'Merci pour votre achat! Vous utilisez la version sans publicités.',
     'removeAds.success': 'Publicités supprimées avec succès! Merci pour votre achat.',
     'removeAds.error': 'La vérification du paiement a échoué. Veuillez contacter le support.',
     'removeAds.cancelled': 'Paiement annulé.',
+    'removeAds.expiresOn': 'Expire le',
+    'removeAds.daysLeft': 'jours restants',
+    'removeAds.renew': 'Renouveler l\'abonnement',
 
     // Chart
     'chart.yearlyOverview': 'Aperçu mensuel',
@@ -2419,13 +2437,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Remove Ads
     'removeAds.title': '移除广告',
-    'removeAds.description': '一次性购买，享受无广告体验。',
-    'removeAds.buyButton': '移除广告 - €2.99',
+    'removeAds.description': '通过年度订阅享受无广告体验。',
+    'removeAds.buyButton': '移除广告 - €2.99/年',
     'removeAds.purchased': '无广告版本',
     'removeAds.thankYou': '感谢您的购买！您正在使用无广告版本。',
     'removeAds.success': '广告已成功移除！感谢您的购买。',
     'removeAds.error': '付款验证失败。请联系客服。',
     'removeAds.cancelled': '付款已取消。',
+    'removeAds.expiresOn': '到期日期',
+    'removeAds.daysLeft': '天剩余',
+    'removeAds.renew': '续订',
 
     // Chart
     'chart.yearlyOverview': '月度概览',
@@ -2771,13 +2792,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Remove Ads
     'removeAds.title': 'विज्ञापन हटाएं',
-    'removeAds.description': 'एक बार की खरीद के साथ विज्ञापन-मुक्त अनुभव का आनंद लें।',
-    'removeAds.buyButton': 'विज्ञापन हटाएं - €2.99',
+    'removeAds.description': 'वार्षिक सदस्यता के साथ विज्ञापन-मुक्त अनुभव का आनंद लें।',
+    'removeAds.buyButton': 'विज्ञापन हटाएं - €2.99/वर्ष',
     'removeAds.purchased': 'विज्ञापन-मुक्त संस्करण',
     'removeAds.thankYou': 'आपकी खरीद के लिए धन्यवाद! आप विज्ञापन-मुक्त संस्करण का उपयोग कर रहे हैं।',
     'removeAds.success': 'विज्ञापन सफलतापूर्वक हटा दिए गए! खरीद के लिए धन्यवाद।',
     'removeAds.error': 'भुगतान सत्यापन विफल। कृपया सहायता से संपर्क करें।',
     'removeAds.cancelled': 'भुगतान रद्द किया गया।',
+    'removeAds.expiresOn': 'समाप्ति तिथि',
+    'removeAds.daysLeft': 'दिन शेष',
+    'removeAds.renew': 'सदस्यता नवीनीकृत करें',
 
     // Chart
     'chart.yearlyOverview': 'मासिक अवलोकन',
