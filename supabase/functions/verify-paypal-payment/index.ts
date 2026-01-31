@@ -1,9 +1,22 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+// Allowed origins for CORS - restrict to actual application domains
+const allowedOrigins = [
+  'https://budgetcard.lovable.app',
+  'https://id-preview--2b913f8a-e008-4a13-b688-581953b1b4f7.lovable.app',
+  'http://localhost:8080',
+  'http://localhost:5173',
+];
+
+const getCorsHeaders = (origin: string | null) => {
+  // Check if the request origin is in our allowed list
+  const allowedOrigin = origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Credentials': 'true',
+  };
 };
 
 const PAYPAL_API_URL = Deno.env.get('PAYPAL_MODE') === 'live' 
@@ -58,6 +71,10 @@ async function capturePayPalOrder(orderId: string, accessToken: string) {
 }
 
 serve(async (req) => {
+  // Get origin for dynamic CORS headers
+  const origin = req.headers.get('origin');
+  const corsHeaders = getCorsHeaders(origin);
+
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
