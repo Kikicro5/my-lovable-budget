@@ -286,6 +286,16 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Ova radnja će trajno obrisati sve vaše transakcije, račune, kategorije i postavke. Ova radnja se ne može poništiti.',
     'reset.success': 'Aplikacija je resetirana',
 
+    // Remove Ads
+    'removeAds.title': 'Ukloni reklame',
+    'removeAds.description': 'Uživaj u iskustvu bez reklama jednokratnom kupnjom.',
+    'removeAds.buyButton': 'Ukloni reklame - €2,99',
+    'removeAds.purchased': 'Verzija bez reklama',
+    'removeAds.thankYou': 'Hvala na kupnji! Koristiš verziju bez reklama.',
+    'removeAds.success': 'Reklame su uspješno uklonjene! Hvala na kupnji.',
+    'removeAds.error': 'Verifikacija plaćanja nije uspjela. Molimo kontaktirajte podršku.',
+    'removeAds.cancelled': 'Plaćanje je otkazano.',
+
     // Reminders
     'reminder.title': 'Podsjetnici za plaćanje',
     'reminder.description': 'Postavi podsjetnike za nadolazeća plaćanja.',
@@ -639,6 +649,16 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'This action will permanently delete all your transactions, accounts, categories and settings. This cannot be undone.',
     'reset.success': 'App has been reset',
 
+    // Remove Ads
+    'removeAds.title': 'Remove Ads',
+    'removeAds.description': 'Enjoy an ad-free experience with a one-time purchase.',
+    'removeAds.buyButton': 'Remove Ads - €2.99',
+    'removeAds.purchased': 'Ad-Free Version',
+    'removeAds.thankYou': 'Thank you for your purchase! You are using the ad-free version.',
+    'removeAds.success': 'Ads removed successfully! Thank you for your purchase.',
+    'removeAds.error': 'Payment verification failed. Please contact support.',
+    'removeAds.cancelled': 'Payment cancelled.',
+
     // Reminders
     'reminder.title': 'Payment Reminders',
     'reminder.description': 'Set reminders for upcoming payments.',
@@ -989,6 +1009,16 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Diese Aktion löscht dauerhaft alle Ihre Transaktionen, Konten, Kategorien und Einstellungen. Dies kann nicht rückgängig gemacht werden.',
     'reset.success': 'App wurde zurückgesetzt',
 
+    // Remove Ads
+    'removeAds.title': 'Werbung entfernen',
+    'removeAds.description': 'Genieße ein werbefreies Erlebnis mit einem einmaligen Kauf.',
+    'removeAds.buyButton': 'Werbung entfernen - €2,99',
+    'removeAds.purchased': 'Werbefreie Version',
+    'removeAds.thankYou': 'Vielen Dank für deinen Kauf! Du nutzt die werbefreie Version.',
+    'removeAds.success': 'Werbung erfolgreich entfernt! Vielen Dank für deinen Kauf.',
+    'removeAds.error': 'Zahlungsverifizierung fehlgeschlagen. Bitte kontaktiere den Support.',
+    'removeAds.cancelled': 'Zahlung abgebrochen.',
+
     // Chart
     'chart.yearlyOverview': 'Monatsübersicht',
     'chart.income': 'Einnahmen',
@@ -1330,6 +1360,16 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Czy jesteś pewien?',
     'reset.warning': 'Ta akcja trwale usunie wszystkie Twoje transakcje, konta, kategorie i ustawienia. Tej operacji nie można cofnąć.',
     'reset.success': 'Aplikacja została zresetowana',
+
+    // Remove Ads
+    'removeAds.title': 'Usuń reklamy',
+    'removeAds.description': 'Ciesz się aplikacją bez reklam dzięki jednorazowemu zakupowi.',
+    'removeAds.buyButton': 'Usuń reklamy - €2,99',
+    'removeAds.purchased': 'Wersja bez reklam',
+    'removeAds.thankYou': 'Dziękujemy za zakup! Korzystasz z wersji bez reklam.',
+    'removeAds.success': 'Reklamy zostały usunięte! Dziękujemy za zakup.',
+    'removeAds.error': 'Weryfikacja płatności nie powiodła się. Skontaktuj się z pomocą techniczną.',
+    'removeAds.cancelled': 'Płatność anulowana.',
 
     // Chart
     'chart.yearlyOverview': 'Przegląd miesięczny',
@@ -1673,6 +1713,16 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Esta acción eliminará permanentemente todas tus transacciones, cuentas, categorías y configuraciones. Esta acción no se puede deshacer.',
     'reset.success': 'La aplicación ha sido restablecida',
 
+    // Remove Ads
+    'removeAds.title': 'Eliminar anuncios',
+    'removeAds.description': 'Disfruta de una experiencia sin anuncios con una compra única.',
+    'removeAds.buyButton': 'Eliminar anuncios - €2,99',
+    'removeAds.purchased': 'Versión sin anuncios',
+    'removeAds.thankYou': '¡Gracias por tu compra! Estás usando la versión sin anuncios.',
+    'removeAds.success': '¡Anuncios eliminados con éxito! Gracias por tu compra.',
+    'removeAds.error': 'La verificación del pago falló. Por favor contacta al soporte.',
+    'removeAds.cancelled': 'Pago cancelado.',
+
     // Chart
     'chart.yearlyOverview': 'Resumen mensual',
     'chart.income': 'Ingresos',
@@ -2014,6 +2064,16 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Êtes-vous sûr?',
     'reset.warning': 'Cette action supprimera définitivement toutes vos transactions, comptes, catégories et paramètres. Cette action est irréversible.',
     'reset.success': 'L\'application a été réinitialisée',
+
+    // Remove Ads
+    'removeAds.title': 'Supprimer les publicités',
+    'removeAds.description': 'Profitez d\'une expérience sans publicités avec un achat unique.',
+    'removeAds.buyButton': 'Supprimer les pubs - €2,99',
+    'removeAds.purchased': 'Version sans publicités',
+    'removeAds.thankYou': 'Merci pour votre achat! Vous utilisez la version sans publicités.',
+    'removeAds.success': 'Publicités supprimées avec succès! Merci pour votre achat.',
+    'removeAds.error': 'La vérification du paiement a échoué. Veuillez contacter le support.',
+    'removeAds.cancelled': 'Paiement annulé.',
 
     // Chart
     'chart.yearlyOverview': 'Aperçu mensuel',
@@ -2357,6 +2417,16 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': '此操作将永久删除您的所有交易、账户、类别和设置。此操作无法撤销。',
     'reset.success': '应用已重置',
 
+    // Remove Ads
+    'removeAds.title': '移除广告',
+    'removeAds.description': '一次性购买，享受无广告体验。',
+    'removeAds.buyButton': '移除广告 - €2.99',
+    'removeAds.purchased': '无广告版本',
+    'removeAds.thankYou': '感谢您的购买！您正在使用无广告版本。',
+    'removeAds.success': '广告已成功移除！感谢您的购买。',
+    'removeAds.error': '付款验证失败。请联系客服。',
+    'removeAds.cancelled': '付款已取消。',
+
     // Chart
     'chart.yearlyOverview': '月度概览',
     'chart.income': '收入',
@@ -2698,6 +2768,16 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'क्या आप सुनिश्चित हैं?',
     'reset.warning': 'यह क्रिया आपके सभी लेनदेन, खाते, श्रेणियाँ और सेटिंग्स स्थायी रूप से हटा देगी। इसे पूर्ववत नहीं किया जा सकता।',
     'reset.success': 'ऐप रीसेट हो गया',
+
+    // Remove Ads
+    'removeAds.title': 'विज्ञापन हटाएं',
+    'removeAds.description': 'एक बार की खरीद के साथ विज्ञापन-मुक्त अनुभव का आनंद लें।',
+    'removeAds.buyButton': 'विज्ञापन हटाएं - €2.99',
+    'removeAds.purchased': 'विज्ञापन-मुक्त संस्करण',
+    'removeAds.thankYou': 'आपकी खरीद के लिए धन्यवाद! आप विज्ञापन-मुक्त संस्करण का उपयोग कर रहे हैं।',
+    'removeAds.success': 'विज्ञापन सफलतापूर्वक हटा दिए गए! खरीद के लिए धन्यवाद।',
+    'removeAds.error': 'भुगतान सत्यापन विफल। कृपया सहायता से संपर्क करें।',
+    'removeAds.cancelled': 'भुगतान रद्द किया गया।',
 
     // Chart
     'chart.yearlyOverview': 'मासिक अवलोकन',

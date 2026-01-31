@@ -7,6 +7,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
+import { RemoveAdsButton } from '@/components/RemoveAdsButton';
 import {
   Select,
   SelectContent,
@@ -146,6 +147,9 @@ const Options = () => {
 
           {/* App Guide Section */}
           <AppGuide />
+
+          {/* Remove Ads Section */}
+          <RemoveAdsButton />
 
           {/* Share Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
