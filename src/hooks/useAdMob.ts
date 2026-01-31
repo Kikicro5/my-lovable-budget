@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
 
-// AdMob configuration
+// AdMob configuration - Google Mobile Ads SDK
 const ADMOB_CONFIG = {
-  appId: 'ca-pub-0825549313210028',
+  // App ID za Google Mobile Ads SDK
+  appId: 'ca-app-pub-0825549313210028~8911340745',
+  // Banner Ad Unit ID
   bannerAdUnitId: 'ca-app-pub-0825549313210028/1716227063',
+  // Native Ad Unit ID (za napredne nativne oglase)
+  nativeAdUnitId: 'ca-app-pub-0825549313210028/7497005461',
 };
 
 export const useAdMob = () => {

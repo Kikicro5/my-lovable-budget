@@ -19,6 +19,9 @@ const config: CapacitorConfig = {
       splashImmersive: true,
       layoutName: "launch_screen",
       useDialog: true
+    },
+    AdMob: {
+      appId: 'ca-app-pub-0825549313210028~8911340745'
     }
   },
   android: {
