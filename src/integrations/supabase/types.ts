@@ -19,6 +19,7 @@ export type Database = {
           amount: number
           currency: string
           device_id: string
+          expires_at: string
           id: string
           paypal_order_id: string
           purchased_at: string
@@ -27,6 +28,7 @@ export type Database = {
           amount: number
           currency?: string
           device_id: string
+          expires_at?: string
           id?: string
           paypal_order_id: string
           purchased_at?: string
@@ -35,6 +37,7 @@ export type Database = {
           amount?: number
           currency?: string
           device_id?: string
+          expires_at?: string
           id?: string
           paypal_order_id?: string
           purchased_at?: string
