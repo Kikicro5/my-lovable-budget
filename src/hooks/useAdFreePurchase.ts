@@ -29,11 +29,30 @@ export const useAdFreePurchase = () => {
 
   const checkPurchaseStatus = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from('ad_free_purchases')
-        .select('id, expires_at, purchased_at')
-        .eq('device_id', deviceId)
-        .maybeSingle();
+      // Use fetch with custom header for RLS policy
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      
+      const response = await fetch(
+        `${supabaseUrl}/rest/v1/ad_free_purchases?device_id=eq.${encodeURIComponent(deviceId)}&select=id,expires_at,purchased_at`,
+        {
+          method: 'GET',
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+            'x-device-id': deviceId,
+          },
+        }
+      );
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const results = await response.json();
+      const data = results.length > 0 ? results[0] : null;
+      const error = null;
 
       if (error) {
         console.error('Error checking purchase status:', error);
