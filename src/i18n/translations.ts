@@ -299,6 +299,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysLeft': 'dana preostalo',
     'removeAds.renew': 'Obnovi pretplatu',
     'removeAds.daysShort': 'd',
+    'removeAds.paymentHistory': 'Povijest plaćanja',
+    'removeAds.validUntil': 'Vrijedi do',
 
     // Reminders
     'reminder.title': 'Podsjetnici za plaćanje',
@@ -699,6 +701,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysLeft': 'days left',
     'removeAds.renew': 'Renew Subscription',
     'removeAds.daysShort': 'd',
+    'removeAds.paymentHistory': 'Payment History',
+    'removeAds.validUntil': 'Valid until',
 
     // Reminders
     'reminder.title': 'Payment Reminders',
@@ -1095,6 +1099,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysLeft': 'Tage übrig',
     'removeAds.renew': 'Abo verlängern',
     'removeAds.daysShort': 'T',
+    'removeAds.paymentHistory': 'Zahlungsverlauf',
+    'removeAds.validUntil': 'Gültig bis',
 
     // Chart
     'chart.yearlyOverview': 'Monatsübersicht',
@@ -1451,6 +1457,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysLeft': 'dni pozostało',
     'removeAds.renew': 'Odnów subskrypcję',
     'removeAds.daysShort': 'd',
+    'removeAds.paymentHistory': 'Historia płatności',
+    'removeAds.validUntil': 'Ważne do',
 
     // Chart
     'chart.yearlyOverview': 'Przegląd miesięczny',
@@ -1807,6 +1815,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysLeft': 'días restantes',
     'removeAds.renew': 'Renovar suscripción',
     'removeAds.daysShort': 'd',
+    'removeAds.paymentHistory': 'Historial de pagos',
+    'removeAds.validUntil': 'Válido hasta',
 
     // Chart
     'chart.yearlyOverview': 'Resumen mensual',
@@ -2163,6 +2173,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysLeft': 'jours restants',
     'removeAds.renew': 'Renouveler l\'abonnement',
     'removeAds.daysShort': 'j',
+    'removeAds.paymentHistory': 'Historique des paiements',
+    'removeAds.validUntil': 'Valide jusqu\'au',
 
     // Chart
     'chart.yearlyOverview': 'Aperçu mensuel',
@@ -2519,6 +2531,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysLeft': '天剩余',
     'removeAds.renew': '续订',
     'removeAds.daysShort': '天',
+    'removeAds.paymentHistory': '付款记录',
+    'removeAds.validUntil': '有效期至',
 
     // Chart
     'chart.yearlyOverview': '月度概览',
@@ -2875,6 +2889,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysLeft': 'दिन शेष',
     'removeAds.renew': 'सदस्यता नवीनीकृत करें',
     'removeAds.daysShort': 'दि',
+    'removeAds.paymentHistory': 'भुगतान इतिहास',
+    'removeAds.validUntil': 'मान्य तक',
 
     // Chart
     'chart.yearlyOverview': 'मासिक अवलोकन',

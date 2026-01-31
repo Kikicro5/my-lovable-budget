@@ -63,11 +63,14 @@ interface PurchaseData {
   id: string;
   expires_at: string;
   purchased_at: string;
+  amount?: number;
+  currency?: string;
 }
 
 export const useAdFreePurchase = () => {
   const [isAdFree, setIsAdFree] = useState<boolean | null>(null);
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
+  const [purchases, setPurchases] = useState<PurchaseData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const deviceId = getDeviceId();
@@ -94,14 +97,17 @@ export const useAdFreePurchase = () => {
         console.error('Error checking purchase status:', error);
         setIsAdFree(false);
         setExpiresAt(null);
+        setPurchases([]);
       } else if (data?.isAdFree && data?.purchase) {
         const purchaseData = data.purchase as PurchaseData;
         const expDate = new Date(purchaseData.expires_at);
         setIsAdFree(true);
         setExpiresAt(expDate);
+        setPurchases(data.purchases || []);
       } else {
         setIsAdFree(false);
         setExpiresAt(null);
+        setPurchases(data?.purchases || []);
       }
     } catch (err) {
       console.error('Error checking purchase status:', err);
@@ -166,6 +172,7 @@ export const useAdFreePurchase = () => {
     deviceId,
     expiresAt,
     daysRemaining,
+    purchases,
     checkPurchaseStatus,
     verifyAndSavePurchase,
   };

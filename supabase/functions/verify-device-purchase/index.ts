@@ -53,11 +53,12 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Get all purchases for this device, ordered by newest first
     const { data, error } = await supabase
       .from('ad_free_purchases')
-      .select('id, expires_at, purchased_at')
+      .select('id, expires_at, purchased_at, amount, currency')
       .eq('device_id', deviceId)
-      .maybeSingle();
+      .order('purchased_at', { ascending: false });
 
     if (error) {
       console.error('Database query error');
@@ -67,25 +68,35 @@ serve(async (req) => {
       );
     }
 
-    if (!data) {
+    if (!data || data.length === 0) {
       return new Response(
-        JSON.stringify({ isAdFree: false, purchase: null }),
+        JSON.stringify({ isAdFree: false, purchase: null, purchases: [] }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const expiresAt = new Date(data.expires_at);
+    // Check if any purchase is still active
     const now = new Date();
-    const isActive = expiresAt > now;
+    const activePurchase = data.find(p => new Date(p.expires_at) > now);
+    const isActive = !!activePurchase;
 
     return new Response(
       JSON.stringify({ 
         isAdFree: isActive, 
-        purchase: {
-          id: data.id,
-          expires_at: data.expires_at,
-          purchased_at: data.purchased_at
-        }
+        purchase: activePurchase ? {
+          id: activePurchase.id,
+          expires_at: activePurchase.expires_at,
+          purchased_at: activePurchase.purchased_at,
+          amount: activePurchase.amount,
+          currency: activePurchase.currency
+        } : null,
+        purchases: data.map(p => ({
+          id: p.id,
+          expires_at: p.expires_at,
+          purchased_at: p.purchased_at,
+          amount: p.amount,
+          currency: p.currency
+        }))
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
