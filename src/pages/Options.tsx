@@ -1,4 +1,4 @@
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
 import { RemoveAdsButton } from '@/components/RemoveAdsButton';
+import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
 import {
   Select,
   SelectContent,
@@ -201,6 +202,18 @@ const Options = () => {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+          </div>
+
+          {/* Legal Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('legal.title')}</h2>
+            </div>
+            <div className="space-y-2">
+              <TermsOfServiceDialog />
+              <PrivacyPolicyDialog />
+            </div>
           </div>
         </div>
       </div>
