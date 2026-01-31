@@ -206,7 +206,7 @@ export const RemoveAdsButton = () => {
       {!showPayPal ? (
         <Button 
           onClick={() => setShowPayPal(true)} 
-          className="w-full gap-2"
+          className="w-full gap-2 bg-success text-success-foreground hover:bg-success/90"
           disabled={isPurchasing}
         >
           <CreditCard className="w-4 h-4" />
