@@ -54,9 +54,6 @@ const Options = () => {
     <div className="min-h-screen bg-background pb-20">
       <div className="max-w-lg mx-auto p-4">
         <div className="space-y-4">
-          {/* App Guide Section */}
-          <AppGuide />
-          
           {/* Theme Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
             <div className="flex items-center gap-2 mb-4">
@@ -128,6 +125,9 @@ const Options = () => {
               ))}
             </div>
           </div>
+
+          {/* App Guide Section */}
+          <AppGuide />
 
           {/* Share Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
