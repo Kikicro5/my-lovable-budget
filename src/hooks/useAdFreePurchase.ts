@@ -65,6 +65,7 @@ interface PurchaseData {
   purchased_at: string;
   amount?: number;
   currency?: string;
+  paypal_order_id?: string;
 }
 
 export const useAdFreePurchase = () => {
