@@ -158,6 +158,11 @@ export const RemoveAdsButton = () => {
                     <div className="text-muted-foreground text-xs">
                       {t('removeAds.validUntil') || 'Valid until'}: {formatDate(purchase.expires_at)}
                     </div>
+                    {purchase.paypal_order_id && (
+                      <div className="text-muted-foreground text-xs font-mono">
+                        ID: {purchase.paypal_order_id}
+                      </div>
+                    )}
                   </div>
                   <div className="text-foreground font-semibold">
                     {purchase.amount && purchase.currency 

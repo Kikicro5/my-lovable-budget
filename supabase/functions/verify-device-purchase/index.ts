@@ -56,7 +56,7 @@ serve(async (req) => {
     // Get all purchases for this device, ordered by newest first
     const { data, error } = await supabase
       .from('ad_free_purchases')
-      .select('id, expires_at, purchased_at, amount, currency')
+      .select('id, expires_at, purchased_at, amount, currency, paypal_order_id')
       .eq('device_id', deviceId)
       .order('purchased_at', { ascending: false });
 
@@ -88,14 +88,16 @@ serve(async (req) => {
           expires_at: activePurchase.expires_at,
           purchased_at: activePurchase.purchased_at,
           amount: activePurchase.amount,
-          currency: activePurchase.currency
+          currency: activePurchase.currency,
+          paypal_order_id: activePurchase.paypal_order_id
         } : null,
         purchases: data.map(p => ({
           id: p.id,
           expires_at: p.expires_at,
           purchased_at: p.purchased_at,
           amount: p.amount,
-          currency: p.currency
+          currency: p.currency,
+          paypal_order_id: p.paypal_order_id
         }))
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
