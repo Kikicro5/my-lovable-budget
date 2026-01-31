@@ -146,11 +146,11 @@ const Options = () => {
             </Select>
           </div>
 
-          {/* App Guide Section */}
-          <AppGuide />
-
           {/* Remove Ads Section */}
           <RemoveAdsButton />
+
+          {/* App Guide Section */}
+          <AppGuide />
 
           {/* Share Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
