@@ -92,7 +92,7 @@ const Index = () => {
           </div>
           
           <BalanceCard 
-            balance={getBalance()} 
+            balance={state.accounts?.reduce((sum, acc) => sum + acc.balance, 0) || 0} 
             income={getTotalIncome()} 
             expense={getTotalExpense()} 
             investment={getTotalInvestment()} 
