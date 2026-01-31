@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Languages, Check, Sun, Moon, Palette, Share2, RotateCcw, Coins } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,13 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -88,20 +94,26 @@ const Options = () => {
               <Languages className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">{t('options.language')}</h2>
             </div>
-            <div className="grid grid-cols-2 gap-2">
-              {(Object.keys(languageNames) as Language[]).map((lang) => (
-                <Button
-                  key={lang}
-                  variant={language === lang ? 'default' : 'outline'}
-                  className="justify-start gap-2"
-                  onClick={() => handleLanguageSelect(lang)}
-                >
-                  <span className="text-lg">{languageNames[lang].flag}</span>
-                  <span>{languageNames[lang].name}</span>
-                  {language === lang && <Check className="w-4 h-4 ml-auto" />}
-                </Button>
-              ))}
-            </div>
+            <Select value={language} onValueChange={(value) => setLanguage(value as Language)}>
+              <SelectTrigger className="w-full">
+                <SelectValue>
+                  <span className="flex items-center gap-2">
+                    <span className="text-lg">{languageNames[language].flag}</span>
+                    <span>{languageNames[language].name}</span>
+                  </span>
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="bg-popover border border-border z-50">
+                {(Object.keys(languageNames) as Language[]).map((lang) => (
+                  <SelectItem key={lang} value={lang}>
+                    <span className="flex items-center gap-2">
+                      <span className="text-lg">{languageNames[lang].flag}</span>
+                      <span>{languageNames[lang].name}</span>
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Currency Section */}
@@ -110,20 +122,26 @@ const Options = () => {
               <Coins className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">{t('options.currency')}</h2>
             </div>
-            <div className="grid grid-cols-2 gap-2">
-              {currencies.map((curr) => (
-                <Button
-                  key={curr.code}
-                  variant={currency === curr.code ? 'default' : 'outline'}
-                  className="justify-start gap-2"
-                  onClick={() => setCurrency(curr.code)}
-                >
-                  <span className="text-lg font-medium">{curr.symbol}</span>
-                  <span>{t(`currency.${curr.code}`)}</span>
-                  {currency === curr.code && <Check className="w-4 h-4 ml-auto" />}
-                </Button>
-              ))}
-            </div>
+            <Select value={currency} onValueChange={(value) => setCurrency(value as Currency)}>
+              <SelectTrigger className="w-full">
+                <SelectValue>
+                  <span className="flex items-center gap-2">
+                    <span className="text-lg font-medium">{currencies.find(c => c.code === currency)?.symbol}</span>
+                    <span>{t(`currency.${currency}`)}</span>
+                  </span>
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="bg-popover border border-border z-50">
+                {currencies.map((curr) => (
+                  <SelectItem key={curr.code} value={curr.code}>
+                    <span className="flex items-center gap-2">
+                      <span className="text-lg font-medium">{curr.symbol}</span>
+                      <span>{t(`currency.${curr.code}`)}</span>
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* App Guide Section */}
