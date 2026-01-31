@@ -135,11 +135,18 @@ export const RemoveAdsButton = () => {
   if (isAdFree && expiresAt) {
     return (
       <div className="bg-card rounded-xl p-4 border border-primary/30">
-        <div className="flex items-center gap-2 mb-2">
-          <Check className="w-5 h-5 text-primary" />
-          <h2 className="text-lg font-semibold text-foreground">
-            {t('removeAds.purchased') || 'Ad-Free Version'}
-          </h2>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <Check className="w-5 h-5 text-primary" />
+            <h2 className="text-lg font-semibold text-foreground">
+              {t('removeAds.purchased') || 'Ad-Free Version'}
+            </h2>
+          </div>
+          <div className="flex items-center gap-1.5 bg-primary/10 text-primary px-2.5 py-1 rounded-full text-sm font-medium">
+            <Calendar className="w-3.5 h-3.5" />
+            <span>{daysRemaining}</span>
+            <span className="text-xs">{t('removeAds.daysShort') || 'd'}</span>
+          </div>
         </div>
         <p className="text-sm text-muted-foreground mb-2">
           {t('removeAds.thankYou') || 'Thank you for your purchase! You are using the ad-free version.'}

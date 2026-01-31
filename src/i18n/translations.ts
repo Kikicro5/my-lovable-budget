@@ -298,6 +298,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.expiresOn': 'Istječe',
     'removeAds.daysLeft': 'dana preostalo',
     'removeAds.renew': 'Obnovi pretplatu',
+    'removeAds.daysShort': 'd',
 
     // Reminders
     'reminder.title': 'Podsjetnici za plaćanje',
@@ -664,6 +665,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.expiresOn': 'Expires on',
     'removeAds.daysLeft': 'days left',
     'removeAds.renew': 'Renew Subscription',
+    'removeAds.daysShort': 'd',
 
     // Reminders
     'reminder.title': 'Payment Reminders',
@@ -1027,6 +1029,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.expiresOn': 'Läuft ab am',
     'removeAds.daysLeft': 'Tage übrig',
     'removeAds.renew': 'Abo verlängern',
+    'removeAds.daysShort': 'T',
 
     // Chart
     'chart.yearlyOverview': 'Monatsübersicht',
@@ -1382,6 +1385,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.expiresOn': 'Wygasa',
     'removeAds.daysLeft': 'dni pozostało',
     'removeAds.renew': 'Odnów subskrypcję',
+    'removeAds.daysShort': 'd',
 
     // Chart
     'chart.yearlyOverview': 'Przegląd miesięczny',
@@ -1737,6 +1741,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.expiresOn': 'Expira el',
     'removeAds.daysLeft': 'días restantes',
     'removeAds.renew': 'Renovar suscripción',
+    'removeAds.daysShort': 'd',
 
     // Chart
     'chart.yearlyOverview': 'Resumen mensual',
@@ -2092,6 +2097,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.expiresOn': 'Expire le',
     'removeAds.daysLeft': 'jours restants',
     'removeAds.renew': 'Renouveler l\'abonnement',
+    'removeAds.daysShort': 'j',
 
     // Chart
     'chart.yearlyOverview': 'Aperçu mensuel',
@@ -2447,6 +2453,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.expiresOn': '到期日期',
     'removeAds.daysLeft': '天剩余',
     'removeAds.renew': '续订',
+    'removeAds.daysShort': '天',
 
     // Chart
     'chart.yearlyOverview': '月度概览',
@@ -2802,6 +2809,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.expiresOn': 'समाप्ति तिथि',
     'removeAds.daysLeft': 'दिन शेष',
     'removeAds.renew': 'सदस्यता नवीनीकृत करें',
+    'removeAds.daysShort': 'दि',
 
     // Chart
     'chart.yearlyOverview': 'मासिक अवलोकन',
