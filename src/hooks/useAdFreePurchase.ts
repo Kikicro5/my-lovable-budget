@@ -1,17 +1,62 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
+const STORAGE_KEY_DEVICE_ID = 'budget-card-device-id';
+const STORAGE_KEY_DEVICE_TOKEN = 'budget-card-device-token';
+
 // Generate or retrieve a persistent device ID
 const getDeviceId = (): string => {
-  const storageKey = 'budget-card-device-id';
-  let deviceId = localStorage.getItem(storageKey);
+  let deviceId = localStorage.getItem(STORAGE_KEY_DEVICE_ID);
   
   if (!deviceId) {
     deviceId = crypto.randomUUID();
-    localStorage.setItem(storageKey, deviceId);
+    localStorage.setItem(STORAGE_KEY_DEVICE_ID, deviceId);
   }
   
   return deviceId;
+};
+
+// Get or generate a signed device token
+const getDeviceToken = async (): Promise<string | null> => {
+  // Check if we have a cached token
+  const cachedToken = localStorage.getItem(STORAGE_KEY_DEVICE_TOKEN);
+  if (cachedToken) {
+    // Validate token format: deviceId.signature
+    const parts = cachedToken.split('.');
+    if (parts.length === 2) {
+      const tokenDeviceId = parts[0];
+      const storedDeviceId = localStorage.getItem(STORAGE_KEY_DEVICE_ID);
+      // Make sure token matches current device ID
+      if (tokenDeviceId === storedDeviceId) {
+        return cachedToken;
+      }
+    }
+    // Token is invalid or doesn't match, clear it
+    localStorage.removeItem(STORAGE_KEY_DEVICE_TOKEN);
+  }
+
+  // Generate new signed token from server
+  const deviceId = getDeviceId();
+  try {
+    const { data, error } = await supabase.functions.invoke('generate-device-token', {
+      body: { deviceId },
+    });
+
+    if (error) {
+      console.error('Error generating device token:', error);
+      return null;
+    }
+
+    if (data?.token) {
+      localStorage.setItem(STORAGE_KEY_DEVICE_TOKEN, data.token);
+      return data.token;
+    }
+
+    return null;
+  } catch (err) {
+    console.error('Error generating device token:', err);
+    return null;
+  }
 };
 
 interface PurchaseData {
@@ -29,49 +74,31 @@ export const useAdFreePurchase = () => {
 
   const checkPurchaseStatus = useCallback(async () => {
     try {
-      // Use fetch with custom header for RLS policy
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      // Get signed device token
+      const deviceToken = await getDeviceToken();
       
-      const response = await fetch(
-        `${supabaseUrl}/rest/v1/ad_free_purchases?device_id=eq.${encodeURIComponent(deviceId)}&select=id,expires_at,purchased_at`,
-        {
-          method: 'GET',
-          headers: {
-            'apikey': supabaseKey,
-            'Authorization': `Bearer ${supabaseKey}`,
-            'Content-Type': 'application/json',
-            'x-device-id': deviceId,
-          },
-        }
-      );
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!deviceToken) {
+        console.error('Could not get device token');
+        setIsAdFree(false);
+        setExpiresAt(null);
+        setIsLoading(false);
+        return;
       }
-      
-      const results = await response.json();
-      const data = results.length > 0 ? results[0] : null;
-      const error = null;
+
+      // Use secure edge function to verify purchase
+      const { data, error } = await supabase.functions.invoke('verify-device-purchase', {
+        body: { deviceToken },
+      });
 
       if (error) {
         console.error('Error checking purchase status:', error);
         setIsAdFree(false);
         setExpiresAt(null);
-      } else if (data) {
-        const purchaseData = data as PurchaseData;
+      } else if (data?.isAdFree && data?.purchase) {
+        const purchaseData = data.purchase as PurchaseData;
         const expDate = new Date(purchaseData.expires_at);
-        const now = new Date();
-        
-        // Check if subscription is still valid
-        if (expDate > now) {
-          setIsAdFree(true);
-          setExpiresAt(expDate);
-        } else {
-          // Subscription expired
-          setIsAdFree(false);
-          setExpiresAt(expDate);
-        }
+        setIsAdFree(true);
+        setExpiresAt(expDate);
       } else {
         setIsAdFree(false);
         setExpiresAt(null);
@@ -83,7 +110,7 @@ export const useAdFreePurchase = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [deviceId]);
+  }, []);
 
   useEffect(() => {
     checkPurchaseStatus();
@@ -92,8 +119,16 @@ export const useAdFreePurchase = () => {
   const verifyAndSavePurchase = async (orderId: string): Promise<boolean> => {
     setIsPurchasing(true);
     try {
+      // Get signed device token
+      const deviceToken = await getDeviceToken();
+      
+      if (!deviceToken) {
+        console.error('Could not get device token for purchase verification');
+        return false;
+      }
+
       const { data, error } = await supabase.functions.invoke('verify-paypal-payment', {
-        body: { orderId, deviceId },
+        body: { orderId, deviceToken },
       });
 
       if (error) {

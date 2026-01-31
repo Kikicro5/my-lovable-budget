@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { verifyDeviceToken, generateHmacSignature } from "../_shared/device-verification.ts";
 
 // Allowed origins for CORS - restrict to actual application domains
 const allowedOrigins = [
@@ -81,16 +82,30 @@ serve(async (req) => {
   }
 
   try {
-    const { orderId, deviceId } = await req.json();
+    const { orderId, deviceToken } = await req.json();
 
-    if (!orderId || !deviceId) {
+    // Validate orderId format
+    if (!orderId || typeof orderId !== 'string' || 
+        orderId.length < 10 || orderId.length > 100 ||
+        !/^[A-Z0-9-]+$/i.test(orderId)) {
       return new Response(
-        JSON.stringify({ error: 'Missing orderId or deviceId' }),
+        JSON.stringify({ error: 'Invalid order ID format' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(`Verifying PayPal order: ${orderId} for device: ${deviceId}`);
+    // Verify the signed device token
+    const signingSecret = Deno.env.get('DEVICE_SIGNING_SECRET') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const { valid, deviceId } = await verifyDeviceToken(deviceToken, signingSecret);
+
+    if (!valid || !deviceId) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid device token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('Processing payment verification');
 
     // Get PayPal access token
     const accessToken = await getPayPalAccessToken();
@@ -98,7 +113,7 @@ serve(async (req) => {
     // Capture the order
     const captureResult = await capturePayPalOrder(orderId, accessToken);
     
-    console.log('PayPal capture result:', JSON.stringify(captureResult));
+    // Payment captured successfully - don't log sensitive details
 
     if (captureResult.status !== 'COMPLETED') {
       return new Response(
@@ -143,7 +158,7 @@ serve(async (req) => {
       );
     }
 
-    console.log('Purchase saved successfully:', data);
+    console.log('Purchase saved successfully');
 
     return new Response(
       JSON.stringify({ success: true, purchase: data }),
