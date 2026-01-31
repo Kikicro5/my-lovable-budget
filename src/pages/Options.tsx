@@ -7,6 +7,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
+import { AppGuide } from '@/components/AppGuide';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -52,9 +53,10 @@ const Options = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       <div className="max-w-lg mx-auto p-4">
-        
-        
         <div className="space-y-4">
+          {/* App Guide Section */}
+          <AppGuide />
+          
           {/* Theme Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
             <div className="flex items-center gap-2 mb-4">
