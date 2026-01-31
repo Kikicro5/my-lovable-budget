@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Ban, Check, Loader2, CreditCard, Calendar } from 'lucide-react';
+import { Ban, Check, Loader2, CreditCard, Calendar, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useAdFreePurchase } from '@/hooks/useAdFreePurchase';
 import { toast } from 'sonner';
+import { Separator } from '@/components/ui/separator';
 
 declare global {
   interface Window {
@@ -42,7 +43,7 @@ const CURRENCY = 'EUR';
 
 export const RemoveAdsButton = () => {
   const { t, language } = useLanguage();
-  const { isAdFree, isLoading, isPurchasing, expiresAt, daysRemaining, verifyAndSavePurchase } = useAdFreePurchase();
+  const { isAdFree, isLoading, isPurchasing, expiresAt, daysRemaining, purchases, verifyAndSavePurchase } = useAdFreePurchase();
   const [showPayPal, setShowPayPal] = useState(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
 
@@ -114,12 +115,63 @@ export const RemoveAdsButton = () => {
   }, [paypalLoaded, showPayPal, verifyAndSavePurchase, t]);
 
   // Format expiration date
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString(language === 'hr' ? 'hr-HR' : language === 'de' ? 'de-DE' : 'en-US', {
+  const formatDate = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString(language === 'hr' ? 'hr-HR' : language === 'de' ? 'de-DE' : 'en-US', {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
     });
+  };
+
+  // Format currency
+  const formatCurrency = (amount: number, currency: string) => {
+    return new Intl.NumberFormat(language === 'hr' ? 'hr-HR' : language === 'de' ? 'de-DE' : 'en-US', {
+      style: 'currency',
+      currency: currency
+    }).format(amount);
+  };
+
+  // Payment history component
+  const PaymentHistory = () => {
+    if (purchases.length === 0) return null;
+    
+    return (
+      <>
+        <Separator className="my-4" />
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <Receipt className="w-4 h-4 text-muted-foreground" />
+            <span>{t('removeAds.paymentHistory') || 'Payment History'}</span>
+          </div>
+          <div className="space-y-2">
+            {purchases.map((purchase) => (
+              <div 
+                key={purchase.id} 
+                className="bg-muted/50 rounded-lg p-3 text-sm"
+              >
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <div className="text-foreground font-medium">
+                      {formatDate(purchase.purchased_at)}
+                    </div>
+                    <div className="text-muted-foreground text-xs">
+                      {t('removeAds.validUntil') || 'Valid until'}: {formatDate(purchase.expires_at)}
+                    </div>
+                  </div>
+                  <div className="text-foreground font-semibold">
+                    {purchase.amount && purchase.currency 
+                      ? formatCurrency(purchase.amount, purchase.currency)
+                      : `€${PRICE}`
+                    }
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </>
+    );
   };
 
   if (isLoading) {
@@ -183,10 +235,12 @@ export const RemoveAdsButton = () => {
               onClick={() => setShowPayPal(false)} 
               className="w-full"
             >
-              {t('dialog.cancel') || 'Cancel'}
-            </Button>
-          </div>
+            {t('dialog.cancel') || 'Cancel'}
+          </Button>
+        </div>
         )}
+        
+        <PaymentHistory />
       </div>
     );
   }
@@ -226,10 +280,12 @@ export const RemoveAdsButton = () => {
             onClick={() => setShowPayPal(false)} 
             className="w-full"
           >
-            {t('dialog.cancel') || 'Cancel'}
-          </Button>
-        </div>
+          {t('dialog.cancel') || 'Cancel'}
+        </Button>
+      </div>
       )}
+      
+      <PaymentHistory />
     </div>
   );
 };
