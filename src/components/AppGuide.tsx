@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen, ChevronLeft, ChevronRight, Wallet, PlusCircle, FileText, Settings, BarChart3, Archive, X } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -11,8 +11,16 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
+// Import guide images
+import step1Image from '@/assets/guide/step1-accounts.png';
+import step2Image from '@/assets/guide/step2-transactions.png';
+import step3Image from '@/assets/guide/step3-categories.png';
+import step4Image from '@/assets/guide/step4-limits.png';
+import step5Image from '@/assets/guide/step5-archive.png';
+import step6Image from '@/assets/guide/step6-settings.png';
+
 interface GuideStep {
-  icon: React.ReactNode;
+  image: string;
   titleKey: string;
   descriptionKey: string;
   tips: string[];
@@ -25,7 +33,7 @@ export const AppGuide = () => {
 
   const steps: GuideStep[] = [
     {
-      icon: <Wallet className="w-12 h-12 text-primary" />,
+      image: step1Image,
       titleKey: 'guide.step1.title',
       descriptionKey: 'guide.step1.description',
       tips: [
@@ -35,7 +43,7 @@ export const AppGuide = () => {
       ],
     },
     {
-      icon: <PlusCircle className="w-12 h-12 text-income" />,
+      image: step2Image,
       titleKey: 'guide.step2.title',
       descriptionKey: 'guide.step2.description',
       tips: [
@@ -45,7 +53,7 @@ export const AppGuide = () => {
       ],
     },
     {
-      icon: <FileText className="w-12 h-12 text-primary" />,
+      image: step3Image,
       titleKey: 'guide.step3.title',
       descriptionKey: 'guide.step3.description',
       tips: [
@@ -55,7 +63,7 @@ export const AppGuide = () => {
       ],
     },
     {
-      icon: <BarChart3 className="w-12 h-12 text-investment" />,
+      image: step4Image,
       titleKey: 'guide.step4.title',
       descriptionKey: 'guide.step4.description',
       tips: [
@@ -65,7 +73,7 @@ export const AppGuide = () => {
       ],
     },
     {
-      icon: <Archive className="w-12 h-12 text-muted-foreground" />,
+      image: step5Image,
       titleKey: 'guide.step5.title',
       descriptionKey: 'guide.step5.description',
       tips: [
@@ -74,7 +82,7 @@ export const AppGuide = () => {
       ],
     },
     {
-      icon: <Settings className="w-12 h-12 text-primary" />,
+      image: step6Image,
       titleKey: 'guide.step6.title',
       descriptionKey: 'guide.step6.description',
       tips: [
@@ -131,7 +139,7 @@ export const AppGuide = () => {
             </DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-6 py-4">
+          <div className="space-y-4 py-2">
             {/* Step indicator */}
             <div className="flex justify-center gap-1.5">
               {steps.map((_, index) => (
@@ -150,16 +158,20 @@ export const AppGuide = () => {
             </div>
 
             {/* Step content */}
-            <div className="text-center space-y-4">
-              <div className="flex justify-center p-4 bg-muted/50 rounded-xl">
-                {currentStepData.icon}
+            <div className="text-center space-y-3">
+              <div className="flex justify-center">
+                <img 
+                  src={currentStepData.image} 
+                  alt={t(currentStepData.titleKey)}
+                  className="w-40 h-40 object-contain rounded-xl"
+                />
               </div>
               
               <div>
-                <h3 className="text-xl font-bold text-foreground mb-2">
+                <h3 className="text-lg font-bold text-foreground mb-1">
                   {t(currentStepData.titleKey)}
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   {t(currentStepData.descriptionKey)}
                 </p>
               </div>
@@ -167,13 +179,13 @@ export const AppGuide = () => {
 
             {/* Tips */}
             <Card className="bg-muted/30 border-primary/20">
-              <CardContent className="p-4">
-                <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+              <CardContent className="p-3">
+                <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                   💡 {t('guide.tips')}
                 </h4>
-                <ul className="space-y-2">
+                <ul className="space-y-1.5">
                   {currentStepData.tips.map((tip, index) => (
-                    <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                    <li key={index} className="text-xs text-muted-foreground flex items-start gap-2">
                       <span className="text-primary mt-0.5">•</span>
                       <span>{tip}</span>
                     </li>
