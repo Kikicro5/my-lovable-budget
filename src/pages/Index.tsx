@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
+import { useInterstitialAd } from '@/hooks/useInterstitialAd';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MonthCard } from '@/components/MonthCard';
 import { BalanceCard } from '@/components/BalanceCard';
@@ -32,6 +33,7 @@ const Index = () => {
     removeReminder,
   } = useBudget();
   const { t } = useLanguage();
+  const { triggerAfterAction } = useInterstitialAd();
   const currentBudget = getCurrentBudget();
   
   const now = new Date();
@@ -47,9 +49,11 @@ const Index = () => {
   const recurringApplied = currentBudget?.recurringApplied || false;
   const hasAccounts = state.accounts && state.accounts.length > 0;
 
-  const handleAddExpense = (name: string, amount: number, category: string) => {
+  const handleAddExpense = async (name: string, amount: number, category: string) => {
     addTransaction({ name, amount, type: 'expense', category });
     toast({ title: t('toast.expense.added'), description: `${name}: ${amount.toLocaleString('hr-HR')} €` });
+    // Trigger interstitial ad after adding expense
+    await triggerAfterAction();
   };
 
   const handleRemoveTransaction = (id: string) => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Capacitor } from '@capacitor/core';
 
 // AdMob configuration - Google Mobile Ads SDK
@@ -7,13 +7,19 @@ const ADMOB_CONFIG = {
   appId: 'ca-app-pub-0825549313210028~8911340745',
   // Banner Ad Unit ID
   bannerAdUnitId: 'ca-app-pub-0825549313210028/1716227063',
-  // Native Ad Unit ID (za napredne nativne oglase)
-  nativeAdUnitId: 'ca-app-pub-0825549313210028/7497005461',
+  // Interstitial Ad Unit ID
+  interstitialAdUnitId: 'ca-app-pub-0825549313210028/7497005461',
 };
+
+// Track interstitial show count for frequency capping
+const INTERSTITIAL_COOLDOWN_KEY = 'admob-interstitial-last-shown';
+const INTERSTITIAL_MIN_INTERVAL = 60000; // 60 seconds minimum between interstitials
 
 export const useAdMob = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [isBannerVisible, setIsBannerVisible] = useState(false);
+  const [isInterstitialLoaded, setIsInterstitialLoaded] = useState(false);
+  const [isInterstitialShowing, setIsInterstitialShowing] = useState(false);
 
   useEffect(() => {
     const initializeAdMob = async () => {
@@ -84,11 +90,97 @@ export const useAdMob = () => {
     }
   };
 
+  // Check if enough time has passed since last interstitial
+  const canShowInterstitial = useCallback(() => {
+    const lastShown = localStorage.getItem(INTERSTITIAL_COOLDOWN_KEY);
+    if (!lastShown) return true;
+    
+    const timeSinceLastShown = Date.now() - parseInt(lastShown, 10);
+    return timeSinceLastShown >= INTERSTITIAL_MIN_INTERVAL;
+  }, []);
+
+  // Prepare (load) interstitial ad
+  const prepareInterstitial = useCallback(async () => {
+    if (!Capacitor.isNativePlatform()) return;
+    if (isInterstitialLoaded) return;
+
+    try {
+      const { AdMob, InterstitialAdPluginEvents } = await import('@capacitor-community/admob');
+      
+      // Add listeners for interstitial events
+      AdMob.addListener(InterstitialAdPluginEvents.Loaded, () => {
+        console.log('Interstitial ad loaded');
+        setIsInterstitialLoaded(true);
+      });
+
+      AdMob.addListener(InterstitialAdPluginEvents.Dismissed, () => {
+        console.log('Interstitial ad dismissed');
+        setIsInterstitialShowing(false);
+        setIsInterstitialLoaded(false);
+        // Pre-load next interstitial
+        prepareInterstitial();
+      });
+
+      AdMob.addListener(InterstitialAdPluginEvents.FailedToLoad, (error) => {
+        console.error('Interstitial failed to load:', error);
+        setIsInterstitialLoaded(false);
+      });
+
+      AdMob.addListener(InterstitialAdPluginEvents.Showed, () => {
+        console.log('Interstitial ad showed');
+        setIsInterstitialShowing(true);
+        localStorage.setItem(INTERSTITIAL_COOLDOWN_KEY, Date.now().toString());
+      });
+
+      await AdMob.prepareInterstitial({
+        adId: ADMOB_CONFIG.interstitialAdUnitId,
+      });
+      
+      console.log('Interstitial ad preparation started');
+    } catch (error) {
+      console.error('Failed to prepare interstitial:', error);
+    }
+  }, [isInterstitialLoaded]);
+
+  // Show interstitial ad
+  const showInterstitial = useCallback(async (): Promise<boolean> => {
+    if (!Capacitor.isNativePlatform()) return false;
+    if (!isInterstitialLoaded) {
+      console.log('Interstitial not loaded yet');
+      return false;
+    }
+    if (!canShowInterstitial()) {
+      console.log('Interstitial cooldown active');
+      return false;
+    }
+
+    try {
+      const { AdMob } = await import('@capacitor-community/admob');
+      await AdMob.showInterstitial();
+      return true;
+    } catch (error) {
+      console.error('Failed to show interstitial:', error);
+      return false;
+    }
+  }, [isInterstitialLoaded, canShowInterstitial]);
+
+  // Auto-prepare interstitial when initialized
+  useEffect(() => {
+    if (isInitialized) {
+      prepareInterstitial();
+    }
+  }, [isInitialized, prepareInterstitial]);
+
   return {
     isInitialized,
     isBannerVisible,
+    isInterstitialLoaded,
+    isInterstitialShowing,
     showBanner,
     hideBanner,
     removeBanner,
+    prepareInterstitial,
+    showInterstitial,
+    canShowInterstitial,
   };
 };
