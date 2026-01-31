@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      ad_free_purchases: {
+        Row: {
+          amount: number
+          currency: string
+          device_id: string
+          id: string
+          paypal_order_id: string
+          purchased_at: string
+        }
+        Insert: {
+          amount: number
+          currency?: string
+          device_id: string
+          id?: string
+          paypal_order_id: string
+          purchased_at?: string
+        }
+        Update: {
+          amount?: number
+          currency?: string
+          device_id?: string
+          id?: string
+          paypal_order_id?: string
+          purchased_at?: string
+        }
+        Relationships: []
+      }
       push_subscriptions: {
         Row: {
           auth: string
