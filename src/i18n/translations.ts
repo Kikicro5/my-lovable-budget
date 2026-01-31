@@ -366,6 +366,39 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip1': 'Odaberi svijetlu ili tamnu temu',
     'guide.step6.tip2': 'Aplikacija podržava više jezika',
     'guide.step6.tip3': 'Možeš odabrati valutu koja ti odgovara',
+
+    // Legal
+    'legal.title': 'Pravne informacije',
+    'legal.terms.title': 'Uvjeti korištenja',
+    'legal.privacy.title': 'Pravila privatnosti',
+    
+    // Terms of Service content
+    'legal.terms.section1.title': '1. Prihvaćanje uvjeta',
+    'legal.terms.section1.content': 'Korištenjem aplikacije BudgetCard prihvaćate ove uvjete korištenja. Aplikacija je namijenjena za osobno praćenje financija i budžeta. Ako se ne slažete s ovim uvjetima, molimo da ne koristite aplikaciju.',
+    'legal.terms.section2.title': '2. Opis usluge',
+    'legal.terms.section2.content': 'BudgetCard je aplikacija za praćenje osobnih financija koja omogućuje unos prihoda, rashoda, investicija i štednje. Svi podaci pohranjuju se lokalno na vašem uređaju. Aplikacija ne pruža financijske savjete niti preporuke za ulaganja.',
+    'legal.terms.section3.title': '3. Odgovornost korisnika',
+    'legal.terms.section3.content': 'Korisnik je odgovoran za točnost unesenih podataka. Aplikacija služi isključivo kao alat za praćenje i ne jamči financijske rezultate. Korisnik ne smije koristiti aplikaciju za nezakonite aktivnosti.',
+    'legal.terms.section4.title': '4. Ograničenje odgovornosti',
+    'legal.terms.section4.content': 'Aplikacija se pruža "kakva jest" bez ikakvih jamstava. Nismo odgovorni za gubitke nastale korištenjem aplikacije, gubitak podataka ili bilo kakve financijske odluke donesene na temelju informacija iz aplikacije.',
+    'legal.terms.section5.title': '5. Intelektualno vlasništvo',
+    'legal.terms.section5.content': 'Sva prava intelektualnog vlasništva nad aplikacijom pripadaju razvijatelju. Korisnicima nije dopušteno kopiranje, modificiranje ili distribucija aplikacije bez pisanog odobrenja.',
+    'legal.terms.section6.title': '6. Izmjene uvjeta',
+    'legal.terms.section6.content': 'Zadržavamo pravo izmjene ovih uvjeta u bilo kojem trenutku. Nastavak korištenja aplikacije nakon izmjena predstavlja prihvaćanje novih uvjeta.',
+
+    // Privacy Policy content
+    'legal.privacy.section1.title': '1. Prikupljanje podataka',
+    'legal.privacy.section1.content': 'BudgetCard prikuplja samo podatke koje unesete u aplikaciju (transakcije, računi, kategorije). Svi podaci pohranjuju se lokalno na vašem uređaju i ne šalju se na vanjske servere bez vašeg pristanka.',
+    'legal.privacy.section2.title': '2. Pohrana podataka',
+    'legal.privacy.section2.content': 'Vaši financijski podaci pohranjuju se u lokalnoj memoriji vašeg uređaja (localStorage). Podaci ostaju na vašem uređaju i pod vašom kontrolom. Brisanjem aplikacije ili resetiranjem podataka trajno ćete izbrisati sve pohranjene informacije.',
+    'legal.privacy.section3.title': '3. Oglasi',
+    'legal.privacy.section3.content': 'Aplikacija može prikazivati oglase putem Google AdMob servisa. Google može prikupljati anonimne podatke o korištenju za personalizaciju oglasa. Možete kupiti verziju bez reklama za potpuno iskustvo bez oglasa.',
+    'legal.privacy.section4.title': '4. Dijeljenje podataka',
+    'legal.privacy.section4.content': 'Ne prodajemo, ne trgovamo niti na drugi način prenosimo vaše osobne podatke trećim stranama. Vaši financijski podaci ostaju privatni i pohranjeni isključivo na vašem uređaju.',
+    'legal.privacy.section5.title': '5. Sigurnost',
+    'legal.privacy.section5.content': 'Poduzimamo razumne mjere za zaštitu vaših podataka, ali ne možemo jamčiti apsolutnu sigurnost. Preporučujemo redovito sigurnosno kopiranje važnih podataka.',
+    'legal.privacy.section6.title': '6. Kontakt',
+    'legal.privacy.section6.content': 'Za sva pitanja vezana uz privatnost možete nas kontaktirati putem službenih kanala aplikacije. Zadržavamo pravo ažuriranja ovih pravila privatnosti.',
   },
 
   en: {
@@ -733,10 +766,42 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip1': 'Choose light or dark theme',
     'guide.step6.tip2': 'App supports multiple languages',
     'guide.step6.tip3': 'Select your preferred currency',
+
+    // Legal
+    'legal.title': 'Legal Information',
+    'legal.terms.title': 'Terms of Service',
+    'legal.privacy.title': 'Privacy Policy',
+    
+    // Terms of Service content
+    'legal.terms.section1.title': '1. Acceptance of Terms',
+    'legal.terms.section1.content': 'By using the BudgetCard application, you accept these terms of use. The application is intended for personal finance and budget tracking. If you do not agree with these terms, please do not use the application.',
+    'legal.terms.section2.title': '2. Description of Service',
+    'legal.terms.section2.content': 'BudgetCard is a personal finance tracking application that allows you to enter income, expenses, investments, and savings. All data is stored locally on your device. The application does not provide financial advice or investment recommendations.',
+    'legal.terms.section3.title': '3. User Responsibility',
+    'legal.terms.section3.content': 'The user is responsible for the accuracy of entered data. The application serves solely as a tracking tool and does not guarantee financial results. Users may not use the application for illegal activities.',
+    'legal.terms.section4.title': '4. Limitation of Liability',
+    'legal.terms.section4.content': 'The application is provided "as is" without any warranties. We are not responsible for losses incurred from using the application, data loss, or any financial decisions made based on information from the application.',
+    'legal.terms.section5.title': '5. Intellectual Property',
+    'legal.terms.section5.content': 'All intellectual property rights to the application belong to the developer. Users are not permitted to copy, modify, or distribute the application without written permission.',
+    'legal.terms.section6.title': '6. Changes to Terms',
+    'legal.terms.section6.content': 'We reserve the right to modify these terms at any time. Continued use of the application after changes constitutes acceptance of the new terms.',
+
+    // Privacy Policy content
+    'legal.privacy.section1.title': '1. Data Collection',
+    'legal.privacy.section1.content': 'BudgetCard only collects data you enter into the application (transactions, accounts, categories). All data is stored locally on your device and is not sent to external servers without your consent.',
+    'legal.privacy.section2.title': '2. Data Storage',
+    'legal.privacy.section2.content': 'Your financial data is stored in your device\'s local storage (localStorage). Data remains on your device and under your control. Deleting the application or resetting data will permanently delete all stored information.',
+    'legal.privacy.section3.title': '3. Advertisements',
+    'legal.privacy.section3.content': 'The application may display ads through the Google AdMob service. Google may collect anonymous usage data for ad personalization. You can purchase the ad-free version for a complete ad-free experience.',
+    'legal.privacy.section4.title': '4. Data Sharing',
+    'legal.privacy.section4.content': 'We do not sell, trade, or otherwise transfer your personal data to third parties. Your financial data remains private and stored exclusively on your device.',
+    'legal.privacy.section5.title': '5. Security',
+    'legal.privacy.section5.content': 'We take reasonable measures to protect your data, but cannot guarantee absolute security. We recommend regularly backing up important data.',
+    'legal.privacy.section6.title': '6. Contact',
+    'legal.privacy.section6.content': 'For any privacy-related questions, you can contact us through the application\'s official channels. We reserve the right to update this privacy policy.',
   },
 
   de: {
-    'nav.accounts': 'Konten',
     'nav.archive': 'Archiv',
     'nav.options': 'Optionen',
 
