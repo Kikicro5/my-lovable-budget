@@ -36,7 +36,7 @@ declare global {
   }
 }
 
-const PAYPAL_CLIENT_ID = 'AZKhmFkJf4EBpPc9nfJLOb-3YhBYXMN7aYzzZnA8hmwtmqxQXq1QHmGQhVXwDxLqgV7Kpxi_zU9OLpDD';
+const PAYPAL_CLIENT_ID = 'AdQbD-v50rs3kZT3thAFYIzDOK38laJKqfSmXzoa562pndYxAXJ7QvKvUJRIvDtN-tyczgnsSN8gOodR';
 const PRICE = '2.99';
 const CURRENCY = 'EUR';
 
