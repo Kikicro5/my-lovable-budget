@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
+import { useInterstitialAd } from '@/hooks/useInterstitialAd';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MonthCard } from '@/components/MonthCard';
 import { TransactionForm } from '@/components/TransactionForm';
@@ -17,6 +18,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 const Monthly = () => {
   const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getAvailableInvestment, getAvailableSavings, transferFromCategory } = useBudget();
   const { t } = useLanguage();
+  const { triggerAfterAction } = useInterstitialAd();
   const currentBudget = getCurrentBudget();
   
   const now = new Date();
@@ -49,10 +51,12 @@ const Monthly = () => {
     </Card>
   );
 
-  const handleAddTransaction = (type: 'income' | 'expense' | 'investment' | 'savings', name: string, amount: number, category: string, date: Date, accountId?: string) => {
+  const handleAddTransaction = async (type: 'income' | 'expense' | 'investment' | 'savings', name: string, amount: number, category: string, date: Date, accountId?: string) => {
     addTransaction({ name, amount, type, category, date: date.toISOString(), accountId });
     const toastKeys = { income: 'toast.income.added', expense: 'toast.expense.added', investment: 'toast.investment.added', savings: 'toast.savings.added' };
     toast({ title: t(toastKeys[type]), description: `${name}: ${amount.toLocaleString('hr-HR')} €` });
+    // Trigger interstitial ad after adding transaction
+    await triggerAfterAction();
   };
 
   const handleAddTransactionFromPreviousPeriod = (type: 'investment' | 'savings', amount: number) => {
