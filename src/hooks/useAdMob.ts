@@ -6,7 +6,7 @@ const ADMOB_CONFIG = {
   // App ID za Google Mobile Ads SDK
   appId: 'ca-app-pub-0825549313210028~8911340745',
   // Banner Ad Unit ID
-  bannerAdUnitId: 'ca-app-pub-0825549313210028/1716227063',
+  bannerAdUnitId: 'ca-app-pub-0825549313210028/2423468724',
   // Interstitial Ad Unit ID
   interstitialAdUnitId: 'ca-app-pub-0825549313210028/7497005461',
 };
