@@ -190,6 +190,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.deleted': 'Mjesec obrisan',
     'archive.deleteConfirm': 'Obriši mjesec?',
     'archive.deleteWarning': 'Ova radnja će trajno obrisati sve podatke za',
+    'archive.month': 'mjesec',
+    'archive.months': 'mjeseci',
 
     // Common
     'common.cancel': 'Odustani',
@@ -592,6 +594,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.deleted': 'Month deleted',
     'archive.deleteConfirm': 'Delete month?',
     'archive.deleteWarning': 'This action will permanently delete all data for',
+    'archive.month': 'month',
+    'archive.months': 'months',
 
     // Common
     'common.cancel': 'Cancel',
@@ -990,6 +994,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.deleted': 'Monat gelöscht',
     'archive.deleteConfirm': 'Monat löschen?',
     'archive.deleteWarning': 'Diese Aktion löscht dauerhaft alle Daten für',
+    'archive.month': 'Monat',
+    'archive.months': 'Monate',
 
     // Common
     'common.cancel': 'Abbrechen',
@@ -1348,6 +1354,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.deleted': 'Miesiąc usunięty',
     'archive.deleteConfirm': 'Usunąć miesiąc?',
     'archive.deleteWarning': 'Ta akcja trwale usunie wszystkie dane za',
+    'archive.month': 'miesiąc',
+    'archive.months': 'miesięcy',
 
     // Common
     'common.cancel': 'Anuluj',
@@ -1706,6 +1714,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.deleted': 'Mes eliminado',
     'archive.deleteConfirm': '¿Eliminar mes?',
     'archive.deleteWarning': 'Esta acción eliminará permanentemente todos los datos de',
+    'archive.month': 'mes',
+    'archive.months': 'meses',
 
     // Common
     'common.cancel': 'Cancelar',
@@ -2064,6 +2074,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.deleted': 'Mois supprimé',
     'archive.deleteConfirm': 'Supprimer le mois?',
     'archive.deleteWarning': 'Cette action supprimera définitivement toutes les données de',
+    'archive.month': 'mois',
+    'archive.months': 'mois',
 
     // Common
     'common.cancel': 'Annuler',
@@ -2422,6 +2434,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.deleted': '月份已删除',
     'archive.deleteConfirm': '删除月份？',
     'archive.deleteWarning': '此操作将永久删除以下月份的所有数据',
+    'archive.month': '个月',
+    'archive.months': '个月',
 
     // Common
     'common.cancel': '取消',
@@ -2780,6 +2794,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'archive.deleted': 'महीना हटाया गया',
     'archive.deleteConfirm': 'महीना हटाएं?',
     'archive.deleteWarning': 'यह क्रिया स्थायी रूप से हटा देगी सभी डेटा',
+    'archive.month': 'महीना',
+    'archive.months': 'महीने',
 
     // Common
     'common.cancel': 'रद्द करें',
