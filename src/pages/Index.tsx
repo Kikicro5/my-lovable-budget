@@ -88,16 +88,18 @@ const Index = () => {
                 onRemoveReminder={removeReminder}
               />
             </div>
-            {hasRecurring && !recurringApplied && (
-              <Badge 
-                variant="secondary" 
-                className="gap-1.5 cursor-pointer hover:bg-secondary/80 transition-colors"
-                onClick={handleApplyRecurring}
-              >
-                <Repeat className="w-3 h-3" />
-                {t('recurring.apply')}
-              </Badge>
-            )}
+            <Badge 
+              variant="secondary" 
+              className={`gap-1.5 transition-colors ${
+                hasRecurring && !recurringApplied 
+                  ? 'cursor-pointer hover:bg-secondary/80' 
+                  : 'opacity-40 cursor-default'
+              }`}
+              onClick={hasRecurring && !recurringApplied ? handleApplyRecurring : undefined}
+            >
+              <Repeat className="w-3 h-3" />
+              {t('recurring.apply')}
+            </Badge>
           </div>
           
           <BalanceCard 
