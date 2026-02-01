@@ -119,13 +119,41 @@ export const useBudget = () => {
             type: r.type,
             category: r.category,
             date: firstOfMonth.toISOString(),
+            accountId: r.accountId,
           }));
+
+          // Update account balances for recurring transactions
+          let updatedAccountsForExisting = prev.accounts || [];
+          for (const rt of recurringTransactions) {
+            if (rt.accountId) {
+              updatedAccountsForExisting = updatedAccountsForExisting.map((acc) => {
+                if (acc.id === rt.accountId) {
+                  let newBalance = acc.balance;
+                  if (rt.type === 'income') {
+                    newBalance += rt.amount;
+                  } else {
+                    newBalance -= rt.amount;
+                  }
+                  return { ...acc, balance: newBalance };
+                }
+                return acc;
+              });
+            }
+          }
 
           updatedBudgets = updatedBudgets.map((b) =>
             b.id === currentBudget.id
               ? { ...b, transactions: [...b.transactions, ...recurringTransactions], recurringApplied: true }
               : b
           );
+
+          return {
+            ...prev,
+            currentMonth: realMonth,
+            currentYear: realYear,
+            budgets: updatedBudgets,
+            accounts: updatedAccountsForExisting,
+          };
         } else if (isFirstDayOfMonth && activeRecurring.length > 0 && !currentBudget) {
           // Create new budget with recurring transactions
           const firstOfMonth = new Date(realYear, realMonth, 1);
@@ -136,7 +164,27 @@ export const useBudget = () => {
             type: r.type,
             category: r.category,
             date: firstOfMonth.toISOString(),
+            accountId: r.accountId,
           }));
+
+          // Update account balances for recurring transactions
+          let updatedAccounts = prev.accounts || [];
+          for (const rt of recurringTransactions) {
+            if (rt.accountId) {
+              updatedAccounts = updatedAccounts.map((acc) => {
+                if (acc.id === rt.accountId) {
+                  let newBalance = acc.balance;
+                  if (rt.type === 'income') {
+                    newBalance += rt.amount;
+                  } else {
+                    newBalance -= rt.amount;
+                  }
+                  return { ...acc, balance: newBalance };
+                }
+                return acc;
+              });
+            }
+          }
 
           const newBudget: MonthlyBudget = {
             id: newBudgetId,
@@ -147,6 +195,14 @@ export const useBudget = () => {
             recurringApplied: true,
           };
           updatedBudgets = [...updatedBudgets, newBudget];
+
+          return {
+            ...prev,
+            currentMonth: realMonth,
+            currentYear: realYear,
+            budgets: updatedBudgets,
+            accounts: updatedAccounts,
+          };
         }
 
         return {
@@ -546,20 +602,43 @@ export const useBudget = () => {
       type: r.type,
       category: r.category,
       date: firstOfMonth.toISOString(),
+      accountId: r.accountId,
     }));
 
-    setState((prev) => ({
-      ...prev,
-      budgets: prev.budgets.map((b) =>
-        b.id === budget.id
-          ? { ...b, transactions: [...b.transactions, ...newTransactions], recurringApplied: true }
-          : b
-      ).concat(
-        prev.budgets.find((b) => b.id === budget.id)
-          ? []
-          : [{ ...budget, transactions: newTransactions, recurringApplied: true }]
-      ),
-    }));
+    setState((prev) => {
+      // Update account balances for recurring transactions
+      let updatedAccounts = prev.accounts || [];
+      for (const rt of newTransactions) {
+        if (rt.accountId) {
+          updatedAccounts = updatedAccounts.map((acc) => {
+            if (acc.id === rt.accountId) {
+              let newBalance = acc.balance;
+              if (rt.type === 'income') {
+                newBalance += rt.amount;
+              } else {
+                newBalance -= rt.amount;
+              }
+              return { ...acc, balance: newBalance };
+            }
+            return acc;
+          });
+        }
+      }
+
+      return {
+        ...prev,
+        accounts: updatedAccounts,
+        budgets: prev.budgets.map((b) =>
+          b.id === budget.id
+            ? { ...b, transactions: [...b.transactions, ...newTransactions], recurringApplied: true }
+            : b
+        ).concat(
+          prev.budgets.find((b) => b.id === budget.id)
+            ? []
+            : [{ ...budget, transactions: newTransactions, recurringApplied: true }]
+        ),
+      };
+    });
 
     return true;
   };
