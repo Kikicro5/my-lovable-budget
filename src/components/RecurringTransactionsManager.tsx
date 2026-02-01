@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Repeat, Plus, Trash2, Pencil, Check, X } from 'lucide-react';
+import { Repeat, Plus, Trash2, Pencil, Check, X, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -17,28 +17,33 @@ export const RecurringTransactionsManager = () => {
   const [amount, setAmount] = useState('');
   const [type, setType] = useState<'income' | 'expense' | 'investment' | 'savings'>('expense');
   const [category, setCategory] = useState('');
+  const [accountId, setAccountId] = useState('');
   
   // Edit state
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editAmount, setEditAmount] = useState('');
   const [editType, setEditType] = useState<'income' | 'expense' | 'investment' | 'savings'>('expense');
   const [editCategory, setEditCategory] = useState('');
+  const [editAccountId, setEditAccountId] = useState('');
 
   const categories = state.savedCategories[type];
   const editCategories = state.savedCategories[editType];
+  const accounts = state.accounts || [];
 
   const handleAdd = () => {
-    if (!amount || !category) return;
+    if (!amount || !category || !accountId) return;
     
     addRecurringTransaction({
       name: category,
       amount: parseFloat(amount),
       type,
       category,
+      accountId,
     });
     
     setAmount('');
     setCategory('');
+    setAccountId('');
   };
 
   const handleStartEdit = (rt: RecurringTransaction) => {
@@ -46,6 +51,7 @@ export const RecurringTransactionsManager = () => {
     setEditAmount(rt.amount.toString());
     setEditType(rt.type);
     setEditCategory(rt.category);
+    setEditAccountId(rt.accountId || '');
   };
 
   const handleCancelEdit = () => {
@@ -53,16 +59,18 @@ export const RecurringTransactionsManager = () => {
     setEditAmount('');
     setEditType('expense');
     setEditCategory('');
+    setEditAccountId('');
   };
 
   const handleSaveEdit = () => {
-    if (!editingId || !editAmount || !editCategory) return;
+    if (!editingId || !editAmount || !editCategory || !editAccountId) return;
     
     updateRecurringTransaction(editingId, {
       name: editCategory,
       amount: parseFloat(editAmount),
       type: editType,
       category: editCategory,
+      accountId: editAccountId,
     });
     
     handleCancelEdit();
@@ -76,6 +84,11 @@ export const RecurringTransactionsManager = () => {
       case 'savings': return 'bg-accent/10 text-accent border border-accent/20';
       default: return 'bg-muted text-foreground';
     }
+  };
+
+  const getAccountName = (accId: string) => {
+    const account = accounts.find(a => a.id === accId);
+    return account?.name || '';
   };
 
   return (
@@ -123,6 +136,19 @@ export const RecurringTransactionsManager = () => {
           </Select>
         </div>
         
+        <Select value={accountId} onValueChange={setAccountId}>
+          <SelectTrigger className="bg-background border-border">
+            <SelectValue placeholder={t('transaction.selectAccount')} />
+          </SelectTrigger>
+          <SelectContent>
+            {accounts.map((acc) => (
+              <SelectItem key={acc.id} value={acc.id}>
+                {acc.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        
         <div className="flex gap-2">
           <Input
             type="number"
@@ -132,7 +158,7 @@ export const RecurringTransactionsManager = () => {
             onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
             className="bg-background border-border"
           />
-          <Button onClick={handleAdd} size="icon" className="shrink-0" disabled={!amount || !category}>
+          <Button onClick={handleAdd} size="icon" className="shrink-0" disabled={!amount || !category || !accountId}>
             <Plus className="w-4 h-4" />
           </Button>
         </div>
@@ -183,6 +209,19 @@ export const RecurringTransactionsManager = () => {
                     </Select>
                   </div>
                   
+                  <Select value={editAccountId} onValueChange={setEditAccountId}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t('transaction.selectAccount')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {accounts.map((acc) => (
+                        <SelectItem key={acc.id} value={acc.id}>
+                          {acc.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  
                   <div className="flex gap-2">
                     <Input
                       type="number"
@@ -190,7 +229,7 @@ export const RecurringTransactionsManager = () => {
                       value={editAmount}
                       onChange={(e) => setEditAmount(e.target.value)}
                     />
-                    <Button onClick={handleSaveEdit} size="icon" className="shrink-0" disabled={!editAmount || !editCategory}>
+                    <Button onClick={handleSaveEdit} size="icon" className="shrink-0" disabled={!editAmount || !editCategory || !editAccountId}>
                       <Check className="w-4 h-4" />
                     </Button>
                     <Button onClick={handleCancelEdit} size="icon" variant="outline" className="shrink-0">
@@ -209,6 +248,12 @@ export const RecurringTransactionsManager = () => {
                       {rt.type === 'income' ? '+' : '-'}{rt.amount.toLocaleString('hr-HR')} {currencySymbol}
                     </span>
                     <span className="font-medium text-sm truncate">{rt.name}</span>
+                    {rt.accountId && (
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Wallet className="w-3 h-3" />
+                        {getAccountName(rt.accountId)}
+                      </span>
+                    )}
                   </div>
                   
                   <div className="flex items-center gap-1 shrink-0">

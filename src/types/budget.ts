@@ -23,6 +23,7 @@ export interface RecurringTransaction {
   type: 'income' | 'expense' | 'investment' | 'savings';
   category: string;
   isActive: boolean;
+  accountId?: string;
 }
 
 export interface Category {
