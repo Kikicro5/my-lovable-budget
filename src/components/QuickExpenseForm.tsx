@@ -2,27 +2,30 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Minus, Plus } from 'lucide-react';
-import { Category } from '@/types/budget';
+import { Minus, Plus, Wallet } from 'lucide-react';
+import { Category, Account } from '@/types/budget';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 interface QuickExpenseFormProps {
   categories: Category[];
-  onSubmit: (name: string, amount: number, category: string) => void;
+  accounts: Account[];
+  onSubmit: (name: string, amount: number, category: string, accountId: string) => void;
 }
 
-export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps) => {
+export const QuickExpenseForm = ({ categories, accounts, onSubmit }: QuickExpenseFormProps) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
+  const [accountId, setAccountId] = useState('');
   const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || !category) return;
+    if (!amount || !category || !accountId) return;
     
-    onSubmit(category, parseFloat(amount), category);
+    onSubmit(category, parseFloat(amount), category, accountId);
     setAmount('');
     setCategory('');
+    setAccountId('');
   };
 
   return (
@@ -45,11 +48,11 @@ export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps
             placeholder={t('transaction.amount')}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground placeholder:text-expense-foreground/60 focus:border-expense-foreground/40"
+            className="flex-1 bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground placeholder:text-expense-foreground/60 focus:border-expense-foreground/40"
           />
           
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground">
+            <SelectTrigger className="flex-1 bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground">
               <SelectValue placeholder={t('transaction.category')} />
             </SelectTrigger>
             <SelectContent>
@@ -66,6 +69,25 @@ export const QuickExpenseForm = ({ categories, onSubmit }: QuickExpenseFormProps
             </SelectContent>
           </Select>
         </div>
+        
+        <Select value={accountId} onValueChange={setAccountId}>
+          <SelectTrigger className="w-full bg-expense-foreground/10 border-expense-foreground/20 text-expense-foreground">
+            <div className="flex items-center gap-2">
+              <Wallet className="w-4 h-4" />
+              <SelectValue placeholder={t('transaction.selectAccount')} />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            {accounts.map((account) => (
+              <SelectItem key={account.id} value={account.id}>
+                <div className="flex items-center justify-between w-full gap-4">
+                  <span>{account.name}</span>
+                  <span className="text-xs text-muted-foreground">{account.balance.toLocaleString('hr-HR')} €</span>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         
         <Button
           type="submit"
