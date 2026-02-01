@@ -12,8 +12,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Repeat, Wallet, AlertCircle } from 'lucide-react';
+import { Wallet, AlertCircle } from 'lucide-react';
 
 const Index = () => {
   const { 
@@ -77,30 +76,17 @@ const Index = () => {
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <MonthCard 
-                month={currentMonth} 
-                year={currentYear}
-                activeReminders={activeReminders}
-                accounts={state.accounts || []}
-                onCompleteReminder={completeReminder}
-                onRemoveReminder={removeReminder}
-              />
-            </div>
-            <Badge 
-              variant="secondary" 
-              className={`gap-1.5 transition-colors ${
-                hasRecurring && !recurringApplied 
-                  ? 'cursor-pointer hover:bg-secondary/80' 
-                  : 'opacity-40 cursor-default'
-              }`}
-              onClick={hasRecurring && !recurringApplied ? handleApplyRecurring : undefined}
-            >
-              <Repeat className="w-3 h-3" />
-              {t('recurring.apply')}
-            </Badge>
-          </div>
+          <MonthCard 
+            month={currentMonth} 
+            year={currentYear}
+            activeReminders={activeReminders}
+            accounts={state.accounts || []}
+            onCompleteReminder={completeReminder}
+            onRemoveReminder={removeReminder}
+            hasRecurring={hasRecurring}
+            recurringApplied={recurringApplied}
+            onApplyRecurring={handleApplyRecurring}
+          />
           
           <BalanceCard 
             balance={state.accounts?.reduce((sum, acc) => sum + acc.balance, 0) || 0} 
