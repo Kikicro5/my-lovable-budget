@@ -12,6 +12,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Repeat, Wallet, AlertCircle } from 'lucide-react';
 
 const Index = () => {
@@ -88,10 +89,14 @@ const Index = () => {
               />
             </div>
             {hasRecurring && !recurringApplied && (
-              <Button variant="outline" size="sm" className="gap-2" onClick={handleApplyRecurring}>
-                <Repeat className="w-4 h-4" />
+              <Badge 
+                variant="secondary" 
+                className="gap-1.5 cursor-pointer hover:bg-secondary/80 transition-colors"
+                onClick={handleApplyRecurring}
+              >
+                <Repeat className="w-3 h-3" />
                 {t('recurring.apply')}
-              </Button>
+              </Badge>
             )}
           </div>
           
