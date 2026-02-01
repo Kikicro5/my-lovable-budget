@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { TransactionList } from '@/components/TransactionList';
 import { MonthlyBudget } from '@/types/budget';
-import { Calendar, ChevronRight, TrendingUp, TrendingDown, Wallet, Download, Trash2 } from 'lucide-react';
+import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthCard } from '@/components/MonthCard';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -22,13 +22,55 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const Archive = () => {
   const { getPastBudgets, getBalance, getTotalIncome, getTotalExpense, removeTransaction, removeBudget } = useBudget();
   const [selectedBudget, setSelectedBudget] = useState<MonthlyBudget | null>(null);
+  const [expandedYears, setExpandedYears] = useState<number[]>([]);
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
   const pastBudgets = getPastBudgets();
+
+  // Group budgets by year
+  const budgetsByYear = useMemo(() => {
+    const grouped: Record<number, MonthlyBudget[]> = {};
+    pastBudgets.forEach((budget) => {
+      if (!grouped[budget.year]) {
+        grouped[budget.year] = [];
+      }
+      grouped[budget.year].push(budget);
+    });
+    // Sort months within each year (descending)
+    Object.keys(grouped).forEach((year) => {
+      grouped[Number(year)].sort((a, b) => b.month - a.month);
+    });
+    return grouped;
+  }, [pastBudgets]);
+
+  // Get sorted years (descending)
+  const sortedYears = useMemo(() => {
+    return Object.keys(budgetsByYear)
+      .map(Number)
+      .sort((a, b) => b - a);
+  }, [budgetsByYear]);
+
+  const toggleYear = (year: number) => {
+    setExpandedYears((prev) =>
+      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
+    );
+  };
+
+  const getYearTotals = (year: number) => {
+    const yearBudgets = budgetsByYear[year] || [];
+    let totalIncome = 0;
+    let totalExpense = 0;
+    yearBudgets.forEach((budget) => {
+      totalIncome += getTotalIncome(budget);
+      totalExpense += getTotalExpense(budget);
+    });
+    return { totalIncome, totalExpense, balance: totalIncome - totalExpense };
+  };
 
   const handleExportPDF = (budget: MonthlyBudget, e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -147,51 +189,110 @@ const Archive = () => {
             <p className="text-muted-foreground">{t('archive.willAppear')}</p>
           </div>
         ) : (
-          <div className="space-y-3">
-            {pastBudgets.map((budget) => {
-              const balance = getBalance(budget);
-              const income = getTotalIncome(budget);
-              const expense = getTotalExpense(budget);
+          <div className="space-y-4">
+            {sortedYears.map((year) => {
+              const { totalIncome, totalExpense, balance } = getYearTotals(year);
+              const isExpanded = expandedYears.includes(year);
+              const monthCount = budgetsByYear[year].length;
+
               return (
-                <div key={budget.id} className="w-full bg-card rounded-xl p-4 shadow-soft hover:shadow-card transition-all duration-200 animate-slide-up">
-                  <div className="flex items-center justify-between mb-3">
-                    <button onClick={() => setSelectedBudget(budget)} className="font-display font-semibold text-foreground hover:text-primary transition-colors text-left flex-1">
-                      {t(`month.${budget.month}`)} {budget.year}
-                    </button>
-                    <div className="flex items-center gap-1">
-                      <Button onClick={(e) => handleExportPDF(budget, e)} variant="ghost" size="icon" className="h-8 w-8">
-                        <Download className="w-4 h-4" />
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive">
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>{t('archive.deleteConfirm')}</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              {t('archive.deleteWarning')} {t(`month.${budget.month}`)} {budget.year}?
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDeleteBudget(budget)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                              {t('common.delete')}
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                      <button onClick={() => setSelectedBudget(budget)}><ChevronRight className="w-5 h-5 text-muted-foreground" /></button>
+                <Collapsible key={year} open={isExpanded} onOpenChange={() => toggleYear(year)}>
+                  <div className="bg-card rounded-xl shadow-soft overflow-hidden animate-slide-up">
+                    <CollapsibleTrigger asChild>
+                      <button className="w-full p-4 flex items-center justify-between hover:bg-muted/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-primary/10">
+                            <Calendar className="w-5 h-5 text-primary" />
+                          </div>
+                          <div className="text-left">
+                            <h2 className="font-display font-bold text-lg text-foreground">{year}</h2>
+                            <p className="text-xs text-muted-foreground">
+                              {monthCount} {monthCount === 1 ? t('archive.month') : t('archive.months')}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="text-right hidden sm:block">
+                            <div className="flex items-center gap-3 text-sm">
+                              <span className="text-income">+{totalIncome.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span>
+                              <span className="text-expense">-{totalExpense.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span>
+                              <span className={cn('font-semibold', balance >= 0 ? 'text-income' : 'text-expense')}>
+                                {balance.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}
+                              </span>
+                            </div>
+                          </div>
+                          {isExpanded ? (
+                            <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                          ) : (
+                            <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                          )}
+                        </div>
+                      </button>
+                    </CollapsibleTrigger>
+                    
+                    {/* Mobile year summary */}
+                    <div className="px-4 pb-3 sm:hidden">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-income">+{totalIncome.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span>
+                        <span className="text-expense">-{totalExpense.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span>
+                        <span className={cn('font-semibold', balance >= 0 ? 'text-income' : 'text-expense')}>
+                          {balance.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}
+                        </span>
+                      </div>
                     </div>
+
+                    <CollapsibleContent>
+                      <div className="border-t border-border">
+                        {budgetsByYear[year].map((budget) => {
+                          const monthBalance = getBalance(budget);
+                          const monthIncome = getTotalIncome(budget);
+                          const monthExpense = getTotalExpense(budget);
+                          return (
+                            <div key={budget.id} className="p-4 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                              <div className="flex items-center justify-between mb-2">
+                                <button onClick={() => setSelectedBudget(budget)} className="font-medium text-foreground hover:text-primary transition-colors text-left flex-1">
+                                  {t(`month.${budget.month}`)}
+                                </button>
+                                <div className="flex items-center gap-1">
+                                  <Button onClick={(e) => handleExportPDF(budget, e)} variant="ghost" size="icon" className="h-8 w-8">
+                                    <Download className="w-4 h-4" />
+                                  </Button>
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive">
+                                        <Trash2 className="w-4 h-4" />
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>{t('archive.deleteConfirm')}</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          {t('archive.deleteWarning')} {t(`month.${budget.month}`)} {budget.year}?
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                                        <AlertDialogAction onClick={() => handleDeleteBudget(budget)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                          {t('common.delete')}
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                  <button onClick={() => setSelectedBudget(budget)}><ChevronRight className="w-5 h-5 text-muted-foreground" /></button>
+                                </div>
+                              </div>
+                              <div className="grid grid-cols-3 gap-3">
+                                <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-income-light"><TrendingUp className="w-3 h-3 text-income" /></div><span className="text-sm text-income font-medium">+{monthIncome.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
+                                <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-expense-light"><TrendingDown className="w-3 h-3 text-expense" /></div><span className="text-sm text-expense font-medium">-{monthExpense.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
+                                <div className="flex items-center gap-2"><div className={cn('p-1.5 rounded-lg', monthBalance >= 0 ? 'bg-income-light' : 'bg-expense-light')}><Wallet className={cn('w-3 h-3', monthBalance >= 0 ? 'text-income' : 'text-expense')} /></div><span className={cn('text-sm font-medium', monthBalance >= 0 ? 'text-income' : 'text-expense')}>{monthBalance.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </CollapsibleContent>
                   </div>
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-income-light"><TrendingUp className="w-3 h-3 text-income" /></div><span className="text-sm text-income font-medium">+{income.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
-                    <div className="flex items-center gap-2"><div className="p-1.5 rounded-lg bg-expense-light"><TrendingDown className="w-3 h-3 text-expense" /></div><span className="text-sm text-expense font-medium">-{expense.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
-                    <div className="flex items-center gap-2"><div className={cn('p-1.5 rounded-lg', balance >= 0 ? 'bg-income-light' : 'bg-expense-light')}><Wallet className={cn('w-3 h-3', balance >= 0 ? 'text-income' : 'text-expense')} /></div><span className={cn('text-sm font-medium', balance >= 0 ? 'text-income' : 'text-expense')}>{balance.toLocaleString('hr-HR', { minimumFractionDigits: 0 })} {currencySymbol}</span></div>
-                  </div>
-                </div>
+                </Collapsible>
               );
             })}
           </div>
