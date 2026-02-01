@@ -13,19 +13,22 @@ interface ReminderIndicatorProps {
   accounts: Account[];
   onComplete: (id: string) => void;
   onRemove: (id: string) => void;
+  disabled?: boolean;
 }
 
 export const ReminderIndicator = ({ 
   reminders, 
   accounts, 
   onComplete, 
-  onRemove 
+  onRemove,
+  disabled = false,
 }: ReminderIndicatorProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
 
-  if (reminders.length === 0) return null;
+  const hasReminders = reminders.length > 0;
+  const isActive = hasReminders && !disabled;
 
   const getAccountName = (accountId: string) => {
     const account = accounts.find((a) => a.id === accountId);
@@ -37,16 +40,21 @@ export const ReminderIndicator = ({
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => setIsOpen(true)}
-        className="relative p-2"
+        onClick={isActive ? () => setIsOpen(true) : undefined}
+        className={cn(
+          "relative p-2 transition-opacity",
+          !isActive && "opacity-40 cursor-default"
+        )}
       >
         <Bell className={cn(
-          "w-5 h-5 text-destructive",
-          "animate-pulse"
+          "w-5 h-5",
+          isActive ? "text-destructive animate-pulse" : "text-muted-foreground"
         )} />
-        <span className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-destructive-foreground text-xs font-bold rounded-full flex items-center justify-center">
-          {reminders.length}
-        </span>
+        {hasReminders && (
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-destructive-foreground text-xs font-bold rounded-full flex items-center justify-center">
+            {reminders.length}
+          </span>
+        )}
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -58,14 +58,13 @@ export const MonthCard = ({
             <Repeat className="w-3 h-3" />
             {t('recurring.apply')}
           </Badge>
-          {activeReminders.length > 0 && onCompleteReminder && onRemoveReminder && (
-            <ReminderIndicator
-              reminders={activeReminders}
-              accounts={accounts}
-              onComplete={onCompleteReminder}
-              onRemove={onRemoveReminder}
-            />
-          )}
+          <ReminderIndicator
+            reminders={activeReminders}
+            accounts={accounts}
+            onComplete={onCompleteReminder || (() => {})}
+            onRemove={onRemoveReminder || (() => {})}
+            disabled={activeReminders.length === 0}
+          />
         </div>
       </div>
     </div>
