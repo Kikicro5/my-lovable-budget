@@ -28,7 +28,6 @@ const App = () => (
             <Toaster />
             <Sonner />
             <AdMobBanner />
-            <AdsterraBanner />
             <BrowserRouter>
               <InstallPrompt />
               <Routes>
