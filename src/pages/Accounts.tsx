@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
+import { AdsterraBanner } from '@/components/AdsterraBanner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -126,6 +127,7 @@ const Accounts = () => {
           <p className="text-muted-foreground text-sm">{t('accounts.description')}</p>
         </div>
 
+        <AdsterraBanner bannerAdKey="cfe2d16dc1c1e9c2a105c4ab7e9d1880" width={728} height={90} />
         {/* Total Balance Card */}
         <Card className="mb-6 bg-primary/10 border-primary/20">
           <CardContent className="py-4">
