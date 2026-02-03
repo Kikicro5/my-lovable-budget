@@ -18,7 +18,7 @@ interface TransactionFormProps {
   onSubmit: (name: string, amount: number, category: string, date: Date, accountId?: string) => void;
   onAddCategory: (category: Category) => void;
   availableForTransfer?: number;
-  onTransferToBalance?: (amount: number) => void;
+  onTransferToBalance?: (amount: number, accountId: string) => void;
 }
 
 const typeConfig = {
@@ -77,6 +77,7 @@ export const TransactionForm = ({
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [showNewCategory, setShowNewCategory] = useState(false);
   const [transferAmount, setTransferAmount] = useState('');
+  const [transferAccountId, setTransferAccountId] = useState('');
   const [insufficientBalance, setInsufficientBalance] = useState(false);
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
@@ -129,9 +130,10 @@ export const TransactionForm = ({
 
   const handleTransfer = () => {
     const transferValue = parseFloat(transferAmount);
-    if (!transferValue || transferValue <= 0 || transferValue > availableForTransfer) return;
-    onTransferToBalance?.(transferValue);
+    if (!transferValue || transferValue <= 0 || transferValue > availableForTransfer || !transferAccountId) return;
+    onTransferToBalance?.(transferValue, transferAccountId);
     setTransferAmount('');
+    setTransferAccountId('');
   };
 
   return (
@@ -308,23 +310,50 @@ export const TransactionForm = ({
               {t('transfer.toBalance')} ({t('transfer.available')}: {availableForTransfer.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
             </span>
           </div>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              step="0.01"
-              min="0"
-              max={availableForTransfer}
-              placeholder={t('transfer.enterAmount')}
-              value={transferAmount}
-              onChange={(e) => setTransferAmount(e.target.value)}
-              className="bg-card border-border flex-1"
-            />
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <Input
+                type="number"
+                step="0.01"
+                min="0"
+                max={availableForTransfer}
+                placeholder={t('transfer.enterAmount')}
+                value={transferAmount}
+                onChange={(e) => setTransferAmount(e.target.value)}
+                className="bg-card border-border flex-1"
+              />
+            </div>
+            {accounts.length > 0 && (
+              <div className="flex items-center gap-2">
+                <Wallet className="w-4 h-4 text-muted-foreground" />
+                <Select value={transferAccountId} onValueChange={setTransferAccountId}>
+                  <SelectTrigger className={cn(
+                    "bg-card border-border flex-1",
+                    !transferAccountId && "border-destructive/50"
+                  )}>
+                    <SelectValue placeholder={t('transaction.selectAccount')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {accounts.map((acc) => (
+                      <SelectItem key={acc.id} value={acc.id}>
+                        <div className="flex justify-between items-center gap-2">
+                          <span>{acc.name}</span>
+                          <span className="text-xs text-muted-foreground">
+                            ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <Button
               type="button"
               variant="outline"
               onClick={handleTransfer}
-              disabled={!transferAmount || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > availableForTransfer}
-              className="shrink-0"
+              disabled={!transferAmount || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > availableForTransfer || !transferAccountId}
+              className="w-full"
             >
               <ArrowRightLeft className="w-4 h-4 mr-2" />
               {t('transfer.toBalance')}

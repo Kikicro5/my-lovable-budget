@@ -650,7 +650,7 @@ export const useBudget = () => {
     }));
   };
 
-  const transferFromCategory = (type: 'investment' | 'savings', amount: number): boolean => {
+  const transferFromCategory = (type: 'investment' | 'savings', amount: number, targetAccountId?: string): boolean => {
     const budget = getCurrentBudget();
     if (!budget) return false;
 
@@ -660,6 +660,9 @@ export const useBudget = () => {
       : getTotalSavings() + getSavingsFromPreviousPeriod();
 
     if (amount <= 0 || amount > availableAmount) return false;
+
+    // Use the first available account if no target account specified
+    const accountId = targetAccountId || (state.accounts && state.accounts.length > 0 ? state.accounts[0].id : undefined);
 
     // Create two transactions:
     // 1. Negative transaction in the category (withdrawal)
@@ -681,16 +684,31 @@ export const useBudget = () => {
       type: 'income',
       category: type === 'investment' ? 'Prijenos iz investicija' : 'Prijenos iz štednje',
       date: new Date().toISOString(),
+      accountId: accountId, // Add to account balance
     };
 
-    setState((prev) => ({
-      ...prev,
-      budgets: prev.budgets.map((b) =>
-        b.id === budget.id
-          ? { ...b, transactions: [...b.transactions, withdrawalTransaction, incomeTransaction] }
-          : b
-      ),
-    }));
+    setState((prev) => {
+      // Update account balance if accountId is provided
+      let updatedAccounts = prev.accounts || [];
+      if (accountId) {
+        updatedAccounts = updatedAccounts.map((acc) => {
+          if (acc.id === accountId) {
+            return { ...acc, balance: acc.balance + amount };
+          }
+          return acc;
+        });
+      }
+
+      return {
+        ...prev,
+        accounts: updatedAccounts,
+        budgets: prev.budgets.map((b) =>
+          b.id === budget.id
+            ? { ...b, transactions: [...b.transactions, withdrawalTransaction, incomeTransaction] }
+            : b
+        ),
+      };
+    });
 
     return true;
   };

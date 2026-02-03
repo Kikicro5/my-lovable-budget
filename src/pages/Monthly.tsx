@@ -79,15 +79,15 @@ const Monthly = () => {
     toast({ title: t('toast.category.removed'), variant: 'destructive' });
   };
 
-  const handleTransferFromInvestment = (amount: number) => {
-    const success = transferFromCategory('investment', amount);
+  const handleTransferFromInvestment = (amount: number, accountId: string) => {
+    const success = transferFromCategory('investment', amount, accountId);
     if (success) {
       toast({ title: t('transfer.success'), description: `${amount.toLocaleString('hr-HR')} €` });
     }
   };
 
-  const handleTransferFromSavings = (amount: number) => {
-    const success = transferFromCategory('savings', amount);
+  const handleTransferFromSavings = (amount: number, accountId: string) => {
+    const success = transferFromCategory('savings', amount, accountId);
     if (success) {
       toast({ title: t('transfer.success'), description: `${amount.toLocaleString('hr-HR')} €` });
     }
