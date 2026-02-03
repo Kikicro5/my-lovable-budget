@@ -3,10 +3,17 @@ import { Capacitor } from '@capacitor/core';
 import { useAdFreePurchase } from '@/hooks/useAdFreePurchase';
 
 interface AdsterraBannerProps {
-  adKey?: string;
+  // Banner ad key from Adsterra (not pop-under)
+  bannerAdKey?: string;
+  width?: number;
+  height?: number;
 }
 
-export const AdsterraBanner = ({ adKey = 'd2c174ed69d310753b252cde1caacb59' }: AdsterraBannerProps) => {
+export const AdsterraBanner = ({ 
+  bannerAdKey,
+  width = 320,
+  height = 50 
+}: AdsterraBannerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { isAdFree, isLoading } = useAdFreePurchase();
 
@@ -21,28 +28,44 @@ export const AdsterraBanner = ({ adKey = 'd2c174ed69d310753b252cde1caacb59' }: A
       return;
     }
 
-    // Create and inject the Adsterra banner script
+    // Only render if we have a banner ad key
+    if (!bannerAdKey) {
+      return;
+    }
+
     const container = containerRef.current;
     if (!container) return;
 
     // Clear any existing content
     container.innerHTML = '';
 
-    // Create the script element
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = `https://pl28616904.effectivegatecpm.com/${adKey.substring(0,2)}/${adKey.substring(2,4)}/${adKey.substring(4,6)}/${adKey}.js`;
-    script.async = true;
+    // Create atOptions for Adsterra banner
+    const optionsScript = document.createElement('script');
+    optionsScript.type = 'text/javascript';
+    optionsScript.text = `
+      atOptions = {
+        'key' : '${bannerAdKey}',
+        'format' : 'iframe',
+        'height' : ${height},
+        'width' : ${width},
+        'params' : {}
+      };
+    `;
+    container.appendChild(optionsScript);
 
-    container.appendChild(script);
+    // Create the invoke script
+    const invokeScript = document.createElement('script');
+    invokeScript.type = 'text/javascript';
+    invokeScript.src = `//www.highperformanceformat.com/${bannerAdKey}/invoke.js`;
+    invokeScript.async = true;
+    container.appendChild(invokeScript);
 
     return () => {
-      // Cleanup on unmount
       if (container) {
         container.innerHTML = '';
       }
     };
-  }, [adKey, isAdFree, isLoading]);
+  }, [bannerAdKey, width, height, isAdFree, isLoading]);
 
   // Don't render anything on native platforms
   if (Capacitor.isNativePlatform()) {
@@ -54,10 +77,16 @@ export const AdsterraBanner = ({ adKey = 'd2c174ed69d310753b252cde1caacb59' }: A
     return null;
   }
 
+  // Don't render if no banner key configured
+  if (!bannerAdKey) {
+    return null;
+  }
+
   return (
     <div 
       ref={containerRef}
-      className="w-full flex justify-center items-center bg-muted/30 rounded-lg py-2 min-h-[60px]"
+      className="w-full flex justify-center items-center bg-muted/30 rounded-lg py-2 overflow-hidden"
+      style={{ minHeight: height + 16 }}
     />
   );
 };
