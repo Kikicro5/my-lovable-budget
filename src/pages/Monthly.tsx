@@ -8,6 +8,7 @@ import { RecurringTransactionsManager } from '@/components/RecurringTransactions
 import { TransactionList } from '@/components/TransactionList';
 import { CategoryManager } from '@/components/CategoryManager';
 import { PreviousPeriodInput } from '@/components/PreviousPeriodInput';
+import { AdsterraBanner } from '@/components/AdsterraBanner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -97,7 +98,8 @@ const Monthly = () => {
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
         <div className="mb-4"><MonthCard month={currentMonth} year={currentYear} /></div>
-        <Tabs defaultValue="income" className="w-full">
+        <AdsterraBanner bannerAdKey="cfe2d16dc1c1e9c2a105c4ab7e9d1880" width={728} height={90} />
+        <Tabs defaultValue="income" className="w-full mt-4">
           <TabsList className="w-full grid grid-cols-5 mb-6">
             <TabsTrigger value="income" className="flex items-center gap-1 text-xs px-2 text-income data-[state=active]:bg-income data-[state=active]:text-income-foreground"><TrendingUp className="w-5 h-5" /><span className="hidden sm:inline">{t('monthly.income')}</span></TabsTrigger>
             <TabsTrigger value="expense" className="flex items-center gap-1 text-xs px-2 text-expense data-[state=active]:bg-expense data-[state=active]:text-expense-foreground"><TrendingDown className="w-5 h-5" /><span className="hidden sm:inline">{t('monthly.expense')}</span></TabsTrigger>
