@@ -2,19 +2,12 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { verifyDeviceToken } from "../_shared/device-verification.ts";
 
-// Allowed origins for CORS
-const allowedOrigins = [
-  'https://budgetcard.lovable.app',
-  'https://id-preview--2b913f8a-e008-4a13-b688-581953b1b4f7.lovable.app',
-  'http://localhost:8080',
-  'http://localhost:5173',
-];
-
+// CORS headers - allow all origins for mobile app compatibility
 const getCorsHeaders = (origin: string | null) => {
-  const allowedOrigin = origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
   return {
-    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Origin': origin || '*',
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Credentials': 'true',
   };
 };
