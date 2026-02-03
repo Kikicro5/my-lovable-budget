@@ -57,8 +57,7 @@ export const AdsterraBanner = ({ adKey = 'd2c174ed69d310753b252cde1caacb59' }: A
   return (
     <div 
       ref={containerRef}
-      className="fixed bottom-16 left-0 right-0 z-40 flex justify-center items-center bg-background/80 backdrop-blur-sm py-1"
-      style={{ minHeight: '50px' }}
+      className="w-full flex justify-center items-center bg-muted/30 rounded-lg py-2 min-h-[60px]"
     />
   );
 };
