@@ -113,7 +113,7 @@ const Index = () => {
             </div>
           )}
           
-          <AdsterraBanner />
+          <AdsterraBanner bannerAdKey="cfe2d16dc1c1e9c2a105c4ab7e9d1880" width={728} height={90} />
           
           {!hasAccounts ? (
             <Card className="border-primary/30 bg-primary/5">
