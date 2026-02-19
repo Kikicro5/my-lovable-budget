@@ -1,31 +1,25 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { verifyDeviceToken, generateHmacSignature } from "../_shared/device-verification.ts";
+import { verifyDeviceToken } from "../_shared/device-verification.ts";
 
-// CORS headers - allow all origins for mobile app compatibility
-const getCorsHeaders = (origin: string | null) => {
-  return {
-    'Access-Control-Allow-Origin': origin || '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Credentials': 'true',
-  };
-};
+const getCorsHeaders = (origin: string | null) => ({
+  'Access-Control-Allow-Origin': origin || '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Credentials': 'true',
+});
 
-const PAYPAL_API_URL = Deno.env.get('PAYPAL_MODE') === 'live' 
-  ? 'https://api-m.paypal.com' 
+const PAYPAL_API_URL = Deno.env.get('PAYPAL_MODE') === 'live'
+  ? 'https://api-m.paypal.com'
   : 'https://api-m.sandbox.paypal.com';
 
 async function getPayPalAccessToken(): Promise<string> {
   const clientId = Deno.env.get('PAYPAL_CLIENT_ID');
   const secret = Deno.env.get('PAYPAL_SECRET');
-  
-  if (!clientId || !secret) {
-    throw new Error('PayPal credentials not configured');
-  }
+
+  if (!clientId || !secret) throw new Error('PayPal credentials not configured');
 
   const auth = btoa(`${clientId}:${secret}`);
-  
   const response = await fetch(`${PAYPAL_API_URL}/v1/oauth2/token`, {
     method: 'POST',
     headers: {
@@ -45,9 +39,9 @@ async function getPayPalAccessToken(): Promise<string> {
   return data.access_token;
 }
 
-async function capturePayPalOrder(orderId: string, accessToken: string) {
-  const response = await fetch(`${PAYPAL_API_URL}/v2/checkout/orders/${orderId}/capture`, {
-    method: 'POST',
+async function getPayPalSubscription(subscriptionId: string, accessToken: string) {
+  const response = await fetch(`${PAYPAL_API_URL}/v1/billing/subscriptions/${subscriptionId}`, {
+    method: 'GET',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
@@ -56,37 +50,35 @@ async function capturePayPalOrder(orderId: string, accessToken: string) {
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('PayPal capture error:', errorText);
-    throw new Error('Failed to capture PayPal order');
+    console.error('PayPal subscription fetch error:', errorText);
+    throw new Error('Failed to fetch PayPal subscription');
   }
 
   return await response.json();
 }
 
 serve(async (req) => {
-  // Get origin for dynamic CORS headers
   const origin = req.headers.get('origin');
   const corsHeaders = getCorsHeaders(origin);
 
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const { orderId, deviceToken } = await req.json();
+    const { subscriptionId, deviceToken } = await req.json();
 
-    // Validate orderId format
-    if (!orderId || typeof orderId !== 'string' || 
-        orderId.length < 10 || orderId.length > 100 ||
-        !/^[A-Z0-9-]+$/i.test(orderId)) {
+    // Validate subscriptionId format (PayPal subscription IDs look like I-XXXXXXXXXX)
+    if (!subscriptionId || typeof subscriptionId !== 'string' ||
+        subscriptionId.length < 5 || subscriptionId.length > 100 ||
+        !/^[A-Z0-9-_]+$/i.test(subscriptionId)) {
       return new Response(
-        JSON.stringify({ error: 'Invalid order ID format' }),
+        JSON.stringify({ error: 'Invalid subscription ID format' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Verify the signed device token
+    // Verify device token
     const signingSecret = Deno.env.get('DEVICE_SIGNING_SECRET') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const { valid, deviceId } = await verifyDeviceToken(deviceToken, signingSecret);
 
@@ -97,43 +89,43 @@ serve(async (req) => {
       );
     }
 
-    console.log('Processing payment verification');
+    console.log('Processing subscription verification');
 
-    // Get PayPal access token
     const accessToken = await getPayPalAccessToken();
+    const subscription = await getPayPalSubscription(subscriptionId, accessToken);
 
-    // Capture the order
-    const captureResult = await capturePayPalOrder(orderId, accessToken);
-    
-    // Payment captured successfully - don't log sensitive details
+    console.log('Subscription status:', subscription.status);
 
-    if (captureResult.status !== 'COMPLETED') {
+    if (subscription.status !== 'ACTIVE') {
       return new Response(
-        JSON.stringify({ error: 'Payment not completed', status: captureResult.status }),
+        JSON.stringify({ error: 'Subscription not active', status: subscription.status }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Extract payment details
-    const capture = captureResult.purchase_units?.[0]?.payments?.captures?.[0];
-    const amount = parseFloat(capture?.amount?.value || '0');
-    const currency = capture?.amount?.currency_code || 'EUR';
+    // Use next_billing_time as expires_at, or fall back to 1 year from now
+    let expiresAt: Date;
+    if (subscription.billing_info?.next_billing_time) {
+      expiresAt = new Date(subscription.billing_info.next_billing_time);
+      // Add a small buffer (1 day) so there's no gap on renewal
+      expiresAt.setDate(expiresAt.getDate() + 1);
+    } else {
+      expiresAt = new Date();
+      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    }
 
-    // Calculate expiration date (1 year from now)
-    const expiresAt = new Date();
-    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    const amount = parseFloat(subscription.billing_info?.last_payment?.amount?.value || '2.99');
+    const currency = subscription.billing_info?.last_payment?.amount?.currency_code || 'EUR';
 
-    // Save purchase to database using service role
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const { data, error } = await supabase
       .from('ad_free_purchases')
       .upsert({
         device_id: deviceId,
-        paypal_order_id: orderId,
+        paypal_order_id: subscriptionId,
         amount,
         currency,
         purchased_at: new Date().toISOString(),
@@ -150,7 +142,7 @@ serve(async (req) => {
       );
     }
 
-    console.log('Purchase saved successfully');
+    console.log('Subscription saved successfully');
 
     return new Response(
       JSON.stringify({ success: true, purchase: data }),
