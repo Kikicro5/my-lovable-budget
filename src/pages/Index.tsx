@@ -8,7 +8,7 @@ import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
 import { BudgetProgress } from '@/components/BudgetProgress';
 import { MonthlyMiniChart } from '@/components/MonthlyMiniChart';
-import { AdsterraBanner } from '@/components/AdsterraBanner';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -113,7 +113,7 @@ const Index = () => {
             </div>
           )}
           
-          <AdsterraBanner bannerAdKey="cfe2d16dc1c1e9c2a105c4ab7e9d1880" width={728} height={90} />
+          
           
           {!hasAccounts ? (
             <Card className="border-primary/30 bg-primary/5">

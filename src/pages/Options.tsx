@@ -1,7 +1,7 @@
 import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
-import { AdsterraBanner } from '@/components/AdsterraBanner';
+
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -62,7 +62,7 @@ const Options = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       <div className="max-w-lg mx-auto p-4">
-        <AdsterraBanner bannerAdKey="cfe2d16dc1c1e9c2a105c4ab7e9d1880" width={728} height={90} />
+        
         <div className="space-y-4 mt-4">
           {/* Theme Section */}
           <div className="bg-card rounded-xl p-4 border border-border">
