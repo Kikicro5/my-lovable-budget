@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { TransactionList } from '@/components/TransactionList';
-import { AdsterraBanner } from '@/components/AdsterraBanner';
+
 import { MonthlyBudget } from '@/types/budget';
 import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -183,7 +183,7 @@ const Archive = () => {
             <div><h1 className="text-xl font-display font-bold text-foreground">{t('archive.title')}</h1><p className="text-muted-foreground text-sm">{t('archive.subtitle')}</p></div>
           </div>
         </div>
-        <AdsterraBanner bannerAdKey="cfe2d16dc1c1e9c2a105c4ab7e9d1880" width={728} height={90} />
+        
         {pastBudgets.length === 0 ? (
           <div className="bg-card rounded-xl p-8 text-center shadow-soft animate-fade-in">
             <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
