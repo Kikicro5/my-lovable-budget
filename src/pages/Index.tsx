@@ -8,12 +8,14 @@ import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
 import { BudgetProgress } from '@/components/BudgetProgress';
 import { MonthlyMiniChart } from '@/components/MonthlyMiniChart';
+import { FeatureLock } from '@/components/FeatureLock';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Wallet, AlertCircle } from 'lucide-react';
+
 
 const Index = () => {
   const { 
@@ -100,17 +102,19 @@ const Index = () => {
           />
           
           {hasAnyLimit && (
-            <div className="space-y-3">
-              {expenseProgress.limit > 0 && (
-                <BudgetProgress spent={expenseProgress.spent} limit={expenseProgress.limit} type="expense" />
-              )}
-              {investmentProgress.limit > 0 && (
-                <BudgetProgress spent={investmentProgress.spent} limit={investmentProgress.limit} type="investment" />
-              )}
-              {savingsProgress.limit > 0 && (
-                <BudgetProgress spent={savingsProgress.spent} limit={savingsProgress.limit} type="savings" />
-              )}
-            </div>
+            <FeatureLock featureName={t('limits.title')}>
+              <div className="space-y-3">
+                {expenseProgress.limit > 0 && (
+                  <BudgetProgress spent={expenseProgress.spent} limit={expenseProgress.limit} type="expense" />
+                )}
+                {investmentProgress.limit > 0 && (
+                  <BudgetProgress spent={investmentProgress.spent} limit={investmentProgress.limit} type="investment" />
+                )}
+                {savingsProgress.limit > 0 && (
+                  <BudgetProgress spent={savingsProgress.spent} limit={savingsProgress.limit} type="savings" />
+                )}
+              </div>
+            </FeatureLock>
           )}
           
           
@@ -139,7 +143,9 @@ const Index = () => {
             <QuickExpenseForm categories={state.savedCategories.expense} accounts={state.accounts || []} onSubmit={handleAddExpense} />
           )}
           
-          <MonthlyMiniChart budgets={state.budgets} currentYear={currentYear} />
+          <FeatureLock featureName={t('chart.title') || 'Pregled po mjesecima'}>
+            <MonthlyMiniChart budgets={state.budgets} currentYear={currentYear} />
+          </FeatureLock>
           
           <TransactionList title={t('transaction.lastTransactions')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} accounts={state.accounts || []} />
         </div>
