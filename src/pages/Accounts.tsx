@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
-
+import { FeatureLock } from '@/components/FeatureLock';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +13,7 @@ import { useCurrency } from '@/contexts/CurrencyContext';
 import { cn } from '@/lib/utils';
 import { BudgetLimitsForm } from '@/components/BudgetLimitsForm';
 import { ReminderForm } from '@/components/ReminderForm';
+
 
 const Accounts = () => {
   const { state, addAccount, removeAccount, updateAccount, transferBetweenAccounts, addReminder, removeReminder } = useBudget();
@@ -182,75 +183,77 @@ const Accounts = () => {
 
         {/* Transfer Between Accounts */}
         {state.accounts && state.accounts.length >= 2 && (
-          <Card className="mb-6 shadow-soft border-primary/20">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <ArrowRightLeft className="w-5 h-5" />
-                {t('accounts.transfer')}
-              </CardTitle>
-              <CardDescription>{t('accounts.transferDescription')}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleTransfer} className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-sm text-muted-foreground mb-1 block">{t('accounts.from')}</label>
-                    <Select value={fromAccountId} onValueChange={setFromAccountId}>
-                      <SelectTrigger className="bg-background">
-                        <SelectValue placeholder={t('accounts.selectAccount')} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {state.accounts.filter((a) => a.id !== toAccountId).map((acc) => (
-                          <SelectItem key={acc.id} value={acc.id}>
-                            <div className="flex justify-between items-center gap-2">
-                              <span>{acc.name}</span>
-                              <span className="text-xs text-muted-foreground">
-                                ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
-                              </span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+          <FeatureLock featureName={t('accounts.transfer')}>
+            <Card className="mb-6 shadow-soft border-primary/20">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <ArrowRightLeft className="w-5 h-5" />
+                  {t('accounts.transfer')}
+                </CardTitle>
+                <CardDescription>{t('accounts.transferDescription')}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleTransfer} className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-sm text-muted-foreground mb-1 block">{t('accounts.from')}</label>
+                      <Select value={fromAccountId} onValueChange={setFromAccountId}>
+                        <SelectTrigger className="bg-background">
+                          <SelectValue placeholder={t('accounts.selectAccount')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {state.accounts.filter((a) => a.id !== toAccountId).map((acc) => (
+                            <SelectItem key={acc.id} value={acc.id}>
+                              <div className="flex justify-between items-center gap-2">
+                                <span>{acc.name}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
+                                </span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="text-sm text-muted-foreground mb-1 block">{t('accounts.to')}</label>
+                      <Select value={toAccountId} onValueChange={setToAccountId}>
+                        <SelectTrigger className="bg-background">
+                          <SelectValue placeholder={t('accounts.selectAccount')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {state.accounts.filter((a) => a.id !== fromAccountId).map((acc) => (
+                            <SelectItem key={acc.id} value={acc.id}>
+                              <div className="flex justify-between items-center gap-2">
+                                <span>{acc.name}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
+                                </span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-sm text-muted-foreground mb-1 block">{t('accounts.to')}</label>
-                    <Select value={toAccountId} onValueChange={setToAccountId}>
-                      <SelectTrigger className="bg-background">
-                        <SelectValue placeholder={t('accounts.selectAccount')} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {state.accounts.filter((a) => a.id !== fromAccountId).map((acc) => (
-                          <SelectItem key={acc.id} value={acc.id}>
-                            <div className="flex justify-between items-center gap-2">
-                              <span>{acc.name}</span>
-                              <span className="text-xs text-muted-foreground">
-                                ({acc.balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol})
-                              </span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <Input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  max={fromAccount?.balance || 0}
-                  placeholder={t('accounts.transferAmount')}
-                  value={transferAmount}
-                  onChange={(e) => setTransferAmount(e.target.value)}
-                  className="bg-background"
-                />
-                <Button type="submit" className="w-full" disabled={!canTransfer}>
-                  <ArrowRightLeft className="w-4 h-4 mr-2" />
-                  {t('accounts.transferButton')}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max={fromAccount?.balance || 0}
+                    placeholder={t('accounts.transferAmount')}
+                    value={transferAmount}
+                    onChange={(e) => setTransferAmount(e.target.value)}
+                    className="bg-background"
+                  />
+                  <Button type="submit" className="w-full" disabled={!canTransfer}>
+                    <ArrowRightLeft className="w-4 h-4 mr-2" />
+                    {t('accounts.transferButton')}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </FeatureLock>
         )}
 
         {/* Accounts List */}
@@ -354,18 +357,20 @@ const Accounts = () => {
         )}
 
         {/* Budget Limits */}
-        <Card className="shadow-soft">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Target className="w-5 h-5 text-primary" />
-              {t('limits.title')}
-            </CardTitle>
-            <CardDescription>{t('limits.description')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <BudgetLimitsForm />
-          </CardContent>
-        </Card>
+        <FeatureLock featureName={t('limits.title')}>
+          <Card className="shadow-soft">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Target className="w-5 h-5 text-primary" />
+                {t('limits.title')}
+              </CardTitle>
+              <CardDescription>{t('limits.description')}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <BudgetLimitsForm />
+            </CardContent>
+          </Card>
+        </FeatureLock>
       </div>
       <BottomNavigation />
     </div>

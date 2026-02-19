@@ -8,6 +8,7 @@ import { RecurringTransactionsManager } from '@/components/RecurringTransactions
 import { TransactionList } from '@/components/TransactionList';
 import { CategoryManager } from '@/components/CategoryManager';
 import { PreviousPeriodInput } from '@/components/PreviousPeriodInput';
+import { FeatureLock } from '@/components/FeatureLock';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { TrendingUp, TrendingDown, Tags, PiggyBank, LineChart, Wallet, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+
 
 const Monthly = () => {
   const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getAvailableInvestment, getAvailableSavings, transferFromCategory } = useBudget();
@@ -124,26 +126,30 @@ const Monthly = () => {
             <TransactionList title={t('monthly.expenseThisMonth')} transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="expense" accounts={state.accounts || []} />
           </TabsContent>
           <TabsContent value="investment" className="space-y-4">
-            {!hasAccounts ? (
-              <NoAccountsPrompt />
-            ) : (
-              <>
-                <TransactionForm type="investment" categories={state.savedCategories.investment} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('investment', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('investment', cat)} availableForTransfer={getAvailableInvestment()} onTransferToBalance={handleTransferFromInvestment} />
-                <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('investment', amount)} />
-              </>
-            )}
-            <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" accounts={state.accounts || []} />
+            <FeatureLock featureName={t('monthly.investment')}>
+              {!hasAccounts ? (
+                <NoAccountsPrompt />
+              ) : (
+                <>
+                  <TransactionForm type="investment" categories={state.savedCategories.investment} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('investment', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('investment', cat)} availableForTransfer={getAvailableInvestment()} onTransferToBalance={handleTransferFromInvestment} />
+                  <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('investment', amount)} />
+                </>
+              )}
+              <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" accounts={state.accounts || []} />
+            </FeatureLock>
           </TabsContent>
           <TabsContent value="savings" className="space-y-4">
-            {!hasAccounts ? (
-              <NoAccountsPrompt />
-            ) : (
-              <>
-                <TransactionForm type="savings" categories={state.savedCategories.savings} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('savings', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('savings', cat)} availableForTransfer={getAvailableSavings()} onTransferToBalance={handleTransferFromSavings} />
-                <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('savings', amount)} />
-              </>
-            )}
-            <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" accounts={state.accounts || []} />
+            <FeatureLock featureName={t('monthly.savings')}>
+              {!hasAccounts ? (
+                <NoAccountsPrompt />
+              ) : (
+                <>
+                  <TransactionForm type="savings" categories={state.savedCategories.savings} accounts={state.accounts || []} onSubmit={(name, amount, category, date, accountId) => handleAddTransaction('savings', name, amount, category, date, accountId)} onAddCategory={(cat) => handleAddCategory('savings', cat)} availableForTransfer={getAvailableSavings()} onTransferToBalance={handleTransferFromSavings} />
+                  <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('savings', amount)} />
+                </>
+              )}
+              <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" accounts={state.accounts || []} />
+            </FeatureLock>
           </TabsContent>
           <TabsContent value="categories" className="space-y-4">
             <RecurringTransactionsManager />

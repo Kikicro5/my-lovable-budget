@@ -371,6 +371,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip2': 'Aplikacija podržava više jezika',
     'guide.step6.tip3': 'Možeš odabrati valutu koja ti odgovara',
 
+    // Feature Lock
+    'feature.locked.title': 'Premium značajka',
+    'feature.locked.description': 'Otključaj godišnjom pretplatom za €2.99',
+    'feature.locked.unlock': 'Otključaj',
+
     // Legal
     'legal.title': 'Pravne informacije',
     'legal.terms.title': 'Uvjeti korištenja',
@@ -775,6 +780,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip2': 'App supports multiple languages',
     'guide.step6.tip3': 'Select your preferred currency',
 
+    // Feature Lock
+    'feature.locked.title': 'Premium Feature',
+    'feature.locked.description': 'Unlock with an annual subscription for €2.99',
+    'feature.locked.unlock': 'Unlock',
+
     // Legal
     'legal.title': 'Legal Information',
     'legal.terms.title': 'Terms of Service',
@@ -1163,6 +1173,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip1': 'Wählen Sie helles oder dunkles Thema',
     'guide.step6.tip2': 'Die App unterstützt mehrere Sprachen',
     'guide.step6.tip3': 'Wählen Sie Ihre bevorzugte Währung',
+
+    // Feature Lock
+    'feature.locked.title': 'Premium-Funktion',
+    'feature.locked.description': 'Mit einem Jahresabonnement für €2.99 freischalten',
+    'feature.locked.unlock': 'Freischalten',
   },
 
   pl: {
@@ -1523,6 +1538,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip1': 'Wybierz jasny lub ciemny motyw',
     'guide.step6.tip2': 'Aplikacja obsługuje wiele języków',
     'guide.step6.tip3': 'Wybierz preferowaną walutę',
+
+    // Feature Lock
+    'feature.locked.title': 'Funkcja Premium',
+    'feature.locked.description': 'Odblokuj roczną subskrypcją za €2.99',
+    'feature.locked.unlock': 'Odblokuj',
   },
 
   es: {
@@ -1883,6 +1903,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip1': 'Elige tema claro u oscuro',
     'guide.step6.tip2': 'La app soporta múltiples idiomas',
     'guide.step6.tip3': 'Selecciona tu moneda preferida',
+
+    // Feature Lock
+    'feature.locked.title': 'Función Premium',
+    'feature.locked.description': 'Desbloquea con una suscripción anual por €2.99',
+    'feature.locked.unlock': 'Desbloquear',
   },
 
   fr: {
@@ -2243,6 +2268,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip1': 'Choisissez un thème clair ou sombre',
     'guide.step6.tip2': 'L\'application supporte plusieurs langues',
     'guide.step6.tip3': 'Sélectionnez votre devise préférée',
+
+    // Feature Lock
+    'feature.locked.title': 'Fonctionnalité Premium',
+    'feature.locked.description': 'Débloquez avec un abonnement annuel pour €2.99',
+    'feature.locked.unlock': 'Débloquer',
   },
 
   zh: {
@@ -2603,6 +2633,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip1': '选择浅色或深色主题',
     'guide.step6.tip2': '应用支持多种语言',
     'guide.step6.tip3': '选择您偏好的货币',
+
+    // Feature Lock
+    'feature.locked.title': '高级功能',
+    'feature.locked.description': '以每年€2.99的年度订阅解锁',
+    'feature.locked.unlock': '解锁',
   },
 
   hi: {
@@ -2963,6 +2998,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'guide.step6.tip1': 'लाइट या डार्क थीम चुनें',
     'guide.step6.tip2': 'ऐप कई भाषाओं का समर्थन करता है',
     'guide.step6.tip3': 'अपनी पसंदीदा मुद्रा चुनें',
+
+    // Feature Lock
+    'feature.locked.title': 'प्रीमियम सुविधा',
+    'feature.locked.description': '€2.99 की वार्षिक सदस्यता के साथ अनलॉक करें',
+    'feature.locked.unlock': 'अनलॉक करें',
   },
 };
 
