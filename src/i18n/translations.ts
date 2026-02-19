@@ -291,7 +291,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Premium
     'removeAds.title': 'Premium verzija',
     'removeAds.description': 'Otključaj napredne značajke s godišnjom pretplatom.',
-    'removeAds.buyButton': 'Otključaj Premium - €2,99/god',
+    'removeAds.buyButton': 'Otključaj Premium - €6,99/god',
     'removeAds.purchased': 'Premium verzija aktivna',
     'removeAds.thankYou': 'Hvala na kupnji! Uživaj u svim Premium značajkama.',
     'removeAds.success': 'Premium je uspješno aktiviran! Hvala na kupnji.',
@@ -373,7 +373,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Premium značajka',
-    'feature.locked.description': 'Otključaj godišnjom pretplatom za €2.99',
+    'feature.locked.description': 'Otključaj godišnjom pretplatom za €6,99',
     'feature.locked.unlock': 'Otključaj',
 
     // Legal
@@ -700,7 +700,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Premium
     'removeAds.title': 'Premium Version',
     'removeAds.description': 'Unlock advanced features with an annual subscription.',
-    'removeAds.buyButton': 'Unlock Premium - €2.99/year',
+    'removeAds.buyButton': 'Unlock Premium - €6.99/year',
     'removeAds.purchased': 'Premium Active',
     'removeAds.thankYou': 'Thank you for your purchase! Enjoy all Premium features.',
     'removeAds.success': 'Premium activated successfully! Thank you for your purchase.',
@@ -782,7 +782,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Premium Feature',
-    'feature.locked.description': 'Unlock with an annual subscription for €2.99',
+    'feature.locked.description': 'Unlock with an annual subscription for €6.99',
     'feature.locked.unlock': 'Unlock',
 
     // Legal
@@ -1105,7 +1105,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Premium
     'removeAds.title': 'Premium-Version',
     'removeAds.description': 'Schalte erweiterte Funktionen mit einem Jahresabo frei.',
-    'removeAds.buyButton': 'Premium freischalten - €2,99/Jahr',
+    'removeAds.buyButton': 'Premium freischalten - €6,99/Jahr',
     'removeAds.purchased': 'Premium aktiv',
     'removeAds.thankYou': 'Vielen Dank für deinen Kauf! Genieße alle Premium-Funktionen.',
     'removeAds.success': 'Premium erfolgreich aktiviert! Vielen Dank für deinen Kauf.',
@@ -1176,7 +1176,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Premium-Funktion',
-    'feature.locked.description': 'Mit einem Jahresabonnement für €2.99 freischalten',
+    'feature.locked.description': 'Mit einem Jahresabonnement für €6.99 freischalten',
     'feature.locked.unlock': 'Freischalten',
   },
 
@@ -1470,7 +1470,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Premium
     'removeAds.title': 'Wersja Premium',
     'removeAds.description': 'Odblokuj zaawansowane funkcje z roczną subskrypcją.',
-    'removeAds.buyButton': 'Odblokuj Premium - €2,99/rok',
+    'removeAds.buyButton': 'Odblokuj Premium - €6,99/rok',
     'removeAds.purchased': 'Premium aktywny',
     'removeAds.thankYou': 'Dziękujemy za zakup! Ciesz się wszystkimi funkcjami Premium.',
     'removeAds.success': 'Premium aktywowany! Dziękujemy za zakup.',
@@ -1541,7 +1541,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Funkcja Premium',
-    'feature.locked.description': 'Odblokuj roczną subskrypcją za €2.99',
+    'feature.locked.description': 'Odblokuj roczną subskrypcją za €6.99',
     'feature.locked.unlock': 'Odblokuj',
   },
 
@@ -1835,7 +1835,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Premium
     'removeAds.title': 'Versión Premium',
     'removeAds.description': 'Desbloquea funciones avanzadas con una suscripción anual.',
-    'removeAds.buyButton': 'Desbloquear Premium - €2,99/año',
+    'removeAds.buyButton': 'Desbloquear Premium - €6,99/año',
     'removeAds.purchased': 'Premium activo',
     'removeAds.thankYou': '¡Gracias por tu compra! Disfruta de todas las funciones Premium.',
     'removeAds.success': '¡Premium activado! Gracias por tu compra.',
@@ -1906,7 +1906,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Función Premium',
-    'feature.locked.description': 'Desbloquea con una suscripción anual por €2.99',
+    'feature.locked.description': 'Desbloquea con una suscripción anual por €6.99',
     'feature.locked.unlock': 'Desbloquear',
   },
 
@@ -2200,7 +2200,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Premium
     'removeAds.title': 'Version Premium',
     'removeAds.description': 'Débloquez les fonctionnalités avancées avec un abonnement annuel.',
-    'removeAds.buyButton': 'Débloquer Premium - €2,99/an',
+    'removeAds.buyButton': 'Débloquer Premium - €6,99/an',
     'removeAds.purchased': 'Premium actif',
     'removeAds.thankYou': 'Merci pour votre achat ! Profitez de toutes les fonctionnalités Premium.',
     'removeAds.success': 'Premium activé ! Merci pour votre achat.',
@@ -2271,7 +2271,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Fonctionnalité Premium',
-    'feature.locked.description': 'Débloquez avec un abonnement annuel pour €2.99',
+    'feature.locked.description': 'Débloquez avec un abonnement annuel pour €6.99',
     'feature.locked.unlock': 'Débloquer',
   },
 
@@ -2565,7 +2565,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Premium
     'removeAds.title': '高级版本',
     'removeAds.description': '通过年度订阅解锁高级功能。',
-    'removeAds.buyButton': '解锁高级版 - €2.99/年',
+    'removeAds.buyButton': '解锁高级版 - €6.99/年',
     'removeAds.purchased': '高级版已激活',
     'removeAds.thankYou': '感谢您的购买！享受所有高级功能。',
     'removeAds.success': '高级版已成功激活！感谢您的购买。',
@@ -2636,7 +2636,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': '高级功能',
-    'feature.locked.description': '以每年€2.99的年度订阅解锁',
+    'feature.locked.description': '以每年€6.99的年度订阅解锁',
     'feature.locked.unlock': '解锁',
   },
 
@@ -2930,7 +2930,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Premium
     'removeAds.title': 'प्रीमियम संस्करण',
     'removeAds.description': 'वार्षिक सदस्यता के साथ उन्नत सुविधाएं अनलॉक करें।',
-    'removeAds.buyButton': 'प्रीमियम अनलॉक करें - €2.99/वर्ष',
+    'removeAds.buyButton': 'प्रीमियम अनलॉक करें - €6.99/वर्ष',
     'removeAds.purchased': 'प्रीमियम सक्रिय',
     'removeAds.thankYou': 'खरीद के लिए धन्यवाद! सभी प्रीमियम सुविधाओं का आनंद लें।',
     'removeAds.success': 'प्रीमियम सफलतापूर्वक सक्रिय! खरید के लिए धन्यवाद।',
@@ -3001,7 +3001,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'प्रीमियम सुविधा',
-    'feature.locked.description': '€2.99 की वार्षिक सदस्यता के साथ अनलॉक करें',
+    'feature.locked.description': '€6.99 की वार्षिक सदस्यता के साथ अनलॉक करें',
     'feature.locked.unlock': 'अनलॉक करें',
   },
 };

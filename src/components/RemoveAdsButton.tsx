@@ -34,7 +34,7 @@ declare global {
 
 const PAYPAL_CLIENT_ID = 'ASpt2jlHKdbl5GJzyE_3bcekUqIjmZmQUHrpCaLyPFfE2pJahcj3-FpmIdLRVNMgyAs5MmbJ76tQ46zr';
 const PLAN_ID = 'P-0P871569YS189500HNGLTFOQ';
-const PRICE = '2.99';
+const PRICE = '6.99';
 const CURRENCY = 'EUR';
 
 export const RemoveAdsButton = () => {
