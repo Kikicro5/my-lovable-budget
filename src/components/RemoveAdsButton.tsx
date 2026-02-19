@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Ban, Check, Loader2, CreditCard, Calendar, Receipt } from 'lucide-react';
+import { Star, Check, Loader2, CreditCard, Calendar, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useAdFreePurchase } from '@/hooks/useAdFreePurchase';
@@ -253,7 +253,7 @@ export const RemoveAdsButton = () => {
   return (
     <div className="bg-card rounded-xl p-4 border border-border">
       <div className="flex items-center gap-2 mb-3">
-        <Ban className="w-5 h-5 text-primary" />
+        <Star className="w-5 h-5 text-primary" />
         <h2 className="text-lg font-semibold text-foreground">
           {t('removeAds.title') || 'Remove Ads'}
         </h2>
