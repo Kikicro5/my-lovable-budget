@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import InstallPrompt from "@/components/InstallPrompt";
 import { AdMobBanner } from "@/components/AdMobBanner";
-import { AdsterraBanner } from "@/components/AdsterraBanner";
+
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
 import Accounts from "./pages/Accounts";
