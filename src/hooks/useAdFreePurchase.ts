@@ -121,6 +121,11 @@ export const useAdFreePurchase = () => {
 
   useEffect(() => {
     checkPurchaseStatus();
+
+    // Listen for purchase events from other hook instances
+    const handler = () => checkPurchaseStatus();
+    window.addEventListener('ad-free-purchased', handler);
+    return () => window.removeEventListener('ad-free-purchased', handler);
   }, [checkPurchaseStatus]);
 
   const verifyAndSavePurchase = async (subscriptionId: string): Promise<boolean> => {
@@ -147,6 +152,8 @@ export const useAdFreePurchase = () => {
         const newExpDate = new Date();
         newExpDate.setFullYear(newExpDate.getFullYear() + 1);
         setExpiresAt(newExpDate);
+        // Notify all other hook instances to re-check
+        window.dispatchEvent(new Event('ad-free-purchased'));
         return true;
       }
 
