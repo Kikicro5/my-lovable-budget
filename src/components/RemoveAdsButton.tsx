@@ -193,16 +193,31 @@ export const RemoveAdsButton = () => {
             ({daysRemaining} {t('removeAds.daysLeft') || 'dana'})
           </span>
         </div>
-        {daysRemaining !== null && daysRemaining <= 30 && (
+        <div className="flex gap-2 mt-3">
+          {daysRemaining !== null && daysRemaining <= 30 && (
+            <Button
+              onClick={() => setShowPayPal(true)}
+              className="flex-1 gap-2"
+              variant="outline"
+            >
+              <CreditCard className="w-4 h-4" />
+              {t('removeAds.renew') || 'Obnovi pretplatu'}
+            </Button>
+          )}
           <Button
-            onClick={() => setShowPayPal(true)}
-            className="w-full gap-2 mt-3"
-            variant="outline"
+            asChild
+            variant="ghost"
+            className="flex-1 gap-2 text-muted-foreground"
           >
-            <CreditCard className="w-4 h-4" />
-            {t('removeAds.renew') || 'Obnovi pretplatu'}
+            <a
+              href="https://www.paypal.com/myaccount/autopay"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('removeAds.cancelSubscription') || 'Otkaži pretplatu'}
+            </a>
           </Button>
-        )}
+        </div>
         {showPayPal && (
           <div className="space-y-3 mt-3">
             <div id={`paypal-button-container-${PLAN_ID}`} className="min-h-[50px]">
