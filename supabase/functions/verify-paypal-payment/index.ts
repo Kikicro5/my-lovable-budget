@@ -96,7 +96,10 @@ serve(async (req) => {
 
     console.log('Subscription status:', subscription.status);
 
-    if (subscription.status !== 'ACTIVE') {
+    // PayPal subscriptions may not be ACTIVE immediately after approval
+    // APPROVED means payment was authorized but not yet captured
+    const validStatuses = ['ACTIVE', 'APPROVED'];
+    if (!validStatuses.includes(subscription.status)) {
       return new Response(
         JSON.stringify({ error: 'Subscription not active', status: subscription.status }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

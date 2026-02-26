@@ -138,23 +138,42 @@ export const useAdFreePurchase = () => {
         return false;
       }
 
-      const { data, error } = await supabase.functions.invoke('verify-paypal-payment', {
-        body: { subscriptionId, deviceToken },
-      });
+      // Retry logic: PayPal subscription may not be ACTIVE immediately after approval
+      const maxRetries = 3;
+      for (let attempt = 0; attempt < maxRetries; attempt++) {
+        if (attempt > 0) {
+          // Wait before retrying (2s, 4s)
+          await new Promise(resolve => setTimeout(resolve, attempt * 2000));
+        }
 
-      if (error) {
-        console.error('Verification error:', error);
+        const { data, error } = await supabase.functions.invoke('verify-paypal-payment', {
+          body: { subscriptionId, deviceToken },
+        });
+
+        if (error) {
+          console.error(`Verification attempt ${attempt + 1} error:`, error);
+          continue;
+        }
+
+        if (data?.success) {
+          setIsAdFree(true);
+          const newExpDate = new Date();
+          newExpDate.setFullYear(newExpDate.getFullYear() + 1);
+          setExpiresAt(newExpDate);
+          // Notify all other hook instances to re-check
+          window.dispatchEvent(new Event('ad-free-purchased'));
+          return true;
+        }
+
+        // If subscription status is not yet active, retry
+        if (data?.error?.includes('not active')) {
+          console.log(`Subscription not yet active, retry ${attempt + 1}/${maxRetries}`);
+          continue;
+        }
+
+        // Other error, don't retry
+        console.error('Verification failed:', data);
         return false;
-      }
-
-      if (data?.success) {
-        setIsAdFree(true);
-        const newExpDate = new Date();
-        newExpDate.setFullYear(newExpDate.getFullYear() + 1);
-        setExpiresAt(newExpDate);
-        // Notify all other hook instances to re-check
-        window.dispatchEvent(new Event('ad-free-purchased'));
-        return true;
       }
 
       return false;
