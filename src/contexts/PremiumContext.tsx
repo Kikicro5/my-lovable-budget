@@ -24,7 +24,7 @@ const getDeviceId = (): string => {
 };
 
 export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, session } = useAuth();
+  const { user, session, isAdmin } = useAuth();
   const [isPremium, setIsPremium] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
@@ -32,6 +32,14 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const checkStatus = useCallback(async () => {
     if (!session) {
       setIsPremium(false);
+      setExpiresAt(null);
+      setIsLoading(false);
+      return;
+    }
+
+    // Admins always have premium
+    if (isAdmin) {
+      setIsPremium(true);
       setExpiresAt(null);
       setIsLoading(false);
       return;
@@ -55,7 +63,7 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
     } finally {
       setIsLoading(false);
     }
-  }, [session]);
+  }, [session, isAdmin]);
 
   useEffect(() => {
     checkStatus();
