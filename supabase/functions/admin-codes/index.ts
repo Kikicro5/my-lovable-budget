@@ -63,6 +63,41 @@ serve(async (req) => {
     const { action, ...params } = await req.json();
 
     switch (action) {
+      case 'load-all': {
+        // Parallel fetch of all admin data
+        const [codesRes, usersRes, pricesRes] = await Promise.all([
+          adminClient.from('activation_codes').select('*').order('created_at', { ascending: false }),
+          adminClient.auth.admin.listUsers({ perPage: 1000 }),
+          adminClient.from('premium_settings').select('*').order('duration_days', { ascending: true }),
+        ]);
+
+        if (codesRes.error) throw codesRes.error;
+        if (usersRes.error) throw usersRes.error;
+        if (pricesRes.error) throw pricesRes.error;
+
+        // Get activations and roles in parallel
+        const [activationsRes, rolesRes] = await Promise.all([
+          adminClient.from('activations').select('user_id, valid_until').order('valid_until', { ascending: false }),
+          adminClient.from('user_roles').select('user_id, role'),
+        ]);
+
+        const now = new Date();
+        const usersWithStatus = usersRes.data.users.map(u => {
+          const activeActivation = activationsRes.data?.find(a => a.user_id === u.id && new Date(a.valid_until) > now);
+          const userRole = rolesRes.data?.find(r => r.user_id === u.id);
+          return {
+            id: u.id, email: u.email, created_at: u.created_at,
+            last_sign_in_at: u.last_sign_in_at || null,
+            isPremium: !!activeActivation, premiumUntil: activeActivation?.valid_until || null,
+            role: userRole?.role || 'user',
+          };
+        });
+
+        return new Response(JSON.stringify({
+          codes: codesRes.data, users: usersWithStatus, prices: pricesRes.data,
+        }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+
       case 'list-codes': {
         const { data, error } = await adminClient
           .from('activation_codes')
