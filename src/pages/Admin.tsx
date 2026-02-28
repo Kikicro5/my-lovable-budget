@@ -97,16 +97,19 @@ const Admin = () => {
   };
 
   const handleDeleteCode = async (codeId: string) => {
-    try { await adminCall('delete-code', { codeId }); toast.success('Kod obrisan'); loadAll(); } catch (e: any) { toast.error(e.message); }
+    setCodes(prev => prev.filter(c => c.id !== codeId));
+    try { await adminCall('delete-code', { codeId }); toast.success('Kod obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
 
   const handleDeleteUser = async (userId: string) => {
     if (!confirm('Obrisati korisnika?')) return;
-    try { await adminCall('delete-user', { userId }); toast.success('Korisnik obrisan'); loadAll(); } catch (e: any) { toast.error(e.message); }
+    setUsers(prev => prev.filter(u => u.id !== userId));
+    try { await adminCall('delete-user', { userId }); toast.success('Korisnik obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
 
   const handleDeactivatePremium = async (userId: string) => {
-    try { await adminCall('deactivate-premium', { userId }); toast.success('Premium deaktiviran'); loadAll(); } catch (e: any) { toast.error(e.message); }
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, isPremium: false, premiumUntil: null } : u));
+    try { await adminCall('deactivate-premium', { userId }); toast.success('Premium deaktiviran'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
 
   const handleUpdatePrices = async () => {
