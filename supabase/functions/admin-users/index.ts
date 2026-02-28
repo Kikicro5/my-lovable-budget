@@ -62,22 +62,32 @@ serve(async (req) => {
     const adminClient = createClient(supabaseUrl, serviceKey);
 
     if (req.method === 'GET') {
-      const { data: { users }, error: usersError } = await adminClient.auth.admin.listUsers({ perPage: 1000 });
-      if (usersError) return json({ error: 'Failed to list users' }, 500);
+      const url = new URL(req.url);
+      const only = url.searchParams.get('only');
 
-      const { data: activations } = await adminClient
-        .from('activations')
-        .select('user_id, valid_until')
-        .gte('valid_until', new Date().toISOString());
+      // Lightweight prices-only path
+      if (only === 'prices') {
+        const { data: prices } = await adminClient
+          .from('premium_settings')
+          .select('*')
+          .order('duration_days', { ascending: true });
+        return json({ prices: prices || [] });
+      }
 
-      const { data: prices } = await adminClient
-        .from('premium_settings')
-        .select('*')
-        .order('duration_days', { ascending: true });
+      // Full users list
+      const [usersResult, activationsResult] = await Promise.all([
+        adminClient.auth.admin.listUsers({ perPage: 1000 }),
+        adminClient
+          .from('activations')
+          .select('user_id, valid_until')
+          .gte('valid_until', new Date().toISOString()),
+      ]);
 
-      const activeUserIds = new Set((activations || []).map(a => a.user_id));
+      if (usersResult.error) return json({ error: 'Failed to list users' }, 500);
 
-      const usersList = (users || []).map(u => ({
+      const activeUserIds = new Set((activationsResult.data || []).map(a => a.user_id));
+
+      const usersList = (usersResult.data?.users || []).map(u => ({
         id: u.id,
         email: u.email || '',
         created_at: u.created_at,
@@ -85,7 +95,7 @@ serve(async (req) => {
         isPremium: activeUserIds.has(u.id),
       }));
 
-      return json({ users: usersList, prices: prices || [] });
+      return json({ users: usersList });
     }
 
     if (req.method === 'POST') {
