@@ -173,51 +173,64 @@ const Options = () => {
 
 
           {/* Premium Section */}
-          {user && (
-            <div className="bg-card rounded-xl p-4 border border-primary/20">
-              <div className="flex items-center gap-2 mb-3">
+          <div className="bg-card rounded-xl p-4 border border-primary/20">
+            <div className="flex items-center gap-2 mb-3">
+              <Crown className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">Premium</h2>
+            </div>
+            {isPremium ? (
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
                 <Crown className="w-5 h-5 text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">Premium</h2>
+                <div>
+                  <p className="font-medium text-sm text-foreground">Premium aktivan</p>
+                  {daysRemaining !== null && (
+                    <p className="text-xs text-muted-foreground">{daysRemaining} dana preostalo</p>
+                  )}
+                </div>
               </div>
-              {isPremium ? (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
-                  <Crown className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-medium text-sm text-foreground">Premium aktivan</p>
-                    {daysRemaining !== null && (
-                      <p className="text-xs text-muted-foreground">{daysRemaining} dana preostalo</p>
-                    )}
-                  </div>
+            ) : activated ? (
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
+                <Check className="w-5 h-5 text-primary" />
+                <div>
+                  <p className="font-medium text-sm text-foreground">Kod uspješno aktiviran!</p>
+                  <p className="text-xs text-muted-foreground">Premium je sada aktivan</p>
                 </div>
-              ) : activated ? (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
-                  <Check className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-medium text-sm text-foreground">Kod uspješno aktiviran!</p>
-                    <p className="text-xs text-muted-foreground">Premium je sada aktivan</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  {user
+                    ? 'Unesite aktivacijski kod za otključavanje premium značajki.'
+                    : 'Imate premium kod? Prijavite se i aktivirajte ga za pristup svim značajkama.'}
+                </p>
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Key className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="PREMIUM2024"
+                      value={code}
+                      onChange={(e) => setCode(e.target.value.toUpperCase())}
+                      className="pl-10 font-mono"
+                    />
                   </div>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground">Unesite aktivacijski kod za otključavanje premium značajki.</p>
-                  <div className="flex gap-2">
-                    <div className="relative flex-1">
-                      <Key className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        placeholder="PREMIUM2024"
-                        value={code}
-                        onChange={(e) => setCode(e.target.value.toUpperCase())}
-                        className="pl-10 font-mono"
-                      />
-                    </div>
+                  {user ? (
                     <Button onClick={handleActivateCode} disabled={activating || !code.trim()}>
                       {activating ? '...' : 'Aktiviraj'}
                     </Button>
-                  </div>
+                  ) : (
+                    <Button onClick={() => window.location.href = '/auth'}>
+                      Prijava
+                    </Button>
+                  )}
                 </div>
-              )}
-            </div>
-          )}
+                {!user && (
+                  <p className="text-xs text-muted-foreground">
+                    Potrebna je prijava za aktivaciju koda.
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* App Guide Section */}
           <AppGuide />
