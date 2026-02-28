@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Star, Check, Loader2, CreditCard, Calendar, Receipt } from 'lucide-react';
+import { Ban, Check, Loader2, CreditCard, Calendar, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useAdFreePurchase } from '@/hooks/useAdFreePurchase';
@@ -11,18 +11,23 @@ declare global {
     paypal?: {
       Buttons: (config: {
         style?: {
-          shape?: string;
-          color?: string;
           layout?: string;
+          color?: string;
+          shape?: string;
           label?: string;
           height?: number;
         };
-        createSubscription: (data: unknown, actions: {
-          subscription: {
-            create: (data: { plan_id: string }) => Promise<string>;
+        createOrder: (data: unknown, actions: {
+          order: {
+            create: (orderData: {
+              purchase_units: Array<{
+                amount: { value: string; currency_code: string };
+                description: string;
+              }>;
+            }) => Promise<string>;
           };
         }) => Promise<string>;
-        onApprove: (data: { subscriptionID: string }) => void;
+        onApprove: (data: { orderID: string }, actions: unknown) => Promise<void>;
         onError: (err: Error) => void;
         onCancel: () => void;
       }) => {
@@ -32,9 +37,8 @@ declare global {
   }
 }
 
-const PAYPAL_CLIENT_ID = 'ASpt2jlHKdbl5GJzyE_3bcekUqIjmZmQUHrpCaLyPFfE2pJahcj3-FpmIdLRVNMgyAs5MmbJ76tQ46zr';
-const PLAN_ID = 'P-0P871569YS189500HNGLTFOQ';
-const PRICE = '6.99';
+const PAYPAL_CLIENT_ID = 'AdQbD-v50rs3kZT3thAFYIzDOK38laJKqfSmXzoa562pndYxAXJ7QvKvUJRIvDtN-tyczgnsSN8gOodR';
+const PRICE = '2.99';
 const CURRENCY = 'EUR';
 
 export const RemoveAdsButton = () => {
@@ -45,97 +49,114 @@ export const RemoveAdsButton = () => {
 
   useEffect(() => {
     if (showPayPal && !paypalLoaded) {
-      // Remove any existing PayPal script first
-      const existingScript = document.querySelector(`script[src*="paypal.com/sdk/js"]`);
-      if (existingScript) existingScript.remove();
-
+      // Load PayPal SDK
       const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&vault=true&intent=subscription`;
-      script.setAttribute('data-sdk-integration-source', 'button-factory');
+      script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=${CURRENCY}`;
       script.async = true;
-      script.onload = () => setPaypalLoaded(true);
+      script.onload = () => {
+        setPaypalLoaded(true);
+      };
       document.body.appendChild(script);
 
       return () => {
-        const s = document.querySelector(`script[src*="paypal.com/sdk/js"]`);
-        if (s) s.remove();
+        // Cleanup script when component unmounts
+        const existingScript = document.querySelector(`script[src*="paypal.com/sdk/js"]`);
+        if (existingScript) {
+          document.body.removeChild(existingScript);
+        }
       };
     }
   }, [showPayPal, paypalLoaded]);
 
   useEffect(() => {
     if (paypalLoaded && showPayPal && window.paypal) {
-      const containerId = `paypal-button-container-${PLAN_ID}`;
-      const container = document.getElementById(containerId);
+      const container = document.getElementById('paypal-button-container');
       if (container) {
         container.innerHTML = '';
-
+        
         window.paypal.Buttons({
           style: {
-            shape: 'rect',
-            color: 'gold',
             layout: 'vertical',
-            label: 'subscribe',
+            color: 'gold',
+            shape: 'rect',
+            label: 'paypal',
             height: 45,
           },
-          createSubscription: (_data, actions) => {
-            return actions.subscription.create({ plan_id: PLAN_ID });
+          createOrder: async (_data, actions) => {
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  value: PRICE,
+                  currency_code: CURRENCY,
+                },
+                description: 'Budget Card - Remove Ads (1 Year)',
+              }],
+            });
           },
           onApprove: async (data) => {
-            const success = await verifyAndSavePurchase(data.subscriptionID);
+            const success = await verifyAndSavePurchase(data.orderID);
             if (success) {
-              toast.success(t('removeAds.success') || 'Premium aktiviran! Hvala na pretplati.');
+              toast.success(t('removeAds.success') || 'Ads removed successfully! Thank you for your purchase.');
               setShowPayPal(false);
             } else {
-              toast.error(t('removeAds.error') || 'Verifikacija nije uspjela. Kontaktiraj podršku.');
+              toast.error(t('removeAds.error') || 'Payment verification failed. Please contact support.');
             }
           },
           onError: (err) => {
             console.error('PayPal error:', err);
-            toast.error(t('removeAds.error') || 'Greška pri plaćanju. Pokušaj ponovo.');
+            toast.error(t('removeAds.error') || 'Payment failed. Please try again.');
           },
           onCancel: () => {
-            toast.info(t('removeAds.cancelled') || 'Plaćanje otkazano.');
+            toast.info(t('removeAds.cancelled') || 'Payment cancelled.');
           },
-        }).render(`#${containerId}`);
+        }).render('#paypal-button-container');
       }
     }
   }, [paypalLoaded, showPayPal, verifyAndSavePurchase, t]);
 
+  // Format expiration date
   const formatDate = (date: Date | string) => {
     const d = typeof date === 'string' ? new Date(date) : date;
     return d.toLocaleDateString(language === 'hr' ? 'hr-HR' : language === 'de' ? 'de-DE' : 'en-US', {
       day: 'numeric',
       month: 'long',
-      year: 'numeric',
+      year: 'numeric'
     });
   };
 
+  // Format currency
   const formatCurrency = (amount: number, currency: string) => {
     return new Intl.NumberFormat(language === 'hr' ? 'hr-HR' : language === 'de' ? 'de-DE' : 'en-US', {
       style: 'currency',
-      currency,
+      currency: currency
     }).format(amount);
   };
 
+  // Payment history component
   const PaymentHistory = () => {
     if (purchases.length === 0) return null;
+    
     return (
       <>
         <Separator className="my-4" />
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-sm font-medium text-foreground">
             <Receipt className="w-4 h-4 text-muted-foreground" />
-            <span>{t('removeAds.paymentHistory') || 'Povijest pretplate'}</span>
+            <span>{t('removeAds.paymentHistory') || 'Payment History'}</span>
           </div>
           <div className="space-y-2">
             {purchases.map((purchase) => (
-              <div key={purchase.id} className="bg-muted/50 rounded-lg p-3 text-sm">
+              <div 
+                key={purchase.id} 
+                className="bg-muted/50 rounded-lg p-3 text-sm"
+              >
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
-                    <div className="text-foreground font-medium">{formatDate(purchase.purchased_at)}</div>
+                    <div className="text-foreground font-medium">
+                      {formatDate(purchase.purchased_at)}
+                    </div>
                     <div className="text-muted-foreground text-xs">
-                      {t('removeAds.validUntil') || 'Vrijedi do'}: {formatDate(purchase.expires_at)}
+                      {t('removeAds.validUntil') || 'Valid until'}: {formatDate(purchase.expires_at)}
                     </div>
                     {purchase.paypal_order_id && (
                       <div className="text-muted-foreground text-xs font-mono">
@@ -144,9 +165,10 @@ export const RemoveAdsButton = () => {
                     )}
                   </div>
                   <div className="text-foreground font-semibold">
-                    {purchase.amount && purchase.currency
+                    {purchase.amount && purchase.currency 
                       ? formatCurrency(purchase.amount, purchase.currency)
-                      : `€${PRICE}`}
+                      : `€${PRICE}`
+                    }
                   </div>
                 </div>
               </div>
@@ -174,7 +196,7 @@ export const RemoveAdsButton = () => {
           <div className="flex items-center gap-2">
             <Check className="w-5 h-5 text-primary" />
             <h2 className="text-lg font-semibold text-foreground">
-              {t('removeAds.purchased') || 'Premium verzija aktivna'}
+              {t('removeAds.purchased') || 'Ad-Free Version'}
             </h2>
           </div>
           <div className="flex items-center gap-1.5 bg-primary/10 text-primary px-2.5 py-1 rounded-full text-sm font-medium">
@@ -184,54 +206,45 @@ export const RemoveAdsButton = () => {
           </div>
         </div>
         <p className="text-sm text-muted-foreground mb-2">
-          {t('removeAds.thankYou') || 'Hvala na pretplati! Uživaj u svim Premium značajkama.'}
+          {t('removeAds.thankYou') || 'Thank you for your purchase! You are using the ad-free version.'}
         </p>
         <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 rounded-lg p-2">
           <Calendar className="w-4 h-4" />
           <span>
-            {t('removeAds.expiresOn') || 'Vrijedi do'}: {formatDate(expiresAt)}
-            ({daysRemaining} {t('removeAds.daysLeft') || 'dana'})
+            {t('removeAds.expiresOn') || 'Expires on'}: {formatDate(expiresAt)} 
+            ({daysRemaining} {t('removeAds.daysLeft') || 'days left'})
           </span>
         </div>
-        <div className="flex gap-2 mt-3">
-          {daysRemaining !== null && daysRemaining <= 30 && (
-            <Button
-              onClick={() => setShowPayPal(true)}
-              className="flex-1 gap-2"
-              variant="outline"
-            >
-              <CreditCard className="w-4 h-4" />
-              {t('removeAds.renew') || 'Obnovi pretplatu'}
-            </Button>
-          )}
-          <Button
-            asChild
-            variant="ghost"
-            className="flex-1 gap-2 text-muted-foreground"
+        {daysRemaining !== null && daysRemaining <= 30 && (
+          <Button 
+            onClick={() => setShowPayPal(true)} 
+            className="w-full gap-2 mt-3"
+            variant="outline"
           >
-            <a
-              href="https://www.paypal.com/myaccount/autopay"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('removeAds.cancelSubscription') || 'Otkaži pretplatu'}
-            </a>
+            <CreditCard className="w-4 h-4" />
+            {t('removeAds.renew') || 'Renew Subscription'}
           </Button>
-        </div>
+        )}
+        
         {showPayPal && (
           <div className="space-y-3 mt-3">
-            <div id={`paypal-button-container-${PLAN_ID}`} className="min-h-[50px]">
+            <div id="paypal-button-container" className="min-h-[50px]">
               {!paypalLoaded && (
                 <div className="flex items-center justify-center py-4">
                   <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
                 </div>
               )}
             </div>
-            <Button variant="outline" onClick={() => setShowPayPal(false)} className="w-full">
-              {t('dialog.cancel') || 'Odustani'}
-            </Button>
-          </div>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowPayPal(false)} 
+              className="w-full"
+            >
+            {t('dialog.cancel') || 'Cancel'}
+          </Button>
+        </div>
         )}
+        
         <PaymentHistory />
       </div>
     );
@@ -240,55 +253,43 @@ export const RemoveAdsButton = () => {
   return (
     <div className="bg-card rounded-xl p-4 border border-border">
       <div className="flex items-center gap-2 mb-3">
-        <Star className="w-5 h-5 text-primary" />
+        <Ban className="w-5 h-5 text-primary" />
         <h2 className="text-lg font-semibold text-foreground">
-          {t('removeAds.title') || 'Premium verzija'}
+          {t('removeAds.title') || 'Remove Ads'}
         </h2>
       </div>
-      <p className="text-sm text-muted-foreground mb-4">
-        {t('removeAds.description') || 'Otključaj napredne značajke s godišnjom pretplatom.'}
+      <p className="text-sm text-muted-foreground mb-3">
+        {t('removeAds.description') || 'Enjoy an ad-free experience with an annual subscription.'}
       </p>
-
-      {/* Feature list */}
-      <ul className="space-y-1.5 mb-4">
-        {[
-          t('monthly.investment') || 'Investicije',
-          t('monthly.savings') || 'Štednja',
-          t('limits.title') || 'Limiti rashoda',
-          t('accounts.transfer') || 'Prijenos između računa',
-          'Pregled po mjesecima',
-        ].map((feature) => (
-          <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Check className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-            {feature}
-          </li>
-        ))}
-      </ul>
-
+      
       {!showPayPal ? (
-        <Button
-          onClick={() => setShowPayPal(true)}
-          className="w-full gap-2 bg-primary text-primary-foreground"
+        <Button 
+          onClick={() => setShowPayPal(true)} 
+          className="w-full gap-2 bg-success text-success-foreground hover:bg-success/90"
           disabled={isPurchasing}
         >
           <CreditCard className="w-4 h-4" />
-          {t('removeAds.buyButton') || `Otključaj Premium - €${PRICE}/god`}
+          {t('removeAds.buyButton') || `Remove Ads - €${PRICE}/year`}
         </Button>
       ) : (
         <div className="space-y-3">
-          <div id={`paypal-button-container-${PLAN_ID}`} className="min-h-[50px]">
+          <div id="paypal-button-container" className="min-h-[50px]">
             {!paypalLoaded && (
               <div className="flex items-center justify-center py-4">
                 <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
               </div>
             )}
           </div>
-          <Button variant="outline" onClick={() => setShowPayPal(false)} className="w-full">
-            {t('dialog.cancel') || 'Odustani'}
-          </Button>
-        </div>
+          <Button 
+            variant="outline" 
+            onClick={() => setShowPayPal(false)} 
+            className="w-full"
+          >
+          {t('dialog.cancel') || 'Cancel'}
+        </Button>
+      </div>
       )}
-
+      
       <PaymentHistory />
     </div>
   );

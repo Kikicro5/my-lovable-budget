@@ -121,64 +121,40 @@ export const useAdFreePurchase = () => {
 
   useEffect(() => {
     checkPurchaseStatus();
-
-    // Listen for purchase events from other hook instances
-    const handler = () => checkPurchaseStatus();
-    window.addEventListener('ad-free-purchased', handler);
-    return () => window.removeEventListener('ad-free-purchased', handler);
   }, [checkPurchaseStatus]);
 
-  const verifyAndSavePurchase = async (subscriptionId: string): Promise<boolean> => {
+  const verifyAndSavePurchase = async (orderId: string): Promise<boolean> => {
     setIsPurchasing(true);
     try {
+      // Get signed device token
       const deviceToken = await getDeviceToken();
       
       if (!deviceToken) {
-        console.error('Could not get device token for subscription verification');
+        console.error('Could not get device token for purchase verification');
         return false;
       }
 
-      // Retry logic: PayPal subscription may not be ACTIVE immediately after approval
-      const maxRetries = 3;
-      for (let attempt = 0; attempt < maxRetries; attempt++) {
-        if (attempt > 0) {
-          // Wait before retrying (2s, 4s)
-          await new Promise(resolve => setTimeout(resolve, attempt * 2000));
-        }
+      const { data, error } = await supabase.functions.invoke('verify-paypal-payment', {
+        body: { orderId, deviceToken },
+      });
 
-        const { data, error } = await supabase.functions.invoke('verify-paypal-payment', {
-          body: { subscriptionId, deviceToken },
-        });
-
-        if (error) {
-          console.error(`Verification attempt ${attempt + 1} error:`, error);
-          continue;
-        }
-
-        if (data?.success) {
-          setIsAdFree(true);
-          const newExpDate = new Date();
-          newExpDate.setFullYear(newExpDate.getFullYear() + 1);
-          setExpiresAt(newExpDate);
-          // Notify all other hook instances to re-check
-          window.dispatchEvent(new Event('ad-free-purchased'));
-          return true;
-        }
-
-        // If subscription status is not yet active, retry
-        if (data?.error?.includes('not active')) {
-          console.log(`Subscription not yet active, retry ${attempt + 1}/${maxRetries}`);
-          continue;
-        }
-
-        // Other error, don't retry
-        console.error('Verification failed:', data);
+      if (error) {
+        console.error('Verification error:', error);
         return false;
+      }
+
+      if (data?.success) {
+        setIsAdFree(true);
+        // Set expiration to 1 year from now
+        const newExpDate = new Date();
+        newExpDate.setFullYear(newExpDate.getFullYear() + 1);
+        setExpiresAt(newExpDate);
+        return true;
       }
 
       return false;
     } catch (err) {
-      console.error('Error verifying subscription:', err);
+      console.error('Error verifying purchase:', err);
       return false;
     } finally {
       setIsPurchasing(false);

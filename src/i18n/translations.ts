@@ -288,19 +288,18 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Ova radnja će trajno obrisati sve vaše transakcije, račune, kategorije i postavke. Ova radnja se ne može poništiti.',
     'reset.success': 'Aplikacija je resetirana',
 
-    // Premium
-    'removeAds.title': 'Premium verzija',
-    'removeAds.description': 'Otključaj napredne značajke s godišnjom pretplatom.',
-    'removeAds.buyButton': 'Otključaj Premium - €6,99/god',
-    'removeAds.purchased': 'Premium verzija aktivna',
-    'removeAds.thankYou': 'Hvala na kupnji! Uživaj u svim Premium značajkama.',
-    'removeAds.success': 'Premium je uspješno aktiviran! Hvala na kupnji.',
+    // Remove Ads
+    'removeAds.title': 'Ukloni reklame',
+    'removeAds.description': 'Uživaj u iskustvu bez reklama s godišnjom pretplatom.',
+    'removeAds.buyButton': 'Ukloni reklame - €2,99/god',
+    'removeAds.purchased': 'Verzija bez reklama',
+    'removeAds.thankYou': 'Hvala na kupnji! Koristiš verziju bez reklama.',
+    'removeAds.success': 'Reklame su uspješno uklonjene! Hvala na kupnji.',
     'removeAds.error': 'Verifikacija plaćanja nije uspjela. Molimo kontaktirajte podršku.',
     'removeAds.cancelled': 'Plaćanje je otkazano.',
     'removeAds.expiresOn': 'Istječe',
     'removeAds.daysLeft': 'dana preostalo',
     'removeAds.renew': 'Obnovi pretplatu',
-    'removeAds.cancelSubscription': 'Otkaži pretplatu',
     'removeAds.daysShort': 'd',
     'removeAds.paymentHistory': 'Povijest plaćanja',
     'removeAds.validUntil': 'Vrijedi do',
@@ -374,7 +373,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Premium značajka',
-    'feature.locked.description': 'Otključaj godišnjom pretplatom za €6,99',
+    'feature.locked.description': 'Otključaj godišnjom pretplatom za €2.99',
     'feature.locked.unlock': 'Otključaj',
 
     // Legal
@@ -698,19 +697,18 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'This action will permanently delete all your transactions, accounts, categories and settings. This cannot be undone.',
     'reset.success': 'App has been reset',
 
-    // Premium
-    'removeAds.title': 'Premium Version',
-    'removeAds.description': 'Unlock advanced features with an annual subscription.',
-    'removeAds.buyButton': 'Unlock Premium - €6.99/year',
-    'removeAds.purchased': 'Premium Active',
-    'removeAds.thankYou': 'Thank you for your purchase! Enjoy all Premium features.',
-    'removeAds.success': 'Premium activated successfully! Thank you for your purchase.',
+    // Remove Ads
+    'removeAds.title': 'Remove Ads',
+    'removeAds.description': 'Enjoy an ad-free experience with an annual subscription.',
+    'removeAds.buyButton': 'Remove Ads - €2.99/year',
+    'removeAds.purchased': 'Ad-Free Version',
+    'removeAds.thankYou': 'Thank you for your purchase! You are using the ad-free version.',
+    'removeAds.success': 'Ads removed successfully! Thank you for your purchase.',
     'removeAds.error': 'Payment verification failed. Please contact support.',
     'removeAds.cancelled': 'Payment cancelled.',
     'removeAds.expiresOn': 'Expires on',
     'removeAds.daysLeft': 'days left',
     'removeAds.renew': 'Renew Subscription',
-    'removeAds.cancelSubscription': 'Cancel Subscription',
     'removeAds.daysShort': 'd',
     'removeAds.paymentHistory': 'Payment History',
     'removeAds.validUntil': 'Valid until',
@@ -784,7 +782,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Premium Feature',
-    'feature.locked.description': 'Unlock with an annual subscription for €6.99',
+    'feature.locked.description': 'Unlock with an annual subscription for €2.99',
     'feature.locked.unlock': 'Unlock',
 
     // Legal
@@ -1104,19 +1102,18 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Diese Aktion löscht dauerhaft alle Ihre Transaktionen, Konten, Kategorien und Einstellungen. Dies kann nicht rückgängig gemacht werden.',
     'reset.success': 'App wurde zurückgesetzt',
 
-    // Premium
-    'removeAds.title': 'Premium-Version',
-    'removeAds.description': 'Schalte erweiterte Funktionen mit einem Jahresabo frei.',
-    'removeAds.buyButton': 'Premium freischalten - €6,99/Jahr',
-    'removeAds.purchased': 'Premium aktiv',
-    'removeAds.thankYou': 'Vielen Dank für deinen Kauf! Genieße alle Premium-Funktionen.',
-    'removeAds.success': 'Premium erfolgreich aktiviert! Vielen Dank für deinen Kauf.',
+    // Remove Ads
+    'removeAds.title': 'Werbung entfernen',
+    'removeAds.description': 'Genieße ein werbefreies Erlebnis mit einem Jahresabo.',
+    'removeAds.buyButton': 'Werbung entfernen - €2,99/Jahr',
+    'removeAds.purchased': 'Werbefreie Version',
+    'removeAds.thankYou': 'Vielen Dank für deinen Kauf! Du nutzt die werbefreie Version.',
+    'removeAds.success': 'Werbung erfolgreich entfernt! Vielen Dank für deinen Kauf.',
     'removeAds.error': 'Zahlungsverifizierung fehlgeschlagen. Bitte kontaktiere den Support.',
     'removeAds.cancelled': 'Zahlung abgebrochen.',
     'removeAds.expiresOn': 'Läuft ab am',
     'removeAds.daysLeft': 'Tage übrig',
     'removeAds.renew': 'Abo verlängern',
-    'removeAds.cancelSubscription': 'Abo kündigen',
     'removeAds.daysShort': 'T',
     'removeAds.paymentHistory': 'Zahlungsverlauf',
     'removeAds.validUntil': 'Gültig bis',
@@ -1179,7 +1176,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Premium-Funktion',
-    'feature.locked.description': 'Mit einem Jahresabonnement für €6.99 freischalten',
+    'feature.locked.description': 'Mit einem Jahresabonnement für €2.99 freischalten',
     'feature.locked.unlock': 'Freischalten',
   },
 
@@ -1470,19 +1467,18 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Ta akcja trwale usunie wszystkie Twoje transakcje, konta, kategorie i ustawienia. Tej operacji nie można cofnąć.',
     'reset.success': 'Aplikacja została zresetowana',
 
-    // Premium
-    'removeAds.title': 'Wersja Premium',
-    'removeAds.description': 'Odblokuj zaawansowane funkcje z roczną subskrypcją.',
-    'removeAds.buyButton': 'Odblokuj Premium - €6,99/rok',
-    'removeAds.purchased': 'Premium aktywny',
-    'removeAds.thankYou': 'Dziękujemy za zakup! Ciesz się wszystkimi funkcjami Premium.',
-    'removeAds.success': 'Premium aktywowany! Dziękujemy za zakup.',
+    // Remove Ads
+    'removeAds.title': 'Usuń reklamy',
+    'removeAds.description': 'Ciesz się aplikacją bez reklam z roczną subskrypcją.',
+    'removeAds.buyButton': 'Usuń reklamy - €2,99/rok',
+    'removeAds.purchased': 'Wersja bez reklam',
+    'removeAds.thankYou': 'Dziękujemy za zakup! Korzystasz z wersji bez reklam.',
+    'removeAds.success': 'Reklamy zostały usunięte! Dziękujemy za zakup.',
     'removeAds.error': 'Weryfikacja płatności nie powiodła się. Skontaktuj się z pomocą techniczną.',
     'removeAds.cancelled': 'Płatność anulowana.',
     'removeAds.expiresOn': 'Wygasa',
     'removeAds.daysLeft': 'dni pozostało',
     'removeAds.renew': 'Odnów subskrypcję',
-    'removeAds.cancelSubscription': 'Anuluj subskrypcję',
     'removeAds.daysShort': 'd',
     'removeAds.paymentHistory': 'Historia płatności',
     'removeAds.validUntil': 'Ważne do',
@@ -1545,7 +1541,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Funkcja Premium',
-    'feature.locked.description': 'Odblokuj roczną subskrypcją za €6.99',
+    'feature.locked.description': 'Odblokuj roczną subskrypcją za €2.99',
     'feature.locked.unlock': 'Odblokuj',
   },
 
@@ -1836,19 +1832,18 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Esta acción eliminará permanentemente todas tus transacciones, cuentas, categorías y configuraciones. Esta acción no se puede deshacer.',
     'reset.success': 'La aplicación ha sido restablecida',
 
-    // Premium
-    'removeAds.title': 'Versión Premium',
-    'removeAds.description': 'Desbloquea funciones avanzadas con una suscripción anual.',
-    'removeAds.buyButton': 'Desbloquear Premium - €6,99/año',
-    'removeAds.purchased': 'Premium activo',
-    'removeAds.thankYou': '¡Gracias por tu compra! Disfruta de todas las funciones Premium.',
-    'removeAds.success': '¡Premium activado! Gracias por tu compra.',
+    // Remove Ads
+    'removeAds.title': 'Eliminar anuncios',
+    'removeAds.description': 'Disfruta de una experiencia sin anuncios con una suscripción anual.',
+    'removeAds.buyButton': 'Eliminar anuncios - €2,99/año',
+    'removeAds.purchased': 'Versión sin anuncios',
+    'removeAds.thankYou': '¡Gracias por tu compra! Estás usando la versión sin anuncios.',
+    'removeAds.success': '¡Anuncios eliminados con éxito! Gracias por tu compra.',
     'removeAds.error': 'La verificación del pago falló. Por favor contacta al soporte.',
     'removeAds.cancelled': 'Pago cancelado.',
     'removeAds.expiresOn': 'Expira el',
     'removeAds.daysLeft': 'días restantes',
     'removeAds.renew': 'Renovar suscripción',
-    'removeAds.cancelSubscription': 'Cancelar suscripción',
     'removeAds.daysShort': 'd',
     'removeAds.paymentHistory': 'Historial de pagos',
     'removeAds.validUntil': 'Válido hasta',
@@ -1911,7 +1906,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Función Premium',
-    'feature.locked.description': 'Desbloquea con una suscripción anual por €6.99',
+    'feature.locked.description': 'Desbloquea con una suscripción anual por €2.99',
     'feature.locked.unlock': 'Desbloquear',
   },
 
@@ -2202,19 +2197,18 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'Cette action supprimera définitivement toutes vos transactions, comptes, catégories et paramètres. Cette action est irréversible.',
     'reset.success': 'L\'application a été réinitialisée',
 
-    // Premium
-    'removeAds.title': 'Version Premium',
-    'removeAds.description': 'Débloquez les fonctionnalités avancées avec un abonnement annuel.',
-    'removeAds.buyButton': 'Débloquer Premium - €6,99/an',
-    'removeAds.purchased': 'Premium actif',
-    'removeAds.thankYou': 'Merci pour votre achat ! Profitez de toutes les fonctionnalités Premium.',
-    'removeAds.success': 'Premium activé ! Merci pour votre achat.',
+    // Remove Ads
+    'removeAds.title': 'Supprimer les publicités',
+    'removeAds.description': 'Profitez d\'une expérience sans publicités avec un abonnement annuel.',
+    'removeAds.buyButton': 'Supprimer les pubs - €2,99/an',
+    'removeAds.purchased': 'Version sans publicités',
+    'removeAds.thankYou': 'Merci pour votre achat! Vous utilisez la version sans publicités.',
+    'removeAds.success': 'Publicités supprimées avec succès! Merci pour votre achat.',
     'removeAds.error': 'La vérification du paiement a échoué. Veuillez contacter le support.',
     'removeAds.cancelled': 'Paiement annulé.',
     'removeAds.expiresOn': 'Expire le',
     'removeAds.daysLeft': 'jours restants',
     'removeAds.renew': 'Renouveler l\'abonnement',
-    'removeAds.cancelSubscription': 'Annuler l\'abonnement',
     'removeAds.daysShort': 'j',
     'removeAds.paymentHistory': 'Historique des paiements',
     'removeAds.validUntil': 'Valide jusqu\'au',
@@ -2277,7 +2271,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Fonctionnalité Premium',
-    'feature.locked.description': 'Débloquez avec un abonnement annuel pour €6.99',
+    'feature.locked.description': 'Débloquez avec un abonnement annuel pour €2.99',
     'feature.locked.unlock': 'Débloquer',
   },
 
@@ -2568,19 +2562,18 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': '此操作将永久删除您的所有交易、账户、类别和设置。此操作无法撤销。',
     'reset.success': '应用已重置',
 
-    // Premium
-    'removeAds.title': '高级版本',
-    'removeAds.description': '通过年度订阅解锁高级功能。',
-    'removeAds.buyButton': '解锁高级版 - €6.99/年',
-    'removeAds.purchased': '高级版已激活',
-    'removeAds.thankYou': '感谢您的购买！享受所有高级功能。',
-    'removeAds.success': '高级版已成功激活！感谢您的购买。',
+    // Remove Ads
+    'removeAds.title': '移除广告',
+    'removeAds.description': '通过年度订阅享受无广告体验。',
+    'removeAds.buyButton': '移除广告 - €2.99/年',
+    'removeAds.purchased': '无广告版本',
+    'removeAds.thankYou': '感谢您的购买！您正在使用无广告版本。',
+    'removeAds.success': '广告已成功移除！感谢您的购买。',
     'removeAds.error': '付款验证失败。请联系客服。',
     'removeAds.cancelled': '付款已取消。',
     'removeAds.expiresOn': '到期日期',
     'removeAds.daysLeft': '天剩余',
     'removeAds.renew': '续订',
-    'removeAds.cancelSubscription': '取消订阅',
     'removeAds.daysShort': '天',
     'removeAds.paymentHistory': '付款记录',
     'removeAds.validUntil': '有效期至',
@@ -2643,7 +2636,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': '高级功能',
-    'feature.locked.description': '以每年€6.99的年度订阅解锁',
+    'feature.locked.description': '以每年€2.99的年度订阅解锁',
     'feature.locked.unlock': '解锁',
   },
 
@@ -2934,19 +2927,18 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.warning': 'यह क्रिया आपके सभी लेनदेन, खाते, श्रेणियाँ और सेटिंग्स स्थायी रूप से हटा देगी। इसे पूर्ववत नहीं किया जा सकता।',
     'reset.success': 'ऐप रीसेट हो गया',
 
-    // Premium
-    'removeAds.title': 'प्रीमियम संस्करण',
-    'removeAds.description': 'वार्षिक सदस्यता के साथ उन्नत सुविधाएं अनलॉक करें।',
-    'removeAds.buyButton': 'प्रीमियम अनलॉक करें - €6.99/वर्ष',
-    'removeAds.purchased': 'प्रीमियम सक्रिय',
-    'removeAds.thankYou': 'खरीद के लिए धन्यवाद! सभी प्रीमियम सुविधाओं का आनंद लें।',
-    'removeAds.success': 'प्रीमियम सफलतापूर्वक सक्रिय! खरید के लिए धन्यवाद।',
+    // Remove Ads
+    'removeAds.title': 'विज्ञापन हटाएं',
+    'removeAds.description': 'वार्षिक सदस्यता के साथ विज्ञापन-मुक्त अनुभव का आनंद लें।',
+    'removeAds.buyButton': 'विज्ञापन हटाएं - €2.99/वर्ष',
+    'removeAds.purchased': 'विज्ञापन-मुक्त संस्करण',
+    'removeAds.thankYou': 'आपकी खरीद के लिए धन्यवाद! आप विज्ञापन-मुक्त संस्करण का उपयोग कर रहे हैं।',
+    'removeAds.success': 'विज्ञापन सफलतापूर्वक हटा दिए गए! खरीद के लिए धन्यवाद।',
     'removeAds.error': 'भुगतान सत्यापन विफल। कृपया सहायता से संपर्क करें।',
     'removeAds.cancelled': 'भुगतान रद्द किया गया।',
     'removeAds.expiresOn': 'समाप्ति तिथि',
     'removeAds.daysLeft': 'दिन शेष',
     'removeAds.renew': 'सदस्यता नवीनीकृत करें',
-    'removeAds.cancelSubscription': 'सदस्यता रद्द करें',
     'removeAds.daysShort': 'दि',
     'removeAds.paymentHistory': 'भुगतान इतिहास',
     'removeAds.validUntil': 'मान्य तक',
@@ -3009,7 +3001,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'प्रीमियम सुविधा',
-    'feature.locked.description': '€6.99 की वार्षिक सदस्यता के साथ अनलॉक करें',
+    'feature.locked.description': '€2.99 की वार्षिक सदस्यता के साथ अनलॉक करें',
     'feature.locked.unlock': 'अनलॉक करें',
   },
 };
