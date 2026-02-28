@@ -32,9 +32,11 @@ export const FeatureLock = ({ children, featureName }: FeatureLockProps) => {
             <p className="font-semibold text-sm text-foreground">
               {featureName || t('feature.locked.title')}
             </p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {user ? t('feature.locked.description') : 'Prijavite se za pristup premium značajkama'}
-            </p>
+            {!user && (
+              <p className="text-xs text-muted-foreground mt-1">
+                Prijavite se za pristup premium značajkama
+              </p>
+            )}
           </div>
           <Button asChild size="sm" className="gap-2 bg-primary text-primary-foreground">
             <Link to="/options#premium">
