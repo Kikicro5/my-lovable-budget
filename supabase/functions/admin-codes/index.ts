@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+// Using Deno.serve instead of deprecated std serve
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -44,7 +44,7 @@ async function verifyAdmin(authHeader: string): Promise<{ userId: string } | nul
   return { userId };
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -60,7 +60,14 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const { action, ...params } = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(JSON.stringify({ error: 'Invalid request body' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    const { action, ...params } = body;
 
     switch (action) {
       case 'load-all': {
