@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { usePremiumContext } from '@/contexts/PremiumContext';
 import { setPremiumToastHelpers } from '@/utils/premiumToast';
 import { LoginRequiredDialog } from '@/components/LoginRequiredDialog';

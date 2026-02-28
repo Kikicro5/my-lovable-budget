@@ -3,7 +3,7 @@ import { Crown, Sparkles, Key, LogIn, ShoppingCart, Loader2, Check, TrendingUp, 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { usePremiumContext, getDeviceId } from '@/contexts/PremiumContext';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { toast } from 'sonner';
 import { useState, useEffect, useCallback } from 'react';

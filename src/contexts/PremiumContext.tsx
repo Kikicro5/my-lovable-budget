@@ -1,6 +1,6 @@
 import { createContext, useContext, ReactNode, useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 
 const STORAGE_KEY_DEVICE_ID = 'budget-card-device-id';
 
