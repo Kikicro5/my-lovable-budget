@@ -1,4 +1,4 @@
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Shield } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Shield, LogOut, LogIn } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 
@@ -9,7 +9,10 @@ import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
 import { RemoveAdsButton } from '@/components/RemoveAdsButton';
+import { ActivateCodeForm } from '@/components/ActivateCodeForm';
 import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
+import { useAuth } from '@/hooks/useAuth';
+import { Link } from 'react-router-dom';
 import {
   Select,
   SelectContent,
@@ -33,7 +36,7 @@ const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
   const { currency, setCurrency } = useCurrency();
-
+  const { user, isAdmin, signOut } = useAuth();
   const handleLanguageSelect = (code: Language) => {
     setLanguage(code);
   };
@@ -147,6 +150,43 @@ const Options = () => {
               </SelectContent>
             </Select>
           </div>
+
+          {/* Auth Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-3">
+              <LogIn className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">
+                {t('auth.account') || 'Account'}
+              </h2>
+            </div>
+            {user ? (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">{user.email}</p>
+                {isAdmin && (
+                  <Button asChild variant="outline" className="w-full gap-2">
+                    <Link to="/admin">
+                      <Shield className="w-4 h-4" />
+                      Admin Panel
+                    </Link>
+                  </Button>
+                )}
+                <Button variant="outline" className="w-full gap-2" onClick={signOut}>
+                  <LogOut className="w-4 h-4" />
+                  {t('auth.signOut') || 'Sign Out'}
+                </Button>
+              </div>
+            ) : (
+              <Button asChild className="w-full gap-2">
+                <Link to="/auth">
+                  <LogIn className="w-4 h-4" />
+                  {t('auth.login') || 'Login'}
+                </Link>
+              </Button>
+            )}
+          </div>
+
+          {/* Activate Code Section */}
+          <ActivateCodeForm />
 
           {/* Remove Ads Section */}
           <RemoveAdsButton />

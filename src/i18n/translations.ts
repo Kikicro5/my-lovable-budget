@@ -373,8 +373,33 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Feature Lock
     'feature.locked.title': 'Premium značajka',
-    'feature.locked.description': 'Otključaj godišnjom pretplatom za €2.99',
+    'feature.locked.description': 'Otključaj aktivacijskim kodom ili pretplatom',
     'feature.locked.unlock': 'Otključaj',
+
+    // Auth
+    'auth.login': 'Prijava',
+    'auth.signup': 'Registracija',
+    'auth.password': 'Lozinka',
+    'auth.subtitle': 'Prijavi se za pristup budžetu',
+    'auth.checkEmail': 'Provjeri email za verifikacijski link!',
+    'auth.enterEmail': 'Prvo unesi email',
+    'auth.resetSent': 'Email za reset lozinke poslan!',
+    'auth.forgotPassword': 'Zaboravljena lozinka?',
+    'auth.googleSignIn': 'Nastavi s Google',
+    'auth.or': 'ili',
+    'auth.account': 'Račun',
+    'auth.signOut': 'Odjava',
+    'auth.passwordMinLength': 'Lozinka mora imati najmanje 6 znakova',
+
+    // Activation Codes
+    'activate.title': 'Aktiviraj Premium',
+    'activate.description': 'Unesi aktivacijski kod za otključavanje premium značajki.',
+    'activate.code': 'Aktivacijski kod',
+    'activate.button': 'Aktiviraj',
+    'activate.success': 'Premium aktiviran!',
+    'activate.activated': 'Premium aktiviran!',
+    'activate.activatedDesc': 'Sve premium značajke su otključane.',
+    'activate.loginRequired': 'Prijavi se za aktivaciju premium koda.',
 
     // Legal
     'legal.title': 'Pravne informacije',
