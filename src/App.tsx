@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { PremiumProvider } from "@/contexts/PremiumContext";
 import InstallPrompt from "@/components/InstallPrompt";
 import { AdMobBanner } from "@/components/AdMobBanner";
 
@@ -15,6 +17,8 @@ import Accounts from "./pages/Accounts";
 import Archive from "./pages/Archive";
 import Options from "./pages/Options";
 import Install from "./pages/Install";
+import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,23 +28,29 @@ const App = () => (
     <ThemeProvider>
       <CurrencyProvider>
         <LanguageProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <AdMobBanner />
-            <BrowserRouter>
-              <InstallPrompt />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/monthly" element={<Monthly />} />
-                <Route path="/accounts" element={<Accounts />} />
-                <Route path="/archive" element={<Archive />} />
-                <Route path="/options" element={<Options />} />
-                <Route path="/install" element={<Install />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
+          <AuthProvider>
+            <PremiumProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <AdMobBanner />
+                <BrowserRouter>
+                  <InstallPrompt />
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/monthly" element={<Monthly />} />
+                    <Route path="/accounts" element={<Accounts />} />
+                    <Route path="/archive" element={<Archive />} />
+                    <Route path="/options" element={<Options />} />
+                    <Route path="/install" element={<Install />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </TooltipProvider>
+            </PremiumProvider>
+          </AuthProvider>
         </LanguageProvider>
       </CurrencyProvider>
     </ThemeProvider>
