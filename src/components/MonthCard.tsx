@@ -56,7 +56,6 @@ export const MonthCard = ({
             onClick={isRecurringActive ? onApplyRecurring : undefined}
           >
             <Repeat className="w-3 h-3" />
-            {t('recurring.apply')}
           </Badge>
           <ReminderIndicator
             reminders={activeReminders}
