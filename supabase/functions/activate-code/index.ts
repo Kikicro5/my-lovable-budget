@@ -24,20 +24,21 @@ serve(async (req) => {
     });
 
     const token = authHeader.replace('Bearer ', '');
-    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims) {
+    const adminClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+    const { data: { user }, error: userError } = await adminClient.auth.getUser(token);
+    if (userError || !user) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const userId = claimsData.claims.sub;
-    const email = claimsData.claims.email as string;
+    const userId = user.id;
+    const email = user.email as string;
 
     const { code, deviceId } = await req.json();
     if (!code || !deviceId) {
       return new Response(JSON.stringify({ error: 'Missing code or deviceId' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const adminClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+    // adminClient already created above
 
     // Find the code
     const { data: codeData, error: codeError } = await adminClient
