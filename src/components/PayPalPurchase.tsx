@@ -33,18 +33,25 @@ const durationLabel = (days: number): string => {
 let cachedConfig: { clientId: string; prices: PriceTier[] } | null = null;
 let configPromise: Promise<typeof cachedConfig> | null = null;
 
-const fetchConfigOnce = async () => {
+const fetchConfigOnce = async (): Promise<typeof cachedConfig> => {
   if (cachedConfig) return cachedConfig;
   if (!configPromise) {
-    configPromise = supabase.functions.invoke('paypal-checkout', {
-      body: { action: 'get-config' },
-    }).then(({ data, error }) => {
-      if (!error && data) {
-        cachedConfig = { clientId: data.clientId, prices: data.prices || [] };
-        return cachedConfig;
+    configPromise = (async () => {
+      for (let i = 0; i < 3; i++) {
+        try {
+          const { data, error } = await supabase.functions.invoke('paypal-checkout', {
+            body: { action: 'get-config' },
+          });
+          if (!error && data) {
+            cachedConfig = { clientId: data.clientId, prices: data.prices || [] };
+            return cachedConfig;
+          }
+        } catch { /* retry */ }
+        if (i < 2) await new Promise(r => setTimeout(r, 1000 * (i + 1)));
       }
+      configPromise = null; // allow retry on next call
       return null;
-    }).catch(() => null);
+    })();
   }
   return configPromise;
 };

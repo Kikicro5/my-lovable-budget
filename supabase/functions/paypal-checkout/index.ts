@@ -52,7 +52,12 @@ Deno.serve(async (req) => {
     new Response(JSON.stringify(data), { status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   try {
-    const body = await req.json();
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      return json({ error: 'Invalid request body' }, 400);
+    }
     const { action } = body;
 
     // ── get-config: return PayPal client ID + prices (no auth needed) ──
