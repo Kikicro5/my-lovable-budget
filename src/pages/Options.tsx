@@ -8,7 +8,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
-import { RemoveAdsButton } from '@/components/RemoveAdsButton';
+
 import { ActivateCodeForm } from '@/components/ActivateCodeForm';
 import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
 import {
@@ -153,8 +153,6 @@ const Options = () => {
           {/* Activate Code Section */}
           <ActivateCodeForm />
 
-          {/* Remove Ads Section */}
-          <RemoveAdsButton />
 
           {/* App Guide Section */}
           <AppGuide />
