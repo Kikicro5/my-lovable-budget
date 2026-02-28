@@ -1,16 +1,25 @@
+import { useState, lazy, Suspense } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Loader2, Shield, ArrowLeft, Key, Users, DollarSign } from 'lucide-react';
-import AdminCodes from '@/components/admin/AdminCodes';
-import AdminUsers from '@/components/admin/AdminUsers';
-import AdminPricing from '@/components/admin/AdminPricing';
+
+const AdminCodes = lazy(() => import('@/components/admin/AdminCodes'));
+const AdminUsers = lazy(() => import('@/components/admin/AdminUsers'));
+const AdminPricing = lazy(() => import('@/components/admin/AdminPricing'));
+
+const TabLoader = () => (
+  <div className="flex justify-center py-8">
+    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+  </div>
+);
 
 const Admin = () => {
   const { user, loading, isAdmin } = useAuth();
   const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState('codes');
 
   if (loading) {
     return (
@@ -50,7 +59,7 @@ const Admin = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="codes" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="codes" className="gap-1.5 text-xs">
               <Key className="w-3.5 h-3.5" />
@@ -67,13 +76,25 @@ const Admin = () => {
           </TabsList>
 
           <TabsContent value="codes">
-            <AdminCodes />
+            {activeTab === 'codes' && (
+              <Suspense fallback={<TabLoader />}>
+                <AdminCodes />
+              </Suspense>
+            )}
           </TabsContent>
           <TabsContent value="users">
-            <AdminUsers />
+            {activeTab === 'users' && (
+              <Suspense fallback={<TabLoader />}>
+                <AdminUsers />
+              </Suspense>
+            )}
           </TabsContent>
           <TabsContent value="pricing">
-            <AdminPricing />
+            {activeTab === 'pricing' && (
+              <Suspense fallback={<TabLoader />}>
+                <AdminPricing />
+              </Suspense>
+            )}
           </TabsContent>
         </Tabs>
       </div>

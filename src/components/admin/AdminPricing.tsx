@@ -28,8 +28,16 @@ const AdminPricing = () => {
 
   const fetchPrices = useCallback(async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('admin-users', { method: 'GET' });
-      if (error) throw error;
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const session = (await supabase.auth.getSession()).data.session;
+      const resp = await fetch(`${supabaseUrl}/functions/v1/admin-users?only=prices`, {
+        headers: {
+          'Authorization': `Bearer ${session?.access_token}`,
+          'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error);
       setPrices(data?.prices || []);
     } catch {
       toast.error(t('admin.failedLoad'));
