@@ -9,13 +9,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { ArrowLeft, Plus, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign } from 'lucide-react';
+import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap } from 'lucide-react';
+import jsPDF from 'jspdf';
 
 interface CodeData {
   id: string; code: string; max_uses: number; current_uses: number; expires_at: string; created_at: string; note: string | null;
 }
 interface UserData {
-  id: string; email: string; created_at: string; isPremium: boolean; premiumUntil: string | null; role: string;
+  id: string; email: string; created_at: string; last_sign_in_at: string | null; isPremium: boolean; premiumUntil: string | null; role: string;
 }
 interface PriceData {
   id: string; price: number; duration_days: number; currency: string;
@@ -28,10 +29,10 @@ const Admin = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [prices, setPrices] = useState<PriceData[]>([]);
   const [loading, setLoading] = useState(false);
-  const [newCode, setNewCode] = useState('');
+  const [codeCount, setCodeCount] = useState(10);
   const [maxUses, setMaxUses] = useState(1);
   const [expiresIn, setExpiresIn] = useState(365);
-  const [note, setNote] = useState('');
+  const [lastGenerated, setLastGenerated] = useState<CodeData[]>([]);
 
   useEffect(() => {
     if (!authLoading && !isAdmin) navigate('/');
@@ -57,17 +58,38 @@ const Admin = () => {
     try { const data = await adminCall('get-prices'); setPrices(data.prices || []); } catch (e: any) { toast.error(e.message); }
   };
 
-  const handleCreateCode = async () => {
-    if (!newCode.trim()) return;
+  const handleGenerateCodes = async () => {
     setLoading(true);
     try {
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + expiresIn);
-      await adminCall('create-code', { code: newCode.trim(), maxUses, expiresAt: expiresAt.toISOString(), note: note || null });
-      toast.success('Kod kreiran');
-      setNewCode(''); setNote(''); setMaxUses(1);
+      const data = await adminCall('generate-codes', { count: codeCount, maxUses, expiresAt: expiresAt.toISOString() });
+      const generated = data.codes || [];
+      setLastGenerated(generated);
+      toast.success(`${generated.length} kodova generirano`);
       loadCodes();
     } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
+  };
+
+  const handleDownloadPDF = () => {
+    const codesToExport = lastGenerated.length > 0 ? lastGenerated : codes;
+    if (!codesToExport.length) { toast.error('Nema kodova za preuzimanje'); return; }
+
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text('Premium aktivacijski kodovi', 14, 20);
+    doc.setFontSize(9);
+    doc.text(`Generirano: ${new Date().toLocaleDateString('hr')}`, 14, 28);
+    
+    doc.setFontSize(10);
+    let y = 40;
+    codesToExport.forEach((c, i) => {
+      if (y > 275) { doc.addPage(); y = 20; }
+      doc.text(`${i + 1}. ${c.code}   (max: ${c.max_uses}, ističe: ${new Date(c.expires_at).toLocaleDateString('hr')})`, 14, y);
+      y += 7;
+    });
+
+    doc.save('aktivacijski-kodovi.pdf');
   };
 
   const handleDeleteCode = async (codeId: string) => {
@@ -85,14 +107,6 @@ const Admin = () => {
 
   const handleUpdatePrices = async () => {
     try { await adminCall('update-prices', { prices }); toast.success('Cijene ažurirane'); } catch (e: any) { toast.error(e.message); }
-  };
-
-  const exportCSV = (data: any[], filename: string) => {
-    if (!data.length) return;
-    const keys = Object.keys(data[0]);
-    const csv = [keys.join(','), ...data.map(r => keys.map(k => `"${r[k] ?? ''}"`).join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
   };
 
   const getDurationLabel = (days: number) => {
@@ -121,12 +135,16 @@ const Admin = () => {
             <TabsTrigger value="prices" className="gap-1 text-xs"><DollarSign className="w-3 h-3" />Cijene</TabsTrigger>
           </TabsList>
 
+          {/* KODOVI TAB */}
           <TabsContent value="codes" className="space-y-4 mt-4">
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-base">Novi kod</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-base">Generiraj kodove</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                <Input placeholder="Kod (npr. PREMIUM2024)" value={newCode} onChange={(e) => setNewCode(e.target.value.toUpperCase())} />
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="text-xs text-muted-foreground">Broj kodova</label>
+                    <Input type="number" min={1} max={100} value={codeCount} onChange={(e) => setCodeCount(parseInt(e.target.value) || 1)} />
+                  </div>
                   <div>
                     <label className="text-xs text-muted-foreground">Maks. korištenja</label>
                     <Input type="number" min={1} value={maxUses} onChange={(e) => setMaxUses(parseInt(e.target.value) || 1)} />
@@ -136,18 +154,19 @@ const Admin = () => {
                     <Input type="number" min={1} value={expiresIn} onChange={(e) => setExpiresIn(parseInt(e.target.value) || 365)} />
                   </div>
                 </div>
-                <Input placeholder="Napomena (opcionalno)" value={note} onChange={(e) => setNote(e.target.value)} />
-                <Button onClick={handleCreateCode} disabled={loading} className="w-full gap-2">
-                  <Plus className="w-4 h-4" />{loading ? '...' : 'Kreiraj kod'}
-                </Button>
+                <div className="flex gap-2">
+                  <Button onClick={handleGenerateCodes} disabled={loading} className="flex-1 gap-2">
+                    <Zap className="w-4 h-4" />{loading ? 'Generiranje...' : 'Generiraj'}
+                  </Button>
+                  <Button variant="outline" onClick={handleDownloadPDF} className="gap-2">
+                    <FileText className="w-4 h-4" />PDF
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
             <div className="flex justify-between items-center">
               <h3 className="font-semibold text-sm">Kodovi ({codes.length})</h3>
-              <Button variant="outline" size="sm" onClick={() => exportCSV(codes, 'kodovi.csv')} className="gap-1">
-                <Download className="w-3 h-3" />CSV
-              </Button>
             </div>
 
             <div className="rounded-md border overflow-x-auto">
@@ -163,77 +182,82 @@ const Admin = () => {
                 <TableBody>
                   {codes.map(c => (
                     <TableRow key={c.id}>
-                      <TableCell className="font-mono text-xs">{c.code}<br/><span className="text-muted-foreground">{c.note || ''}</span></TableCell>
+                      <TableCell className="font-mono text-xs">{c.code}</TableCell>
                       <TableCell>{c.current_uses}/{c.max_uses}</TableCell>
                       <TableCell className="text-xs">{new Date(c.expires_at).toLocaleDateString('hr')}</TableCell>
                       <TableCell><Button variant="ghost" size="icon" onClick={() => handleDeleteCode(c.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
                     </TableRow>
                   ))}
-                  {!codes.length && <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Učitaj kodove klikom na tab</TableCell></TableRow>}
+                  {!codes.length && <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nema kodova</TableCell></TableRow>}
                 </TableBody>
               </Table>
             </div>
           </TabsContent>
 
+          {/* KORISNICI TAB */}
           <TabsContent value="users" className="space-y-4 mt-4">
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-sm">Korisnici ({users.length})</h3>
-              <Button variant="outline" size="sm" onClick={() => exportCSV(users, 'korisnici.csv')} className="gap-1">
-                <Download className="w-3 h-3" />CSV
-              </Button>
-            </div>
+            <h3 className="font-semibold text-sm">Korisnici ({users.length})</h3>
             <div className="rounded-md border overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Email</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Akcije</TableHead>
+                    <TableHead>Registriran</TableHead>
+                    <TableHead>Zadnja prijava</TableHead>
+                    <TableHead className="text-right">Akcije</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {users.map(u => (
                     <TableRow key={u.id}>
-                      <TableCell className="text-xs">{u.email}<br/><span className="text-muted-foreground">{new Date(u.created_at).toLocaleDateString('hr')}</span></TableCell>
-                      <TableCell>
-                        {u.isPremium ? <Badge className="bg-primary/20 text-primary gap-1"><Crown className="w-3 h-3" />Premium</Badge> : <Badge variant="secondary">Free</Badge>}
-                        {u.role === 'admin' && <Badge variant="outline" className="ml-1">Admin</Badge>}
+                      <TableCell className="text-xs">
+                        <div className="flex items-center gap-2">
+                          {u.email}
+                          {u.isPremium && <Badge className="bg-primary/20 text-primary gap-1 ml-1"><Crown className="w-3 h-3" />Premium</Badge>}
+                          {u.role === 'admin' && <Badge variant="outline" className="ml-1">Admin</Badge>}
+                        </div>
                       </TableCell>
-                      <TableCell className="space-x-1">
+                      <TableCell className="text-xs">{new Date(u.created_at).toLocaleDateString('hr')}</TableCell>
+                      <TableCell className="text-xs">{u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleDateString('hr') : '—'}</TableCell>
+                      <TableCell className="text-right space-x-1">
                         {u.isPremium && <Button variant="ghost" size="icon" onClick={() => handleDeactivatePremium(u.id)} title="Deaktiviraj premium"><ShieldOff className="w-4 h-4" /></Button>}
-                        <Button variant="ghost" size="icon" onClick={() => handleDeleteUser(u.id)} title="Obriši"><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                        <Button variant="ghost" size="icon" onClick={() => handleDeleteUser(u.id)} title="Obriši račun"><Trash2 className="w-4 h-4 text-destructive" /></Button>
                       </TableCell>
                     </TableRow>
                   ))}
-                  {!users.length && <TableRow><TableCell colSpan={3} className="text-center text-muted-foreground">Učitaj korisnike klikom na tab</TableCell></TableRow>}
+                  {!users.length && <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nema korisnika</TableCell></TableRow>}
                 </TableBody>
               </Table>
             </div>
           </TabsContent>
 
+          {/* CIJENE TAB */}
           <TabsContent value="prices" className="space-y-4 mt-4">
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-base">Premium cijene</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-base">Cijena premium licenci</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 {prices.map((p, i) => (
-                  <div key={p.id} className="flex items-center gap-3">
-                    <span className="text-sm font-medium w-24">{getDurationLabel(p.duration_days)}</span>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={p.price}
-                      onChange={(e) => {
-                        const updated = [...prices];
-                        updated[i] = { ...p, price: parseFloat(e.target.value) || 0 };
-                        setPrices(updated);
-                      }}
-                      className="w-24"
-                    />
-                    <span className="text-sm text-muted-foreground">{p.currency}</span>
-                  </div>
+                  <Card key={p.id} className="border">
+                    <CardContent className="p-4">
+                      <label className="text-sm font-medium text-foreground block mb-2">{getDurationLabel(p.duration_days)}</label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          step="0.01"
+                          value={p.price}
+                          onChange={(e) => {
+                            const updated = [...prices];
+                            updated[i] = { ...p, price: parseFloat(e.target.value) || 0 };
+                            setPrices(updated);
+                          }}
+                        />
+                        <span className="text-sm text-muted-foreground font-medium">{p.currency}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
-                {prices.length > 0 && <Button onClick={handleUpdatePrices} className="w-full">Spremi cijene</Button>}
-                {!prices.length && <p className="text-center text-muted-foreground text-sm">Učitaj cijene klikom na tab</p>}
+                {prices.length > 0 && <Button onClick={handleUpdatePrices} className="w-full">Spremi</Button>}
+                {!prices.length && <p className="text-center text-muted-foreground text-sm">Nema cijena</p>}
               </CardContent>
             </Card>
           </TabsContent>
