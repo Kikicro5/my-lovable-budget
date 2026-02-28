@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { usePremiumStatus } from '@/hooks/usePremiumStatus';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,6 +23,7 @@ const getDeviceId = (): string => {
 
 export const ActivateCodeForm = () => {
   const { user } = useAuth();
+  const { isPremium, isLoading: premiumLoading, daysRemaining } = usePremiumStatus();
   const { t } = useLanguage();
   const [code, setCode] = useState('');
   const [isActivating, setIsActivating] = useState(false);
@@ -72,7 +74,7 @@ export const ActivateCodeForm = () => {
     }
   };
 
-  if (activated) {
+  if (activated || (isPremium && !premiumLoading)) {
     return (
       <div className="bg-card rounded-xl p-4 border border-primary/30">
         <div className="flex items-center gap-2 text-primary">
@@ -80,7 +82,9 @@ export const ActivateCodeForm = () => {
           <h2 className="text-lg font-semibold">{t('activate.activated') || 'Premium Activated!'}</h2>
         </div>
         <p className="text-sm text-muted-foreground mt-2">
-          {t('activate.activatedDesc') || 'All premium features are now unlocked.'}
+          {daysRemaining != null
+            ? `${t('activate.activatedDesc') || 'All premium features are now unlocked.'} (${daysRemaining} ${t('premium.daysLeft') || 'days left'})`
+            : t('activate.activatedDesc') || 'All premium features are now unlocked.'}
         </p>
       </div>
     );
