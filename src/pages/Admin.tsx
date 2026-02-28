@@ -73,8 +73,8 @@ const Admin = () => {
       const data = await adminCall('generate-codes', { count: codeCount, maxUses, expiresAt: expiresAt.toISOString() });
       const generated = data.codes || [];
       setLastGenerated(generated);
+      setCodes(prev => [...generated, ...prev]);
       toast.success(`${generated.length} kodova generirano`);
-      loadAll();
     } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
   };
 
