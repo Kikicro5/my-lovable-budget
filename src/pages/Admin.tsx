@@ -97,12 +97,13 @@ const Admin = () => {
   };
 
   const handleDeleteCode = async (codeId: string) => {
+    if (!confirm('Obrisati kod?')) return;
     setCodes(prev => prev.filter(c => c.id !== codeId));
     try { await adminCall('delete-code', { codeId }); toast.success('Kod obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Obrisati korisnika?')) return;
+    if (!confirm('Obrisati korisnika? Ova radnja je nepovratna.')) return;
     setUsers(prev => prev.filter(u => u.id !== userId));
     try { await adminCall('delete-user', { userId }); toast.success('Korisnik obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
