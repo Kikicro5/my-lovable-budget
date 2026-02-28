@@ -202,11 +202,15 @@ export const PayPalPurchase = () => {
                 : 'border-border bg-card hover:border-primary/50'
             }`}
           >
-            {tier.duration_days >= 365 && (
+            {tier.duration_days >= 365 ? (
               <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
-                Najbolja
+                -30%
               </Badge>
-            )}
+            ) : tier.duration_days >= 90 ? (
+              <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-accent text-accent-foreground">
+                -15%
+              </Badge>
+            ) : null}
             <p className="text-xs text-muted-foreground">{durationLabel(tier.duration_days)}</p>
             <p className="text-lg font-bold text-foreground mt-1">
               {tier.price.toFixed(2)}€
