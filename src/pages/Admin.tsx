@@ -30,6 +30,7 @@ const Admin = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [prices, setPrices] = useState<PriceData[]>([]);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [codeCount, setCodeCount] = useState(10);
   const [maxUses, setMaxUses] = useState(1);
   const [expiresPeriod, setExpiresPeriod] = useState('365');
@@ -37,7 +38,7 @@ const Admin = () => {
 
   useEffect(() => {
     if (!authLoading && !isAdmin) navigate('/');
-    if (!authLoading && isAdmin) loadCodes();
+    if (!authLoading && isAdmin) loadAll();
   }, [isAdmin, authLoading, navigate]);
 
   const adminCall = async (action: string, params: Record<string, any> = {}) => {
@@ -48,16 +49,17 @@ const Admin = () => {
     return data;
   };
 
-  const loadCodes = async () => {
-    try { const data = await adminCall('list-codes'); setCodes(data.codes || []); } catch (e: any) { toast.error(e.message); }
-  };
-
-  const loadUsers = async () => {
-    try { const data = await adminCall('list-users'); setUsers(data.users || []); } catch (e: any) { toast.error(e.message); }
-  };
-
-  const loadPrices = async () => {
-    try { const data = await adminCall('get-prices'); setPrices(data.prices || []); } catch (e: any) { toast.error(e.message); }
+  const loadAll = async () => {
+    try {
+      const data = await adminCall('load-all');
+      setCodes(data.codes || []);
+      setUsers(data.users || []);
+      setPrices(data.prices || []);
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setInitialLoading(false);
+    }
   };
 
   const handleGenerateCodes = async () => {
@@ -69,7 +71,7 @@ const Admin = () => {
       const generated = data.codes || [];
       setLastGenerated(generated);
       toast.success(`${generated.length} kodova generirano`);
-      loadCodes();
+      loadAll();
     } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
   };
 
@@ -95,16 +97,16 @@ const Admin = () => {
   };
 
   const handleDeleteCode = async (codeId: string) => {
-    try { await adminCall('delete-code', { codeId }); toast.success('Kod obrisan'); loadCodes(); } catch (e: any) { toast.error(e.message); }
+    try { await adminCall('delete-code', { codeId }); toast.success('Kod obrisan'); loadAll(); } catch (e: any) { toast.error(e.message); }
   };
 
   const handleDeleteUser = async (userId: string) => {
     if (!confirm('Obrisati korisnika?')) return;
-    try { await adminCall('delete-user', { userId }); toast.success('Korisnik obrisan'); loadUsers(); } catch (e: any) { toast.error(e.message); }
+    try { await adminCall('delete-user', { userId }); toast.success('Korisnik obrisan'); loadAll(); } catch (e: any) { toast.error(e.message); }
   };
 
   const handleDeactivatePremium = async (userId: string) => {
-    try { await adminCall('deactivate-premium', { userId }); toast.success('Premium deaktiviran'); loadUsers(); } catch (e: any) { toast.error(e.message); }
+    try { await adminCall('deactivate-premium', { userId }); toast.success('Premium deaktiviran'); loadAll(); } catch (e: any) { toast.error(e.message); }
   };
 
   const handleUpdatePrices = async () => {
@@ -117,7 +119,7 @@ const Admin = () => {
     return '12 mjeseci';
   };
 
-  if (authLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><p>Učitavanje...</p></div>;
+  if (authLoading || initialLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><p>Učitavanje...</p></div>;
   if (!isAdmin) return null;
 
   return (
@@ -130,7 +132,7 @@ const Admin = () => {
           <h1 className="text-xl font-bold text-foreground">Admin Panel</h1>
         </div>
 
-        <Tabs defaultValue="codes" onValueChange={(v) => { if (v === 'codes') loadCodes(); else if (v === 'users') loadUsers(); else if (v === 'prices') loadPrices(); }}>
+        <Tabs defaultValue="codes">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="codes" className="gap-1 text-xs"><Key className="w-3 h-3" />Kodovi</TabsTrigger>
             <TabsTrigger value="users" className="gap-1 text-xs"><Users className="w-3 h-3" />Korisnici</TabsTrigger>
