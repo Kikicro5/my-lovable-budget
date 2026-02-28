@@ -407,6 +407,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'activate.activated': 'Premium aktiviran!',
     'activate.activatedDesc': 'Sve premium značajke su otključane.',
     'activate.loginRequired': 'Prijavi se za aktivaciju premium koda.',
+    'premium.daysLeft': 'dana preostalo',
 
     // Legal
     'legal.title': 'Pravne informacije',
@@ -958,6 +959,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'admin.lastLogin': 'Last login',
     'admin.registered': 'Registered',
     'admin.never': 'Never',
+    'premium.daysLeft': 'days left',
   },
 
   de: {
@@ -1377,6 +1379,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'admin.lastLogin': 'Letzte Anmeldung',
     'admin.registered': 'Registriert',
     'admin.never': 'Nie',
+    'premium.daysLeft': 'Tage verbleibend',
   },
 
   pl: {
@@ -1800,6 +1803,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'admin.lastLogin': 'Ostatnie logowanie',
     'admin.registered': 'Zarejestrowany',
     'admin.never': 'Nigdy',
+    'premium.daysLeft': 'dni pozostało',
   },
 
   es: {
@@ -2223,6 +2227,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'admin.lastLogin': 'Último acceso',
     'admin.registered': 'Registrado',
     'admin.never': 'Nunca',
+    'premium.daysLeft': 'días restantes',
   },
 
   fr: {
@@ -2646,6 +2651,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'admin.lastLogin': 'Dernière connexion',
     'admin.registered': 'Inscrit',
     'admin.never': 'Jamais',
+    'premium.daysLeft': 'jours restants',
   },
 
   zh: {
@@ -3069,6 +3075,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'admin.lastLogin': '最后登录',
     'admin.registered': '注册日期',
     'admin.never': '从未',
+    'premium.daysLeft': '天剩余',
   },
 
   hi: {
@@ -3492,6 +3499,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'admin.lastLogin': 'अंतिम लॉगिन',
     'admin.registered': 'पंजीकृत',
     'admin.never': 'कभी नहीं',
+    'premium.daysLeft': 'दिन शेष',
   },
 };
 
