@@ -15,6 +15,9 @@ import Accounts from "./pages/Accounts";
 import Archive from "./pages/Archive";
 import Options from "./pages/Options";
 import Install from "./pages/Install";
+import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +40,9 @@ const App = () => (
                 <Route path="/archive" element={<Archive />} />
                 <Route path="/options" element={<Options />} />
                 <Route path="/install" element={<Install />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
