@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
@@ -42,6 +42,13 @@ const Options = () => {
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
+  const premiumRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (window.location.hash === '#premium' && premiumRef.current) {
+      setTimeout(() => premiumRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+    }
+  }, []);
 
   const handleActivateCode = async () => {
     if (!code.trim()) return;
@@ -173,7 +180,7 @@ const Options = () => {
 
 
           {/* Premium Section */}
-          <div className="bg-card rounded-xl p-4 border border-primary/20">
+          <div ref={premiumRef} id="premium" className="bg-card rounded-xl p-4 border border-primary/20">
             <div className="flex items-center gap-2 mb-3">
               <Crown className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">Premium</h2>
