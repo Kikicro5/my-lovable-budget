@@ -12,11 +12,11 @@ interface FeatureLockProps {
 
 export const FeatureLock = ({ children, featureName }: FeatureLockProps) => {
   const { isPremium, isLoading } = usePremium();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { t } = useLanguage();
 
   if (isLoading) return <>{children}</>;
-  if (isPremium) return <>{children}</>;
+  if (isPremium || isAdmin) return <>{children}</>;
 
   return (
     <div className="relative">
