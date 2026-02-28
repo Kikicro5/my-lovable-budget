@@ -9,7 +9,7 @@ import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
 
-import { ActivateCodeForm } from '@/components/ActivateCodeForm';
+import { PremiumBanner } from '@/components/PremiumBanner';
 import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
 import {
   Select,
@@ -147,8 +147,8 @@ const Options = () => {
             </div>
           </div>
 
-          {/* Activate Code Section */}
-          <ActivateCodeForm />
+          {/* Premium Banner */}
+          <PremiumBanner />
 
           {/* App Guide Section */}
           <AppGuide />
