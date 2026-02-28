@@ -11,6 +11,15 @@ const adminClient = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 );
 
+function generateRandomCode(length = 8): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 async function verifyAdmin(authHeader: string): Promise<{ userId: string } | null> {
   const supabase = createClient(
     Deno.env.get('SUPABASE_URL')!,
@@ -24,7 +33,6 @@ async function verifyAdmin(authHeader: string): Promise<{ userId: string } | nul
 
   const userId = data.claims.sub;
   
-  // Check admin role
   const { data: roleData } = await adminClient
     .from('user_roles')
     .select('role')
@@ -64,6 +72,31 @@ serve(async (req) => {
         return new Response(JSON.stringify({ codes: data }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
 
+      case 'generate-codes': {
+        const { count, maxUses, expiresAt } = params;
+        const num = Math.min(Math.max(parseInt(count) || 1, 1), 100);
+        const codes: any[] = [];
+        
+        for (let i = 0; i < num; i++) {
+          const code = generateRandomCode(10);
+          const { data, error } = await adminClient
+            .from('activation_codes')
+            .insert({
+              code,
+              max_uses: maxUses || 1,
+              expires_at: expiresAt,
+              created_by: admin.userId,
+              note: null,
+            })
+            .select()
+            .single();
+          if (error) throw error;
+          codes.push(data);
+        }
+        
+        return new Response(JSON.stringify({ codes }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+
       case 'create-code': {
         const { code, maxUses, expiresAt, note } = params;
         const { data, error } = await adminClient
@@ -83,7 +116,6 @@ serve(async (req) => {
 
       case 'delete-code': {
         const { codeId } = params;
-        // First delete related activations
         await adminClient.from('activations').delete().eq('code_id', codeId);
         const { error } = await adminClient.from('activation_codes').delete().eq('id', codeId);
         if (error) throw error;
@@ -94,7 +126,6 @@ serve(async (req) => {
         const { data: { users }, error } = await adminClient.auth.admin.listUsers({ perPage: 1000 });
         if (error) throw error;
         
-        // Get activations for all users
         const { data: activations } = await adminClient
           .from('activations')
           .select('user_id, valid_until, email')
@@ -113,6 +144,7 @@ serve(async (req) => {
             id: u.id,
             email: u.email,
             created_at: u.created_at,
+            last_sign_in_at: u.last_sign_in_at || null,
             isPremium: !!activeActivation,
             premiumUntil: activeActivation?.valid_until || null,
             role: userRole?.role || 'user',
@@ -131,7 +163,6 @@ serve(async (req) => {
 
       case 'deactivate-premium': {
         const { userId } = params;
-        // Set all activations to expired
         await adminClient
           .from('activations')
           .update({ valid_until: new Date().toISOString() })
@@ -149,7 +180,7 @@ serve(async (req) => {
       }
 
       case 'update-prices': {
-        const { prices } = params; // Array of { id, price, duration_days, currency }
+        const { prices } = params;
         for (const p of prices) {
           await adminClient
             .from('premium_settings')
