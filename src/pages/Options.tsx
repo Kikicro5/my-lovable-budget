@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -206,41 +207,67 @@ const Options = () => {
               </div>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm text-muted-foreground">
-                  {user
-                    ? 'Unesite aktivacijski kod za otključavanje premium značajki.'
-                    : 'Imate premium kod? Prijavite se i aktivirajte ga za pristup svim značajkama.'}
-                </p>
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <Key className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="PREMIUM2024"
-                      value={code}
-                      onChange={(e) => setCode(e.target.value.toUpperCase())}
-                      className="pl-10 font-mono"
-                    />
-                  </div>
-                  {user ? (
-                    <Button onClick={handleActivateCode} disabled={activating || !code.trim()}>
-                      {activating ? '...' : 'Aktiviraj'}
-                    </Button>
-                  ) : (
-                    <Button onClick={() => window.location.href = '/auth'}>
-                      Prijava
-                    </Button>
-                  )}
-                </div>
-                {!user && (
-                  <p className="text-xs text-muted-foreground">
-                    Potrebna je prijava za aktivaciju koda.
-                  </p>
-                )}
+                {user ? (
+                  <>
+                    <p className="text-sm text-muted-foreground">
+                      Unesite aktivacijski kod za otključavanje premium značajki.
+                    </p>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Key className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="PREMIUM2024"
+                          value={code}
+                          onChange={(e) => setCode(e.target.value.toUpperCase())}
+                          className="pl-10 font-mono"
+                        />
+                      </div>
+                      <Button onClick={handleActivateCode} disabled={activating || !code.trim()}>
+                        {activating ? '...' : 'Aktiviraj'}
+                      </Button>
+                    </div>
 
-                {/* PayPal Purchase */}
-                <div className="border-t border-border pt-3 mt-3">
-                  <PayPalPurchase />
-                </div>
+                    {/* PayPal Purchase - only for logged in users */}
+                    <div className="border-t border-border pt-3 mt-3">
+                      <PayPalPurchase />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Price preview for non-logged-in users */}
+                    <p className="text-sm text-muted-foreground">
+                      Otključajte sve premium značajke aplikacije.
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="relative p-3 rounded-lg border border-border bg-muted/30 text-center">
+                        <p className="text-xs text-muted-foreground">1 mjesec</p>
+                        <p className="text-lg font-bold text-foreground mt-1">1.99€</p>
+                      </div>
+                      <div className="relative p-3 rounded-lg border border-border bg-muted/30 text-center">
+                        <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-accent text-accent-foreground">
+                          -15%
+                        </Badge>
+                        <p className="text-xs text-muted-foreground">3 mjeseca</p>
+                        <p className="text-lg font-bold text-foreground mt-1">5.99€</p>
+                      </div>
+                      <div className="relative p-3 rounded-lg border border-primary/30 bg-primary/5 text-center">
+                        <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
+                          -30%
+                        </Badge>
+                        <p className="text-xs text-muted-foreground">12 mjeseci</p>
+                        <p className="text-lg font-bold text-foreground mt-1">16.99€</p>
+                        <p className="text-[10px] text-primary mt-0.5">1.42€/mj</p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground text-center">
+                      Za kupovinu ili aktivaciju koda potrebna je prijava.
+                    </p>
+                    <Button onClick={() => window.location.href = '/auth'} className="w-full gap-2">
+                      <Crown className="w-4 h-4" />
+                      Prijava / Registracija
+                    </Button>
+                  </>
+                )}
               </div>
             )}
           </div>
