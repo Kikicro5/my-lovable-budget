@@ -15,7 +15,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Wallet, AlertCircle, LogIn, LogOut, Repeat } from 'lucide-react';
+import { Wallet, AlertCircle, LogIn, LogOut, Repeat, Shield } from 'lucide-react';
 
 
 const Index = () => {
@@ -37,7 +37,7 @@ const Index = () => {
     removeReminder,
   } = useBudget();
   const { t } = useLanguage();
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const { triggerAfterAction } = useInterstitialAd();
   const currentBudget = getCurrentBudget();
   
@@ -88,6 +88,11 @@ const Index = () => {
               {t(`month.${currentMonth}`)} {currentYear}
             </h1>
             <div className="flex items-center gap-1 ml-auto">
+              {isAdmin && (
+                <Link to="/admin" className="p-1.5 rounded-md text-primary hover:bg-primary/10 transition-colors" title="Admin">
+                  <Shield className="w-4 h-4" />
+                </Link>
+              )}
               <button
                 className={`p-1.5 rounded-md transition-colors ${
                   hasRecurring && !recurringApplied
