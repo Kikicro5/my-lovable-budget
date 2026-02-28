@@ -23,21 +23,18 @@ function generateRandomCode(length = 8): string {
 async function verifyAdmin(authHeader: string): Promise<{ userId: string } | null> {
   const token = authHeader.replace('Bearer ', '');
   
-  // Use adminClient to verify claims - avoids creating a new client
-  const { data, error } = await adminClient.auth.getClaims(token);
-  if (error || !data?.claims) return null;
+  const { data: { user }, error } = await adminClient.auth.getUser(token);
+  if (error || !user) return null;
 
-  const userId = data.claims.sub;
-  
   const { data: roleData } = await adminClient
     .from('user_roles')
     .select('role')
-    .eq('user_id', userId)
+    .eq('user_id', user.id)
     .eq('role', 'admin')
     .maybeSingle();
 
   if (!roleData) return null;
-  return { userId };
+  return { userId: user.id };
 }
 
 Deno.serve(async (req) => {
@@ -51,7 +48,9 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
+    console.log('Verifying admin...');
     const admin = await verifyAdmin(authHeader);
+    console.log('Admin verified:', !!admin);
     if (!admin) {
       return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
@@ -67,6 +66,7 @@ Deno.serve(async (req) => {
 
     switch (action) {
       case 'load-all': {
+        console.log('Loading all data...');
         // Parallel fetch of all admin data
         const [codesRes, usersRes, pricesRes] = await Promise.all([
           adminClient.from('activation_codes').select('*').order('created_at', { ascending: false }),
