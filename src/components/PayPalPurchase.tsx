@@ -1,11 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { ShoppingCart, Loader2, CheckCircle } from 'lucide-react';
+import { Loader2, CheckCircle } from 'lucide-react';
 
 interface PriceTier {
   id: string;
@@ -36,10 +35,12 @@ export const PayPalPurchase = () => {
   const [prices, setPrices] = useState<PriceTier[]>([]);
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
   const [paypalClientId, setPaypalClientId] = useState<string | null>(null);
-  const [sdkLoaded, setSdkLoaded] = useState(false);
+  const [sdkReady, setSdkReady] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [loading, setLoading] = useState(true);
+  const paypalRef = useRef<HTMLDivElement>(null);
+  const buttonsRendered = useRef(false);
 
   // Fetch config
   useEffect(() => {
@@ -66,86 +67,83 @@ export const PayPalPurchase = () => {
 
   // Load PayPal SDK
   useEffect(() => {
-    if (!paypalClientId || sdkLoaded) return;
-    if (document.getElementById('paypal-sdk')) {
-      setSdkLoaded(true);
+    if (!paypalClientId) return;
+    if ((window as any).paypal) {
+      setSdkReady(true);
       return;
     }
+    if (document.getElementById('paypal-sdk')) return;
 
     const script = document.createElement('script');
     script.id = 'paypal-sdk';
     script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR&intent=capture`;
-    script.onload = () => setSdkLoaded(true);
+    script.onload = () => setSdkReady(true);
     script.onerror = () => console.error('Failed to load PayPal SDK');
     document.body.appendChild(script);
-  }, [paypalClientId, sdkLoaded]);
+  }, [paypalClientId]);
 
-  // Render PayPal buttons
-  const paypalContainerRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (!node || !sdkLoaded || !selectedTier || !user || processing) return;
+  // Render PayPal buttons when SDK is ready and tier selected
+  useEffect(() => {
+    if (!sdkReady || !selectedTier || !user || processing || purchaseComplete) return;
+    if (!paypalRef.current) return;
 
-      // Clear previous buttons
-      node.innerHTML = '';
+    const paypal = (window as any).paypal;
+    if (!paypal) return;
 
-      const paypal = (window as any).paypal;
-      if (!paypal) return;
+    // Clear previous buttons
+    paypalRef.current.innerHTML = '';
+    buttonsRendered.current = true;
 
-      paypal.Buttons({
-        style: {
-          layout: 'vertical',
-          color: 'gold',
-          shape: 'rect',
-          label: 'pay',
-          height: 40,
-        },
-        createOrder: async () => {
-          try {
-            const { data, error } = await supabase.functions.invoke('paypal-checkout', {
-              body: { action: 'create-order', priceId: selectedTier },
-            });
-            if (error || !data?.orderId) throw new Error('Failed to create order');
-            return data.orderId;
-          } catch (err) {
-            console.error('Create order error:', err);
-            toast.error('Greška pri kreiranju narudžbe');
-            throw err;
+    paypal.Buttons({
+      style: {
+        layout: 'vertical',
+        color: 'gold',
+        shape: 'rect',
+        label: 'pay',
+        height: 40,
+      },
+      createOrder: async () => {
+        const { data, error } = await supabase.functions.invoke('paypal-checkout', {
+          body: { action: 'create-order', priceId: selectedTier },
+        });
+        if (error || !data?.orderId) {
+          toast.error('Greška pri kreiranju narudžbe');
+          throw new Error('Failed to create order');
+        }
+        return data.orderId;
+      },
+      onApprove: async (data: any) => {
+        setProcessing(true);
+        try {
+          const { data: captureData, error } = await supabase.functions.invoke('paypal-checkout', {
+            body: {
+              action: 'capture-order',
+              orderId: data.orderID,
+              priceId: selectedTier,
+              deviceId: getDeviceId(),
+            },
+          });
+
+          if (error || !captureData?.success) {
+            throw new Error(captureData?.error || 'Capture failed');
           }
-        },
-        onApprove: async (data: any) => {
-          setProcessing(true);
-          try {
-            const { data: captureData, error } = await supabase.functions.invoke('paypal-checkout', {
-              body: {
-                action: 'capture-order',
-                orderId: data.orderID,
-                priceId: selectedTier,
-                deviceId: getDeviceId(),
-              },
-            });
 
-            if (error || !captureData?.success) {
-              throw new Error(captureData?.error || 'Capture failed');
-            }
-
-            setPurchaseComplete(true);
-            toast.success(`Premium aktiviran na ${captureData.durationDays} dana!`);
-            await checkStatus();
-          } catch (err) {
-            console.error('Capture error:', err);
-            toast.error('Greška pri obradi plaćanja. Kontaktirajte podršku.');
-          } finally {
-            setProcessing(false);
-          }
-        },
-        onError: (err: any) => {
-          console.error('PayPal error:', err);
-          toast.error('Greška s PayPal-om');
-        },
-      }).render(node);
-    },
-    [sdkLoaded, selectedTier, user, processing, checkStatus],
-  );
+          setPurchaseComplete(true);
+          toast.success(`Premium aktiviran na ${captureData.durationDays} dana!`);
+          await checkStatus();
+        } catch (err) {
+          console.error('Capture error:', err);
+          toast.error('Greška pri obradi plaćanja. Kontaktirajte podršku.');
+        } finally {
+          setProcessing(false);
+        }
+      },
+      onError: (err: any) => {
+        console.error('PayPal error:', err);
+        toast.error('Greška s PayPal-om');
+      },
+    }).render(paypalRef.current);
+  }, [sdkReady, selectedTier, user, processing, purchaseComplete, checkStatus]);
 
   if (loading) {
     return (
@@ -216,7 +214,7 @@ export const PayPalPurchase = () => {
           <span className="text-sm text-muted-foreground">Obrada plaćanja...</span>
         </div>
       ) : (
-        <div ref={paypalContainerRef} className="min-h-[45px]" />
+        <div ref={paypalRef} className="min-h-[45px]" />
       )}
     </div>
   );
