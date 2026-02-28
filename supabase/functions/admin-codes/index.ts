@@ -21,14 +21,10 @@ function generateRandomCode(length = 8): string {
 }
 
 async function verifyAdmin(authHeader: string): Promise<{ userId: string } | null> {
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_ANON_KEY')!,
-    { global: { headers: { Authorization: authHeader } } }
-  );
-
   const token = authHeader.replace('Bearer ', '');
-  const { data, error } = await supabase.auth.getClaims(token);
+  
+  // Use adminClient to verify claims - avoids creating a new client
+  const { data, error } = await adminClient.auth.getClaims(token);
   if (error || !data?.claims) return null;
 
   const userId = data.claims.sub;
