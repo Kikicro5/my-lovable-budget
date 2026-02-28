@@ -1,13 +1,16 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { verifyDeviceToken } from "../_shared/device-verification.ts";
+import { verifyDeviceToken, generateHmacSignature } from "../_shared/device-verification.ts";
 
-const getCorsHeaders = (origin: string | null) => ({
-  'Access-Control-Allow-Origin': origin || '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Credentials': 'true',
-});
+// CORS headers - allow all origins for mobile app compatibility
+const getCorsHeaders = (origin: string | null) => {
+  return {
+    'Access-Control-Allow-Origin': origin || '*',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+};
 
 const PAYPAL_API_URL = Deno.env.get('PAYPAL_MODE') === 'live' 
   ? 'https://api-m.paypal.com' 
@@ -16,12 +19,19 @@ const PAYPAL_API_URL = Deno.env.get('PAYPAL_MODE') === 'live'
 async function getPayPalAccessToken(): Promise<string> {
   const clientId = Deno.env.get('PAYPAL_CLIENT_ID');
   const secret = Deno.env.get('PAYPAL_SECRET');
-  if (!clientId || !secret) throw new Error('PayPal credentials not configured');
+  
+  if (!clientId || !secret) {
+    throw new Error('PayPal credentials not configured');
+  }
 
   const auth = btoa(`${clientId}:${secret}`);
+  
   const response = await fetch(`${PAYPAL_API_URL}/v1/oauth2/token`, {
     method: 'POST',
-    headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Authorization': `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
     body: 'grant_type=client_credentials',
   });
 
@@ -38,7 +48,10 @@ async function getPayPalAccessToken(): Promise<string> {
 async function capturePayPalOrder(orderId: string, accessToken: string) {
   const response = await fetch(`${PAYPAL_API_URL}/v2/checkout/orders/${orderId}/capture`, {
     method: 'POST',
-    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
   });
 
   if (!response.ok) {
@@ -51,61 +64,70 @@ async function capturePayPalOrder(orderId: string, accessToken: string) {
 }
 
 serve(async (req) => {
+  // Get origin for dynamic CORS headers
   const origin = req.headers.get('origin');
   const corsHeaders = getCorsHeaders(origin);
 
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const { orderId, deviceToken, tierId } = await req.json();
+    const { orderId, deviceToken } = await req.json();
 
-    if (!orderId || typeof orderId !== 'string' || orderId.length < 10 || orderId.length > 100 || !/^[A-Z0-9-]+$/i.test(orderId)) {
-      return new Response(JSON.stringify({ error: 'Invalid order ID format' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    // Validate orderId format
+    if (!orderId || typeof orderId !== 'string' || 
+        orderId.length < 10 || orderId.length > 100 ||
+        !/^[A-Z0-9-]+$/i.test(orderId)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid order ID format' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
+    // Verify the signed device token
     const signingSecret = Deno.env.get('DEVICE_SIGNING_SECRET') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const { valid, deviceId } = await verifyDeviceToken(deviceToken, signingSecret);
 
     if (!valid || !deviceId) {
-      return new Response(JSON.stringify({ error: 'Invalid device token' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      return new Response(
+        JSON.stringify({ error: 'Invalid device token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    console.log('Processing payment verification');
 
-    // Look up tier duration from premium_settings
-    let durationDays = 365; // default fallback
-    if (tierId) {
-      const { data: tier } = await supabase
-        .from('premium_settings')
-        .select('duration_days, price')
-        .eq('id', tierId)
-        .single();
-
-      if (tier) {
-        durationDays = tier.duration_days;
-      }
-    }
-
-    console.log('Processing payment verification, tier:', tierId, 'duration:', durationDays);
-
+    // Get PayPal access token
     const accessToken = await getPayPalAccessToken();
+
+    // Capture the order
     const captureResult = await capturePayPalOrder(orderId, accessToken);
+    
+    // Payment captured successfully - don't log sensitive details
 
     if (captureResult.status !== 'COMPLETED') {
-      return new Response(JSON.stringify({ error: 'Payment not completed', status: captureResult.status }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      return new Response(
+        JSON.stringify({ error: 'Payment not completed', status: captureResult.status }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
+    // Extract payment details
     const capture = captureResult.purchase_units?.[0]?.payments?.captures?.[0];
     const amount = parseFloat(capture?.amount?.value || '0');
     const currency = capture?.amount?.currency_code || 'EUR';
 
-    // Calculate expiration based on tier duration
+    // Calculate expiration date (1 year from now)
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + durationDays);
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+    // Save purchase to database using service role
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const { data, error } = await supabase
       .from('ad_free_purchases')
@@ -122,15 +144,25 @@ serve(async (req) => {
 
     if (error) {
       console.error('Database error:', error);
-      return new Response(JSON.stringify({ error: 'Failed to save purchase' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      return new Response(
+        JSON.stringify({ error: 'Failed to save purchase' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    console.log('Purchase saved successfully, expires:', expiresAt.toISOString());
+    console.log('Purchase saved successfully');
 
-    return new Response(JSON.stringify({ success: true, purchase: data }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({ success: true, purchase: data }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+
   } catch (error) {
     console.error('Error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(JSON.stringify({ error: errorMessage }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({ error: errorMessage }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   }
 });

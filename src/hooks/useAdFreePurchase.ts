@@ -123,9 +123,10 @@ export const useAdFreePurchase = () => {
     checkPurchaseStatus();
   }, [checkPurchaseStatus]);
 
-  const verifyAndSavePurchase = async (orderId: string, tierId?: string): Promise<boolean> => {
+  const verifyAndSavePurchase = async (orderId: string): Promise<boolean> => {
     setIsPurchasing(true);
     try {
+      // Get signed device token
       const deviceToken = await getDeviceToken();
       
       if (!deviceToken) {
@@ -134,7 +135,7 @@ export const useAdFreePurchase = () => {
       }
 
       const { data, error } = await supabase.functions.invoke('verify-paypal-payment', {
-        body: { orderId, deviceToken, tierId },
+        body: { orderId, deviceToken },
       });
 
       if (error) {
@@ -144,9 +145,10 @@ export const useAdFreePurchase = () => {
 
       if (data?.success) {
         setIsAdFree(true);
-        if (data.purchase?.expires_at) {
-          setExpiresAt(new Date(data.purchase.expires_at));
-        }
+        // Set expiration to 1 year from now
+        const newExpDate = new Date();
+        newExpDate.setFullYear(newExpDate.getFullYear() + 1);
+        setExpiresAt(newExpDate);
         return true;
       }
 

@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
 import { useInterstitialAd } from '@/hooks/useInterstitialAd';
-import { useAuth } from '@/contexts/AuthContext';
 import { BottomNavigation } from '@/components/BottomNavigation';
-import { ReminderIndicator } from '@/components/ReminderIndicator';
+import { MonthCard } from '@/components/MonthCard';
 import { BalanceCard } from '@/components/BalanceCard';
 import { QuickExpenseForm } from '@/components/QuickExpenseForm';
 import { TransactionList } from '@/components/TransactionList';
@@ -15,7 +14,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Wallet, AlertCircle, LogIn, LogOut, Repeat, Shield } from 'lucide-react';
+import { Wallet, AlertCircle } from 'lucide-react';
 
 
 const Index = () => {
@@ -37,7 +36,6 @@ const Index = () => {
     removeReminder,
   } = useBudget();
   const { t } = useLanguage();
-  const { user, isAdmin, signOut } = useAuth();
   const { triggerAfterAction } = useInterstitialAd();
   const currentBudget = getCurrentBudget();
   
@@ -81,51 +79,17 @@ const Index = () => {
     <div className="min-h-screen bg-background pb-24 pt-4">
       <div className="max-w-lg mx-auto px-4">
         <div className="space-y-4">
-          {/* Single header row: logo, month, recurring, reminders, auth */}
-          <div className="flex items-center gap-2 bg-card rounded-xl p-2.5 shadow-card animate-slide-up">
-            <img src="/icon-192.png?v=2" alt="Budget Card" className="h-8 w-8 rounded-lg shrink-0" loading="lazy" />
-            <h1 className="text-sm font-display font-bold text-foreground whitespace-nowrap">
-              {t(`month.${currentMonth}`)} {currentYear}
-            </h1>
-            <div className="flex items-center gap-1 ml-auto">
-              {isAdmin && (
-                <Link to="/admin" className="p-1.5 rounded-md text-primary hover:bg-primary/10 transition-colors" title="Admin">
-                  <Shield className="w-4 h-4" />
-                </Link>
-              )}
-              <button
-                className={`p-1.5 rounded-md transition-colors ${
-                  hasRecurring && !recurringApplied
-                    ? 'cursor-pointer hover:bg-secondary/80 text-foreground' 
-                    : 'opacity-40 cursor-default text-muted-foreground'
-                }`}
-                onClick={hasRecurring && !recurringApplied ? handleApplyRecurring : undefined}
-                title={t('recurring.apply')}
-              >
-                <Repeat className="w-4 h-4" />
-              </button>
-              <ReminderIndicator
-                reminders={activeReminders}
-                accounts={state.accounts || []}
-                onComplete={completeReminder || (() => {})}
-                onRemove={removeReminder || (() => {})}
-                disabled={activeReminders.length === 0}
-              />
-              {user ? (
-                <button
-                  onClick={signOut}
-                  className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-colors"
-                  title={user.email || ''}
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
-              ) : (
-                <Link to="/auth" className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-colors">
-                  <LogIn className="w-4 h-4" />
-                </Link>
-              )}
-            </div>
-          </div>
+          <MonthCard 
+            month={currentMonth} 
+            year={currentYear}
+            activeReminders={activeReminders}
+            accounts={state.accounts || []}
+            onCompleteReminder={completeReminder}
+            onRemoveReminder={removeReminder}
+            hasRecurring={hasRecurring}
+            recurringApplied={recurringApplied}
+            onApplyRecurring={handleApplyRecurring}
+          />
           
           <BalanceCard 
             balance={state.accounts?.reduce((sum, acc) => sum + acc.balance, 0) || 0} 

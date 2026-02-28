@@ -2,24 +2,3 @@ project_id = "jmddsdknafhjqbgxagot"
 
 [functions.verify-paypal-payment]
 verify_jwt = false
-
-[functions.verify-device-purchase]
-verify_jwt = false
-
-[functions.generate-device-token]
-verify_jwt = false
-
-[functions.activate-code]
-verify_jwt = false
-
-[functions.check-status]
-verify_jwt = false
-
-[functions.admin-codes]
-verify_jwt = false
-
-[functions.admin-users]
-verify_jwt = false
-
-[functions.paypal-checkout]
-verify_jwt = false

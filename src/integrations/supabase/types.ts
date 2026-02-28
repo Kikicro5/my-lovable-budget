@@ -14,77 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      activation_codes: {
-        Row: {
-          code: string
-          created_at: string
-          created_by: string | null
-          current_uses: number
-          expires_at: string
-          id: string
-          max_uses: number
-          note: string | null
-        }
-        Insert: {
-          code: string
-          created_at?: string
-          created_by?: string | null
-          current_uses?: number
-          expires_at: string
-          id?: string
-          max_uses?: number
-          note?: string | null
-        }
-        Update: {
-          code?: string
-          created_at?: string
-          created_by?: string | null
-          current_uses?: number
-          expires_at?: string
-          id?: string
-          max_uses?: number
-          note?: string | null
-        }
-        Relationships: []
-      }
-      activations: {
-        Row: {
-          code_id: string
-          created_at: string
-          device_id: string
-          email: string
-          id: string
-          user_id: string
-          valid_until: string
-        }
-        Insert: {
-          code_id: string
-          created_at?: string
-          device_id: string
-          email: string
-          id?: string
-          user_id: string
-          valid_until: string
-        }
-        Update: {
-          code_id?: string
-          created_at?: string
-          device_id?: string
-          email?: string
-          id?: string
-          user_id?: string
-          valid_until?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "activations_code_id_fkey"
-            columns: ["code_id"]
-            isOneToOne: false
-            referencedRelation: "activation_codes"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       ad_free_purchases: {
         Row: {
           amount: number
@@ -115,66 +44,15 @@ export type Database = {
         }
         Relationships: []
       }
-      premium_settings: {
-        Row: {
-          currency: string
-          duration_days: number
-          id: string
-          price: number
-          updated_at: string
-        }
-        Insert: {
-          currency?: string
-          duration_days?: number
-          id?: string
-          price?: number
-          updated_at?: string
-        }
-        Update: {
-          currency?: string
-          duration_days?: number
-          id?: string
-          price?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
-      app_role: "admin" | "user"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -301,8 +179,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      app_role: ["admin", "user"],
-    },
+    Enums: {},
   },
 } as const
