@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap } from 'lucide-react';
 import jsPDF from 'jspdf';
@@ -132,7 +133,10 @@ const Admin = () => {
     return '12 mjeseci';
   };
 
-  if (authLoading || initialLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><p>Učitavanje...</p></div>;
+  if (authLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><p>Učitavanje...</p></div>;
+  if (!isAdmin) return null;
+
+  const showSkeleton = initialLoading;
   if (!isAdmin) return null;
 
   return (
@@ -206,15 +210,26 @@ const Admin = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {codes.map(c => (
-                    <TableRow key={c.id}>
-                      <TableCell className="font-mono text-xs">{c.code}</TableCell>
-                      <TableCell>{c.current_uses}/{c.max_uses}</TableCell>
-                      <TableCell className="text-xs">{new Date(c.expires_at).toLocaleDateString('hr')}</TableCell>
-                      <TableCell><Button variant="ghost" size="icon" onClick={() => setDeleteDialog({ type: 'code', id: c.id, label: c.code })}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
+                  {showSkeleton ? Array.from({ length: 3 }).map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-10" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-8" /></TableCell>
                     </TableRow>
-                  ))}
-                  {!codes.length && <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nema kodova</TableCell></TableRow>}
+                  )) : (
+                    <>
+                      {codes.map(c => (
+                        <TableRow key={c.id}>
+                          <TableCell className="font-mono text-xs">{c.code}</TableCell>
+                          <TableCell>{c.current_uses}/{c.max_uses}</TableCell>
+                          <TableCell className="text-xs">{new Date(c.expires_at).toLocaleDateString('hr')}</TableCell>
+                          <TableCell><Button variant="ghost" size="icon" onClick={() => setDeleteDialog({ type: 'code', id: c.id, label: c.code })}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
+                        </TableRow>
+                      ))}
+                      {!codes.length && <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nema kodova</TableCell></TableRow>}
+                    </>
+                  )}
                 </TableBody>
               </Table>
             </div>
