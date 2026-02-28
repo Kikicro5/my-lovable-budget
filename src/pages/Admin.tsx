@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -34,11 +35,11 @@ interface ActivationCode {
 
 const Admin = () => {
   const { user, loading, isAdmin } = useAuth();
+  const { t } = useLanguage();
   const [codes, setCodes] = useState<ActivationCode[]>([]);
   const [isLoadingCodes, setIsLoadingCodes] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
 
-  // Form state
   const [maxUses, setMaxUses] = useState('1');
   const [expiresAt, setExpiresAt] = useState('');
   const [note, setNote] = useState('');
@@ -53,17 +54,16 @@ const Admin = () => {
       setCodes(data?.codes || []);
     } catch (err) {
       console.error('Failed to fetch codes:', err);
-      toast.error('Failed to load codes');
+      toast.error(t('admin.failedLoad'));
     } finally {
       setIsLoadingCodes(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (isAdmin) fetchCodes();
   }, [isAdmin, fetchCodes]);
 
-  // Set default expiration to 1 year from now
   useEffect(() => {
     const d = new Date();
     d.setFullYear(d.getFullYear() + 1);
@@ -84,9 +84,9 @@ const Admin = () => {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center space-y-4">
           <Shield className="w-12 h-12 text-destructive mx-auto" />
-          <h2 className="text-xl font-bold text-foreground">Access Denied</h2>
-          <p className="text-muted-foreground">You need admin privileges.</p>
-          <Button asChild><Link to="/">Go Home</Link></Button>
+          <h2 className="text-xl font-bold text-foreground">{t('admin.accessDenied')}</h2>
+          <p className="text-muted-foreground">{t('admin.noPrivileges')}</p>
+          <Button asChild><Link to="/">{t('admin.goHome')}</Link></Button>
         </div>
       </div>
     );
@@ -101,12 +101,12 @@ const Admin = () => {
         body: { maxUses, expiresAt, note: note.trim() || null, count },
       });
       if (error) throw error;
-      toast.success(`Created ${data?.codes?.length || 1} code(s)`);
+      toast.success(`${t('admin.created')} ${data?.codes?.length || 1}`);
       fetchCodes();
       setNote('');
       setCount('1');
     } catch (err) {
-      toast.error('Failed to create codes');
+      toast.error(t('admin.failedCreate'));
     } finally {
       setIsCreating(false);
     }
@@ -114,11 +114,11 @@ const Admin = () => {
 
   const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast.success('Code copied!');
+    toast.success(t('admin.codeCopied'));
   };
 
   const exportCSV = () => {
-    const rows = [['Code', 'Max Uses', 'Current Uses', 'Expires', 'Note', 'Created']];
+    const rows = [['Code', t('admin.maxUses'), t('admin.codeCount'), t('admin.expiresAt'), t('admin.note'), 'Created']];
     codes.forEach(c => {
       rows.push([
         c.code,
@@ -152,7 +152,7 @@ const Admin = () => {
           <div>
             <h1 className="text-2xl font-display font-bold text-foreground flex items-center gap-2">
               <Shield className="w-6 h-6 text-primary" />
-              Admin Panel
+              {t('admin.title')}
             </h1>
             <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
@@ -162,58 +162,30 @@ const Admin = () => {
         <div className="bg-card rounded-xl p-4 border border-border mb-4">
           <h2 className="text-lg font-semibold text-foreground flex items-center gap-2 mb-4">
             <Plus className="w-5 h-5 text-primary" />
-            Generate Activation Codes
+            {t('admin.generateCodes')}
           </h2>
           <form onSubmit={handleCreate} className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <Label htmlFor="maxUses" className="text-xs">Max Uses</Label>
-                <Input
-                  id="maxUses"
-                  type="number"
-                  min="1"
-                  max="10000"
-                  value={maxUses}
-                  onChange={e => setMaxUses(e.target.value)}
-                  required
-                />
+                <Label htmlFor="maxUses" className="text-xs">{t('admin.maxUses')}</Label>
+                <Input id="maxUses" type="number" min="1" max="10000" value={maxUses} onChange={e => setMaxUses(e.target.value)} required />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="count" className="text-xs">Number of Codes</Label>
-                <Input
-                  id="count"
-                  type="number"
-                  min="1"
-                  max="100"
-                  value={count}
-                  onChange={e => setCount(e.target.value)}
-                  required
-                />
+                <Label htmlFor="count" className="text-xs">{t('admin.codeCount')}</Label>
+                <Input id="count" type="number" min="1" max="100" value={count} onChange={e => setCount(e.target.value)} required />
               </div>
             </div>
             <div className="space-y-1">
-              <Label htmlFor="expiresAt" className="text-xs">Expires At</Label>
-              <Input
-                id="expiresAt"
-                type="date"
-                value={expiresAt}
-                onChange={e => setExpiresAt(e.target.value)}
-                required
-              />
+              <Label htmlFor="expiresAt" className="text-xs">{t('admin.expiresAt')}</Label>
+              <Input id="expiresAt" type="date" value={expiresAt} onChange={e => setExpiresAt(e.target.value)} required />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="note" className="text-xs">Note (optional)</Label>
-              <Input
-                id="note"
-                placeholder="e.g. Client XYZ batch"
-                value={note}
-                onChange={e => setNote(e.target.value)}
-                maxLength={200}
-              />
+              <Label htmlFor="note" className="text-xs">{t('admin.note')}</Label>
+              <Input id="note" placeholder={t('admin.notePlaceholder')} value={note} onChange={e => setNote(e.target.value)} maxLength={200} />
             </div>
             <Button type="submit" className="w-full gap-2" disabled={isCreating}>
               {isCreating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
-              Generate
+              {t('admin.generate')}
             </Button>
           </form>
         </div>
@@ -223,7 +195,7 @@ const Admin = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Hash className="w-5 h-5 text-primary" />
-              Codes ({codes.length})
+              {t('admin.codes')} ({codes.length})
             </h2>
             <Button variant="outline" size="sm" className="gap-1" onClick={exportCSV} disabled={codes.length === 0}>
               <Download className="w-3.5 h-3.5" />
@@ -236,7 +208,7 @@ const Admin = () => {
               <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
             </div>
           ) : codes.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">No codes yet. Generate some above.</p>
+            <p className="text-sm text-muted-foreground text-center py-8">{t('admin.noCodes')}</p>
           ) : (
             <div className="space-y-3">
               {codes.map(code => (
@@ -252,11 +224,11 @@ const Admin = () => {
                     </div>
                     <div className="flex gap-1.5">
                       {isExpired(code.expires_at) ? (
-                        <Badge variant="destructive" className="text-xs">Expired</Badge>
+                        <Badge variant="destructive" className="text-xs">{t('admin.expired')}</Badge>
                       ) : code.current_uses >= code.max_uses ? (
-                        <Badge variant="secondary" className="text-xs">Full</Badge>
+                        <Badge variant="secondary" className="text-xs">{t('admin.full')}</Badge>
                       ) : (
-                        <Badge className="text-xs bg-primary/10 text-primary border-0">Active</Badge>
+                        <Badge className="text-xs bg-primary/10 text-primary border-0">{t('admin.active')}</Badge>
                       )}
                     </div>
                   </div>
@@ -277,7 +249,7 @@ const Admin = () => {
                     <>
                       <Separator className="my-2" />
                       <div className="space-y-1">
-                        <p className="text-xs font-medium text-foreground">Activations:</p>
+                        <p className="text-xs font-medium text-foreground">{t('admin.activations')}</p>
                         {code.activations.map(a => (
                           <div key={a.id} className="text-xs text-muted-foreground flex justify-between bg-muted/50 rounded px-2 py-1">
                             <span>{a.email}</span>
