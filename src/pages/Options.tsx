@@ -1,6 +1,10 @@
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Shield } from 'lucide-react';
+import { useState } from 'react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { usePremium } from '@/contexts/PremiumContext';
+import { Input } from '@/components/ui/input';
 
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -33,6 +37,24 @@ const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
   const { currency, setCurrency } = useCurrency();
+  const { user } = useAuth();
+  const { isPremium, daysRemaining, activateCode } = usePremium();
+  const [code, setCode] = useState('');
+  const [activating, setActivating] = useState(false);
+  const [activated, setActivated] = useState(false);
+
+  const handleActivateCode = async () => {
+    if (!code.trim()) return;
+    setActivating(true);
+    const result = await activateCode(code.trim());
+    if (result.success) {
+      setActivated(true);
+      toast.success('Kod uspješno aktiviran!');
+    } else {
+      toast.error(result.error || 'Greška pri aktivaciji');
+    }
+    setActivating(false);
+  };
 
   const handleLanguageSelect = (code: Language) => {
     setLanguage(code);
@@ -149,6 +171,53 @@ const Options = () => {
             </div>
           </div>
 
+
+          {/* Premium Section */}
+          {user && (
+            <div className="bg-card rounded-xl p-4 border border-primary/20">
+              <div className="flex items-center gap-2 mb-3">
+                <Crown className="w-5 h-5 text-primary" />
+                <h2 className="text-lg font-semibold text-foreground">Premium</h2>
+              </div>
+              {isPremium ? (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
+                  <Crown className="w-5 h-5 text-primary" />
+                  <div>
+                    <p className="font-medium text-sm text-foreground">Premium aktivan</p>
+                    {daysRemaining !== null && (
+                      <p className="text-xs text-muted-foreground">{daysRemaining} dana preostalo</p>
+                    )}
+                  </div>
+                </div>
+              ) : activated ? (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
+                  <Check className="w-5 h-5 text-primary" />
+                  <div>
+                    <p className="font-medium text-sm text-foreground">Kod uspješno aktiviran!</p>
+                    <p className="text-xs text-muted-foreground">Premium je sada aktivan</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">Unesite aktivacijski kod za otključavanje premium značajki.</p>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Key className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="PREMIUM2024"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value.toUpperCase())}
+                        className="pl-10 font-mono"
+                      />
+                    </div>
+                    <Button onClick={handleActivateCode} disabled={activating || !code.trim()}>
+                      {activating ? '...' : 'Aktiviraj'}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* App Guide Section */}
           <AppGuide />
