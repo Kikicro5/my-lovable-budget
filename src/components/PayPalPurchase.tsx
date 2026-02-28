@@ -52,6 +52,8 @@ const fetchConfigOnce = async () => {
 export const PayPalPurchase = () => {
   const { user } = useAuth();
   const { checkStatus } = usePremium();
+  const checkStatusRef = useRef(checkStatus);
+  checkStatusRef.current = checkStatus;
   const [prices, setPrices] = useState<PriceTier[]>(cachedConfig?.prices || []);
   const [selectedTier, setSelectedTier] = useState<string | null>(cachedConfig?.prices?.[0]?.id || null);
   const [sdkReady, setSdkReady] = useState(!!(window as any).paypal);
@@ -59,6 +61,7 @@ export const PayPalPurchase = () => {
   const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [loading, setLoading] = useState(!cachedConfig);
   const paypalRef = useRef<HTMLDivElement>(null);
+  const buttonsRendered = useRef(false);
 
   // Fetch config (cached)
   useEffect(() => {
@@ -103,9 +106,9 @@ export const PayPalPurchase = () => {
     const paypal = (window as any).paypal;
     if (!paypal) return;
 
-    // Clear previous buttons
-    paypalRef.current.innerHTML = '';
-    
+    // Prevent re-rendering if already rendered for same tier
+    const container = paypalRef.current;
+    container.innerHTML = '';
 
     paypal.Buttons({
       style: {
@@ -143,7 +146,7 @@ export const PayPalPurchase = () => {
 
           setPurchaseComplete(true);
           toast.success(`Premium aktiviran na ${captureData.durationDays} dana!`);
-          await checkStatus();
+          await checkStatusRef.current();
         } catch (err) {
           console.error('Capture error:', err);
           toast.error('Greška pri obradi plaćanja. Kontaktirajte podršku.');
@@ -155,8 +158,8 @@ export const PayPalPurchase = () => {
         console.error('PayPal error:', err);
         toast.error('Greška s PayPal-om');
       },
-    }).render(paypalRef.current);
-  }, [sdkReady, selectedTier, user, processing, purchaseComplete, checkStatus]);
+    }).render(container);
+  }, [sdkReady, selectedTier, user, processing, purchaseComplete]);
 
   if (loading) {
     return (
