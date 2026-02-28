@@ -1,74 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Navigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
-import {
-  Loader2, Plus, Download, Copy, Key, Users, Calendar, Hash, Shield, ArrowLeft,
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Link } from 'react-router-dom';
-
-interface Activation {
-  id: string;
-  email: string;
-  device_id: string;
-  valid_until: string;
-  created_at: string;
-}
-
-interface ActivationCode {
-  id: string;
-  code: string;
-  max_uses: number;
-  current_uses: number;
-  expires_at: string;
-  created_at: string;
-  note: string | null;
-  activations: Activation[];
-}
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Loader2, Shield, ArrowLeft, Key, Users, DollarSign } from 'lucide-react';
+import AdminCodes from '@/components/admin/AdminCodes';
+import AdminUsers from '@/components/admin/AdminUsers';
+import AdminPricing from '@/components/admin/AdminPricing';
 
 const Admin = () => {
   const { user, loading, isAdmin } = useAuth();
   const { t } = useLanguage();
-  const [codes, setCodes] = useState<ActivationCode[]>([]);
-  const [isLoadingCodes, setIsLoadingCodes] = useState(true);
-  const [isCreating, setIsCreating] = useState(false);
-
-  const [maxUses, setMaxUses] = useState('1');
-  const [expiresAt, setExpiresAt] = useState('');
-  const [note, setNote] = useState('');
-  const [count, setCount] = useState('1');
-
-  const fetchCodes = useCallback(async () => {
-    try {
-      const { data, error } = await supabase.functions.invoke('admin-codes', {
-        method: 'GET',
-      });
-      if (error) throw error;
-      setCodes(data?.codes || []);
-    } catch (err) {
-      console.error('Failed to fetch codes:', err);
-      toast.error(t('admin.failedLoad'));
-    } finally {
-      setIsLoadingCodes(false);
-    }
-  }, [t]);
-
-  useEffect(() => {
-    if (isAdmin) fetchCodes();
-  }, [isAdmin, fetchCodes]);
-
-  useEffect(() => {
-    const d = new Date();
-    d.setFullYear(d.getFullYear() + 1);
-    setExpiresAt(d.toISOString().split('T')[0]);
-  }, []);
 
   if (loading) {
     return (
@@ -92,59 +34,9 @@ const Admin = () => {
     );
   }
 
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsCreating(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('admin-codes', {
-        method: 'POST',
-        body: { maxUses, expiresAt, note: note.trim() || null, count },
-      });
-      if (error) throw error;
-      toast.success(`${t('admin.created')} ${data?.codes?.length || 1}`);
-      fetchCodes();
-      setNote('');
-      setCount('1');
-    } catch (err) {
-      toast.error(t('admin.failedCreate'));
-    } finally {
-      setIsCreating(false);
-    }
-  };
-
-  const copyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    toast.success(t('admin.codeCopied'));
-  };
-
-  const exportCSV = () => {
-    const rows = [['Code', t('admin.maxUses'), t('admin.codeCount'), t('admin.expiresAt'), t('admin.note'), 'Created']];
-    codes.forEach(c => {
-      rows.push([
-        c.code,
-        String(c.max_uses),
-        String(c.current_uses),
-        new Date(c.expires_at).toLocaleDateString(),
-        c.note || '',
-        new Date(c.created_at).toLocaleDateString(),
-      ]);
-    });
-    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `activation-codes-${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const isExpired = (date: string) => new Date(date) < new Date();
-
   return (
     <div className="min-h-screen bg-background pb-8">
       <div className="max-w-2xl mx-auto p-4">
-        {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <Button variant="ghost" size="icon" asChild>
             <Link to="/"><ArrowLeft className="w-5 h-5" /></Link>
@@ -158,112 +50,32 @@ const Admin = () => {
           </div>
         </div>
 
-        {/* Create Codes */}
-        <div className="bg-card rounded-xl p-4 border border-border mb-4">
-          <h2 className="text-lg font-semibold text-foreground flex items-center gap-2 mb-4">
-            <Plus className="w-5 h-5 text-primary" />
-            {t('admin.generateCodes')}
-          </h2>
-          <form onSubmit={handleCreate} className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <Label htmlFor="maxUses" className="text-xs">{t('admin.maxUses')}</Label>
-                <Input id="maxUses" type="number" min="1" max="10000" value={maxUses} onChange={e => setMaxUses(e.target.value)} required />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="count" className="text-xs">{t('admin.codeCount')}</Label>
-                <Input id="count" type="number" min="1" max="100" value={count} onChange={e => setCount(e.target.value)} required />
-              </div>
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="expiresAt" className="text-xs">{t('admin.expiresAt')}</Label>
-              <Input id="expiresAt" type="date" value={expiresAt} onChange={e => setExpiresAt(e.target.value)} required />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="note" className="text-xs">{t('admin.note')}</Label>
-              <Input id="note" placeholder={t('admin.notePlaceholder')} value={note} onChange={e => setNote(e.target.value)} maxLength={200} />
-            </div>
-            <Button type="submit" className="w-full gap-2" disabled={isCreating}>
-              {isCreating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
-              {t('admin.generate')}
-            </Button>
-          </form>
-        </div>
+        <Tabs defaultValue="codes" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
+            <TabsTrigger value="codes" className="gap-1.5 text-xs">
+              <Key className="w-3.5 h-3.5" />
+              {t('admin.tabCodes')}
+            </TabsTrigger>
+            <TabsTrigger value="users" className="gap-1.5 text-xs">
+              <Users className="w-3.5 h-3.5" />
+              {t('admin.tabUsers')}
+            </TabsTrigger>
+            <TabsTrigger value="pricing" className="gap-1.5 text-xs">
+              <DollarSign className="w-3.5 h-3.5" />
+              {t('admin.tabPricing')}
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Codes List */}
-        <div className="bg-card rounded-xl p-4 border border-border">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Hash className="w-5 h-5 text-primary" />
-              {t('admin.codes')} ({codes.length})
-            </h2>
-            <Button variant="outline" size="sm" className="gap-1" onClick={exportCSV} disabled={codes.length === 0}>
-              <Download className="w-3.5 h-3.5" />
-              CSV
-            </Button>
-          </div>
-
-          {isLoadingCodes ? (
-            <div className="flex justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-            </div>
-          ) : codes.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">{t('admin.noCodes')}</p>
-          ) : (
-            <div className="space-y-3">
-              {codes.map(code => (
-                <div key={code.id} className="border border-border rounded-lg p-3 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <code className="text-sm font-mono bg-muted px-2 py-0.5 rounded font-semibold">
-                        {code.code}
-                      </code>
-                      <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => copyCode(code.code)}>
-                        <Copy className="w-3 h-3" />
-                      </Button>
-                    </div>
-                    <div className="flex gap-1.5">
-                      {isExpired(code.expires_at) ? (
-                        <Badge variant="destructive" className="text-xs">{t('admin.expired')}</Badge>
-                      ) : code.current_uses >= code.max_uses ? (
-                        <Badge variant="secondary" className="text-xs">{t('admin.full')}</Badge>
-                      ) : (
-                        <Badge className="text-xs bg-primary/10 text-primary border-0">{t('admin.active')}</Badge>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Users className="w-3 h-3" />
-                      {code.current_uses}/{code.max_uses}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      {new Date(code.expires_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                  {code.note && (
-                    <p className="text-xs text-muted-foreground italic">{code.note}</p>
-                  )}
-                  {code.activations.length > 0 && (
-                    <>
-                      <Separator className="my-2" />
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-foreground">{t('admin.activations')}</p>
-                        {code.activations.map(a => (
-                          <div key={a.id} className="text-xs text-muted-foreground flex justify-between bg-muted/50 rounded px-2 py-1">
-                            <span>{a.email}</span>
-                            <span>{new Date(a.created_at).toLocaleDateString()}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+          <TabsContent value="codes">
+            <AdminCodes />
+          </TabsContent>
+          <TabsContent value="users">
+            <AdminUsers />
+          </TabsContent>
+          <TabsContent value="pricing">
+            <AdminPricing />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
