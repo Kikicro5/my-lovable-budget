@@ -44,30 +44,6 @@ export type Database = {
         }
         Relationships: []
       }
-      premium_settings: {
-        Row: {
-          currency: string
-          duration_days: number
-          id: string
-          price: number
-          updated_at: string
-        }
-        Insert: {
-          currency?: string
-          duration_days?: number
-          id?: string
-          price?: number
-          updated_at?: string
-        }
-        Update: {
-          currency?: string
-          duration_days?: number
-          id?: string
-          price?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
