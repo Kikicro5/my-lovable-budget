@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -31,7 +32,7 @@ const Admin = () => {
   const [loading, setLoading] = useState(false);
   const [codeCount, setCodeCount] = useState(10);
   const [maxUses, setMaxUses] = useState(1);
-  const [expiresIn, setExpiresIn] = useState(365);
+  const [expiresPeriod, setExpiresPeriod] = useState('365');
   const [lastGenerated, setLastGenerated] = useState<CodeData[]>([]);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ const Admin = () => {
     setLoading(true);
     try {
       const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + expiresIn);
+      expiresAt.setDate(expiresAt.getDate() + parseInt(expiresPeriod));
       const data = await adminCall('generate-codes', { count: codeCount, maxUses, expiresAt: expiresAt.toISOString() });
       const generated = data.codes || [];
       setLastGenerated(generated);
@@ -151,8 +152,17 @@ const Admin = () => {
                     <Input type="number" min={1} value={maxUses} onChange={(e) => setMaxUses(parseInt(e.target.value) || 1)} />
                   </div>
                   <div>
-                    <label className="text-xs text-muted-foreground">Ističe za (dana)</label>
-                    <Input type="number" min={1} value={expiresIn} onChange={(e) => setExpiresIn(parseInt(e.target.value) || 365)} />
+                    <label className="text-xs text-muted-foreground">Trajanje</label>
+                    <Select value={expiresPeriod} onValueChange={setExpiresPeriod}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="30">1 mjesec</SelectItem>
+                        <SelectItem value="90">3 mjeseca</SelectItem>
+                        <SelectItem value="365">12 mjeseci</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <div className="flex gap-2">
