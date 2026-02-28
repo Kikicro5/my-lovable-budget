@@ -47,7 +47,8 @@ const Admin = () => {
     const { data, error } = await supabase.functions.invoke('admin-codes', {
       body: { action, ...params },
     });
-    if (error) throw error;
+    if (error) throw new Error(error.message || 'Edge function error');
+    if (data?.error) throw new Error(data.error);
     return data;
   };
 
