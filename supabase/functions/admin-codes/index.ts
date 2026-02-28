@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -20,6 +20,13 @@ function generateCode(length = 12): string {
   return Array.from(array, (b) => chars[b % chars.length]).join("");
 }
 
+const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+// Pre-create admin client at module level
+const adminClient = createClient(supabaseUrl, serviceKey);
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -31,24 +38,17 @@ Deno.serve(async (req) => {
       return json({ error: "Unauthorized" }, 401);
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
+    // Verify user via JWT
     const userClient = createClient(supabaseUrl, supabaseKey, {
       global: { headers: { Authorization: authHeader } },
     });
 
-    const {
-      data: { user },
-      error: userError,
-    } = await userClient.auth.getUser();
+    const { data: { user }, error: userError } = await userClient.auth.getUser();
     if (userError || !user) {
       return json({ error: "Unauthorized" }, 401);
     }
 
     const userId = user.id;
-    const adminClient = createClient(supabaseUrl, serviceKey);
 
     // Check admin role
     const { data: adminRole } = await adminClient
@@ -56,7 +56,7 @@ Deno.serve(async (req) => {
       .select("role")
       .eq("user_id", userId)
       .eq("role", "admin")
-      .single();
+      .maybeSingle();
 
     if (!adminRole) {
       return json({ error: "Admin access required" }, 403);
@@ -66,7 +66,7 @@ Deno.serve(async (req) => {
     try {
       body = await req.json();
     } catch {
-      // empty body is fine
+      // empty body is fine for GET
     }
 
     const action = (body.action as string) || "list";
@@ -202,10 +202,7 @@ Deno.serve(async (req) => {
         return json({ error: "Cannot delete your own account" }, 400);
 
       await adminClient.from("activations").delete().eq("user_id", targetUserId);
-      await adminClient
-        .from("user_roles")
-        .delete()
-        .eq("user_id", targetUserId);
+      await adminClient.from("user_roles").delete().eq("user_id", targetUserId);
 
       const { error } = await adminClient.auth.admin.deleteUser(targetUserId);
       if (error) return json({ error: error.message }, 500);
@@ -216,10 +213,7 @@ Deno.serve(async (req) => {
       const { user_id: targetUserId } = body as { user_id: string };
       if (!targetUserId) return json({ error: "user_id is required" }, 400);
 
-      await adminClient
-        .from("activations")
-        .delete()
-        .eq("user_id", targetUserId);
+      await adminClient.from("activations").delete().eq("user_id", targetUserId);
       return json({ success: true });
     }
 
