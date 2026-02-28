@@ -29,43 +29,56 @@ const durationLabel = (days: number): string => {
   return '12 mjeseci';
 };
 
+// Cache config globally so subsequent renders are instant
+let cachedConfig: { clientId: string; prices: PriceTier[] } | null = null;
+let configPromise: Promise<typeof cachedConfig> | null = null;
+
+const fetchConfigOnce = async () => {
+  if (cachedConfig) return cachedConfig;
+  if (!configPromise) {
+    configPromise = supabase.functions.invoke('paypal-checkout', {
+      body: { action: 'get-config' },
+    }).then(({ data, error }) => {
+      if (!error && data) {
+        cachedConfig = { clientId: data.clientId, prices: data.prices || [] };
+        return cachedConfig;
+      }
+      return null;
+    }).catch(() => null);
+  }
+  return configPromise;
+};
+
 export const PayPalPurchase = () => {
   const { user } = useAuth();
   const { checkStatus } = usePremium();
-  const [prices, setPrices] = useState<PriceTier[]>([]);
-  const [selectedTier, setSelectedTier] = useState<string | null>(null);
-  const [paypalClientId, setPaypalClientId] = useState<string | null>(null);
-  const [sdkReady, setSdkReady] = useState(false);
+  const [prices, setPrices] = useState<PriceTier[]>(cachedConfig?.prices || []);
+  const [selectedTier, setSelectedTier] = useState<string | null>(cachedConfig?.prices?.[0]?.id || null);
+  const [sdkReady, setSdkReady] = useState(!!(window as any).paypal);
   const [processing, setProcessing] = useState(false);
   const [purchaseComplete, setPurchaseComplete] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!cachedConfig);
   const paypalRef = useRef<HTMLDivElement>(null);
-  const buttonsRendered = useRef(false);
 
-  // Fetch config
+  // Fetch config (cached)
   useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const { data, error } = await supabase.functions.invoke('paypal-checkout', {
-          body: { action: 'get-config' },
-        });
-        if (!error && data) {
-          setPrices(data.prices || []);
-          setPaypalClientId(data.clientId);
-          if (data.prices?.length > 0) {
-            setSelectedTier(data.prices[0].id);
-          }
-        }
-      } catch (err) {
-        console.error('Error fetching config:', err);
-      } finally {
-        setLoading(false);
+    if (cachedConfig) {
+      setPrices(cachedConfig.prices);
+      setSelectedTier(cachedConfig.prices[0]?.id || null);
+      setLoading(false);
+      return;
+    }
+    fetchConfigOnce().then((config) => {
+      if (config) {
+        setPrices(config.prices);
+        setSelectedTier(config.prices[0]?.id || null);
       }
-    };
-    fetchConfig();
+      setLoading(false);
+    });
   }, []);
 
   // Load PayPal SDK
+  const paypalClientId = cachedConfig?.clientId || null;
   useEffect(() => {
     if (!paypalClientId) return;
     if ((window as any).paypal) {
@@ -92,7 +105,7 @@ export const PayPalPurchase = () => {
 
     // Clear previous buttons
     paypalRef.current.innerHTML = '';
-    buttonsRendered.current = true;
+    
 
     paypal.Buttons({
       style: {
