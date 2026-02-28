@@ -110,26 +110,22 @@ serve(async (req) => {
       case 'generate-codes': {
         const { count, maxUses, expiresAt } = params;
         const num = Math.min(Math.max(parseInt(count) || 1, 1), 100);
-        const codes: any[] = [];
         
-        for (let i = 0; i < num; i++) {
-          const code = generateRandomCode(10);
-          const { data, error } = await adminClient
-            .from('activation_codes')
-            .insert({
-              code,
-              max_uses: maxUses || 1,
-              expires_at: expiresAt,
-              created_by: admin.userId,
-              note: null,
-            })
-            .select()
-            .single();
-          if (error) throw error;
-          codes.push(data);
-        }
+        const rows = Array.from({ length: num }, () => ({
+          code: generateRandomCode(10),
+          max_uses: maxUses || 1,
+          expires_at: expiresAt,
+          created_by: admin.userId,
+          note: null,
+        }));
+
+        const { data, error } = await adminClient
+          .from('activation_codes')
+          .insert(rows)
+          .select();
+        if (error) throw error;
         
-        return new Response(JSON.stringify({ codes }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+        return new Response(JSON.stringify({ codes: data }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
 
       case 'create-code': {
