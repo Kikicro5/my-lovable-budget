@@ -37,9 +37,9 @@ export const FeatureLock = ({ children, featureName }: FeatureLockProps) => {
             </p>
           </div>
           <Button asChild size="sm" className="gap-2 bg-primary text-primary-foreground">
-            <Link to={user ? '/options' : '/auth'}>
+            <Link to="/options#premium">
               <Star className="w-3.5 h-3.5" />
-              {user ? t('feature.locked.unlock') : 'Prijava'}
+              Aktiviraj premium
             </Link>
           </Button>
         </div>
