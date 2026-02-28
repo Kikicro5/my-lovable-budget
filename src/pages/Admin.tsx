@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap } from 'lucide-react';
 import jsPDF from 'jspdf';
@@ -35,6 +36,7 @@ const Admin = () => {
   const [maxUses, setMaxUses] = useState(1);
   const [expiresPeriod, setExpiresPeriod] = useState('365');
   const [lastGenerated, setLastGenerated] = useState<CodeData[]>([]);
+  const [deleteDialog, setDeleteDialog] = useState<{ type: 'code' | 'user'; id: string; label: string } | null>(null);
 
   useEffect(() => {
     if (!authLoading && !isAdmin) navigate('/');
@@ -97,15 +99,21 @@ const Admin = () => {
   };
 
   const handleDeleteCode = async (codeId: string) => {
-    if (!confirm('Obrisati kod?')) return;
     setCodes(prev => prev.filter(c => c.id !== codeId));
+    setDeleteDialog(null);
     try { await adminCall('delete-code', { codeId }); toast.success('Kod obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Obrisati korisnika? Ova radnja je nepovratna.')) return;
     setUsers(prev => prev.filter(u => u.id !== userId));
+    setDeleteDialog(null);
     try { await adminCall('delete-user', { userId }); toast.success('Korisnik obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
+  };
+
+  const confirmDelete = () => {
+    if (!deleteDialog) return;
+    if (deleteDialog.type === 'code') handleDeleteCode(deleteDialog.id);
+    else handleDeleteUser(deleteDialog.id);
   };
 
   const handleDeactivatePremium = async (userId: string) => {
@@ -202,7 +210,7 @@ const Admin = () => {
                       <TableCell className="font-mono text-xs">{c.code}</TableCell>
                       <TableCell>{c.current_uses}/{c.max_uses}</TableCell>
                       <TableCell className="text-xs">{new Date(c.expires_at).toLocaleDateString('hr')}</TableCell>
-                      <TableCell><Button variant="ghost" size="icon" onClick={() => handleDeleteCode(c.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
+                      <TableCell><Button variant="ghost" size="icon" onClick={() => setDeleteDialog({ type: 'code', id: c.id, label: c.code })}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
                     </TableRow>
                   ))}
                   {!codes.length && <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nema kodova</TableCell></TableRow>}
@@ -238,7 +246,7 @@ const Admin = () => {
                       <TableCell className="text-xs">{u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleDateString('hr') : '—'}</TableCell>
                       <TableCell className="text-right space-x-1">
                         {u.isPremium && <Button variant="ghost" size="icon" onClick={() => handleDeactivatePremium(u.id)} title="Deaktiviraj premium"><ShieldOff className="w-4 h-4" /></Button>}
-                        <Button variant="ghost" size="icon" onClick={() => handleDeleteUser(u.id)} title="Obriši račun"><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                        <Button variant="ghost" size="icon" onClick={() => setDeleteDialog({ type: 'user', id: u.id, label: u.email })} title="Obriši račun"><Trash2 className="w-4 h-4 text-destructive" /></Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -280,6 +288,25 @@ const Admin = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      <AlertDialog open={!!deleteDialog} onOpenChange={(open) => !open && setDeleteDialog(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Potvrda brisanja</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteDialog?.type === 'code'
+                ? `Jeste li sigurni da želite obrisati kod "${deleteDialog?.label}"?`
+                : `Jeste li sigurni da želite obrisati korisnika "${deleteDialog?.label}"? Ova radnja je nepovratna.`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Odustani</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Obriši
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
