@@ -30,16 +30,16 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
 
   const checkStatus = useCallback(async () => {
-    if (!session) {
-      setIsPremium(false);
+    // Admins always have premium - check this first
+    if (isAdmin) {
+      setIsPremium(true);
       setExpiresAt(null);
       setIsLoading(false);
       return;
     }
 
-    // Admins always have premium
-    if (isAdmin) {
-      setIsPremium(true);
+    if (!session) {
+      setIsPremium(false);
       setExpiresAt(null);
       setIsLoading(false);
       return;
