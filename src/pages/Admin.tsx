@@ -36,6 +36,7 @@ const Admin = () => {
 
   useEffect(() => {
     if (!authLoading && !isAdmin) navigate('/');
+    if (!authLoading && isAdmin) loadCodes();
   }, [isAdmin, authLoading, navigate]);
 
   const adminCall = async (action: string, params: Record<string, any> = {}) => {
