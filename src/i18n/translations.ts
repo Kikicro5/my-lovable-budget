@@ -303,6 +303,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysShort': 'd',
     'removeAds.paymentHistory': 'Povijest plaćanja',
     'removeAds.validUntil': 'Vrijedi do',
+    'removeAds.tier.1month': '1 mjesec',
+    'removeAds.tier.3months': '3 mjeseca',
+    'removeAds.tier.12months': '12 mjeseci',
+    'removeAds.popular': 'Popularno',
+    'removeAds.perMonth': 'mj',
+    'removeAds.subscribe': 'Pretplati se',
+    'removeAds.selectPlan': 'Odaberi plan',
 
     // Reminders
     'reminder.title': 'Podsjetnici za plaćanje',
@@ -788,6 +795,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysShort': 'd',
     'removeAds.paymentHistory': 'Payment History',
     'removeAds.validUntil': 'Valid until',
+    'removeAds.tier.1month': '1 month',
+    'removeAds.tier.3months': '3 months',
+    'removeAds.tier.12months': '12 months',
+    'removeAds.popular': 'Popular',
+    'removeAds.perMonth': 'mo',
+    'removeAds.subscribe': 'Subscribe',
+    'removeAds.selectPlan': 'Select a plan',
 
     // Reminders
     'reminder.title': 'Payment Reminders',
@@ -1244,6 +1258,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysShort': 'T',
     'removeAds.paymentHistory': 'Zahlungsverlauf',
     'removeAds.validUntil': 'Gültig bis',
+    'removeAds.tier.1month': '1 Monat',
+    'removeAds.tier.3months': '3 Monate',
+    'removeAds.tier.12months': '12 Monate',
+    'removeAds.popular': 'Beliebt',
+    'removeAds.perMonth': 'Mo',
+    'removeAds.subscribe': 'Abonnieren',
+    'removeAds.selectPlan': 'Plan wählen',
 
     // Chart
     'chart.yearlyOverview': 'Monatsübersicht',
@@ -1660,6 +1681,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysShort': 'd',
     'removeAds.paymentHistory': 'Historia płatności',
     'removeAds.validUntil': 'Ważne do',
+    'removeAds.tier.1month': '1 miesiąc',
+    'removeAds.tier.3months': '3 miesiące',
+    'removeAds.tier.12months': '12 miesięcy',
+    'removeAds.popular': 'Popularne',
+    'removeAds.perMonth': 'mies',
+    'removeAds.subscribe': 'Subskrybuj',
+    'removeAds.selectPlan': 'Wybierz plan',
 
     // Chart
     'chart.yearlyOverview': 'Przegląd miesięczny',
@@ -2076,6 +2104,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysShort': 'd',
     'removeAds.paymentHistory': 'Historial de pagos',
     'removeAds.validUntil': 'Válido hasta',
+    'removeAds.tier.1month': '1 mes',
+    'removeAds.tier.3months': '3 meses',
+    'removeAds.tier.12months': '12 meses',
+    'removeAds.popular': 'Popular',
+    'removeAds.perMonth': 'mes',
+    'removeAds.subscribe': 'Suscribirse',
+    'removeAds.selectPlan': 'Elige un plan',
 
     // Chart
     'chart.yearlyOverview': 'Resumen mensual',
@@ -2492,6 +2527,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysShort': 'j',
     'removeAds.paymentHistory': 'Historique des paiements',
     'removeAds.validUntil': 'Valide jusqu\'au',
+    'removeAds.tier.1month': '1 mois',
+    'removeAds.tier.3months': '3 mois',
+    'removeAds.tier.12months': '12 mois',
+    'removeAds.popular': 'Populaire',
+    'removeAds.perMonth': 'mois',
+    'removeAds.subscribe': 'S\'abonner',
+    'removeAds.selectPlan': 'Choisir un plan',
 
     // Chart
     'chart.yearlyOverview': 'Aperçu mensuel',
@@ -2908,6 +2950,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysShort': '天',
     'removeAds.paymentHistory': '付款记录',
     'removeAds.validUntil': '有效期至',
+    'removeAds.tier.1month': '1个月',
+    'removeAds.tier.3months': '3个月',
+    'removeAds.tier.12months': '12个月',
+    'removeAds.popular': '热门',
+    'removeAds.perMonth': '月',
+    'removeAds.subscribe': '订阅',
+    'removeAds.selectPlan': '选择方案',
 
     // Chart
     'chart.yearlyOverview': '月度概览',
@@ -3324,6 +3373,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'removeAds.daysShort': 'दि',
     'removeAds.paymentHistory': 'भुगतान इतिहास',
     'removeAds.validUntil': 'मान्य तक',
+    'removeAds.tier.1month': '1 महीना',
+    'removeAds.tier.3months': '3 महीने',
+    'removeAds.tier.12months': '12 महीने',
+    'removeAds.popular': 'लोकप्रिय',
+    'removeAds.perMonth': 'महीना',
+    'removeAds.subscribe': 'सदस्यता लें',
+    'removeAds.selectPlan': 'योजना चुनें',
 
     // Chart
     'chart.yearlyOverview': 'मासिक अवलोकन',
