@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
 import InstallPrompt from "@/components/InstallPrompt";
 import { AdMobBanner } from "@/components/AdMobBanner";
@@ -35,6 +36,7 @@ const App = () => (
             <Sonner />
             <AdMobBanner />
             <BrowserRouter>
+              <AuthProvider>
               <PremiumProvider>
                 <PremiumToastBridge />
                 <GlobalActivateCodeDialog />
@@ -52,6 +54,7 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </PremiumProvider>
+              </AuthProvider>
             </BrowserRouter>
           </TooltipProvider>
         </LanguageProvider>

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
 import { useInterstitialAd } from '@/hooks/useInterstitialAd';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { ReminderIndicator } from '@/components/ReminderIndicator';
 import { BalanceCard } from '@/components/BalanceCard';
