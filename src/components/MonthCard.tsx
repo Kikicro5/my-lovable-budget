@@ -1,7 +1,7 @@
 import { useLanguage } from '@/i18n/LanguageContext';
 import { ReminderIndicator } from './ReminderIndicator';
 import { PaymentReminder, Account } from '@/types/budget';
-import { Badge } from '@/components/ui/badge';
+
 import { Repeat } from 'lucide-react';
 
 interface MonthCardProps {
@@ -34,30 +34,21 @@ export const MonthCard = ({
   return (
     <div className="bg-card rounded-xl p-2.5 shadow-card animate-slide-up">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-base font-display font-bold text-foreground">
-          <span className="flex items-center gap-2">
-            <img
-              src="/icon-192.png?v=2"
-              alt="Budget Card ikona"
-              className="h-8 w-8 rounded-lg"
-              loading="lazy"
-            />
-            <span>{t(`month.${month}`)} {year}</span>
-          </span>
+        <h1 className="text-sm font-medium text-muted-foreground">
+          {t(`month.${month}`)} {year}
         </h1>
         <div className="flex items-center gap-2">
-          <Badge 
-            variant="secondary" 
-            className={`gap-1 text-xs transition-colors ${
+          <button
+            className={`p-1.5 rounded-md transition-colors ${
               isRecurringActive 
-                ? 'cursor-pointer hover:bg-secondary/80' 
-                : 'opacity-40 cursor-default'
+                ? 'cursor-pointer hover:bg-secondary/80 text-foreground' 
+                : 'opacity-40 cursor-default text-muted-foreground'
             }`}
             onClick={isRecurringActive ? onApplyRecurring : undefined}
+            title={t('recurring.apply')}
           >
-            <Repeat className="w-3 h-3" />
-            {t('recurring.apply')}
-          </Badge>
+            <Repeat className="w-4 h-4" />
+          </button>
           <ReminderIndicator
             reminders={activeReminders}
             accounts={accounts}
