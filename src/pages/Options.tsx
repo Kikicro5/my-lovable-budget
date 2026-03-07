@@ -254,7 +254,7 @@ const Options = () => {
                         <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
                           -30%
                         </Badge>
-                        <p className="text-xs text-muted-foreground">12 mjeseci</p>
+                        <p className="text-xs text-muted-foreground">{t('premium.months12')}</p>
                         <p className="text-lg font-bold text-foreground mt-1">16.99€</p>
                         <p className="text-[10px] text-primary mt-0.5">1.42€/mj</p>
                       </div>
