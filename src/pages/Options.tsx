@@ -223,7 +223,7 @@ const Options = () => {
                         />
                       </div>
                       <Button onClick={handleActivateCode} disabled={activating || !code.trim()}>
-                        {activating ? '...' : 'Aktiviraj'}
+                        {activating ? '...' : t('premium.activate')}
                       </Button>
                     </div>
 
