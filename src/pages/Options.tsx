@@ -58,9 +58,9 @@ const Options = () => {
     const result = await activateCode(code.trim());
     if (result.success) {
       setActivated(true);
-      toast.success('Kod uspješno aktiviran!');
+      toast.success(t('premium.codeActivatedToast'));
     } else {
-      toast.error(result.error || 'Greška pri aktivaciji');
+      toast.error(result.error || t('premium.activationError'));
     }
     setActivating(false);
   };
