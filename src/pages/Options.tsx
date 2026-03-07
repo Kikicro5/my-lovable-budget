@@ -201,8 +201,8 @@ const Options = () => {
               <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
                 <Check className="w-5 h-5 text-primary" />
                 <div>
-                  <p className="font-medium text-sm text-foreground">Kod uspješno aktiviran!</p>
-                  <p className="text-xs text-muted-foreground">Premium je sada aktivan</p>
+                   <p className="font-medium text-sm text-foreground">{t('premium.codeSuccess')}</p>
+                  <p className="text-xs text-muted-foreground">{t('premium.nowActive')}</p>
                 </div>
               </div>
             ) : (
