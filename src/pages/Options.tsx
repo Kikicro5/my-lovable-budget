@@ -260,11 +260,11 @@ const Options = () => {
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground text-center">
-                      Za kupovinu ili aktivaciju koda potrebna je prijava.
+                      {t('premium.loginRequired')}
                     </p>
                     <Button onClick={() => window.location.href = '/auth'} className="w-full gap-2">
                       <Crown className="w-4 h-4" />
-                      Prijava / Registracija
+                      {t('premium.loginButton')}
                     </Button>
                   </>
                 )}
