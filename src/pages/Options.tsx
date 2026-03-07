@@ -236,7 +236,7 @@ const Options = () => {
                   <>
                     {/* Price preview for non-logged-in users */}
                     <p className="text-sm text-muted-foreground">
-                      Otključajte sve premium značajke aplikacije.
+                      {t('premium.unlockAll')}
                     </p>
                     <div className="grid grid-cols-3 gap-2">
                       <div className="relative p-3 rounded-lg border border-border bg-muted/30 text-center">
