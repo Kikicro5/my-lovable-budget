@@ -210,7 +210,7 @@ const Options = () => {
                 {user ? (
                   <>
                     <p className="text-sm text-muted-foreground">
-                      Unesite aktivacijski kod za otključavanje premium značajki.
+                      {t('premium.enterCode')}
                     </p>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
