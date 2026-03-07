@@ -62,7 +62,6 @@ export const PayPalPurchase = () => {
   const checkStatusRef = useRef(checkStatus);
   checkStatusRef.current = checkStatus;
   const [prices, setPrices] = useState<PriceTier[]>(cachedConfig?.prices || []);
-  const [selectedTier, setSelectedTier] = useState<string | null>(cachedConfig?.prices?.[0]?.id || null);
   const [sdkReady, setSdkReady] = useState(!!(window as any).paypal);
   const [processing, setProcessing] = useState(false);
   const [purchaseComplete, setPurchaseComplete] = useState(false);
