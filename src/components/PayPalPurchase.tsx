@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Loader2, CheckCircle } from 'lucide-react';
@@ -21,12 +22,6 @@ const getDeviceId = (): string => {
     localStorage.setItem(DEVICE_ID_KEY, id);
   }
   return id;
-};
-
-const durationLabel = (days: number): string => {
-  if (days <= 31) return '1 mjesec';
-  if (days <= 92) return '3 mjeseca';
-  return '12 mjeseci';
 };
 
 let cachedConfig: { clientId: string; prices: PriceTier[] } | null = null;
@@ -58,6 +53,7 @@ const fetchConfigOnce = async (): Promise<typeof cachedConfig> => {
 export const PayPalPurchase = () => {
   const { user } = useAuth();
   const { checkStatus } = usePremium();
+  const { t } = useLanguage();
   const checkStatusRef = useRef(checkStatus);
   checkStatusRef.current = checkStatus;
   const [prices, setPrices] = useState<PriceTier[]>(cachedConfig?.prices || []);
@@ -67,18 +63,15 @@ export const PayPalPurchase = () => {
   const [loading, setLoading] = useState(!cachedConfig);
   const paypalRef = useRef<HTMLDivElement>(null);
 
-  // Filter out tiers with price 0
   const availableTiers = useMemo(() => prices.filter(t => t.price > 0), [prices]);
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
 
-  // Auto-select first available tier
   useEffect(() => {
     if (availableTiers.length > 0 && !selectedTier) {
       setSelectedTier(availableTiers[0].id);
     }
   }, [availableTiers, selectedTier]);
 
-  // Fetch config
   useEffect(() => {
     if (cachedConfig) {
       setPrices(cachedConfig.prices);
@@ -93,7 +86,6 @@ export const PayPalPurchase = () => {
     });
   }, []);
 
-  // Load PayPal SDK
   const paypalClientId = cachedConfig?.clientId || null;
   useEffect(() => {
     if (!paypalClientId) return;
@@ -111,7 +103,6 @@ export const PayPalPurchase = () => {
     document.body.appendChild(script);
   }, [paypalClientId]);
 
-  // Render PayPal buttons
   useEffect(() => {
     if (!sdkReady || !selectedTier || !user || processing || purchaseComplete) return;
     if (!paypalRef.current) return;
@@ -129,7 +120,7 @@ export const PayPalPurchase = () => {
           body: { action: 'create-order', priceId: selectedTier },
         });
         if (error || !data?.orderId) {
-          toast.error('Greška pri kreiranju narudžbe');
+          toast.error(t('premium.orderError'));
           throw new Error('Failed to create order');
         }
         return data.orderId;
@@ -149,21 +140,27 @@ export const PayPalPurchase = () => {
             throw new Error(captureData?.error || 'Capture failed');
           }
           setPurchaseComplete(true);
-          toast.success(`Premium aktiviran na ${captureData.durationDays} dana!`);
+          toast.success(t('premium.activatedDays').replace('{days}', String(captureData.durationDays)));
           await checkStatusRef.current();
         } catch (err) {
           console.error('Capture error:', err);
-          toast.error('Greška pri obradi plaćanja. Kontaktirajte podršku.');
+          toast.error(t('premium.captureError'));
         } finally {
           setProcessing(false);
         }
       },
       onError: (err: any) => {
         console.error('PayPal error:', err);
-        toast.error('Greška s PayPal-om');
+        toast.error(t('premium.paypalError'));
       },
     }).render(container);
   }, [sdkReady, selectedTier, user, processing, purchaseComplete]);
+
+  const durationLabel = (days: number): string => {
+    if (days <= 31) return t('premium.month1');
+    if (days <= 92) return t('premium.months3');
+    return t('premium.months12');
+  };
 
   if (loading) {
     return (
@@ -178,8 +175,8 @@ export const PayPalPurchase = () => {
       <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
         <CheckCircle className="w-5 h-5 text-primary" />
         <div>
-          <p className="font-medium text-sm text-foreground">Kupnja uspješna!</p>
-          <p className="text-xs text-muted-foreground">Premium je aktiviran.</p>
+          <p className="font-medium text-sm text-foreground">{t('premium.purchaseSuccess')}</p>
+          <p className="text-xs text-muted-foreground">{t('premium.purchaseActivated')}</p>
         </div>
       </div>
     );
@@ -188,7 +185,7 @@ export const PayPalPurchase = () => {
   if (!user) {
     return (
       <p className="text-xs text-muted-foreground">
-        Prijavite se za kupovinu premium pristupa.
+        {t('premium.loginToBuy')}
       </p>
     );
   }
@@ -202,7 +199,7 @@ export const PayPalPurchase = () => {
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
-        {showGrid ? 'Ili kupite premium pristup putem PayPal-a:' : 'Kupite godišnju premium licencu putem PayPal-a:'}
+        {showGrid ? t('premium.buyOptions') : t('premium.buyAnnual')}
       </p>
 
       {showGrid ? (
@@ -219,7 +216,7 @@ export const PayPalPurchase = () => {
             >
               {tier.duration_days >= 365 ? (
                 <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
-                  Najbolja cijena
+                  {t('premium.bestPrice')}
                 </Badge>
               ) : tier.duration_days >= 90 ? (
                 <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-accent text-accent-foreground">
@@ -232,7 +229,7 @@ export const PayPalPurchase = () => {
               </p>
               {tier.duration_days >= 365 && (
                 <p className="text-[10px] text-primary mt-0.5">
-                  {(tier.price / 12).toFixed(2)}€/mj
+                  {t('premium.perMonth').replace('{price}', (tier.price / 12).toFixed(2))}
                 </p>
               )}
             </button>
@@ -245,7 +242,7 @@ export const PayPalPurchase = () => {
             {availableTiers[0].price.toFixed(2)}€
           </p>
           <p className="text-xs text-primary mt-0.5">
-            {(availableTiers[0].price / 12).toFixed(2)}€/mj
+            {t('premium.perMonth').replace('{price}', (availableTiers[0].price / 12).toFixed(2))}
           </p>
         </div>
       )}
@@ -253,7 +250,7 @@ export const PayPalPurchase = () => {
       {processing ? (
         <div className="flex items-center justify-center gap-2 p-4">
           <Loader2 className="w-5 h-5 animate-spin text-primary" />
-          <span className="text-sm text-muted-foreground">Obrada plaćanja...</span>
+          <span className="text-sm text-muted-foreground">{t('premium.processing')}</span>
         </div>
       ) : (
         <div ref={paypalRef} className="min-h-[45px]" />
