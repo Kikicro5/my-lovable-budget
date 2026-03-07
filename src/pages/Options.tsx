@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
@@ -6,6 +6,7 @@ import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
 import { Input } from '@/components/ui/input';
+import { supabase } from '@/integrations/supabase/client';
 
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -45,6 +46,18 @@ const Options = () => {
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
   const premiumRef = useRef<HTMLDivElement>(null);
+  const [guestPrices, setGuestPrices] = useState<{ price: number; duration_days: number; currency: string }[]>([]);
+
+  useEffect(() => {
+    if (!user) {
+      supabase.functions.invoke('paypal-checkout', { body: { action: 'get-config' } })
+        .then(({ data }) => {
+          if (data?.prices) {
+            setGuestPrices(data.prices.filter((p: any) => p.price > 0));
+          }
+        });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (window.location.hash === '#premium' && premiumRef.current) {
@@ -234,31 +247,50 @@ const Options = () => {
                   </>
                 ) : (
                   <>
-                    {/* Price preview for non-logged-in users */}
+                   {/* Price preview for non-logged-in users */}
                     <p className="text-sm text-muted-foreground">
                       {t('premium.unlockAll')}
                     </p>
-                    <div className="grid grid-cols-3 gap-2">
-                      <div className="relative p-3 rounded-lg border border-border bg-muted/30 text-center">
-                         <p className="text-xs text-muted-foreground">{t('premium.month1')}</p>
-                        <p className="text-lg font-bold text-foreground mt-1">1.99€</p>
+                    {guestPrices.length === 1 ? (
+                      <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-center">
+                        <p className="text-xs text-muted-foreground">
+                          {guestPrices[0].duration_days <= 31 ? t('premium.month1') : guestPrices[0].duration_days <= 92 ? t('premium.months3') : t('premium.months12')}
+                        </p>
+                        <p className="text-2xl font-bold text-foreground mt-1">
+                          {guestPrices[0].price.toFixed(2)}€
+                        </p>
+                        {guestPrices[0].duration_days >= 365 && (
+                          <p className="text-xs text-primary mt-0.5">
+                            {t('premium.perMonth').replace('{price}', (guestPrices[0].price / 12).toFixed(2))}
+                          </p>
+                        )}
                       </div>
-                      <div className="relative p-3 rounded-lg border border-border bg-muted/30 text-center">
-                        <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-accent text-accent-foreground">
-                          -15%
-                        </Badge>
-                        <p className="text-xs text-muted-foreground">{t('premium.months3')}</p>
-                        <p className="text-lg font-bold text-foreground mt-1">5.99€</p>
+                    ) : guestPrices.length > 1 ? (
+                      <div className={`grid grid-cols-${guestPrices.length} gap-2`}>
+                        {guestPrices.map((tier, i) => (
+                          <div key={i} className={`relative p-3 rounded-lg border text-center ${tier.duration_days >= 365 ? 'border-primary/30 bg-primary/5' : 'border-border bg-muted/30'}`}>
+                            {tier.duration_days >= 365 ? (
+                              <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
+                                {t('premium.bestPrice')}
+                              </Badge>
+                            ) : tier.duration_days >= 90 ? (
+                              <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-accent text-accent-foreground">
+                                -15%
+                              </Badge>
+                            ) : null}
+                            <p className="text-xs text-muted-foreground">
+                              {tier.duration_days <= 31 ? t('premium.month1') : tier.duration_days <= 92 ? t('premium.months3') : t('premium.months12')}
+                            </p>
+                            <p className="text-lg font-bold text-foreground mt-1">{tier.price.toFixed(2)}€</p>
+                            {tier.duration_days >= 365 && (
+                              <p className="text-[10px] text-primary mt-0.5">
+                                {t('premium.perMonth').replace('{price}', (tier.price / 12).toFixed(2))}
+                              </p>
+                            )}
+                          </div>
+                        ))}
                       </div>
-                      <div className="relative p-3 rounded-lg border border-primary/30 bg-primary/5 text-center">
-                        <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
-                          -30%
-                        </Badge>
-                        <p className="text-xs text-muted-foreground">{t('premium.months12')}</p>
-                        <p className="text-lg font-bold text-foreground mt-1">16.99€</p>
-                        <p className="text-[10px] text-primary mt-0.5">1.42€/mj</p>
-                      </div>
-                    </div>
+                    ) : null}
                     <p className="text-xs text-muted-foreground text-center">
                       {t('premium.loginRequired')}
                     </p>
