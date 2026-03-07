@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -29,7 +29,6 @@ const durationLabel = (days: number): string => {
   return '12 mjeseci';
 };
 
-// Cache config globally so subsequent renders are instant
 let cachedConfig: { clientId: string; prices: PriceTier[] } | null = null;
 let configPromise: Promise<typeof cachedConfig> | null = null;
 
@@ -49,7 +48,7 @@ const fetchConfigOnce = async (): Promise<typeof cachedConfig> => {
         } catch { /* retry */ }
         if (i < 2) await new Promise(r => setTimeout(r, 1000 * (i + 1)));
       }
-      configPromise = null; // allow retry on next call
+      configPromise = null;
       return null;
     })();
   }
@@ -67,20 +66,28 @@ export const PayPalPurchase = () => {
   const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [loading, setLoading] = useState(!cachedConfig);
   const paypalRef = useRef<HTMLDivElement>(null);
-  const buttonsRendered = useRef(false);
 
-  // Fetch config (cached)
+  // Filter out tiers with price 0
+  const availableTiers = useMemo(() => prices.filter(t => t.price > 0), [prices]);
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+
+  // Auto-select first available tier
+  useEffect(() => {
+    if (availableTiers.length > 0 && !selectedTier) {
+      setSelectedTier(availableTiers[0].id);
+    }
+  }, [availableTiers, selectedTier]);
+
+  // Fetch config
   useEffect(() => {
     if (cachedConfig) {
       setPrices(cachedConfig.prices);
-      setSelectedTier(cachedConfig.prices[0]?.id || null);
       setLoading(false);
       return;
     }
     fetchConfigOnce().then((config) => {
       if (config) {
         setPrices(config.prices);
-        setSelectedTier(config.prices[0]?.id || null);
       }
       setLoading(false);
     });
@@ -104,7 +111,7 @@ export const PayPalPurchase = () => {
     document.body.appendChild(script);
   }, [paypalClientId]);
 
-  // Render PayPal buttons when SDK is ready and tier selected
+  // Render PayPal buttons
   useEffect(() => {
     if (!sdkReady || !selectedTier || !user || processing || purchaseComplete) return;
     if (!paypalRef.current) return;
@@ -112,18 +119,11 @@ export const PayPalPurchase = () => {
     const paypal = (window as any).paypal;
     if (!paypal) return;
 
-    // Prevent re-rendering if already rendered for same tier
     const container = paypalRef.current;
     container.innerHTML = '';
 
     paypal.Buttons({
-      style: {
-        layout: 'vertical',
-        color: 'gold',
-        shape: 'rect',
-        label: 'pay',
-        height: 40,
-      },
+      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 40 },
       createOrder: async () => {
         const { data, error } = await supabase.functions.invoke('paypal-checkout', {
           body: { action: 'create-order', priceId: selectedTier },
@@ -145,11 +145,9 @@ export const PayPalPurchase = () => {
               deviceId: getDeviceId(),
             },
           });
-
           if (error || !captureData?.success) {
             throw new Error(captureData?.error || 'Capture failed');
           }
-
           setPurchaseComplete(true);
           toast.success(`Premium aktiviran na ${captureData.durationDays} dana!`);
           await checkStatusRef.current();
@@ -195,45 +193,63 @@ export const PayPalPurchase = () => {
     );
   }
 
+  if (availableTiers.length === 0) {
+    return null;
+  }
+
+  const showGrid = availableTiers.length > 1;
+
   return (
     <div className="space-y-3">
-      <p className="text-sm text-muted-foreground">Ili kupite premium pristup putem PayPal-a:</p>
+      <p className="text-sm text-muted-foreground">
+        {showGrid ? 'Ili kupite premium pristup putem PayPal-a:' : 'Kupite godišnju premium licencu putem PayPal-a:'}
+      </p>
 
-      {/* Tier selection */}
-      <div className="grid grid-cols-3 gap-2">
-        {prices.map((tier) => (
-          <button
-            key={tier.id}
-            onClick={() => setSelectedTier(tier.id)}
-            className={`relative p-3 rounded-lg border text-center transition-all ${
-              selectedTier === tier.id
-                ? 'border-primary bg-primary/10 ring-1 ring-primary'
-                : 'border-border bg-card hover:border-primary/50'
-            }`}
-          >
-            {tier.duration_days >= 365 ? (
-              <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
-                -30%
-              </Badge>
-            ) : tier.duration_days >= 90 ? (
-              <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-accent text-accent-foreground">
-                -15%
-              </Badge>
-            ) : null}
-            <p className="text-xs text-muted-foreground">{durationLabel(tier.duration_days)}</p>
-            <p className="text-lg font-bold text-foreground mt-1">
-              {tier.price.toFixed(2)}€
-            </p>
-            {tier.duration_days >= 365 && (
-              <p className="text-[10px] text-primary mt-0.5">
-                {(tier.price / 12).toFixed(2)}€/mj
+      {showGrid ? (
+        <div className={`grid grid-cols-${availableTiers.length} gap-2`}>
+          {availableTiers.map((tier) => (
+            <button
+              key={tier.id}
+              onClick={() => setSelectedTier(tier.id)}
+              className={`relative p-3 rounded-lg border text-center transition-all ${
+                selectedTier === tier.id
+                  ? 'border-primary bg-primary/10 ring-1 ring-primary'
+                  : 'border-border bg-card hover:border-primary/50'
+              }`}
+            >
+              {tier.duration_days >= 365 ? (
+                <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
+                  Najbolja cijena
+                </Badge>
+              ) : tier.duration_days >= 90 ? (
+                <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-accent text-accent-foreground">
+                  -15%
+                </Badge>
+              ) : null}
+              <p className="text-xs text-muted-foreground">{durationLabel(tier.duration_days)}</p>
+              <p className="text-lg font-bold text-foreground mt-1">
+                {tier.price.toFixed(2)}€
               </p>
-            )}
-          </button>
-        ))}
-      </div>
+              {tier.duration_days >= 365 && (
+                <p className="text-[10px] text-primary mt-0.5">
+                  {(tier.price / 12).toFixed(2)}€/mj
+                </p>
+              )}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="p-4 rounded-lg border border-primary bg-primary/10 text-center">
+          <p className="text-xs text-muted-foreground">{durationLabel(availableTiers[0].duration_days)}</p>
+          <p className="text-2xl font-bold text-foreground mt-1">
+            {availableTiers[0].price.toFixed(2)}€
+          </p>
+          <p className="text-xs text-primary mt-0.5">
+            {(availableTiers[0].price / 12).toFixed(2)}€/mj
+          </p>
+        </div>
+      )}
 
-      {/* PayPal buttons */}
       {processing ? (
         <div className="flex items-center justify-center gap-2 p-4">
           <Loader2 className="w-5 h-5 animate-spin text-primary" />
