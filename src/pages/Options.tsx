@@ -240,7 +240,7 @@ const Options = () => {
                     </p>
                     <div className="grid grid-cols-3 gap-2">
                       <div className="relative p-3 rounded-lg border border-border bg-muted/30 text-center">
-                        <p className="text-xs text-muted-foreground">1 mjesec</p>
+                         <p className="text-xs text-muted-foreground">{t('premium.month1')}</p>
                         <p className="text-lg font-bold text-foreground mt-1">1.99€</p>
                       </div>
                       <div className="relative p-3 rounded-lg border border-border bg-muted/30 text-center">
