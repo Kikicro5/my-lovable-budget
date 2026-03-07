@@ -191,9 +191,9 @@ const Options = () => {
               <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
                 <Crown className="w-5 h-5 text-primary" />
                 <div>
-                  <p className="font-medium text-sm text-foreground">Premium aktivan</p>
+                   <p className="font-medium text-sm text-foreground">{t('premium.active')}</p>
                   {daysRemaining !== null && (
-                    <p className="text-xs text-muted-foreground">{daysRemaining} dana preostalo</p>
+                    <p className="text-xs text-muted-foreground">{t('premium.daysRemaining').replace('{days}', String(daysRemaining))}</p>
                   )}
                 </div>
               </div>
