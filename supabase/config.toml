@@ -1,8 +1,5 @@
 project_id = "jmddsdknafhjqbgxagot"
 
-[functions.verify-paypal-payment]
-verify_jwt = false
-
 [functions.check-status]
 verify_jwt = false
 
