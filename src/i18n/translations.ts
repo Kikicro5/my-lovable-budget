@@ -401,8 +401,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium aktiviran na {days} dana!',
     'premium.orderError': 'Greška pri kreiranju narudžbe',
     'premium.captureError': 'Greška pri obradi plaćanja. Kontaktirajte podršku.',
-    'premium.paypalError': 'Greška s PayPal-om',
+    'premium.paypalError': 'Greška pri kupnji',
     'premium.perMonth': '{price}€/mj',
+    'premium.subscribe': 'Pretplati se',
+    'premium.autoRenew': 'Automatska obnova pretplate',
+    'premium.restorePurchases': 'Vrati kupnje',
+    'premium.availableOnAndroid': 'Premium pretplata dostupna je putem Android aplikacije na Google Play Store.',
+    'premium.noRestorePurchases': 'Nema aktivnih kupnji za vratiti.',
 
     // Legal
     'legal.title': 'Pravne informacije',
