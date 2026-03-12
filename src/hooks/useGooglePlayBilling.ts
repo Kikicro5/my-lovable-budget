@@ -38,22 +38,21 @@ export const useGooglePlayBilling = () => {
 
     const initBilling = async () => {
       try {
-        const { NativePurchases } = await import('@capgo/native-purchases');
+        const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
         
-        // Get available products
         const { products: fetchedProducts } = await NativePurchases.getProducts({
-          productIds: [SUBSCRIPTION_PRODUCTS.YEARLY],
-          productType: 'SUBSCRIPTION',
+          productIdentifiers: [SUBSCRIPTION_PRODUCTS.YEARLY],
+          productType: PURCHASE_TYPE.SUBS,
         });
 
         if (fetchedProducts && fetchedProducts.length > 0) {
           setProducts(fetchedProducts.map((p: any) => ({
-            productId: p.productId,
+            productId: p.productIdentifier || p.productId,
             title: p.title || 'Premium',
             description: p.description || '',
-            price: p.price || '',
+            price: p.localizedPrice || p.price || '',
             priceMicros: p.priceMicros || 0,
-            currency: p.currency || 'EUR',
+            currency: p.currencyCode || p.currency || 'EUR',
           })));
           setIsAvailable(true);
         }
@@ -75,11 +74,11 @@ export const useGooglePlayBilling = () => {
 
     setPurchasing(true);
     try {
-      const { NativePurchases } = await import('@capgo/native-purchases');
+      const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
       
       const result = await NativePurchases.purchaseProduct({
-        productId,
-        productType: 'SUBSCRIPTION',
+        productIdentifier: productId,
+        productType: PURCHASE_TYPE.SUBS,
       });
 
       if (result?.purchaseToken) {
@@ -109,9 +108,10 @@ export const useGooglePlayBilling = () => {
 
     try {
       const { NativePurchases } = await import('@capgo/native-purchases');
-      const { purchases } = await NativePurchases.restorePurchases();
+      const result = await NativePurchases.getPurchases();
 
-      if (purchases && purchases.length > 0) {
+      const purchases = (result as any)?.purchases || [];
+      if (purchases.length > 0) {
         const activePurchase = purchases[0];
         return {
           success: true,

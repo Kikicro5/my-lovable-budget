@@ -249,9 +249,9 @@ const Options = () => {
                       </Button>
                     </div>
 
-                    {/* PayPal Purchase - only for logged in users */}
+                    {/* Google Play Purchase - only for logged in users */}
                     <div className="border-t border-border pt-3 mt-3">
-                      <PayPalPurchase />
+                      <GooglePlayPurchase />
                     </div>
                   </>
                 ) : (
