@@ -50,11 +50,20 @@ const Options = () => {
 
   useEffect(() => {
     if (!user) {
-      supabase.functions.invoke('paypal-checkout', { body: { action: 'get-config' } })
+      supabase.functions.invoke('get-premium-prices', { body: {} })
         .then(({ data }) => {
           if (data?.prices) {
             setGuestPrices(data.prices.filter((p: any) => p.price > 0));
           }
+        })
+        .catch(() => {
+          // Fallback: fetch from premium_settings directly
+          supabase.from('premium_settings').select('*').order('duration_days', { ascending: true })
+            .then(({ data }) => {
+              if (data) {
+                setGuestPrices(data.filter(p => p.price > 0));
+              }
+            });
         });
     }
   }, [user]);
