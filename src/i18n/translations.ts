@@ -3260,8 +3260,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'प्रीमियम {days} दिनों के लिए सक्रिय!',
     'premium.orderError': 'ऑर्डर बनाने में त्रुटि',
     'premium.captureError': 'भुगतान प्रसंस्करण में त्रुटि। सहायता से संपर्क करें।',
-    'premium.paypalError': 'PayPal त्रुटि',
+    'premium.paypalError': 'खरीदारी त्रुटि',
     'premium.perMonth': '{price}€/माह',
+    'premium.subscribe': 'सब्सक्राइब करें',
+    'premium.autoRenew': 'स्वचालित नवीनीकरण सदस्यता',
+    'premium.restorePurchases': 'खरीदारी पुनर्स्थापित करें',
+    'premium.availableOnAndroid': 'प्रीमियम सदस्यता Google Play Store पर Android ऐप के माध्यम से उपलब्ध है।',
+    'premium.noRestorePurchases': 'कोई सक्रिय खरीदारी नहीं मिली।',
   },
 };
 
