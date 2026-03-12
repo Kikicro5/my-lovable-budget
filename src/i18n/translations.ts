@@ -2862,8 +2862,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': '高级版已激活 {days} 天！',
     'premium.orderError': '创建订单出错',
     'premium.captureError': '处理付款出错。请联系客服。',
-    'premium.paypalError': 'PayPal错误',
+    'premium.paypalError': '购买错误',
     'premium.perMonth': '{price}€/月',
+    'premium.subscribe': '订阅',
+    'premium.autoRenew': '自动续订',
+    'premium.restorePurchases': '恢复购买',
+    'premium.availableOnAndroid': '高级订阅可通过 Google Play 商店中的 Android 应用获取。',
+    'premium.noRestorePurchases': '未找到活跃购买。',
   },
 
   hi: {
