@@ -14,7 +14,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
-import { PayPalPurchase } from '@/components/PayPalPurchase';
+import { GooglePlayPurchase } from '@/components/GooglePlayPurchase';
 
 import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
 import {
@@ -50,11 +50,20 @@ const Options = () => {
 
   useEffect(() => {
     if (!user) {
-      supabase.functions.invoke('paypal-checkout', { body: { action: 'get-config' } })
+      supabase.functions.invoke('get-premium-prices', { body: {} })
         .then(({ data }) => {
           if (data?.prices) {
             setGuestPrices(data.prices.filter((p: any) => p.price > 0));
           }
+        })
+        .catch(() => {
+          // Fallback: fetch from premium_settings directly
+          supabase.from('premium_settings').select('*').order('duration_days', { ascending: true })
+            .then(({ data }) => {
+              if (data) {
+                setGuestPrices(data.filter(p => p.price > 0));
+              }
+            });
         });
     }
   }, [user]);
@@ -240,9 +249,9 @@ const Options = () => {
                       </Button>
                     </div>
 
-                    {/* PayPal Purchase - only for logged in users */}
+                    {/* Google Play Purchase - only for logged in users */}
                     <div className="border-t border-border pt-3 mt-3">
-                      <PayPalPurchase />
+                      <GooglePlayPurchase />
                     </div>
                   </>
                 ) : (
