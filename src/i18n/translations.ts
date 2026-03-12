@@ -843,8 +843,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium activated for {days} days!',
     'premium.orderError': 'Error creating order',
     'premium.captureError': 'Error processing payment. Contact support.',
-    'premium.paypalError': 'PayPal error',
+    'premium.paypalError': 'Purchase error',
     'premium.perMonth': '{price}€/mo',
+    'premium.subscribe': 'Subscribe',
+    'premium.autoRenew': 'Auto-renewing subscription',
+    'premium.restorePurchases': 'Restore purchases',
+    'premium.availableOnAndroid': 'Premium subscription is available through the Android app on Google Play Store.',
+    'premium.noRestorePurchases': 'No active purchases found.',
 
     // Legal
     'legal.title': 'Legal Information',
