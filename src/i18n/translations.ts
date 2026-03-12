@@ -1270,8 +1270,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium für {days} Tage aktiviert!',
     'premium.orderError': 'Fehler beim Erstellen der Bestellung',
     'premium.captureError': 'Fehler bei der Zahlungsverarbeitung. Kontaktieren Sie den Support.',
-    'premium.paypalError': 'PayPal-Fehler',
+    'premium.paypalError': 'Kauffehler',
     'premium.perMonth': '{price}€/Mo',
+    'premium.subscribe': 'Abonnieren',
+    'premium.autoRenew': 'Automatisch erneuerndes Abonnement',
+    'premium.restorePurchases': 'Käufe wiederherstellen',
+    'premium.availableOnAndroid': 'Premium-Abonnement ist über die Android-App im Google Play Store verfügbar.',
+    'premium.noRestorePurchases': 'Keine aktiven Käufe gefunden.',
   },
 
   pl: {
