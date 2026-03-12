@@ -2464,8 +2464,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium activé pour {days} jours !',
     'premium.orderError': 'Erreur lors de la création de la commande',
     'premium.captureError': 'Erreur de traitement du paiement. Contactez le support.',
-    'premium.paypalError': 'Erreur PayPal',
+    'premium.paypalError': 'Erreur d\'achat',
     'premium.perMonth': '{price}€/mois',
+    'premium.subscribe': 'S\'abonner',
+    'premium.autoRenew': 'Abonnement à renouvellement automatique',
+    'premium.restorePurchases': 'Restaurer les achats',
+    'premium.availableOnAndroid': 'L\'abonnement premium est disponible via l\'application Android sur Google Play Store.',
+    'premium.noRestorePurchases': 'Aucun achat actif trouvé.',
   },
 
   zh: {
