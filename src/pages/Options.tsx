@@ -230,27 +230,40 @@ const Options = () => {
                       </Button>
                     </div>
 
-                    {/* Google Play Purchase - only for logged in users */}
                     <div className="border-t border-border pt-3 mt-3">
                       <GooglePlayPurchase />
                     </div>
                   </>
                 ) : (
-                  <>
+                  <div className="space-y-3">
                     <p className="text-sm text-muted-foreground">
                       {t('premium.unlockAll')}
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      {t('premium.availableOnAndroid') || 'Premium subscription is available through the Android app on Google Play Store.'}
-                    </p>
-                    <p className="text-xs text-muted-foreground text-center mt-2">
-                      {t('premium.loginRequired')}
-                    </p>
-                    <Button onClick={() => window.location.href = '/auth'} className="w-full gap-2">
-                      <Crown className="w-4 h-4" />
-                      {t('premium.loginButton')}
-                    </Button>
-                  </>
+                    {user && (
+                      <>
+                        <p className="text-sm text-muted-foreground">
+                          {t('premium.enterCode')}
+                        </p>
+                        <div className="flex gap-2">
+                          <div className="relative flex-1">
+                            <Key className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                              placeholder="PREMIUM2024"
+                              value={code}
+                              onChange={(e) => setCode(e.target.value.toUpperCase())}
+                              className="pl-10 font-mono"
+                            />
+                          </div>
+                          <Button onClick={handleActivateCode} disabled={activating || !code.trim()}>
+                            {activating ? '...' : t('premium.activate')}
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                    <div className="border-t border-border pt-3">
+                      <GooglePlayPurchase />
+                    </div>
+                  </div>
                 )}
               </div>
             )}

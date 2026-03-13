@@ -115,13 +115,6 @@ export const GooglePlayPurchase = () => {
     );
   }
 
-  if (!user) {
-    return (
-      <p className="text-xs text-muted-foreground">
-        {t('premium.loginToBuy')}
-      </p>
-    );
-  }
 
   // On web or if billing not available, show info message
   if (!isNative || !isAvailable) {
