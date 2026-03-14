@@ -49,10 +49,19 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const fallbackContext: LanguageContextType = {
+  language: 'en',
+  setLanguage: () => {},
+  t: (key: string) => key,
+  languageNames,
+};
+
 export const useLanguage = (): LanguageContextType => {
   const context = useContext(LanguageContext);
   if (!context) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
+    // Return fallback during HMR instead of crashing
+    console.warn('useLanguage called outside LanguageProvider, using fallback');
+    return fallbackContext;
   }
   return context;
 };
