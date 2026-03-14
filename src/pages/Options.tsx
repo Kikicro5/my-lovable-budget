@@ -6,7 +6,7 @@ import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
 import { Input } from '@/components/ui/input';
-import { supabase } from '@/integrations/supabase/client';
+
 
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
