@@ -848,6 +848,14 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Error processing payment. Contact support.',
     'premium.paypalError': 'PayPal error',
     'premium.perMonth': '{price}€/mo',
+    'premium.subscribeViaGooglePlay': 'Subscribe via Google Play:',
+    'premium.subscribeButton': 'Subscribe to Premium',
+    'premium.androidOnly': 'Subscription is available through the Android app on Google Play Store.',
+    'premium.billingNotSupported': 'Google Play billing is not supported on this device.',
+    'premium.productNotFound': 'Subscription product not found.',
+    'premium.verificationError': 'Error verifying purchase.',
+    'premium.purchaseError': 'Error during purchase. Please try again.',
+    'premium.loginForCode': 'Login is required to activate a code.',
 
     // Legal
     'legal.title': 'Legal Information',
