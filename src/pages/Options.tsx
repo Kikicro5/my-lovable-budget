@@ -235,52 +235,12 @@ const Options = () => {
                   </>
                 ) : (
                   <>
-                   {/* Price preview for non-logged-in users */}
                     <p className="text-sm text-muted-foreground">
                       {t('premium.unlockAll')}
                     </p>
-                    {guestPrices.length === 1 ? (
-                      <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-center">
-                        <p className="text-xs text-muted-foreground">
-                          {guestPrices[0].duration_days <= 31 ? t('premium.month1') : guestPrices[0].duration_days <= 92 ? t('premium.months3') : t('premium.months12')}
-                        </p>
-                        <p className="text-2xl font-bold text-foreground mt-1">
-                          {guestPrices[0].price.toFixed(2)}€
-                        </p>
-                        {guestPrices[0].duration_days >= 365 && (
-                          <p className="text-xs text-primary mt-0.5">
-                            {t('premium.perMonth').replace('{price}', (guestPrices[0].price / 12).toFixed(2))}
-                          </p>
-                        )}
-                      </div>
-                    ) : guestPrices.length > 1 ? (
-                      <div className={`grid grid-cols-${guestPrices.length} gap-2`}>
-                        {guestPrices.map((tier, i) => (
-                          <div key={i} className={`relative p-3 rounded-lg border text-center ${tier.duration_days >= 365 ? 'border-primary/30 bg-primary/5' : 'border-border bg-muted/30'}`}>
-                            {tier.duration_days >= 365 ? (
-                              <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-primary text-primary-foreground">
-                                {t('premium.bestPrice')}
-                              </Badge>
-                            ) : tier.duration_days >= 90 ? (
-                              <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 text-[10px] px-1.5 py-0 bg-accent text-accent-foreground">
-                                -15%
-                              </Badge>
-                            ) : null}
-                            <p className="text-xs text-muted-foreground">
-                              {tier.duration_days <= 31 ? t('premium.month1') : tier.duration_days <= 92 ? t('premium.months3') : t('premium.months12')}
-                            </p>
-                            <p className="text-lg font-bold text-foreground mt-1">{tier.price.toFixed(2)}€</p>
-                            {tier.duration_days >= 365 && (
-                              <p className="text-[10px] text-primary mt-0.5">
-                                {t('premium.perMonth').replace('{price}', (tier.price / 12).toFixed(2))}
-                              </p>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    ) : null}
+                    <GooglePlayPurchase />
                     <p className="text-xs text-muted-foreground text-center">
-                      {t('premium.loginRequired')}
+                      {t('premium.loginForCode')}
                     </p>
                     <Button onClick={() => window.location.href = '/auth'} className="w-full gap-2">
                       <Crown className="w-4 h-4" />
