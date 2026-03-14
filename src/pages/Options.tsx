@@ -46,18 +46,6 @@ const Options = () => {
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
   const premiumRef = useRef<HTMLDivElement>(null);
-  const [guestPrices, setGuestPrices] = useState<{ price: number; duration_days: number; currency: string }[]>([]);
-
-  useEffect(() => {
-    if (!user) {
-      supabase.functions.invoke('paypal-checkout', { body: { action: 'get-config' } })
-        .then(({ data }) => {
-          if (data?.prices) {
-            setGuestPrices(data.prices.filter((p: any) => p.price > 0));
-          }
-        });
-    }
-  }, [user]);
 
   useEffect(() => {
     if (window.location.hash === '#premium' && premiumRef.current) {
