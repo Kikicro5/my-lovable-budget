@@ -401,8 +401,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium aktiviran na {days} dana!',
     'premium.orderError': 'Greška pri kreiranju narudžbe',
     'premium.captureError': 'Greška pri obradi plaćanja. Kontaktirajte podršku.',
-    'premium.paypalError': 'Greška s PayPal-om',
+    'premium.paypalError': 'Greška pri kupnji',
     'premium.perMonth': '{price}€/mj',
+    'premium.subscribe': 'Pretplati se',
+    'premium.autoRenew': 'Automatska obnova pretplate',
+    'premium.restorePurchases': 'Vrati kupnje',
+    'premium.availableOnAndroid': 'Premium pretplata dostupna je putem Android aplikacije na Google Play Store.',
+    'premium.noRestorePurchases': 'Nema aktivnih kupnji za vratiti.',
 
     // Legal
     'legal.title': 'Pravne informacije',
@@ -838,8 +843,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium activated for {days} days!',
     'premium.orderError': 'Error creating order',
     'premium.captureError': 'Error processing payment. Contact support.',
-    'premium.paypalError': 'PayPal error',
+    'premium.paypalError': 'Purchase error',
     'premium.perMonth': '{price}€/mo',
+    'premium.subscribe': 'Subscribe',
+    'premium.autoRenew': 'Auto-renewing subscription',
+    'premium.restorePurchases': 'Restore purchases',
+    'premium.availableOnAndroid': 'Premium subscription is available through the Android app on Google Play Store.',
+    'premium.noRestorePurchases': 'No active purchases found.',
 
     // Legal
     'legal.title': 'Legal Information',
@@ -1260,8 +1270,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium für {days} Tage aktiviert!',
     'premium.orderError': 'Fehler beim Erstellen der Bestellung',
     'premium.captureError': 'Fehler bei der Zahlungsverarbeitung. Kontaktieren Sie den Support.',
-    'premium.paypalError': 'PayPal-Fehler',
+    'premium.paypalError': 'Kauffehler',
     'premium.perMonth': '{price}€/Mo',
+    'premium.subscribe': 'Abonnieren',
+    'premium.autoRenew': 'Automatisch erneuerndes Abonnement',
+    'premium.restorePurchases': 'Käufe wiederherstellen',
+    'premium.availableOnAndroid': 'Premium-Abonnement ist über die Android-App im Google Play Store verfügbar.',
+    'premium.noRestorePurchases': 'Keine aktiven Käufe gefunden.',
   },
 
   pl: {
@@ -1653,8 +1668,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium aktywowany na {days} dni!',
     'premium.orderError': 'Błąd tworzenia zamówienia',
     'premium.captureError': 'Błąd przetwarzania płatności. Skontaktuj się z pomocą.',
-    'premium.paypalError': 'Błąd PayPal',
+    'premium.paypalError': 'Błąd zakupu',
     'premium.perMonth': '{price}€/mies.',
+    'premium.subscribe': 'Subskrybuj',
+    'premium.autoRenew': 'Automatycznie odnawiana subskrypcja',
+    'premium.restorePurchases': 'Przywróć zakupy',
+    'premium.availableOnAndroid': 'Subskrypcja premium jest dostępna przez aplikację Android w Google Play Store.',
+    'premium.noRestorePurchases': 'Nie znaleziono aktywnych zakupów.',
   },
 
   es: {
@@ -2046,8 +2066,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': '¡Premium activado por {days} días!',
     'premium.orderError': 'Error al crear el pedido',
     'premium.captureError': 'Error al procesar el pago. Contacte soporte.',
-    'premium.paypalError': 'Error de PayPal',
+    'premium.paypalError': 'Error de compra',
     'premium.perMonth': '{price}€/mes',
+    'premium.subscribe': 'Suscribirse',
+    'premium.autoRenew': 'Suscripción con renovación automática',
+    'premium.restorePurchases': 'Restaurar compras',
+    'premium.availableOnAndroid': 'La suscripción premium está disponible a través de la aplicación Android en Google Play Store.',
+    'premium.noRestorePurchases': 'No se encontraron compras activas.',
   },
 
   fr: {
@@ -2439,8 +2464,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'Premium activé pour {days} jours !',
     'premium.orderError': 'Erreur lors de la création de la commande',
     'premium.captureError': 'Erreur de traitement du paiement. Contactez le support.',
-    'premium.paypalError': 'Erreur PayPal',
+    'premium.paypalError': 'Erreur d\'achat',
     'premium.perMonth': '{price}€/mois',
+    'premium.subscribe': 'S\'abonner',
+    'premium.autoRenew': 'Abonnement à renouvellement automatique',
+    'premium.restorePurchases': 'Restaurer les achats',
+    'premium.availableOnAndroid': 'L\'abonnement premium est disponible via l\'application Android sur Google Play Store.',
+    'premium.noRestorePurchases': 'Aucun achat actif trouvé.',
   },
 
   zh: {
@@ -2832,8 +2862,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': '高级版已激活 {days} 天！',
     'premium.orderError': '创建订单出错',
     'premium.captureError': '处理付款出错。请联系客服。',
-    'premium.paypalError': 'PayPal错误',
+    'premium.paypalError': '购买错误',
     'premium.perMonth': '{price}€/月',
+    'premium.subscribe': '订阅',
+    'premium.autoRenew': '自动续订',
+    'premium.restorePurchases': '恢复购买',
+    'premium.availableOnAndroid': '高级订阅可通过 Google Play 商店中的 Android 应用获取。',
+    'premium.noRestorePurchases': '未找到活跃购买。',
   },
 
   hi: {
@@ -3225,8 +3260,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.activatedDays': 'प्रीमियम {days} दिनों के लिए सक्रिय!',
     'premium.orderError': 'ऑर्डर बनाने में त्रुटि',
     'premium.captureError': 'भुगतान प्रसंस्करण में त्रुटि। सहायता से संपर्क करें।',
-    'premium.paypalError': 'PayPal त्रुटि',
+    'premium.paypalError': 'खरीदारी त्रुटि',
     'premium.perMonth': '{price}€/माह',
+    'premium.subscribe': 'सब्सक्राइब करें',
+    'premium.autoRenew': 'स्वचालित नवीनीकरण सदस्यता',
+    'premium.restorePurchases': 'खरीदारी पुनर्स्थापित करें',
+    'premium.availableOnAndroid': 'प्रीमियम सदस्यता Google Play Store पर Android ऐप के माध्यम से उपलब्ध है।',
+    'premium.noRestorePurchases': 'कोई सक्रिय खरीदारी नहीं मिली।',
   },
 };
 
