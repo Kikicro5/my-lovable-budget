@@ -61,7 +61,7 @@ export const GooglePlayPurchase = () => {
         const { data, error } = await supabase.functions.invoke('verify-google-purchase', {
           body: {
             action: 'verify-purchase',
-            purchaseToken: tx.transactionId,
+            purchaseToken: transaction.transactionId,
             productId: PRODUCT_ID,
             deviceId: getDeviceId(),
           },
