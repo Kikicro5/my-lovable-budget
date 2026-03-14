@@ -56,8 +56,7 @@ export const GooglePlayPurchase = () => {
         productType: PURCHASE_TYPE.SUBS,
       });
 
-      if (transaction?.transaction) {
-        const tx = transaction.transaction;
+      if (transaction?.transactionId) {
         // Verify on server
         const { data, error } = await supabase.functions.invoke('verify-google-purchase', {
           body: {
