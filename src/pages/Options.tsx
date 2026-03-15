@@ -187,6 +187,33 @@ const Options = () => {
               <Crown className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">Premium</h2>
             </div>
+            
+            {/* Premium Benefits */}
+            <div className="mb-4 p-3 rounded-lg bg-primary/5 border border-primary/10">
+              <p className="text-sm font-medium text-foreground mb-2">{t('premium.benefits.title')}</p>
+              <ul className="space-y-1.5">
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span>{t('premium.benefits.limits')}</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span>{t('premium.benefits.charts')}</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span>{t('premium.benefits.investments')}</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span>{t('premium.benefits.savings')}</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <span>{t('premium.benefits.transfers')}</span>
+                </li>
+              </ul>
+            </div>
             {isPremium ? (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
                 <Crown className="w-5 h-5 text-primary" />
