@@ -14,15 +14,7 @@ interface PremiumContextType {
 
 const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
 
-const DEVICE_ID_KEY = 'budget-card-device-id';
-const getDeviceId = (): string => {
-  let id = localStorage.getItem(DEVICE_ID_KEY);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(DEVICE_ID_KEY, id);
-  }
-  return id;
-};
+// Device ID is now provided by billing service
 
 export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, session, isAdmin } = useAuth();
