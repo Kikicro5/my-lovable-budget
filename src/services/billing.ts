@@ -130,11 +130,10 @@ export async function restorePurchases(): Promise<{
   try {
     const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
 
-    const { transactions } = await NativePurchases.restorePurchases({
-      productType: PURCHASE_TYPE.SUBS,
-    });
+    const result = await NativePurchases.restorePurchases() as any;
+    const transactions = result?.transactions || [];
 
-    const activeProducts = (transactions || [])
+    const activeProducts = transactions
       .map((t: any) => t.productIdentifier || t.productId)
       .filter(Boolean);
 
