@@ -108,6 +108,7 @@ Deno.serve(async (req) => {
       }
 
       const packageName = 'app.lovable.2b913f8ae0084a13b688581953b1b4f7';
+      const subscriptionId = productId === '001_01' ? '001_01' : productId;
 
       try {
         const accessToken = await getGoogleAccessToken();
