@@ -398,7 +398,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.benefits.savings': 'Upravljanje štednjom i ciljevima',
     'premium.benefits.transfers': 'Prijenosi sredstava između računa',
     'premium.loginRequired': 'Za kupovinu ili aktivaciju koda potrebna je prijava.',
-    'premium.loginButton': 'Prijava / Registracija',
     'premium.buyAnnual': 'Kupite godišnju premium licencu putem PayPal-a:',
     'premium.buyOptions': 'Ili kupite premium pristup putem PayPal-a:',
     'premium.processing': 'Obrada plaćanja...',
@@ -418,7 +417,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Proizvod pretplate nije pronađen.',
     'premium.verificationError': 'Greška pri verifikaciji kupnje.',
     'premium.purchaseError': 'Greška pri kupnji. Pokušajte ponovo.',
-    'premium.loginForCode': 'Za aktivaciju koda potrebna je prijava.',
 
     // Legal
     'legal.title': 'Pravne informacije',
