@@ -5,24 +5,14 @@ import { usePremium } from '@/contexts/PremiumContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Loader2, ShoppingCart, Smartphone } from 'lucide-react';
-
-const PRODUCT_ID = 'premium_yearly';
-const DEVICE_ID_KEY = 'budget-card-device-id';
-
-const getDeviceId = (): string => {
-  let id = localStorage.getItem(DEVICE_ID_KEY);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(DEVICE_ID_KEY, id);
-  }
-  return id;
-};
+import { Loader2, ShoppingCart, Smartphone, RotateCcw } from 'lucide-react';
+import { purchaseSubscription, restorePurchases, getDeviceId } from '@/services/billing';
 
 export const GooglePlayPurchase = () => {
   const { checkStatus } = usePremium();
   const { t } = useLanguage();
   const [purchasing, setPurchasing] = useState(false);
+  const [restoring, setRestoring] = useState(false);
   const isAndroid = Capacitor.getPlatform() === 'android';
 
   const handlePurchase = useCallback(async () => {
@@ -30,59 +20,56 @@ export const GooglePlayPurchase = () => {
     setPurchasing(true);
 
     try {
-      const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
+      const result = await purchaseSubscription();
 
-      // Check billing support
-      const { isBillingSupported } = await NativePurchases.isBillingSupported();
-      if (!isBillingSupported) {
-        toast.error(t('premium.billingNotSupported'));
+      if (result.error === 'cancelled') return;
+
+      if (!result.success) {
+        toast.error(result.error || 'Greška pri kupnji');
         return;
       }
 
-      // Get product info
-      const { products } = await NativePurchases.getProducts({
-        productIdentifiers: [PRODUCT_ID],
-        productType: PURCHASE_TYPE.SUBS,
+      // Verify on server
+      const { data, error } = await supabase.functions.invoke('verify-google-purchase', {
+        body: {
+          action: 'verify-purchase',
+          purchaseToken: result.transactionId,
+          productId: '001_01',
+          deviceId: getDeviceId(),
+        },
       });
 
-      if (!products || products.length === 0) {
-        toast.error(t('premium.productNotFound'));
-        return;
+      if (error || !data?.success) {
+        toast.error(t('premium.verificationError'));
+      } else {
+        toast.success(t('premium.purchaseSuccess'));
+        await checkStatus();
       }
-
-      // Initiate purchase
-      const transaction = await NativePurchases.purchaseProduct({
-        productIdentifier: PRODUCT_ID,
-        productType: PURCHASE_TYPE.SUBS,
-      });
-
-      if (transaction?.transactionId) {
-        // Verify on server
-        const { data, error } = await supabase.functions.invoke('verify-google-purchase', {
-          body: {
-            action: 'verify-purchase',
-            purchaseToken: transaction.transactionId,
-            productId: PRODUCT_ID,
-            deviceId: getDeviceId(),
-          },
-        });
-
-        if (error || !data?.success) {
-          toast.error(t('premium.verificationError'));
-        } else {
-          toast.success(t('premium.purchaseSuccess'));
-          await checkStatus();
-        }
-      }
-    } catch (err: any) {
-      // User cancelled
-      if (err?.code === 'USER_CANCELED' || err?.message?.includes('cancel')) {
-        return;
-      }
+    } catch (err) {
       console.error('Purchase error:', err);
-      toast.error(t('premium.purchaseError'));
+      toast.error('Greška pri kupnji');
     } finally {
       setPurchasing(false);
+    }
+  }, [isAndroid, checkStatus, t]);
+
+  const handleRestore = useCallback(async () => {
+    if (!isAndroid) return;
+    setRestoring(true);
+
+    try {
+      const result = await restorePurchases();
+
+      if (result.restored && result.activeProducts.includes('001_01')) {
+        toast.success(t('premium.purchaseSuccess'));
+        await checkStatus();
+      } else {
+        toast.info(t('premium.noSubscription') || 'Nema aktivnih pretplata');
+      }
+    } catch {
+      toast.error('Greška pri kupnji');
+    } finally {
+      setRestoring(false);
     }
   }, [isAndroid, checkStatus, t]);
 
@@ -105,7 +92,7 @@ export const GooglePlayPurchase = () => {
       </p>
       <Button
         onClick={handlePurchase}
-        disabled={purchasing}
+        disabled={purchasing || restoring}
         className="w-full gap-2"
       >
         {purchasing ? (
@@ -119,6 +106,19 @@ export const GooglePlayPurchase = () => {
             {t('premium.subscribeButton')}
           </>
         )}
+      </Button>
+      <Button
+        onClick={handleRestore}
+        disabled={purchasing || restoring}
+        variant="outline"
+        className="w-full gap-2"
+      >
+        {restoring ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <RotateCcw className="w-4 h-4" />
+        )}
+        {t('premium.restorePurchases') || 'Vrati kupnje'}
       </Button>
     </div>
   );
