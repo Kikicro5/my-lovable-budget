@@ -2503,9 +2503,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.benefits.savings': 'Gérer les économies et les objectifs',
     'premium.benefits.transfers': 'Transférer des fonds entre comptes',
     'premium.loginRequired': 'Une connexion est requise pour acheter ou activer un code.',
-    'premium.loginButton': 'Connexion / Inscription',
     'premium.buyAnnual': 'Achetez une licence premium annuelle via PayPal :',
-    'premium.buyOptions': 'Ou achetez l\'accès premium via PayPal :',
     'premium.processing': 'Traitement du paiement...',
     'premium.purchaseSuccess': 'Achat réussi !',
     'premium.purchaseActivated': 'Premium est activé.',
@@ -2523,7 +2521,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Produit d\'abonnement introuvable.',
     'premium.verificationError': 'Erreur de vérification de l\'achat.',
     'premium.purchaseError': 'Erreur lors de l\'achat. Veuillez réessayer.',
-    'premium.loginForCode': 'La connexion est requise pour activer un code.',
   },
 
   zh: {
