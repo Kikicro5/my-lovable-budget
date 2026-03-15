@@ -849,7 +849,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.benefits.savings': 'Manage savings and goals',
     'premium.benefits.transfers': 'Transfer funds between accounts',
     'premium.loginRequired': 'Login is required to purchase or activate a code.',
-    'premium.loginButton': 'Login / Register',
     'premium.buyAnnual': 'Buy an annual premium license via PayPal:',
     'premium.buyOptions': 'Or buy premium access via PayPal:',
     'premium.processing': 'Processing payment...',
@@ -869,7 +868,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Subscription product not found.',
     'premium.verificationError': 'Error verifying purchase.',
     'premium.purchaseError': 'Error during purchase. Please try again.',
-    'premium.loginForCode': 'Login is required to activate a code.',
 
     // Legal
     'legal.title': 'Legal Information',
