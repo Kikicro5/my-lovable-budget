@@ -2097,9 +2097,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.benefits.savings': 'Gestionar ahorros y objetivos',
     'premium.benefits.transfers': 'Transferir fondos entre cuentas',
     'premium.loginRequired': 'Se requiere inicio de sesión para comprar o activar un código.',
-    'premium.loginButton': 'Iniciar sesión / Registrarse',
     'premium.buyAnnual': 'Compra una licencia premium anual vía PayPal:',
-    'premium.buyOptions': 'O compra acceso premium vía PayPal:',
     'premium.processing': 'Procesando pago...',
     'premium.purchaseSuccess': '¡Compra exitosa!',
     'premium.purchaseActivated': 'Premium está activado.',
@@ -2117,7 +2115,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Producto de suscripción no encontrado.',
     'premium.verificationError': 'Error al verificar la compra.',
     'premium.purchaseError': 'Error durante la compra. Inténtelo de nuevo.',
-    'premium.loginForCode': 'Se requiere iniciar sesión para activar un código.',
   },
 
   fr: {
