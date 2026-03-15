@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
+import { checkSubscription, getDeviceId } from '@/services/billing';
 
 interface PremiumContextType {
   isPremium: boolean;
