@@ -114,7 +114,7 @@ Deno.serve(async (req) => {
         const accessToken = await getGoogleAccessToken();
         
         // Verify subscription with Google Play
-        const verifyUrl = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/subscriptions/${productId}/tokens/${purchaseToken}`;
+        const verifyUrl = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/subscriptions/${subscriptionId}/tokens/${purchaseToken}`;
         const verifyRes = await fetch(verifyUrl, {
           headers: { 'Authorization': `Bearer ${accessToken}` },
         });
