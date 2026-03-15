@@ -39,6 +39,16 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
 
     try {
+      // First check local Google Play subscription
+      const localCheck = await checkSubscription();
+      if (localCheck.isPurchased) {
+        setIsPremium(true);
+        setExpiresAt(null);
+        setIsLoading(false);
+        return;
+      }
+
+      // Fall back to server check
       const { data, error } = await supabase.functions.invoke('check-status', {
         body: { deviceId: getDeviceId() },
       });
