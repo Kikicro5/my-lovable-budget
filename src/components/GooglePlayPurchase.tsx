@@ -69,8 +69,9 @@ export const GooglePlayPurchase = () => {
       } else {
         toast.info(t('premium.noSubscription') || 'Nema aktivnih pretplata');
       }
-    } catch {
-      toast.error('Greška pri kupnji');
+    } catch (err: any) {
+      console.error('Restore error:', err);
+      toast.error(`Greška: ${err?.message || String(err)}`);
     } finally {
       setRestoring(false);
     }
