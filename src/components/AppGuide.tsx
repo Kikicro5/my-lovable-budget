@@ -241,6 +241,6 @@ export const AppGuide = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 };
