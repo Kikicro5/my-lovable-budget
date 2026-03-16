@@ -9,7 +9,7 @@ import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
 import InstallPrompt from "@/components/InstallPrompt";
-import { AdMobBanner } from "@/components/AdMobBanner";
+
 
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
