@@ -29,7 +29,7 @@ export const GooglePlayPurchase = () => {
         return;
       }
 
-      // Verify on server
+      // Save purchase to database (no Google API verification needed)
       const { data, error } = await supabase.functions.invoke('verify-google-purchase', {
         body: {
           action: 'verify-purchase',
@@ -40,9 +40,9 @@ export const GooglePlayPurchase = () => {
       });
 
       if (error || !data?.success) {
-        const detail = data?.error || error?.message || 'Unknown verification error';
-        console.error('Verification failed:', detail, { data, error });
-        toast.error(`${t('premium.verificationError')}: ${detail}`);
+        const detail = data?.error || error?.message || 'Unknown error';
+        console.error('Save purchase failed:', detail, { data, error });
+        toast.error(`Greška pri spremanju kupnje: ${detail}`);
       } else {
         toast.success(t('premium.purchaseSuccess'));
         await checkStatus();
