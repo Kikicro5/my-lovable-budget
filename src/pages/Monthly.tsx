@@ -21,7 +21,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 const Monthly = () => {
   const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getAvailableInvestment, getAvailableSavings, transferFromCategory } = useBudget();
   const { t } = useLanguage();
-  const { triggerAfterAction } = useInterstitialAd();
+  
   const currentBudget = getCurrentBudget();
   
   const now = new Date();
