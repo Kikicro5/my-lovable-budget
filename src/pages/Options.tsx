@@ -282,7 +282,6 @@ const Options = () => {
                       <LogOut className="w-4 h-4" />
                       {t('auth.login')}
                     </Button>
-                    </Button>
                   </>
                 )}
               </div>
