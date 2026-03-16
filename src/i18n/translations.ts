@@ -3079,6 +3079,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.10': 'नवंबर',
     'month.11': 'दिसंबर',
 
+    // Auth
+    'auth.login': 'लॉगिन',
+    'auth.register': 'रजिस्टर',
+    'auth.logout': 'लॉगआउट',
+    'auth.email': 'ईमेल',
+    'auth.password': 'पासवर्ड',
+    'auth.loginButton': 'लॉगिन करें',
+    'auth.registerButton': 'रजिस्टर करें',
+    'auth.loginSuccess': 'लॉगिन सफल!',
+    'auth.registerSuccess': 'रजिस्ट्रेशन सफल! कन्फर्मेशन के लिए ईमेल चेक करें।',
+    'auth.invalidCredentials': 'अमान्य लॉगिन क्रेडेंशियल्स',
+    'auth.passwordMinLength': 'पासवर्ड कम से कम 6 अक्षर का होना चाहिए',
+
     // Balance card
     'balance.current': 'वर्तमान शेष',
     'balance.income': 'आय',
