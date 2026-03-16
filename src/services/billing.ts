@@ -122,13 +122,14 @@ export async function purchaseSubscription(): Promise<{
       return { success: true, transactionId: transaction.transactionId };
     }
 
-    return { success: false, error: 'Greška pri kupnji' };
+    return { success: false, error: 'No transactionId returned from purchase' };
   } catch (err: any) {
     if (err?.code === 'USER_CANCELED' || err?.message?.includes('cancel')) {
       return { success: false, error: 'cancelled' };
     }
-    console.error('purchaseSubscription error:', err);
-    return { success: false, error: 'Greška pri kupnji' };
+    const detail = err?.message || JSON.stringify(err);
+    console.error('purchaseSubscription error:', detail, err);
+    return { success: false, error: `Purchase failed: ${detail}` };
   }
 }
 

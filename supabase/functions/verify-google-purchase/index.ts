@@ -100,10 +100,10 @@ Deno.serve(async (req) => {
       const authHeader = req.headers.get('Authorization');
       if (authHeader?.startsWith('Bearer ')) {
         const token = authHeader.replace('Bearer ', '');
-        const { data: claimsData } = await adminClient.auth.getClaims(token);
-        if (claimsData?.claims) {
-          userId = claimsData.claims.sub as string;
-          email = claimsData.claims.email as string;
+        const { data: { user } } = await adminClient.auth.getUser(token);
+        if (user) {
+          userId = user.id;
+          email = user.email || null;
         }
       }
 

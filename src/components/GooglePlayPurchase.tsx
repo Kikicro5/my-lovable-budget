@@ -40,14 +40,17 @@ export const GooglePlayPurchase = () => {
       });
 
       if (error || !data?.success) {
-        toast.error(t('premium.verificationError'));
+        const detail = data?.error || error?.message || 'Unknown verification error';
+        console.error('Verification failed:', detail, { data, error });
+        toast.error(`${t('premium.verificationError')}: ${detail}`);
       } else {
         toast.success(t('premium.purchaseSuccess'));
         await checkStatus();
       }
-    } catch (err) {
-      console.error('Purchase error:', err);
-      toast.error('Greška pri kupnji');
+    } catch (err: any) {
+      const msg = err?.message || String(err);
+      console.error('Purchase error:', msg, err);
+      toast.error(`Greška pri kupnji: ${msg}`);
     } finally {
       setPurchasing(false);
     }
@@ -66,8 +69,9 @@ export const GooglePlayPurchase = () => {
       } else {
         toast.info(t('premium.noSubscription') || 'Nema aktivnih pretplata');
       }
-    } catch {
-      toast.error('Greška pri kupnji');
+    } catch (err: any) {
+      console.error('Restore error:', err);
+      toast.error(`Greška: ${err?.message || String(err)}`);
     } finally {
       setRestoring(false);
     }
