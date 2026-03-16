@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useBudget } from '@/hooks/useBudget';
-import { useInterstitialAd } from '@/hooks/useInterstitialAd';
+
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MonthCard } from '@/components/MonthCard';
 import { TransactionForm } from '@/components/TransactionForm';
