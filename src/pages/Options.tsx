@@ -266,7 +266,7 @@ const Options = () => {
                       className="w-full gap-2 mt-2"
                     >
                       <LogOut className="w-4 h-4" />
-                      {t('auth.logout') || 'Odjava'}
+                      {t('auth.logout')}
                     </Button>
                   </>
                 ) : (
@@ -279,8 +279,9 @@ const Options = () => {
                       {t('premium.loginForCode')}
                     </p>
                     <Button onClick={() => window.location.href = '/auth'} className="w-full gap-2">
-                      <Crown className="w-4 h-4" />
-                      {t('premium.loginButton')}
+                      <LogOut className="w-4 h-4" />
+                      {t('auth.login')}
+                    </Button>
                     </Button>
                   </>
                 )}
