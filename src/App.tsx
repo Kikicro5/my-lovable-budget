@@ -33,7 +33,7 @@ const App = () => (
               <TooltipProvider>
                 <Toaster />
                 <Sonner />
-                <AdMobBanner />
+                
                 <BrowserRouter>
                   <InstallPrompt />
                   <Routes>

@@ -52,11 +52,9 @@ const Index = () => {
   const recurringApplied = currentBudget?.recurringApplied || false;
   const hasAccounts = state.accounts && state.accounts.length > 0;
 
-  const handleAddExpense = async (name: string, amount: number, category: string, accountId: string) => {
+  const handleAddExpense = (name: string, amount: number, category: string, accountId: string) => {
     addTransaction({ name, amount, type: 'expense', category, accountId });
     toast({ title: t('toast.expense.added'), description: `${name}: ${amount.toLocaleString('hr-HR')} €` });
-    // Trigger interstitial ad after adding expense
-    await triggerAfterAction();
   };
 
   const handleRemoveTransaction = (id: string) => {
