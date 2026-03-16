@@ -70,7 +70,7 @@ const Options = () => {
     const shareData = {
       title: 'BudgetCard',
       text: t('share.message') || 'Check out this budget tracking app!',
-      url: window.location.origin,
+      url: 'https://play.google.com/store/apps/details?id=app.lovable.budgetcard.twa',
     };
 
     if (navigator.share) {
@@ -82,7 +82,7 @@ const Options = () => {
         }
       }
     } else {
-      await navigator.clipboard.writeText(window.location.origin);
+      await navigator.clipboard.writeText('https://play.google.com/store/apps/details?id=app.lovable.budgetcard.twa');
       toast.success(t('share.copied') || 'Link copied to clipboard!');
     }
   };
@@ -308,7 +308,7 @@ const Options = () => {
             <AppGuide />
             <Button onClick={handleShare} variant="outline" className="w-full gap-2">
               <Share2 className="w-4 h-4" />
-              {t('share.button') || 'Share'}
+              Share App
             </Button>
           </div>
 
