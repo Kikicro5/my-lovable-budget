@@ -65,19 +65,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Neispravni podaci za prijavu',
     'auth.passwordMinLength': 'Lozinka mora imati najmanje 6 znakova',
 
-    // Auth
-    'auth.login': 'Prijava',
-    'auth.register': 'Registracija',
-    'auth.logout': 'Odjava',
-    'auth.email': 'Email',
-    'auth.password': 'Lozinka',
-    'auth.loginButton': 'Prijavi se',
-    'auth.registerButton': 'Registriraj se',
-    'auth.loginSuccess': 'Uspješna prijava!',
-    'auth.registerSuccess': 'Registracija uspješna! Provjerite email za potvrdu.',
-    'auth.invalidCredentials': 'Neispravni podaci za prijavu',
-    'auth.passwordMinLength': 'Lozinka mora imati najmanje 6 znakova',
-
     // Balance card
     'balance.current': 'Trenutno stanje',
     'balance.income': 'Prihodi',
