@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 
 const PRODUCT_ID = '001_01';
+const BASE_PLAN = 'premium12';
 const DEVICE_ID_KEY = 'budget-card-device-id';
 
 export const getDeviceId = (): string => {
@@ -37,8 +38,7 @@ export async function initBilling(): Promise<void> {
 }
 
 /**
- * Check if product "001_01" is currently purchased / has an active subscription.
- * Returns { isPurchased, purchaseToken? }
+ * Check if subscription "001_01" is currently active.
  */
 export async function checkSubscription(): Promise<{
   isPurchased: boolean;
@@ -49,7 +49,7 @@ export async function checkSubscription(): Promise<{
   }
 
   try {
-    const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
+    const { NativePurchases } = await import('@capgo/native-purchases');
 
     const result = await NativePurchases.restorePurchases() as any;
     const transactions = result?.transactions || [];
@@ -69,8 +69,7 @@ export async function checkSubscription(): Promise<{
 }
 
 /**
- * Start Google Play purchase flow for product "001_01".
- * Returns the transaction on success, or throws on failure.
+ * Start Google Play purchase flow for subscription "001_01" with base plan "premium12".
  */
 export async function purchaseSubscription(): Promise<{
   success: boolean;
@@ -94,11 +93,30 @@ export async function purchaseSubscription(): Promise<{
       return { success: false, error: 'Product not found' };
     }
 
-    // Start purchase
-    const transaction = await NativePurchases.purchaseProduct({
+    // Find the base plan offer
+    const product = products[0] as any;
+    let selectedOfferToken: string | undefined;
+
+    if (product.subscriptionOfferDetails && Array.isArray(product.subscriptionOfferDetails)) {
+      const offer = product.subscriptionOfferDetails.find(
+        (o: any) => o.basePlanId === BASE_PLAN
+      );
+      if (offer) {
+        selectedOfferToken = offer.offerToken;
+      }
+    }
+
+    // Start purchase with offer token if available
+    const purchaseOptions: any = {
       productIdentifier: PRODUCT_ID,
       productType: PURCHASE_TYPE.SUBS,
-    });
+    };
+
+    if (selectedOfferToken) {
+      purchaseOptions.offerToken = selectedOfferToken;
+    }
+
+    const transaction = await NativePurchases.purchaseProduct(purchaseOptions);
 
     if (transaction?.transactionId) {
       return { success: true, transactionId: transaction.transactionId };
@@ -106,7 +124,6 @@ export async function purchaseSubscription(): Promise<{
 
     return { success: false, error: 'Greška pri kupnji' };
   } catch (err: any) {
-    // User cancelled – not an error
     if (err?.code === 'USER_CANCELED' || err?.message?.includes('cancel')) {
       return { success: false, error: 'cancelled' };
     }
@@ -128,7 +145,7 @@ export async function restorePurchases(): Promise<{
   }
 
   try {
-    const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
+    const { NativePurchases } = await import('@capgo/native-purchases');
 
     const result = await NativePurchases.restorePurchases() as any;
     const transactions = result?.transactions || [];
