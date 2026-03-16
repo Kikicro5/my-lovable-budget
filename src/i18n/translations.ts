@@ -52,6 +52,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.10': 'Studeni',
     'month.11': 'Prosinac',
 
+    // Auth
+    'auth.login': 'Prijava',
+    'auth.register': 'Registracija',
+    'auth.logout': 'Odjava',
+    'auth.email': 'Email',
+    'auth.password': 'Lozinka',
+    'auth.loginButton': 'Prijavi se',
+    'auth.registerButton': 'Registriraj se',
+    'auth.loginSuccess': 'Uspješna prijava!',
+    'auth.registerSuccess': 'Registracija uspješna! Provjerite email za potvrdu.',
+    'auth.invalidCredentials': 'Neispravni podaci za prijavu',
+    'auth.passwordMinLength': 'Lozinka mora imati najmanje 6 znakova',
+
     // Balance card
     'balance.current': 'Trenutno stanje',
     'balance.income': 'Prihodi',
@@ -503,6 +516,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.10': 'November',
     'month.11': 'December',
 
+    // Auth
+    'auth.login': 'Login',
+    'auth.register': 'Register',
+    'auth.logout': 'Logout',
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.loginButton': 'Login',
+    'auth.registerButton': 'Register',
+    'auth.loginSuccess': 'Login successful!',
+    'auth.registerSuccess': 'Registration successful! Check your email to confirm.',
+    'auth.invalidCredentials': 'Invalid login credentials',
+    'auth.passwordMinLength': 'Password must be at least 6 characters',
+
     // Balance card
     'balance.current': 'Current Balance',
     'balance.income': 'Income',
@@ -950,6 +976,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.10': 'November',
     'month.11': 'Dezember',
 
+    // Auth
+    'auth.login': 'Anmelden',
+    'auth.register': 'Registrieren',
+    'auth.logout': 'Abmelden',
+    'auth.email': 'E-Mail',
+    'auth.password': 'Passwort',
+    'auth.loginButton': 'Anmelden',
+    'auth.registerButton': 'Registrieren',
+    'auth.loginSuccess': 'Anmeldung erfolgreich!',
+    'auth.registerSuccess': 'Registrierung erfolgreich! Überprüfen Sie Ihre E-Mail zur Bestätigung.',
+    'auth.invalidCredentials': 'Ungültige Anmeldedaten',
+    'auth.passwordMinLength': 'Passwort muss mindestens 6 Zeichen haben',
+
     // Balance card
     'balance.current': 'Aktueller Kontostand',
     'balance.income': 'Einnahmen',
@@ -1355,6 +1394,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.9': 'Październik',
     'month.10': 'Listopad',
     'month.11': 'Grudzień',
+
+    // Auth
+    'auth.login': 'Zaloguj',
+    'auth.register': 'Zarejestruj',
+    'auth.logout': 'Wyloguj',
+    'auth.email': 'Email',
+    'auth.password': 'Hasło',
+    'auth.loginButton': 'Zaloguj się',
+    'auth.registerButton': 'Zarejestruj się',
+    'auth.loginSuccess': 'Logowanie udane!',
+    'auth.registerSuccess': 'Rejestracja udana! Sprawdź email w celu potwierdzenia.',
+    'auth.invalidCredentials': 'Nieprawidłowe dane logowania',
+    'auth.passwordMinLength': 'Hasło musi mieć minimum 6 znaków',
 
     // Balance card
     'balance.current': 'Aktualny stan',
@@ -1762,6 +1814,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.10': 'Noviembre',
     'month.11': 'Diciembre',
 
+    // Auth
+    'auth.login': 'Iniciar sesión',
+    'auth.register': 'Registrarse',
+    'auth.logout': 'Cerrar sesión',
+    'auth.email': 'Correo electrónico',
+    'auth.password': 'Contraseña',
+    'auth.loginButton': 'Iniciar sesión',
+    'auth.registerButton': 'Registrarse',
+    'auth.loginSuccess': '¡Inicio de sesión exitoso!',
+    'auth.registerSuccess': '¡Registro exitoso! Revisa tu correo para confirmar.',
+    'auth.invalidCredentials': 'Credenciales de inicio de sesión inválidas',
+    'auth.passwordMinLength': 'La contraseña debe tener al menos 6 caracteres',
+
     // Balance card
     'balance.current': 'Saldo actual',
     'balance.income': 'Ingresos',
@@ -2167,6 +2232,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.9': 'Octobre',
     'month.10': 'Novembre',
     'month.11': 'Décembre',
+
+    // Auth
+    'auth.login': 'Connexion',
+    'auth.register': 'Inscription',
+    'auth.logout': 'Déconnexion',
+    'auth.email': 'Email',
+    'auth.password': 'Mot de passe',
+    'auth.loginButton': 'Se connecter',
+    'auth.registerButton': 'S\'inscrire',
+    'auth.loginSuccess': 'Connexion réussie !',
+    'auth.registerSuccess': 'Inscription réussie ! Vérifiez votre email pour confirmer.',
+    'auth.invalidCredentials': 'Identifiants de connexion invalides',
+    'auth.passwordMinLength': 'Le mot de passe doit contenir au moins 6 caractères',
 
     // Balance card
     'balance.current': 'Solde actuel',
@@ -2574,6 +2652,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.10': '十一月',
     'month.11': '十二月',
 
+    // Auth
+    'auth.login': '登录',
+    'auth.register': '注册',
+    'auth.logout': '退出',
+    'auth.email': '邮箱',
+    'auth.password': '密码',
+    'auth.loginButton': '登录',
+    'auth.registerButton': '注册',
+    'auth.loginSuccess': '登录成功！',
+    'auth.registerSuccess': '注册成功！请检查邮箱进行确认。',
+    'auth.invalidCredentials': '登录凭据无效',
+    'auth.passwordMinLength': '密码必须至少6个字符',
+
     // Balance card
     'balance.current': '当前余额',
     'balance.income': '收入',
@@ -2974,6 +3065,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.9': 'अक्टूबर',
     'month.10': 'नवंबर',
     'month.11': 'दिसंबर',
+
+    // Auth
+    'auth.login': 'लॉगिन',
+    'auth.register': 'रजिस्टर',
+    'auth.logout': 'लॉगआउट',
+    'auth.email': 'ईमेल',
+    'auth.password': 'पासवर्ड',
+    'auth.loginButton': 'लॉगिन करें',
+    'auth.registerButton': 'रजिस्टर करें',
+    'auth.loginSuccess': 'लॉगिन सफल!',
+    'auth.registerSuccess': 'रजिस्ट्रेशन सफल! कन्फर्मेशन के लिए ईमेल चेक करें।',
+    'auth.invalidCredentials': 'अमान्य लॉगिन क्रेडेंशियल्स',
+    'auth.passwordMinLength': 'पासवर्ड कम से कम 6 अक्षर का होना चाहिए',
 
     // Balance card
     'balance.current': 'वर्तमान शेष',

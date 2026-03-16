@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut } from 'lucide-react';
 import { toast } from 'sonner';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -39,7 +39,7 @@ const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
   const { currency, setCurrency } = useCurrency();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { isPremium, daysRemaining, activateCode } = usePremium();
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
@@ -258,6 +258,16 @@ const Options = () => {
                     <div className="border-t border-border pt-3 mt-3">
                       <GooglePlayPurchase />
                     </div>
+
+                    {/* Logout Button */}
+                    <Button 
+                      variant="outline" 
+                      onClick={() => signOut()} 
+                      className="w-full gap-2 mt-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      {t('auth.logout')}
+                    </Button>
                   </>
                 ) : (
                   <>
@@ -269,8 +279,8 @@ const Options = () => {
                       {t('premium.loginForCode')}
                     </p>
                     <Button onClick={() => window.location.href = '/auth'} className="w-full gap-2">
-                      <Crown className="w-4 h-4" />
-                      {t('premium.loginButton')}
+                      <LogOut className="w-4 h-4" />
+                      {t('auth.login')}
                     </Button>
                   </>
                 )}

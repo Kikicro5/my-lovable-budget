@@ -287,7 +287,7 @@
 
     "@capacitor/splash-screen": ["@capacitor/splash-screen@8.0.0", "", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-zkFdUSd6C6gd3s3bIEgtO3DVjfwpaX5mmWU9er8xYTg47zr2toEkGtfyE6CPhhErG09fl4rCqrK5DfnGrXLh9w=="],
 
-    "@capgo/native-purchases": ["@capgo/native-purchases@8.2.2", "", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-Di8C2JV/zpN+pWdO1EwuFoqTV+9BiUdNen7roTV7iaQ+uwntw5HgbTCAJHczilYMydrENws3FyqDlxNDi7AmUw=="],
+    "@capgo/native-purchases": ["@capgo/native-purchases@8.2.3", "", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-lYj8GFpQLB27LgiJDvLRjuUY4KuLZkZqmC6mdFr6oVqzGeE3jElNH4ydyltOezCLPKDXsi5Dgjr11znvnJj44A=="],
 
     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.25.0", "", { "os": "aix", "cpu": "ppc64" }, "sha512-O7vun9Sf8DFjH2UtqK8Ku3LkquL9SZL8OLY1T5NZkA34+wG3OQF7cl4Ql8vdNzM6fzBbYfLaiRLIOZ+2FOCgBQ=="],
 
