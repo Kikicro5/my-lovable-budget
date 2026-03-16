@@ -44,7 +44,11 @@ export const GooglePlayPurchase = () => {
         console.error('Save purchase failed:', detail, { data, error });
         toast.error(`Greška pri spremanju kupnje: ${detail}`);
       } else {
-        toast.success(t('premium.purchaseSuccess'));
+        if (data?.activationCode) {
+          toast.success(`${t('premium.purchaseSuccess')} Vaš kod: ${data.activationCode}`, { duration: 10000 });
+        } else {
+          toast.success(t('premium.purchaseSuccess'));
+        }
         await checkStatus();
       }
     } catch (err: any) {
