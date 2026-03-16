@@ -308,7 +308,7 @@ const Options = () => {
             <AppGuide />
             <Button onClick={handleShare} variant="outline" className="w-full gap-2">
               <Share2 className="w-4 h-4" />
-              {t('share.button') || 'Share'}
+              Share App
             </Button>
           </div>
 
