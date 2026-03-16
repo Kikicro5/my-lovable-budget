@@ -303,19 +303,25 @@ const Options = () => {
             )}
           </div>
 
-          {/* App Guide Section */}
-          <AppGuide />
-
-          {/* Share Section */}
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <div className="flex items-center gap-2 mb-3">
-              <Share2 className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">Share App</h2>
-            </div>
-            <Button onClick={handleShare} className="w-full gap-2">
+          {/* Guide & Share Row */}
+          <div className="grid grid-cols-2 gap-4">
+            <AppGuide />
+            <Button onClick={handleShare} variant="outline" className="w-full gap-2">
               <Share2 className="w-4 h-4" />
               {t('share.button') || 'Share'}
             </Button>
+          </div>
+
+          {/* Legal Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('legal.title')}</h2>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <TermsOfServiceDialog />
+              <PrivacyPolicyDialog />
+            </div>
           </div>
 
           {/* Reset App Section */}
@@ -356,18 +362,6 @@ const Options = () => {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-          </div>
-
-          {/* Legal Section */}
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <div className="flex items-center gap-2 mb-4">
-              <FileText className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">{t('legal.title')}</h2>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <TermsOfServiceDialog />
-              <PrivacyPolicyDialog />
-            </div>
           </div>
         </div>
       </div>
