@@ -989,6 +989,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.10': 'November',
     'month.11': 'Dezember',
 
+    // Auth
+    'auth.login': 'Anmelden',
+    'auth.register': 'Registrieren',
+    'auth.logout': 'Abmelden',
+    'auth.email': 'E-Mail',
+    'auth.password': 'Passwort',
+    'auth.loginButton': 'Anmelden',
+    'auth.registerButton': 'Registrieren',
+    'auth.loginSuccess': 'Anmeldung erfolgreich!',
+    'auth.registerSuccess': 'Registrierung erfolgreich! Überprüfen Sie Ihre E-Mail zur Bestätigung.',
+    'auth.invalidCredentials': 'Ungültige Anmeldedaten',
+    'auth.passwordMinLength': 'Passwort muss mindestens 6 Zeichen haben',
+
     // Balance card
     'balance.current': 'Aktueller Kontostand',
     'balance.income': 'Einnahmen',
