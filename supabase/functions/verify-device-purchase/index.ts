@@ -1,27 +1,28 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { verifyDeviceToken } from "../_shared/device-verification.ts";
 
-// CORS headers - allow all origins for mobile app compatibility
-const getCorsHeaders = (origin: string | null) => {
-  return {
-    'Access-Control-Allow-Origin': origin || '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Credentials': 'true',
-  };
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-serve(async (req) => {
-  const origin = req.headers.get('origin');
-  const corsHeaders = getCorsHeaders(origin);
-
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { deviceToken } = await req.json();
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { deviceToken } = body;
 
     if (!deviceToken) {
       return new Response(
@@ -30,7 +31,6 @@ serve(async (req) => {
       );
     }
 
-    // Verify the signed device token
     const signingSecret = Deno.env.get('DEVICE_SIGNING_SECRET') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const { valid, deviceId } = await verifyDeviceToken(deviceToken, signingSecret);
 
@@ -41,12 +41,10 @@ serve(async (req) => {
       );
     }
 
-    // Query purchase status using service role (bypasses RLS)
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Get all purchases for this device, ordered by newest first
     const { data, error } = await supabase
       .from('ad_free_purchases')
       .select('id, expires_at, purchased_at, amount, currency, paypal_order_id')
@@ -54,7 +52,7 @@ serve(async (req) => {
       .order('purchased_at', { ascending: false });
 
     if (error) {
-      console.error('Database query error');
+      console.error('Database query error:', error.message);
       return new Response(
         JSON.stringify({ error: 'Failed to check purchase status', isAdFree: false }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -68,7 +66,6 @@ serve(async (req) => {
       );
     }
 
-    // Check if any purchase is still active
     const now = new Date();
     const activePurchase = data.find(p => new Date(p.expires_at) > now);
     const isActive = !!activePurchase;
@@ -76,28 +73,14 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         isAdFree: isActive, 
-        purchase: activePurchase ? {
-          id: activePurchase.id,
-          expires_at: activePurchase.expires_at,
-          purchased_at: activePurchase.purchased_at,
-          amount: activePurchase.amount,
-          currency: activePurchase.currency,
-          paypal_order_id: activePurchase.paypal_order_id
-        } : null,
-        purchases: data.map(p => ({
-          id: p.id,
-          expires_at: p.expires_at,
-          purchased_at: p.purchased_at,
-          amount: p.amount,
-          currency: p.currency,
-          paypal_order_id: p.paypal_order_id
-        }))
+        purchase: activePurchase || null,
+        purchases: data
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
-    console.error('Verification error');
+  } catch (err) {
+    console.error('Verification error:', err);
     return new Response(
       JSON.stringify({ error: 'Internal server error', isAdFree: false }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
