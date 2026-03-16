@@ -1,11 +1,8 @@
 import { useLanguage } from '@/i18n/LanguageContext';
-import { useAuth } from '@/contexts/AuthContext';
 import { ReminderIndicator } from './ReminderIndicator';
 import { PaymentReminder, Account } from '@/types/budget';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Repeat, LogIn, LogOut, Shield } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Repeat } from 'lucide-react';
 
 interface MonthCardProps {
   month: number;
@@ -31,8 +28,6 @@ export const MonthCard = ({
   onApplyRecurring,
 }: MonthCardProps) => {
   const { t } = useLanguage();
-  const { user, isAdmin, signOut } = useAuth();
-  const navigate = useNavigate();
   
   const isRecurringActive = hasRecurring && !recurringApplied;
   
@@ -62,11 +57,6 @@ export const MonthCard = ({
           >
             <Repeat className="w-3 h-3" />
           </Badge>
-          {isAdmin && (
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigate('/admin')} title="Admin">
-              <Shield className="w-3.5 h-3.5" />
-            </Button>
-          )}
           <ReminderIndicator
             reminders={activeReminders}
             accounts={accounts}
@@ -74,15 +64,6 @@ export const MonthCard = ({
             onRemove={onRemoveReminder || (() => {})}
             disabled={activeReminders.length === 0}
           />
-          {user ? (
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => signOut()} title="Odjava">
-              <LogOut className="w-3.5 h-3.5" />
-            </Button>
-          ) : (
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigate('/auth')} title="Prijava">
-              <LogIn className="w-3.5 h-3.5" />
-            </Button>
-          )}
         </div>
       </div>
     </div>
