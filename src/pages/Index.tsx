@@ -36,7 +36,7 @@ const Index = () => {
     removeReminder,
   } = useBudget();
   const { t } = useLanguage();
-  const { triggerAfterAction } = useInterstitialAd();
+  
   const currentBudget = getCurrentBudget();
   
   const now = new Date();
