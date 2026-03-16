@@ -233,39 +233,25 @@ const Options = () => {
               </div>
             ) : (
               <div className="space-y-3">
-                {user ? (
-                  <>
-                    <p className="text-sm text-muted-foreground">
-                      {t('premium.enterCode')}
-                    </p>
-                    <div className="flex gap-2">
-                      <div className="relative flex-1">
-                        <Key className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          placeholder="PREMIUM2024"
-                          value={code}
-                          onChange={(e) => setCode(e.target.value.toUpperCase())}
-                          className="pl-10 font-mono"
-                        />
-                      </div>
-                      <Button onClick={handleActivateCode} disabled={activating || !code.trim()}>
-                        {activating ? '...' : t('premium.activate')}
-                      </Button>
-                    </div>
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Key className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="PREMIUM2024"
+                      value={code}
+                      onChange={(e) => setCode(e.target.value.toUpperCase())}
+                      className="pl-10 font-mono"
+                    />
+                  </div>
+                  <Button onClick={handleActivateCode} disabled={activating || !code.trim()}>
+                    {activating ? '...' : t('premium.activate')}
+                  </Button>
+                </div>
 
-                    {/* Google Play Purchase */}
-                    <div className="border-t border-border pt-3 mt-3">
-                      <GooglePlayPurchase />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-sm text-muted-foreground">
-                      {t('premium.unlockAll')}
-                    </p>
-                    <GooglePlayPurchase />
-                  </>
-                )}
+                {/* Google Play Purchase */}
+                <div className="border-t border-border pt-3 mt-3">
+                  <GooglePlayPurchase />
+                </div>
               </div>
             )}
           </div>
