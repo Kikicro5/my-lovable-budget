@@ -98,6 +98,7 @@ Deno.serve(async (req) => {
         success: true,
         valid: true,
         expiresAt: validUntil.toISOString(),
+        activationCode: code,
       });
     }
 
