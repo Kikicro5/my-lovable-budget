@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield } from 'lucide-react';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
 import { Input } from '@/components/ui/input';
-
 
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -39,12 +39,13 @@ const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
   const { currency, setCurrency } = useCurrency();
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const { isPremium, daysRemaining, activateCode } = usePremium();
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
   const premiumRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (window.location.hash === '#premium' && premiumRef.current) {
@@ -63,10 +64,6 @@ const Options = () => {
       toast.error(result.error || t('premium.activationError'));
     }
     setActivating(false);
-  };
-
-  const handleLanguageSelect = (code: Language) => {
-    setLanguage(code);
   };
 
   const handleShare = async () => {
@@ -258,16 +255,6 @@ const Options = () => {
                     <div className="border-t border-border pt-3 mt-3">
                       <GooglePlayPurchase />
                     </div>
-
-                    {/* Logout Button */}
-                    <Button 
-                      variant="outline" 
-                      onClick={() => signOut()} 
-                      className="w-full gap-2 mt-2"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      {t('auth.logout')}
-                    </Button>
                   </>
                 ) : (
                   <>
@@ -275,16 +262,42 @@ const Options = () => {
                       {t('premium.unlockAll')}
                     </p>
                     <GooglePlayPurchase />
-                    <p className="text-xs text-muted-foreground text-center">
-                      {t('premium.loginForCode')}
-                    </p>
-                    <Button onClick={() => window.location.href = '/auth'} className="w-full gap-2">
-                      <LogOut className="w-4 h-4" />
-                      {t('auth.login')}
-                    </Button>
                   </>
                 )}
               </div>
+            )}
+          </div>
+
+          {/* Account Section - Login/Logout */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            {user ? (
+              <div className="space-y-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => signOut()} 
+                  className="w-full gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  {t('auth.logout')}
+                </Button>
+
+                {/* Admin Panel Button */}
+                {isAdmin && (
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigate('/admin')} 
+                    className="w-full gap-2"
+                  >
+                    <Shield className="w-4 h-4" />
+                    Admin
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <Button onClick={() => navigate('/auth')} className="w-full gap-2">
+                <LogIn className="w-4 h-4" />
+                {t('auth.login')}
+              </Button>
             )}
           </div>
 
