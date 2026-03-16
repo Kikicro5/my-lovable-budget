@@ -47,9 +47,10 @@ export const GooglePlayPurchase = () => {
         toast.success(t('premium.purchaseSuccess'));
         await checkStatus();
       }
-    } catch (err) {
-      console.error('Purchase error:', err);
-      toast.error('Greška pri kupnji');
+    } catch (err: any) {
+      const msg = err?.message || String(err);
+      console.error('Purchase error:', msg, err);
+      toast.error(`Greška pri kupnji: ${msg}`);
     } finally {
       setPurchasing(false);
     }
