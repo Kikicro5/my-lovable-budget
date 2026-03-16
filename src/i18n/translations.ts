@@ -2665,6 +2665,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'month.10': '十一月',
     'month.11': '十二月',
 
+    // Auth
+    'auth.login': '登录',
+    'auth.register': '注册',
+    'auth.logout': '退出',
+    'auth.email': '邮箱',
+    'auth.password': '密码',
+    'auth.loginButton': '登录',
+    'auth.registerButton': '注册',
+    'auth.loginSuccess': '登录成功！',
+    'auth.registerSuccess': '注册成功！请检查邮箱进行确认。',
+    'auth.invalidCredentials': '登录凭据无效',
+    'auth.passwordMinLength': '密码必须至少6个字符',
+
     // Balance card
     'balance.current': '当前余额',
     'balance.income': '收入',
