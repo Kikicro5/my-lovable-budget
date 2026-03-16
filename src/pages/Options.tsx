@@ -262,7 +262,7 @@ const Options = () => {
                     {/* Logout Button */}
                     <Button 
                       variant="outline" 
-                      onClick={() => { const { signOut } = require('@/contexts/AuthContext').useAuth(); signOut(); }} 
+                      onClick={() => signOut()} 
                       className="w-full gap-2 mt-2"
                     >
                       <LogOut className="w-4 h-4" />
