@@ -238,14 +238,31 @@ const Options = () => {
               </div>
             )}
             {isPremium ? (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
-                <Crown className="w-5 h-5 text-primary" />
-                <div>
-                   <p className="font-medium text-sm text-foreground">{t('premium.active')}</p>
-                  {daysRemaining !== null && (
-                    <p className="text-xs text-muted-foreground">{t('premium.daysRemaining').replace('{days}', String(daysRemaining))}</p>
-                  )}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
+                  <Crown className="w-5 h-5 text-primary" />
+                  <div>
+                    <p className="font-medium text-sm text-foreground">{t('premium.active')}</p>
+                    {daysRemaining !== null && (
+                      <p className="text-xs text-muted-foreground">{t('premium.daysRemaining').replace('{days}', String(daysRemaining))}</p>
+                    )}
+                  </div>
                 </div>
+                {activationCode && (
+                  <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">
+                    <Key className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <code className="text-xs font-mono text-foreground flex-1">{activationCode}</code>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(activationCode);
+                        toast.success(t('share.copied') || 'Kopirano!');
+                      }}
+                      className="p-1 rounded hover:bg-muted"
+                    >
+                      <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                    </button>
+                  </div>
+                )}
               </div>
             ) : activated ? (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
