@@ -185,32 +185,34 @@ const Options = () => {
               <h2 className="text-lg font-semibold text-foreground">Premium</h2>
             </div>
             
-            {/* Premium Benefits */}
-            <div className="mb-4 p-3 rounded-lg bg-primary/5 border border-primary/10">
-              <p className="text-sm font-medium text-foreground mb-2">{t('premium.benefits.title')}</p>
-              <ul className="space-y-1.5">
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span>{t('premium.benefits.limits')}</span>
-                </li>
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span>{t('premium.benefits.charts')}</span>
-                </li>
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span>{t('premium.benefits.investments')}</span>
-                </li>
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span>{t('premium.benefits.savings')}</span>
-                </li>
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span>{t('premium.benefits.transfers')}</span>
-                </li>
-              </ul>
-            </div>
+            {/* Premium Benefits - only show when not premium */}
+            {!isPremium && (
+              <div className="mb-4 p-3 rounded-lg bg-primary/5 border border-primary/10">
+                <p className="text-sm font-medium text-foreground mb-2">{t('premium.benefits.title')}</p>
+                <ul className="space-y-1.5">
+                  <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{t('premium.benefits.limits')}</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{t('premium.benefits.charts')}</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{t('premium.benefits.investments')}</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{t('premium.benefits.savings')}</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{t('premium.benefits.transfers')}</span>
+                  </li>
+                </ul>
+              </div>
+            )}
             {isPremium ? (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
                 <Crown className="w-5 h-5 text-primary" />
@@ -301,19 +303,25 @@ const Options = () => {
             )}
           </div>
 
-          {/* App Guide Section */}
-          <AppGuide />
-
-          {/* Share Section */}
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <div className="flex items-center gap-2 mb-3">
-              <Share2 className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">Share App</h2>
-            </div>
-            <Button onClick={handleShare} className="w-full gap-2">
+          {/* Guide & Share Row */}
+          <div className="grid grid-cols-2 gap-4">
+            <AppGuide />
+            <Button onClick={handleShare} variant="outline" className="w-full gap-2">
               <Share2 className="w-4 h-4" />
               {t('share.button') || 'Share'}
             </Button>
+          </div>
+
+          {/* Legal Section */}
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">{t('legal.title')}</h2>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <TermsOfServiceDialog />
+              <PrivacyPolicyDialog />
+            </div>
           </div>
 
           {/* Reset App Section */}
@@ -354,18 +362,6 @@ const Options = () => {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-          </div>
-
-          {/* Legal Section */}
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <div className="flex items-center gap-2 mb-4">
-              <FileText className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-foreground">{t('legal.title')}</h2>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <TermsOfServiceDialog />
-              <PrivacyPolicyDialog />
-            </div>
           </div>
         </div>
       </div>

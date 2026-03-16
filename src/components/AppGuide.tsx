@@ -114,20 +114,12 @@ export const AppGuide = () => {
   const currentStepData = steps[currentStep];
 
   return (
-    <div className="bg-card rounded-xl p-4 border border-border">
-      <div className="flex items-center gap-2 mb-3">
-        <BookOpen className="w-5 h-5 text-primary" />
-        <h2 className="text-lg font-semibold text-foreground">{t('guide.title')}</h2>
-      </div>
-      <p className="text-sm text-muted-foreground mb-3">
-        {t('guide.description')}
-      </p>
-      
+    <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button onClick={handleOpen} className="w-full gap-2">
+          <Button onClick={handleOpen} variant="outline" className="w-full gap-2">
             <BookOpen className="w-4 h-4" />
-            {t('guide.start')}
+            {t('guide.title')}
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
@@ -249,6 +241,6 @@ export const AppGuide = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 };
