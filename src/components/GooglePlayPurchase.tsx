@@ -40,7 +40,9 @@ export const GooglePlayPurchase = () => {
       });
 
       if (error || !data?.success) {
-        toast.error(t('premium.verificationError'));
+        const detail = data?.error || error?.message || 'Unknown verification error';
+        console.error('Verification failed:', detail, { data, error });
+        toast.error(`${t('premium.verificationError')}: ${detail}`);
       } else {
         toast.success(t('premium.purchaseSuccess'));
         await checkStatus();
