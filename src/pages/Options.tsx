@@ -39,7 +39,7 @@ const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
   const { currency, setCurrency } = useCurrency();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { isPremium, daysRemaining, activateCode } = usePremium();
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
