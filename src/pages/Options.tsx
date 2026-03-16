@@ -258,6 +258,16 @@ const Options = () => {
                     <div className="border-t border-border pt-3 mt-3">
                       <GooglePlayPurchase />
                     </div>
+
+                    {/* Logout Button */}
+                    <Button 
+                      variant="outline" 
+                      onClick={() => { const { signOut } = require('@/contexts/AuthContext').useAuth(); signOut(); }} 
+                      className="w-full gap-2 mt-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      {t('auth.logout') || 'Odjava'}
+                    </Button>
                   </>
                 ) : (
                   <>
