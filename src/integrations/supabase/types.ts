@@ -115,6 +115,39 @@ export type Database = {
         }
         Relationships: []
       }
+      google_play_purchases: {
+        Row: {
+          device_id: string
+          id: string
+          is_active: boolean
+          product_id: string
+          purchase_token: string
+          purchased_at: string
+          user_id: string
+          valid_until: string
+        }
+        Insert: {
+          device_id: string
+          id?: string
+          is_active?: boolean
+          product_id: string
+          purchase_token: string
+          purchased_at?: string
+          user_id: string
+          valid_until?: string
+        }
+        Update: {
+          device_id?: string
+          id?: string
+          is_active?: boolean
+          product_id?: string
+          purchase_token?: string
+          purchased_at?: string
+          user_id?: string
+          valid_until?: string
+        }
+        Relationships: []
+      }
       premium_settings: {
         Row: {
           currency: string
