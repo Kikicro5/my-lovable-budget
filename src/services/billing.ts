@@ -126,6 +126,7 @@ export async function purchaseSubscription(): Promise<{
     // Start purchase with offer token if available
     const purchaseOptions: any = {
       productIdentifier: PRODUCT_ID,
+      planIdentifier: BASE_PLAN,
       productType: PURCHASE_TYPE.SUBS,
     };
 
