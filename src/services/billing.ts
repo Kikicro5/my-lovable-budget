@@ -81,28 +81,45 @@ export async function purchaseSubscription(): Promise<{
   }
 
   try {
+    console.log('[Billing] Starting purchase flow...');
     const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
+    console.log('[Billing] Plugin imported, checking billing support...');
+
+    const { isBillingSupported } = await NativePurchases.isBillingSupported();
+    console.log('[Billing] isBillingSupported:', isBillingSupported);
+    if (!isBillingSupported) {
+      return { success: false, error: 'Google Play Billing nije podržan na ovom uređaju' };
+    }
 
     // Verify product exists
+    console.log('[Billing] Fetching products for:', PRODUCT_ID);
     const { products } = await NativePurchases.getProducts({
       productIdentifiers: [PRODUCT_ID],
       productType: PURCHASE_TYPE.SUBS,
     });
 
+    console.log('[Billing] Products returned:', JSON.stringify(products));
+
     if (!products || products.length === 0) {
-      return { success: false, error: 'Product not found' };
+      return { success: false, error: `Proizvod "${PRODUCT_ID}" nije pronađen u Google Play Console` };
     }
 
     // Find the base plan offer
     const product = products[0] as any;
     let selectedOfferToken: string | undefined;
 
+    console.log('[Billing] Product details:', JSON.stringify(product));
+
     if (product.subscriptionOfferDetails && Array.isArray(product.subscriptionOfferDetails)) {
+      console.log('[Billing] Offer details:', JSON.stringify(product.subscriptionOfferDetails));
       const offer = product.subscriptionOfferDetails.find(
         (o: any) => o.basePlanId === BASE_PLAN
       );
       if (offer) {
         selectedOfferToken = offer.offerToken;
+        console.log('[Billing] Selected offerToken:', selectedOfferToken);
+      } else {
+        console.warn('[Billing] Base plan "' + BASE_PLAN + '" not found in offers');
       }
     }
 
@@ -116,7 +133,9 @@ export async function purchaseSubscription(): Promise<{
       purchaseOptions.offerToken = selectedOfferToken;
     }
 
+    console.log('[Billing] Calling purchaseProduct with:', JSON.stringify(purchaseOptions));
     const transaction = await NativePurchases.purchaseProduct(purchaseOptions);
+    console.log('[Billing] Transaction result:', JSON.stringify(transaction));
 
     if (transaction?.transactionId) {
       return { success: true, transactionId: transaction.transactionId };
@@ -128,7 +147,7 @@ export async function purchaseSubscription(): Promise<{
       return { success: false, error: 'cancelled' };
     }
     const detail = err?.message || JSON.stringify(err);
-    console.error('purchaseSubscription error:', detail, err);
+    console.error('[Billing] purchaseSubscription error:', detail, err);
     return { success: false, error: `Purchase failed: ${detail}` };
   }
 }
