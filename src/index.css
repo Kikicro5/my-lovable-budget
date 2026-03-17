@@ -217,3 +217,8 @@
     transform: scale(1);
   }
 }
+
+/* Safe area insets for native app (status bar) */
+body {
+  padding-top: env(safe-area-inset-top, 0px);
+}
