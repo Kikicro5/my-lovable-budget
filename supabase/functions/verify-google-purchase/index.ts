@@ -106,7 +106,7 @@ async function verifySubscription(
 
 // ── Main handler ──
 
-const PACKAGE_NAME = 'com.budgetcard.app'; // adjust if different
+const PACKAGE_NAME = 'app.lovable.budgetcard.twa';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
