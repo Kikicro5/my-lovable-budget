@@ -2,7 +2,6 @@ import { Capacitor } from '@capacitor/core';
 
 const PRODUCT_ID = '001_01';
 const BASE_PLAN = 'premium12';
-const GOOGLE_PLAY_PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuVjyPcO1pJNlbr29FJ7DnrYBmp/VLTJanjdXwB4G4a4EC6om8r3/TgJb85HRDth9yfx3X4pWZiOoISLJh/yYavKraIYh2HKSXgzS0s7D4HQ/aD9vhjsCaVGDohvloTgXyKoF8l56wHYLPH5jjseUjwCuFOu1Mo3h8tr1cvZZv93euqPQ5gMMSZiPStKstPsR6TURSQn/+NrGL/r+HFlW2UVVTZUL/mUaPEoaxh+FnaDho5GDiYe/QjqkNKxM5rKSKGH6WDMkFEuDyJH/hK8mgiqxrj9H6uoV0GqT4Q/RwrJT+O6yvxg0pt/fjj6u1af3pXsXb1vDZntKG5/V/iJh3QIDAQAB';
 const DEVICE_ID_KEY = 'budget-card-device-id';
 
 export const getDeviceId = (): string => {
