@@ -1875,7 +1875,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Credenciales de inicio de sesión inválidas',
     'auth.passwordMinLength': 'La contraseña debe tener al menos 6 caracteres',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Contacto',
+    'contact.description': 'Envíenos un mensaje y le responderemos.',
+    'contact.name': 'Su nombre',
+    'contact.email': 'Dirección de correo',
+    'contact.message': 'Mensaje',
+    'contact.send': 'Enviar',
+    'contact.sent': '¡Mensaje enviado con éxito!',
+    'contact.error': 'Error al enviar el mensaje',
+    'contact.fillAll': 'Por favor complete todos los campos',
+    'contact.invalidEmail': 'Dirección de correo inválida',
+    'contact.messageTooLong': 'El mensaje es demasiado largo (máx. 1000 caracteres)',
+
     'balance.current': 'Saldo actual',
     'balance.income': 'Ingresos',
     'balance.expense': 'Gastos',
