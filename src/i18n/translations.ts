@@ -2737,7 +2737,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': '登录凭据无效',
     'auth.passwordMinLength': '密码必须至少6个字符',
 
-    // Balance card
+    // Contact
+    'contact.title': '联系我们',
+    'contact.description': '给我们发消息，我们会尽快回复。',
+    'contact.name': '您的姓名',
+    'contact.email': '邮箱地址',
+    'contact.message': '消息',
+    'contact.send': '发送',
+    'contact.sent': '消息发送成功！',
+    'contact.error': '发送消息时出错',
+    'contact.fillAll': '请填写所有字段',
+    'contact.invalidEmail': '邮箱地址无效',
+    'contact.messageTooLong': '消息太长（最多1000个字符）',
+
     'balance.current': '当前余额',
     'balance.income': '收入',
     'balance.expense': '支出',
