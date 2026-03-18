@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Copy } from 'lucide-react';
+import ContactDialog from '@/components/ContactDialog';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
