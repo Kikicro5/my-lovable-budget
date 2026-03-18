@@ -1,16 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Loader2, CheckCircle, Crown, ExternalLink } from 'lucide-react';
+import { Loader2, CheckCircle, Crown, RotateCcw } from 'lucide-react';
 import {
-  isNativePlatform,
-  getSubscriptionProduct,
   purchaseSubscription,
-  manageSubscriptions,
+  restorePurchases,
 } from '@/services/googlePlayBilling';
 
 const DEVICE_ID_KEY = 'budget-card-device-id';
@@ -27,20 +25,27 @@ export const GooglePlaySubscription = () => {
   const { user } = useAuth();
   const { isPremium, checkStatus } = usePremium();
   const { t } = useLanguage();
-  const [loading, setLoading] = useState(false);
-  const [productInfo, setProductInfo] = useState<any>(null);
   const [purchasing, setPurchasing] = useState(false);
+  const [restoring, setRestoring] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const isAndroid = isNativePlatform();
-
-  useEffect(() => {
-    if (!isAndroid) return;
-    getSubscriptionProduct().then(setProductInfo).catch(console.error);
-  }, [isAndroid]);
-
-  if (!isAndroid) return null;
   if (isPremium) return null;
+
+  const verifyWithBackend = async (purchaseToken: string) => {
+    const { data, error } = await supabase.functions.invoke('verify-google-subscription', {
+      body: {
+        purchaseToken,
+        productId: '001_01',
+        deviceId: getDeviceId(),
+      },
+    });
+
+    if (error || !data?.success) {
+      toast.error(data?.error || t('premium.verificationError'));
+      return false;
+    }
+    return true;
+  };
 
   const handlePurchase = async () => {
     if (!user) {
@@ -62,29 +67,45 @@ export const GooglePlaySubscription = () => {
         return;
       }
 
-      // Verify with backend
-      const { data, error } = await supabase.functions.invoke('verify-google-subscription', {
-        body: {
-          purchaseToken: result.purchaseToken,
-          productId: '001_01',
-          deviceId: getDeviceId(),
-        },
-      });
-
-      if (error || !data?.success) {
-        toast.error(data?.error || t('premium.verificationError'));
-        setPurchasing(false);
-        return;
+      if (result.purchaseToken && await verifyWithBackend(result.purchaseToken)) {
+        setSuccess(true);
+        toast.success(t('premium.purchaseSuccess'));
+        await checkStatus();
       }
-
-      setSuccess(true);
-      toast.success(t('premium.purchaseSuccess'));
-      await checkStatus();
     } catch (err) {
       console.error('Purchase flow error:', err);
       toast.error(t('premium.purchaseError'));
     } finally {
       setPurchasing(false);
+    }
+  };
+
+  const handleRestore = async () => {
+    if (!user) {
+      toast.error(t('premium.loginRequired'));
+      return;
+    }
+
+    setRestoring(true);
+    try {
+      const result = await restorePurchases();
+
+      if (!result.success) {
+        toast.error(result.error || t('premium.restoreError') || 'No active subscription found');
+        setRestoring(false);
+        return;
+      }
+
+      if (result.purchaseToken && await verifyWithBackend(result.purchaseToken)) {
+        setSuccess(true);
+        toast.success(t('premium.purchaseSuccess'));
+        await checkStatus();
+      }
+    } catch (err) {
+      console.error('Restore flow error:', err);
+      toast.error(t('premium.purchaseError'));
+    } finally {
+      setRestoring(false);
     }
   };
 
@@ -107,12 +128,10 @@ export const GooglePlaySubscription = () => {
   }
 
   return (
-    <div className="space-y-3">
-      <p className="text-sm text-muted-foreground">{t('premium.subscribeGoogle')}</p>
-
+    <div className="space-y-2">
       <Button
         onClick={handlePurchase}
-        disabled={purchasing}
+        disabled={purchasing || restoring}
         className="w-full gap-2"
         size="lg"
       >
@@ -129,17 +148,25 @@ export const GooglePlaySubscription = () => {
         )}
       </Button>
 
-      {isPremium && (
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full gap-2"
-          onClick={manageSubscriptions}
-        >
-          <ExternalLink className="w-3.5 h-3.5" />
-          {t('premium.manageSubscription')}
-        </Button>
-      )}
+      <Button
+        onClick={handleRestore}
+        disabled={purchasing || restoring}
+        variant="outline"
+        className="w-full gap-2"
+        size="sm"
+      >
+        {restoring ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            {t('premium.processing')}
+          </>
+        ) : (
+          <>
+            <RotateCcw className="w-4 h-4" />
+            {t('premium.restoreSubscription') || 'Obnovi pretplatu'}
+          </>
+        )}
+      </Button>
     </div>
   );
 };

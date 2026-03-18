@@ -55,6 +55,28 @@ export const purchaseSubscription = async (): Promise<{
   }
 };
 
+export const restorePurchases = async (): Promise<{
+  success: boolean;
+  purchaseToken?: string;
+  error?: string;
+}> => {
+  if (!isNativePlatform()) {
+    return { success: false, error: 'Not on Android platform' };
+  }
+
+  try {
+    const result = await NativePurchases.restorePurchases();
+    const sub = result?.activeSubscriptions?.[0];
+    if (sub) {
+      return { success: true, purchaseToken: sub };
+    }
+    return { success: false, error: 'No active subscriptions found' };
+  } catch (error: any) {
+    console.error('Restore purchases error:', error);
+    return { success: false, error: error?.message || 'Restore failed' };
+  }
+};
+
 export const manageSubscriptions = async () => {
   if (!isNativePlatform()) return;
   try {
