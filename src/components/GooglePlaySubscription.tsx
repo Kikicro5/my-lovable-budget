@@ -112,18 +112,6 @@ export const GooglePlaySubscription = () => {
     );
   }
 
-  if (!user) {
-    return (
-      <div className="space-y-3">
-        <p className="text-xs text-muted-foreground">{t('premium.loginToBuy')}</p>
-        <Button onClick={() => navigate('/auth')} className="w-full gap-2" size="lg">
-          <LogIn className="h-4 w-4" />
-          {t('auth.login')}
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">{t('premium.subscribeGoogle')}</p>
