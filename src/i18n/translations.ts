@@ -1444,7 +1444,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Nieprawidłowe dane logowania',
     'auth.passwordMinLength': 'Hasło musi mieć minimum 6 znaków',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Kontakt',
+    'contact.description': 'Wyślij nam wiadomość, a my odpowiemy.',
+    'contact.name': 'Twoje imię',
+    'contact.email': 'Adres email',
+    'contact.message': 'Wiadomość',
+    'contact.send': 'Wyślij',
+    'contact.sent': 'Wiadomość wysłana pomyślnie!',
+    'contact.error': 'Błąd przy wysyłaniu wiadomości',
+    'contact.fillAll': 'Proszę wypełnić wszystkie pola',
+    'contact.invalidEmail': 'Nieprawidłowy adres email',
+    'contact.messageTooLong': 'Wiadomość jest za długa (max 1000 znaków)',
+
     'balance.current': 'Aktualny stan',
     'balance.income': 'Przychody',
     'balance.expense': 'Wydatki',
