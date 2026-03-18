@@ -2205,13 +2205,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Error al procesar el pago. Contacte soporte.',
     'premium.paypalError': 'Error de PayPal',
     'premium.perMonth': '{price}€/mes',
-    'premium.subscribeViaGooglePlay': 'Suscríbase a través de Google Play:',
-    'premium.subscribeButton': 'Suscribirse a Premium',
-    'premium.androidOnly': 'La suscripción está disponible a través de la aplicación Android en Google Play Store.',
-    'premium.billingNotSupported': 'La facturación de Google Play no es compatible con este dispositivo.',
-    'premium.productNotFound': 'Producto de suscripción no encontrado.',
-    'premium.verificationError': 'Error al verificar la compra.',
-    'premium.purchaseError': 'Error durante la compra. Inténtelo de nuevo.',
   },
 
   fr: {
