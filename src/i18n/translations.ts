@@ -3493,6 +3493,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.subscribeGoogle': 'या Google Play के माध्यम से सदस्यता लें:',
     'premium.subscribeButton': 'प्रीमियम की सदस्यता लें',
     'premium.manageSubscription': 'सदस्यता प्रबंधित करें',
+    'premium.restoreSubscription': 'सदस्यता पुनर्स्थापित करें',
     'premium.purchaseError': 'खरीदारी त्रुटि',
     'premium.verificationError': 'खरीदारी सत्यापन त्रुटि',
     'premium.unlockAll': 'ऐप की सभी प्रीमियम सुविधाएं अनलॉक करें।',
