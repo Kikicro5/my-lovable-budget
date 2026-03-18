@@ -3466,13 +3466,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'भुगतान प्रसंस्करण में त्रुटि। सहायता से संपर्क करें।',
     'premium.paypalError': 'PayPal त्रुटि',
     'premium.perMonth': '{price}€/माह',
-    'premium.subscribeViaGooglePlay': 'Google Play के माध्यम से सदस्यता लें:',
-    'premium.subscribeButton': 'Premium सदस्यता लें',
-    'premium.androidOnly': 'सदस्यता Google Play Store पर Android ऐप के माध्यम से उपलब्ध है।',
-    'premium.billingNotSupported': 'इस डिवाइस पर Google Play बिलिंग समर्थित नहीं है।',
-    'premium.productNotFound': 'सदस्यता उत्पाद नहीं मिला।',
-    'premium.verificationError': 'खरीद सत्यापन में त्रुटि।',
-    'premium.purchaseError': 'खरीद में त्रुटि। कृपया पुनः प्रयास करें।',
     'premium.loginForCode': 'कोड सक्रिय करने के लिए लॉगिन आवश्यक है।',
   },
 };
