@@ -461,7 +461,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'legal.privacy.section2.title': '2. Pohrana podataka',
     'legal.privacy.section2.content': 'Vaši financijski podaci pohranjuju se u lokalnoj memoriji vašeg uređaja (localStorage). Podaci ostaju na vašem uređaju i pod vašom kontrolom. Brisanjem aplikacije ili resetiranjem podataka trajno ćete izbrisati sve pohranjene informacije.',
     'legal.privacy.section3.title': '3. Oglasi',
-    'legal.privacy.section3.content': 'Aplikacija može prikazivati oglase putem Google AdMob servisa. Google može prikupljati anonimne podatke o korištenju za personalizaciju oglasa. Možete kupiti verziju bez reklama za potpuno iskustvo bez oglasa.',
+    'legal.privacy.section3.content': 'Ova aplikacija ne prikazuje oglase niti koristi oglašivačke servise.',
     'legal.privacy.section4.title': '4. Dijeljenje podataka',
     'legal.privacy.section4.content': 'Ne prodajemo, ne trgovamo niti na drugi način prenosimo vaše osobne podatke trećim stranama. Vaši financijski podaci ostaju privatni i pohranjeni isključivo na vašem uređaju.',
     'legal.privacy.section5.title': '5. Sigurnost',
