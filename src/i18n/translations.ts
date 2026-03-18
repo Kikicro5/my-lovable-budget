@@ -1778,6 +1778,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.subscribeGoogle': 'Lub subskrybuj przez Google Play:',
     'premium.subscribeButton': 'Subskrybuj Premium',
     'premium.manageSubscription': 'Zarządzaj subskrypcją',
+    'premium.restoreSubscription': 'Przywróć subskrypcję',
     'premium.purchaseError': 'Błąd zakupu',
     'premium.verificationError': 'Błąd weryfikacji zakupu',
     'premium.unlockAll': 'Odblokuj wszystkie funkcje premium aplikacji.',
