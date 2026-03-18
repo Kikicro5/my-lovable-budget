@@ -47,7 +47,7 @@ const Options = () => {
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
   const premiumRef = useRef<HTMLDivElement>(null);
-  const [activationCode, setActivationCode] = useState<string | null>(null);
+  
   const navigate = useNavigate();
 
 
