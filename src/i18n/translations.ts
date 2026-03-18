@@ -888,6 +888,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.subscribeGoogle': 'Or subscribe via Google Play:',
     'premium.subscribeButton': 'Subscribe to Premium',
     'premium.manageSubscription': 'Manage subscription',
+    'premium.restoreSubscription': 'Restore subscription',
     'premium.purchaseError': 'Purchase error',
     'premium.verificationError': 'Purchase verification error',
     'premium.unlockAll': 'Unlock all premium features of the app.',
