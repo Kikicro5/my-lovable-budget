@@ -57,10 +57,14 @@ const Admin = () => {
 
   const loadAll = async () => {
     try {
-      const data = await adminCall('load-all');
-      setCodes(data.codes || []);
-      setUsers(data.users || []);
-      setPrices(data.prices || []);
+      const [adminData, contactRes] = await Promise.all([
+        adminCall('load-all'),
+        supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
+      ]);
+      setCodes(adminData.codes || []);
+      setUsers(adminData.users || []);
+      setPrices(adminData.prices || []);
+      setContactMessages(contactRes.data || []);
     } catch (e: any) {
       toast.error(e.message);
     } finally {
