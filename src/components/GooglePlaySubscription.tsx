@@ -37,6 +37,7 @@ export const GooglePlaySubscription = () => {
         purchaseToken,
         productId: '001_01',
         deviceId: getDeviceId(),
+        userId: user?.id || null,
       },
     });
 
@@ -48,11 +49,6 @@ export const GooglePlaySubscription = () => {
   };
 
   const handlePurchase = async () => {
-    if (!user) {
-      toast.error(t('premium.loginRequired'));
-      return;
-    }
-
     setPurchasing(true);
     try {
       const result = await purchaseSubscription();
@@ -81,11 +77,6 @@ export const GooglePlaySubscription = () => {
   };
 
   const handleRestore = async () => {
-    if (!user) {
-      toast.error(t('premium.loginRequired'));
-      return;
-    }
-
     setRestoring(true);
     try {
       const result = await restorePurchases();
@@ -117,31 +108,6 @@ export const GooglePlaySubscription = () => {
           <p className="font-medium text-sm text-foreground">{t('premium.purchaseSuccess')}</p>
           <p className="text-xs text-muted-foreground">{t('premium.purchaseActivated')}</p>
         </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="space-y-2">
-        <p className="text-xs text-muted-foreground mb-2">{t('premium.loginToBuy')}</p>
-        <Button
-          onClick={() => toast.error(t('premium.loginRequired'))}
-          className="w-full gap-2"
-          size="lg"
-        >
-          <Crown className="w-4 h-4" />
-          {t('premium.subscribeButton')}
-        </Button>
-        <Button
-          onClick={() => toast.error(t('premium.loginRequired'))}
-          variant="outline"
-          className="w-full gap-2"
-          size="sm"
-        >
-          <RotateCcw className="w-4 h-4" />
-          {t('premium.restoreSubscription') || 'Obnovi pretplatu'}
-        </Button>
       </div>
     );
   }
