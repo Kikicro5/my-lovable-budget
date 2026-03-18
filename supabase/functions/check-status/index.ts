@@ -56,8 +56,17 @@ Deno.serve(async (req) => {
       activePurchase = purchases?.find(p => new Date(p.expires_at) > now);
     }
 
-    const isPremium = !!activeActivation || !!activePurchase;
-    const expiresAt = activeActivation?.valid_until || activePurchase?.expires_at || null;
+    // Check Google Play subscriptions
+    let activeGoogleSub = null;
+    const { data: googleSubs } = await adminClient
+      .from('google_play_subscriptions')
+      .select('id, expiry_time, auto_renewing, product_id, order_id')
+      .or(`user_id.eq.${userId}`)
+      .order('expiry_time', { ascending: false });
+    activeGoogleSub = googleSubs?.find(s => new Date(s.expiry_time) > now);
+
+    const isPremium = !!activeActivation || !!activePurchase || !!activeGoogleSub;
+    const expiresAt = activeActivation?.valid_until || activePurchase?.expires_at || activeGoogleSub?.expiry_time || null;
 
     return new Response(JSON.stringify({
       isPremium,
