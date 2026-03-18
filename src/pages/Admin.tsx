@@ -12,8 +12,9 @@ import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap } from 'lucide-react';
+import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap, MessageCircle } from 'lucide-react';
 import jsPDF from 'jspdf';
+import ContactInbox from '@/components/admin/ContactInbox';
 
 interface CodeData {
   id: string; code: string; max_uses: number; current_uses: number; expires_at: string; created_at: string; note: string | null;
@@ -38,6 +39,7 @@ const Admin = () => {
   const [expiresPeriod, setExpiresPeriod] = useState('365');
   const [lastGenerated, setLastGenerated] = useState<CodeData[]>([]);
   const [deleteDialog, setDeleteDialog] = useState<{ type: 'code' | 'user'; id: string; label: string } | null>(null);
+  const [contactMessages, setContactMessages] = useState<any[]>([]);
 
   useEffect(() => {
     if (!authLoading && !isAdmin) navigate('/');
@@ -55,10 +57,14 @@ const Admin = () => {
 
   const loadAll = async () => {
     try {
-      const data = await adminCall('load-all');
-      setCodes(data.codes || []);
-      setUsers(data.users || []);
-      setPrices(data.prices || []);
+      const [adminData, contactRes] = await Promise.all([
+        adminCall('load-all'),
+        supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
+      ]);
+      setCodes(adminData.codes || []);
+      setUsers(adminData.users || []);
+      setPrices(adminData.prices || []);
+      setContactMessages(contactRes.data || []);
     } catch (e: any) {
       toast.error(e.message);
     } finally {
@@ -150,10 +156,18 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="codes">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="codes" className="gap-1 text-xs"><Key className="w-3 h-3" />Kodovi</TabsTrigger>
             <TabsTrigger value="users" className="gap-1 text-xs"><Users className="w-3 h-3" />Korisnici</TabsTrigger>
             <TabsTrigger value="prices" className="gap-1 text-xs"><DollarSign className="w-3 h-3" />Cijene</TabsTrigger>
+            <TabsTrigger value="contacts" className="gap-1 text-xs relative">
+              <MessageCircle className="w-3 h-3" />Poruke
+              {contactMessages.filter(m => !m.is_read).length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center">
+                  {contactMessages.filter(m => !m.is_read).length}
+                </span>
+              )}
+            </TabsTrigger>
           </TabsList>
 
           {/* KODOVI TAB */}
@@ -301,6 +315,10 @@ const Admin = () => {
                 {!prices.length && <p className="text-center text-muted-foreground text-sm">Nema cijena</p>}
               </CardContent>
             </Card>
+          </TabsContent>
+          {/* PORUKE TAB */}
+          <TabsContent value="contacts" className="mt-4">
+            <ContactInbox messages={contactMessages} loading={initialLoading} onRefresh={loadAll} />
           </TabsContent>
         </Tabs>
       </div>

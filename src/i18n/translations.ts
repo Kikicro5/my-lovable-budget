@@ -65,7 +65,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Neispravni podaci za prijavu',
     'auth.passwordMinLength': 'Lozinka mora imati najmanje 6 znakova',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Kontakt',
+    'contact.description': 'Pošaljite nam poruku i odgovorit ćemo vam.',
+    'contact.name': 'Vaše ime',
+    'contact.email': 'Email adresa',
+    'contact.message': 'Poruka',
+    'contact.send': 'Pošalji',
+    'contact.sent': 'Poruka uspješno poslana!',
+    'contact.error': 'Greška pri slanju poruke',
+    'contact.fillAll': 'Molimo ispunite sva polja',
+    'contact.invalidEmail': 'Neispravna email adresa',
+    'contact.messageTooLong': 'Poruka je predugačka (max 1000 znakova)',
+
     'balance.current': 'Trenutno stanje',
     'balance.income': 'Prihodi',
     'balance.expense': 'Rashodi',
@@ -529,7 +541,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Invalid login credentials',
     'auth.passwordMinLength': 'Password must be at least 6 characters',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Contact',
+    'contact.description': 'Send us a message and we will get back to you.',
+    'contact.name': 'Your name',
+    'contact.email': 'Email address',
+    'contact.message': 'Message',
+    'contact.send': 'Send',
+    'contact.sent': 'Message sent successfully!',
+    'contact.error': 'Error sending message',
+    'contact.fillAll': 'Please fill in all fields',
+    'contact.invalidEmail': 'Invalid email address',
+    'contact.messageTooLong': 'Message is too long (max 1000 characters)',
+
     'balance.current': 'Current Balance',
     'balance.income': 'Income',
     'balance.expense': 'Expenses',
@@ -989,7 +1013,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Ungültige Anmeldedaten',
     'auth.passwordMinLength': 'Passwort muss mindestens 6 Zeichen haben',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Kontakt',
+    'contact.description': 'Senden Sie uns eine Nachricht und wir melden uns bei Ihnen.',
+    'contact.name': 'Ihr Name',
+    'contact.email': 'E-Mail-Adresse',
+    'contact.message': 'Nachricht',
+    'contact.send': 'Senden',
+    'contact.sent': 'Nachricht erfolgreich gesendet!',
+    'contact.error': 'Fehler beim Senden der Nachricht',
+    'contact.fillAll': 'Bitte füllen Sie alle Felder aus',
+    'contact.invalidEmail': 'Ungültige E-Mail-Adresse',
+    'contact.messageTooLong': 'Nachricht ist zu lang (max. 1000 Zeichen)',
+
     'balance.current': 'Aktueller Kontostand',
     'balance.income': 'Einnahmen',
     'balance.expense': 'Ausgaben',
@@ -1408,7 +1444,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Nieprawidłowe dane logowania',
     'auth.passwordMinLength': 'Hasło musi mieć minimum 6 znaków',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Kontakt',
+    'contact.description': 'Wyślij nam wiadomość, a my odpowiemy.',
+    'contact.name': 'Twoje imię',
+    'contact.email': 'Adres email',
+    'contact.message': 'Wiadomość',
+    'contact.send': 'Wyślij',
+    'contact.sent': 'Wiadomość wysłana pomyślnie!',
+    'contact.error': 'Błąd przy wysyłaniu wiadomości',
+    'contact.fillAll': 'Proszę wypełnić wszystkie pola',
+    'contact.invalidEmail': 'Nieprawidłowy adres email',
+    'contact.messageTooLong': 'Wiadomość jest za długa (max 1000 znaków)',
+
     'balance.current': 'Aktualny stan',
     'balance.income': 'Przychody',
     'balance.expense': 'Wydatki',
@@ -1827,7 +1875,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Credenciales de inicio de sesión inválidas',
     'auth.passwordMinLength': 'La contraseña debe tener al menos 6 caracteres',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Contacto',
+    'contact.description': 'Envíenos un mensaje y le responderemos.',
+    'contact.name': 'Su nombre',
+    'contact.email': 'Dirección de correo',
+    'contact.message': 'Mensaje',
+    'contact.send': 'Enviar',
+    'contact.sent': '¡Mensaje enviado con éxito!',
+    'contact.error': 'Error al enviar el mensaje',
+    'contact.fillAll': 'Por favor complete todos los campos',
+    'contact.invalidEmail': 'Dirección de correo inválida',
+    'contact.messageTooLong': 'El mensaje es demasiado largo (máx. 1000 caracteres)',
+
     'balance.current': 'Saldo actual',
     'balance.income': 'Ingresos',
     'balance.expense': 'Gastos',
@@ -2246,7 +2306,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Identifiants de connexion invalides',
     'auth.passwordMinLength': 'Le mot de passe doit contenir au moins 6 caractères',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Contact',
+    'contact.description': 'Envoyez-nous un message et nous vous répondrons.',
+    'contact.name': 'Votre nom',
+    'contact.email': 'Adresse email',
+    'contact.message': 'Message',
+    'contact.send': 'Envoyer',
+    'contact.sent': 'Message envoyé avec succès !',
+    'contact.error': 'Erreur lors de l\'envoi du message',
+    'contact.fillAll': 'Veuillez remplir tous les champs',
+    'contact.invalidEmail': 'Adresse email invalide',
+    'contact.messageTooLong': 'Le message est trop long (max 1000 caractères)',
+
     'balance.current': 'Solde actuel',
     'balance.income': 'Revenus',
     'balance.expense': 'Dépenses',
@@ -2665,7 +2737,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': '登录凭据无效',
     'auth.passwordMinLength': '密码必须至少6个字符',
 
-    // Balance card
+    // Contact
+    'contact.title': '联系我们',
+    'contact.description': '给我们发消息，我们会尽快回复。',
+    'contact.name': '您的姓名',
+    'contact.email': '邮箱地址',
+    'contact.message': '消息',
+    'contact.send': '发送',
+    'contact.sent': '消息发送成功！',
+    'contact.error': '发送消息时出错',
+    'contact.fillAll': '请填写所有字段',
+    'contact.invalidEmail': '邮箱地址无效',
+    'contact.messageTooLong': '消息太长（最多1000个字符）',
+
     'balance.current': '当前余额',
     'balance.income': '收入',
     'balance.expense': '支出',
@@ -3079,7 +3163,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'अमान्य लॉगिन क्रेडेंशियल्स',
     'auth.passwordMinLength': 'पासवर्ड कम से कम 6 अक्षर का होना चाहिए',
 
-    // Balance card
+    // Contact
+    'contact.title': 'संपर्क',
+    'contact.description': 'हमें एक संदेश भेजें और हम आपसे संपर्क करेंगे।',
+    'contact.name': 'आपका नाम',
+    'contact.email': 'ईमेल पता',
+    'contact.message': 'संदेश',
+    'contact.send': 'भेजें',
+    'contact.sent': 'संदेश सफलतापूर्वक भेजा गया!',
+    'contact.error': 'संदेश भेजने में त्रुटि',
+    'contact.fillAll': 'कृपया सभी फ़ील्ड भरें',
+    'contact.invalidEmail': 'अमान्य ईमेल पता',
+    'contact.messageTooLong': 'संदेश बहुत लंबा है (अधिकतम 1000 अक्षर)',
+
     'balance.current': 'वर्तमान शेष',
     'balance.income': 'आय',
     'balance.expense': 'व्यय',
