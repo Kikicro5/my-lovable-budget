@@ -65,7 +65,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'Neispravni podaci za prijavu',
     'auth.passwordMinLength': 'Lozinka mora imati najmanje 6 znakova',
 
-    // Balance card
+    // Contact
+    'contact.title': 'Kontakt',
+    'contact.description': 'Pošaljite nam poruku i odgovorit ćemo vam.',
+    'contact.name': 'Vaše ime',
+    'contact.email': 'Email adresa',
+    'contact.message': 'Poruka',
+    'contact.send': 'Pošalji',
+    'contact.sent': 'Poruka uspješno poslana!',
+    'contact.error': 'Greška pri slanju poruke',
+    'contact.fillAll': 'Molimo ispunite sva polja',
+    'contact.invalidEmail': 'Neispravna email adresa',
+    'contact.messageTooLong': 'Poruka je predugačka (max 1000 znakova)',
+
     'balance.current': 'Trenutno stanje',
     'balance.income': 'Prihodi',
     'balance.expense': 'Rashodi',
