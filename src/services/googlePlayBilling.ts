@@ -34,6 +34,7 @@ export const purchaseSubscription = async (): Promise<{
   try {
     const result = await NativePurchases.purchaseProduct({
       productIdentifier: PRODUCT_ID,
+      planIdentifier: 'premium12',
       productType: PURCHASE_TYPE.SUBS,
       quantity: 1,
     });
