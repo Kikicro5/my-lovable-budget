@@ -37,6 +37,7 @@ export const GooglePlaySubscription = () => {
         purchaseToken,
         productId: '001_01',
         deviceId: getDeviceId(),
+        userId: user?.id || null,
       },
     });
 
