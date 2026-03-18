@@ -290,10 +290,6 @@ const Options = () => {
                   </Button>
                 </div>
 
-                {/* Google Play Purchase */}
-                <div className="border-t border-border pt-3 mt-3">
-                  <GooglePlayPurchase />
-                </div>
               </div>
             )}
           </div>
