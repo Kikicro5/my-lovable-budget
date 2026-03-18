@@ -20,6 +20,3 @@ verify_jwt = false
 
 [functions.verify-device-purchase]
 verify_jwt = false
-
-[functions.google-play-webhook]
-verify_jwt = false
