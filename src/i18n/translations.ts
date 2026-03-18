@@ -3163,7 +3163,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.invalidCredentials': 'अमान्य लॉगिन क्रेडेंशियल्स',
     'auth.passwordMinLength': 'पासवर्ड कम से कम 6 अक्षर का होना चाहिए',
 
-    // Balance card
+    // Contact
+    'contact.title': 'संपर्क',
+    'contact.description': 'हमें एक संदेश भेजें और हम आपसे संपर्क करेंगे।',
+    'contact.name': 'आपका नाम',
+    'contact.email': 'ईमेल पता',
+    'contact.message': 'संदेश',
+    'contact.send': 'भेजें',
+    'contact.sent': 'संदेश सफलतापूर्वक भेजा गया!',
+    'contact.error': 'संदेश भेजने में त्रुटि',
+    'contact.fillAll': 'कृपया सभी फ़ील्ड भरें',
+    'contact.invalidEmail': 'अमान्य ईमेल पता',
+    'contact.messageTooLong': 'संदेश बहुत लंबा है (अधिकतम 1000 अक्षर)',
+
     'balance.current': 'वर्तमान शेष',
     'balance.income': 'आय',
     'balance.expense': 'व्यय',
