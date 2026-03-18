@@ -1348,6 +1348,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.subscribeGoogle': 'Oder abonnieren Sie über Google Play:',
     'premium.subscribeButton': 'Premium abonnieren',
     'premium.manageSubscription': 'Abonnement verwalten',
+    'premium.restoreSubscription': 'Abonnement wiederherstellen',
     'premium.purchaseError': 'Kauffehler',
     'premium.verificationError': 'Kaufverifizierungsfehler',
     'premium.unlockAll': 'Schalten Sie alle Premium-Funktionen der App frei.',
