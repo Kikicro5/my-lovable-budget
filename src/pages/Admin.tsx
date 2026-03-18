@@ -156,10 +156,18 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="codes">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="codes" className="gap-1 text-xs"><Key className="w-3 h-3" />Kodovi</TabsTrigger>
             <TabsTrigger value="users" className="gap-1 text-xs"><Users className="w-3 h-3" />Korisnici</TabsTrigger>
             <TabsTrigger value="prices" className="gap-1 text-xs"><DollarSign className="w-3 h-3" />Cijene</TabsTrigger>
+            <TabsTrigger value="contacts" className="gap-1 text-xs relative">
+              <MessageCircle className="w-3 h-3" />Poruke
+              {contactMessages.filter(m => !m.is_read).length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center">
+                  {contactMessages.filter(m => !m.is_read).length}
+                </span>
+              )}
+            </TabsTrigger>
           </TabsList>
 
           {/* KODOVI TAB */}
