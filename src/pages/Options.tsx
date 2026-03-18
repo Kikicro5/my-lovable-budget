@@ -50,27 +50,6 @@ const Options = () => {
   const [activationCode, setActivationCode] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Fetch Google Play activation code for premium users
-  useEffect(() => {
-    if (!isPremium || !user) return;
-    const fetchCode = async () => {
-      const { data } = await supabase
-        .from('activations')
-        .select('code_id')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(1);
-      if (data?.[0]?.code_id) {
-        const { data: codeData } = await supabase
-          .from('activation_codes')
-          .select('code')
-          .eq('id', data[0].code_id)
-          .single();
-        if (codeData?.code) setActivationCode(codeData.code);
-      }
-    };
-    fetchCode();
-  }, [isPremium, user]);
 
   useEffect(() => {
     if (window.location.hash === '#premium' && premiumRef.current) {
