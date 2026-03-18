@@ -12,8 +12,9 @@ import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap } from 'lucide-react';
+import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap, MessageCircle } from 'lucide-react';
 import jsPDF from 'jspdf';
+import ContactInbox from '@/components/admin/ContactInbox';
 
 interface CodeData {
   id: string; code: string; max_uses: number; current_uses: number; expires_at: string; created_at: string; note: string | null;
