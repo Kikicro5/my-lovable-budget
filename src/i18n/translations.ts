@@ -435,13 +435,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Greška pri obradi plaćanja. Kontaktirajte podršku.',
     'premium.paypalError': 'Greška s PayPal-om',
     'premium.perMonth': '{price}€/mj',
-    'premium.subscribeViaGooglePlay': 'Pretplatite se putem Google Play-a:',
-    'premium.subscribeButton': 'Pretplati se na Premium',
-    'premium.androidOnly': 'Pretplata je dostupna putem Android aplikacije na Google Play Store-u.',
-    'premium.billingNotSupported': 'Google Play naplata nije podržana na ovom uređaju.',
-    'premium.productNotFound': 'Proizvod pretplate nije pronađen.',
-    'premium.verificationError': 'Greška pri verifikaciji kupnje.',
-    'premium.purchaseError': 'Greška pri kupnji. Pokušajte ponovo.',
 
     // Legal
     'legal.title': 'Pravne informacije',
