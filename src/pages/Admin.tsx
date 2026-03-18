@@ -316,6 +316,10 @@ const Admin = () => {
               </CardContent>
             </Card>
           </TabsContent>
+          {/* PORUKE TAB */}
+          <TabsContent value="contacts" className="mt-4">
+            <ContactInbox messages={contactMessages} loading={initialLoading} onRefresh={loadAll} />
+          </TabsContent>
         </Tabs>
       </div>
 

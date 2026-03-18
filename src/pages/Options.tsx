@@ -302,14 +302,17 @@ const Options = () => {
           <div className="bg-card rounded-xl p-4 border border-border">
             {user ? (
               <div className="space-y-2">
-                <Button 
-                  variant="outline" 
-                  onClick={() => signOut()} 
-                  className="w-full gap-2"
-                >
-                  <LogOut className="w-4 h-4" />
-                  {t('auth.logout')}
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => signOut()} 
+                    className="flex-1 gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    {t('auth.logout')}
+                  </Button>
+                  <ContactDialog />
+                </div>
 
                 {/* Admin Panel Button */}
                 {isAdmin && (
@@ -324,10 +327,13 @@ const Options = () => {
                 )}
               </div>
             ) : (
-              <Button onClick={() => navigate('/auth')} className="w-full gap-2">
-                <LogIn className="w-4 h-4" />
-                {t('auth.login')}
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={() => navigate('/auth')} className="flex-1 gap-2">
+                  <LogIn className="w-4 h-4" />
+                  {t('auth.login')}
+                </Button>
+                <ContactDialog />
+              </div>
             )}
           </div>
 
