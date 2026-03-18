@@ -255,6 +255,7 @@ const Options = () => {
                   </Button>
                 </div>
 
+                <GooglePlaySubscription />
               </div>
             )}
           </div>
