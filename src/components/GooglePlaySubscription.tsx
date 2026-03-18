@@ -76,11 +76,6 @@ export const GooglePlaySubscription = () => {
   };
 
   const handleRestore = async () => {
-    if (!user) {
-      toast.error(t('premium.loginRequired'));
-      return;
-    }
-
     setRestoring(true);
     try {
       const result = await restorePurchases();
