@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
-import { checkSubscription, getDeviceId } from '@/services/billing';
 
 interface PremiumContextType {
   isPremium: boolean;
@@ -14,7 +13,16 @@ interface PremiumContextType {
 
 const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
 
-// Device ID is now provided by billing service
+const DEVICE_ID_KEY = 'budget-card-device-id';
+
+const getDeviceId = (): string => {
+  let id = localStorage.getItem(DEVICE_ID_KEY);
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem(DEVICE_ID_KEY, id);
+  }
+  return id;
+};
 
 export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, session, isAdmin } = useAuth();
@@ -23,7 +31,6 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
 
   const checkStatus = useCallback(async () => {
-    // Admins always have premium - check this first
     if (isAdmin) {
       setIsPremium(true);
       setExpiresAt(null);
@@ -39,16 +46,6 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
 
     try {
-      // First check local Google Play subscription
-      const localCheck = await checkSubscription();
-      if (localCheck.isPurchased) {
-        setIsPremium(true);
-        setExpiresAt(null);
-        setIsLoading(false);
-        return;
-      }
-
-      // Fall back to server check
       const { data, error } = await supabase.functions.invoke('check-status', {
         body: { deviceId: getDeviceId() },
       });
@@ -70,7 +67,6 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   useEffect(() => {
     checkStatus();
-    // Re-check every 30 minutes
     const interval = setInterval(checkStatus, 30 * 60 * 1000);
     return () => clearInterval(interval);
   }, [checkStatus]);
