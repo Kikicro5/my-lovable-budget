@@ -413,6 +413,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.subscribeGoogle': 'Ili se pretplatite putem Google Play-a:',
     'premium.subscribeButton': 'Pretplati se na Premium',
     'premium.manageSubscription': 'Upravljaj pretplatom',
+    'premium.restoreSubscription': 'Obnovi pretplatu',
     'premium.purchaseError': 'Greška pri kupnji',
     'premium.verificationError': 'Greška pri verifikaciji kupnje',
     'premium.unlockAll': 'Otključajte sve premium značajke aplikacije.',
