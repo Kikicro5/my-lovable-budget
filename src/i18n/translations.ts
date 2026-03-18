@@ -3068,6 +3068,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.subscribeGoogle': '或通过Google Play订阅：',
     'premium.subscribeButton': '订阅高级版',
     'premium.manageSubscription': '管理订阅',
+    'premium.restoreSubscription': '恢复订阅',
     'premium.purchaseError': '购买错误',
     'premium.verificationError': '购买验证错误',
     'premium.unlockAll': '解锁应用的所有高级功能。',
