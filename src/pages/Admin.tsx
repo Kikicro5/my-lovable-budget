@@ -39,6 +39,7 @@ const Admin = () => {
   const [expiresPeriod, setExpiresPeriod] = useState('365');
   const [lastGenerated, setLastGenerated] = useState<CodeData[]>([]);
   const [deleteDialog, setDeleteDialog] = useState<{ type: 'code' | 'user'; id: string; label: string } | null>(null);
+  const [contactMessages, setContactMessages] = useState<any[]>([]);
 
   useEffect(() => {
     if (!authLoading && !isAdmin) navigate('/');
