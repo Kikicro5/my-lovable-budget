@@ -930,7 +930,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'legal.privacy.section2.title': '2. Data Storage',
     'legal.privacy.section2.content': 'Your financial data is stored in your device\'s local storage (localStorage). Data remains on your device and under your control. Deleting the application or resetting data will permanently delete all stored information.',
     'legal.privacy.section3.title': '3. Advertisements',
-    'legal.privacy.section3.content': 'The application may display ads through the Google AdMob service. Google may collect anonymous usage data for ad personalization. You can purchase the ad-free version for a complete ad-free experience.',
+    'legal.privacy.section3.content': 'This application does not display ads or use any advertising services.',
     'legal.privacy.section4.title': '4. Data Sharing',
     'legal.privacy.section4.content': 'We do not sell, trade, or otherwise transfer your personal data to third parties. Your financial data remains private and stored exclusively on your device.',
     'legal.privacy.section5.title': '5. Security',
