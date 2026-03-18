@@ -48,11 +48,6 @@ export const GooglePlaySubscription = () => {
   };
 
   const handlePurchase = async () => {
-    if (!user) {
-      toast.error(t('premium.loginRequired'));
-      return;
-    }
-
     setPurchasing(true);
     try {
       const result = await purchaseSubscription();
