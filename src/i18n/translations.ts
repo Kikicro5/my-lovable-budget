@@ -3047,13 +3047,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': '处理付款出错。请联系客服。',
     'premium.paypalError': 'PayPal错误',
     'premium.perMonth': '{price}€/月',
-    'premium.subscribeViaGooglePlay': '通过Google Play订阅：',
-    'premium.subscribeButton': '订阅Premium',
-    'premium.androidOnly': '订阅可通过Google Play商店中的Android应用获取。',
-    'premium.billingNotSupported': '此设备不支持Google Play计费。',
-    'premium.productNotFound': '未找到订阅产品。',
-    'premium.verificationError': '购买验证错误。',
-    'premium.purchaseError': '购买错误。请重试。',
     'premium.loginForCode': '激活代码需要登录。',
   },
 
