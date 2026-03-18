@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Copy } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield } from 'lucide-react';
 import ContactDialog from '@/components/ContactDialog';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
-import { supabase } from '@/integrations/supabase/client';
+
 import { Input } from '@/components/ui/input';
 
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
-import { GooglePlayPurchase } from '@/components/GooglePlayPurchase';
+
 
 import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
 import {
@@ -47,30 +47,9 @@ const Options = () => {
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
   const premiumRef = useRef<HTMLDivElement>(null);
-  const [activationCode, setActivationCode] = useState<string | null>(null);
+  
   const navigate = useNavigate();
 
-  // Fetch Google Play activation code for premium users
-  useEffect(() => {
-    if (!isPremium || !user) return;
-    const fetchCode = async () => {
-      const { data } = await supabase
-        .from('activations')
-        .select('code_id')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(1);
-      if (data?.[0]?.code_id) {
-        const { data: codeData } = await supabase
-          .from('activation_codes')
-          .select('code')
-          .eq('id', data[0].code_id)
-          .single();
-        if (codeData?.code) setActivationCode(codeData.code);
-      }
-    };
-    fetchCode();
-  }, [isPremium, user]);
 
   useEffect(() => {
     if (window.location.hash === '#premium' && premiumRef.current) {
@@ -249,21 +228,6 @@ const Options = () => {
                     )}
                   </div>
                 </div>
-                {activationCode && (
-                  <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">
-                    <Key className="w-4 h-4 text-muted-foreground shrink-0" />
-                    <code className="text-xs font-mono text-foreground flex-1">{activationCode}</code>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(activationCode);
-                        toast.success(t('share.copied') || 'Kopirano!');
-                      }}
-                      className="p-1 rounded hover:bg-muted"
-                    >
-                      <Copy className="w-3.5 h-3.5 text-muted-foreground" />
-                    </button>
-                  </div>
-                )}
               </div>
             ) : activated ? (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
@@ -290,10 +254,6 @@ const Options = () => {
                   </Button>
                 </div>
 
-                {/* Google Play Purchase */}
-                <div className="border-t border-border pt-3 mt-3">
-                  <GooglePlayPurchase />
-                </div>
               </div>
             )}
           </div>

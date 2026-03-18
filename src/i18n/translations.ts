@@ -435,13 +435,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Greška pri obradi plaćanja. Kontaktirajte podršku.',
     'premium.paypalError': 'Greška s PayPal-om',
     'premium.perMonth': '{price}€/mj',
-    'premium.subscribeViaGooglePlay': 'Pretplatite se putem Google Play-a:',
-    'premium.subscribeButton': 'Pretplati se na Premium',
-    'premium.androidOnly': 'Pretplata je dostupna putem Android aplikacije na Google Play Store-u.',
-    'premium.billingNotSupported': 'Google Play naplata nije podržana na ovom uređaju.',
-    'premium.productNotFound': 'Proizvod pretplate nije pronađen.',
-    'premium.verificationError': 'Greška pri verifikaciji kupnje.',
-    'premium.purchaseError': 'Greška pri kupnji. Pokušajte ponovo.',
 
     // Legal
     'legal.title': 'Pravne informacije',
@@ -911,13 +904,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Error processing payment. Contact support.',
     'premium.paypalError': 'PayPal error',
     'premium.perMonth': '{price}€/mo',
-    'premium.subscribeViaGooglePlay': 'Subscribe via Google Play:',
-    'premium.subscribeButton': 'Subscribe to Premium',
-    'premium.androidOnly': 'Subscription is available through the Android app on Google Play Store.',
-    'premium.billingNotSupported': 'Google Play billing is not supported on this device.',
-    'premium.productNotFound': 'Subscription product not found.',
-    'premium.verificationError': 'Error verifying purchase.',
-    'premium.purchaseError': 'Error during purchase. Please try again.',
 
     // Legal
     'legal.title': 'Legal Information',
@@ -1371,13 +1357,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Fehler bei der Zahlungsverarbeitung. Kontaktieren Sie den Support.',
     'premium.paypalError': 'PayPal-Fehler',
     'premium.perMonth': '{price}€/Mo',
-    'premium.subscribeViaGooglePlay': 'Abonnieren Sie über Google Play:',
-    'premium.subscribeButton': 'Premium abonnieren',
-    'premium.androidOnly': 'Das Abonnement ist über die Android-App im Google Play Store verfügbar.',
-    'premium.billingNotSupported': 'Google Play-Abrechnung wird auf diesem Gerät nicht unterstützt.',
-    'premium.productNotFound': 'Abo-Produkt nicht gefunden.',
-    'premium.verificationError': 'Fehler bei der Kaufverifizierung.',
-    'premium.purchaseError': 'Fehler beim Kauf. Bitte versuchen Sie es erneut.',
   },
 
   pl: {
@@ -1802,13 +1781,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Błąd przetwarzania płatności. Skontaktuj się z pomocą.',
     'premium.paypalError': 'Błąd PayPal',
     'premium.perMonth': '{price}€/mies.',
-    'premium.subscribeViaGooglePlay': 'Subskrybuj przez Google Play:',
-    'premium.subscribeButton': 'Subskrybuj Premium',
-    'premium.androidOnly': 'Subskrypcja jest dostępna przez aplikację Android w Google Play Store.',
-    'premium.billingNotSupported': 'Płatności Google Play nie są obsługiwane na tym urządzeniu.',
-    'premium.productNotFound': 'Produkt subskrypcji nie znaleziony.',
-    'premium.verificationError': 'Błąd weryfikacji zakupu.',
-    'premium.purchaseError': 'Błąd podczas zakupu. Spróbuj ponownie.',
   },
 
   es: {
@@ -2233,13 +2205,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Error al procesar el pago. Contacte soporte.',
     'premium.paypalError': 'Error de PayPal',
     'premium.perMonth': '{price}€/mes',
-    'premium.subscribeViaGooglePlay': 'Suscríbase a través de Google Play:',
-    'premium.subscribeButton': 'Suscribirse a Premium',
-    'premium.androidOnly': 'La suscripción está disponible a través de la aplicación Android en Google Play Store.',
-    'premium.billingNotSupported': 'La facturación de Google Play no es compatible con este dispositivo.',
-    'premium.productNotFound': 'Producto de suscripción no encontrado.',
-    'premium.verificationError': 'Error al verificar la compra.',
-    'premium.purchaseError': 'Error durante la compra. Inténtelo de nuevo.',
   },
 
   fr: {
@@ -2664,13 +2629,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'Erreur de traitement du paiement. Contactez le support.',
     'premium.paypalError': 'Erreur PayPal',
     'premium.perMonth': '{price}€/mois',
-    'premium.subscribeViaGooglePlay': 'Abonnez-vous via Google Play :',
-    'premium.subscribeButton': 'S\'abonner à Premium',
-    'premium.androidOnly': 'L\'abonnement est disponible via l\'application Android sur Google Play Store.',
-    'premium.billingNotSupported': 'La facturation Google Play n\'est pas prise en charge sur cet appareil.',
-    'premium.productNotFound': 'Produit d\'abonnement introuvable.',
-    'premium.verificationError': 'Erreur de vérification de l\'achat.',
-    'premium.purchaseError': 'Erreur lors de l\'achat. Veuillez réessayer.',
   },
 
   zh: {
@@ -3089,13 +3047,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': '处理付款出错。请联系客服。',
     'premium.paypalError': 'PayPal错误',
     'premium.perMonth': '{price}€/月',
-    'premium.subscribeViaGooglePlay': '通过Google Play订阅：',
-    'premium.subscribeButton': '订阅Premium',
-    'premium.androidOnly': '订阅可通过Google Play商店中的Android应用获取。',
-    'premium.billingNotSupported': '此设备不支持Google Play计费。',
-    'premium.productNotFound': '未找到订阅产品。',
-    'premium.verificationError': '购买验证错误。',
-    'premium.purchaseError': '购买错误。请重试。',
     'premium.loginForCode': '激活代码需要登录。',
   },
 
@@ -3515,13 +3466,6 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.captureError': 'भुगतान प्रसंस्करण में त्रुटि। सहायता से संपर्क करें।',
     'premium.paypalError': 'PayPal त्रुटि',
     'premium.perMonth': '{price}€/माह',
-    'premium.subscribeViaGooglePlay': 'Google Play के माध्यम से सदस्यता लें:',
-    'premium.subscribeButton': 'Premium सदस्यता लें',
-    'premium.androidOnly': 'सदस्यता Google Play Store पर Android ऐप के माध्यम से उपलब्ध है।',
-    'premium.billingNotSupported': 'इस डिवाइस पर Google Play बिलिंग समर्थित नहीं है।',
-    'premium.productNotFound': 'सदस्यता उत्पाद नहीं मिला।',
-    'premium.verificationError': 'खरीद सत्यापन में त्रुटि।',
-    'premium.purchaseError': 'खरीद में त्रुटि। कृपया पुनः प्रयास करें।',
     'premium.loginForCode': 'कोड सक्रिय करने के लिए लॉगिन आवश्यक है।',
   },
 };
