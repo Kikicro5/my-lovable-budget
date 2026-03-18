@@ -65,7 +65,7 @@ export const restorePurchases = async (): Promise<{
   }
 
   try {
-    const result = await NativePurchases.restorePurchases();
+    const result = await NativePurchases.restorePurchases() as any;
     const sub = result?.activeSubscriptions?.[0];
     if (sub) {
       return { success: true, purchaseToken: sub };
