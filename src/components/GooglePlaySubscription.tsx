@@ -123,7 +123,26 @@ export const GooglePlaySubscription = () => {
 
   if (!user) {
     return (
-      <p className="text-xs text-muted-foreground">{t('premium.loginToBuy')}</p>
+      <div className="space-y-2">
+        <p className="text-xs text-muted-foreground mb-2">{t('premium.loginToBuy')}</p>
+        <Button
+          onClick={() => toast.error(t('premium.loginRequired'))}
+          className="w-full gap-2"
+          size="lg"
+        >
+          <Crown className="w-4 h-4" />
+          {t('premium.subscribeButton')}
+        </Button>
+        <Button
+          onClick={() => toast.error(t('premium.loginRequired'))}
+          variant="outline"
+          className="w-full gap-2"
+          size="sm"
+        >
+          <RotateCcw className="w-4 h-4" />
+          {t('premium.restoreSubscription') || 'Obnovi pretplatu'}
+        </Button>
+      </div>
     );
   }
 
