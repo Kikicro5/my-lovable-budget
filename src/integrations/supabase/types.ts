@@ -115,6 +115,99 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          admin_reply: string | null
+          created_at: string
+          email: string
+          id: string
+          is_read: boolean
+          message: string
+          name: string
+          replied_at: string | null
+        }
+        Insert: {
+          admin_reply?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          is_read?: boolean
+          message: string
+          name: string
+          replied_at?: string | null
+        }
+        Update: {
+          admin_reply?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          name?: string
+          replied_at?: string | null
+        }
+        Relationships: []
+      }
+      google_play_subscriptions: {
+        Row: {
+          acknowledgement_state: number | null
+          auto_renewing: boolean | null
+          cancel_reason: number | null
+          country_code: string | null
+          created_at: string
+          device_id: string
+          expiry_time: string
+          id: string
+          order_id: string | null
+          payment_state: number | null
+          price_amount_micros: string | null
+          price_currency_code: string | null
+          product_id: string
+          purchase_token: string
+          start_time: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          acknowledgement_state?: number | null
+          auto_renewing?: boolean | null
+          cancel_reason?: number | null
+          country_code?: string | null
+          created_at?: string
+          device_id: string
+          expiry_time: string
+          id?: string
+          order_id?: string | null
+          payment_state?: number | null
+          price_amount_micros?: string | null
+          price_currency_code?: string | null
+          product_id?: string
+          purchase_token: string
+          start_time?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          acknowledgement_state?: number | null
+          auto_renewing?: boolean | null
+          cancel_reason?: number | null
+          country_code?: string | null
+          created_at?: string
+          device_id?: string
+          expiry_time?: string
+          id?: string
+          order_id?: string | null
+          payment_state?: number | null
+          price_amount_micros?: string | null
+          price_currency_code?: string | null
+          product_id?: string
+          purchase_token?: string
+          start_time?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       premium_settings: {
         Row: {
           currency: string
