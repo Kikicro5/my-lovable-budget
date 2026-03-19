@@ -14,12 +14,3 @@ verify_jwt = false
 
 [functions.paypal-checkout]
 verify_jwt = false
-
-[functions.generate-device-token]
-verify_jwt = false
-
-[functions.verify-device-purchase]
-verify_jwt = false
-
-[functions.verify-google-subscription]
-verify_jwt = false

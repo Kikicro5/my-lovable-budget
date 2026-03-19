@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS public.google_play_purchases;

@@ -1,13 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield } from 'lucide-react';
-import ContactDialog from '@/components/ContactDialog';
-import { GooglePlaySubscription } from '@/components/GooglePlaySubscription';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
-
 import { Input } from '@/components/ui/input';
 
 import { Button } from '@/components/ui/button';
@@ -16,7 +13,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
-
+import { GooglePlayPurchase } from '@/components/GooglePlayPurchase';
 
 import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
 import {
@@ -48,9 +45,7 @@ const Options = () => {
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
   const premiumRef = useRef<HTMLDivElement>(null);
-  
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (window.location.hash === '#premium' && premiumRef.current) {
@@ -219,15 +214,13 @@ const Options = () => {
               </div>
             )}
             {isPremium ? (
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
-                  <Crown className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-medium text-sm text-foreground">{t('premium.active')}</p>
-                    {daysRemaining !== null && (
-                      <p className="text-xs text-muted-foreground">{t('premium.daysRemaining').replace('{days}', String(daysRemaining))}</p>
-                    )}
-                  </div>
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
+                <Crown className="w-5 h-5 text-primary" />
+                <div>
+                   <p className="font-medium text-sm text-foreground">{t('premium.active')}</p>
+                  {daysRemaining !== null && (
+                    <p className="text-xs text-muted-foreground">{t('premium.daysRemaining').replace('{days}', String(daysRemaining))}</p>
+                  )}
                 </div>
               </div>
             ) : activated ? (
@@ -255,7 +248,10 @@ const Options = () => {
                   </Button>
                 </div>
 
-                <GooglePlaySubscription />
+                {/* Google Play Purchase */}
+                <div className="border-t border-border pt-3 mt-3">
+                  <GooglePlayPurchase />
+                </div>
               </div>
             )}
           </div>
@@ -264,17 +260,14 @@ const Options = () => {
           <div className="bg-card rounded-xl p-4 border border-border">
             {user ? (
               <div className="space-y-2">
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    onClick={() => signOut()} 
-                    className="flex-1 gap-2"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    {t('auth.logout')}
-                  </Button>
-                  <ContactDialog />
-                </div>
+                <Button 
+                  variant="outline" 
+                  onClick={() => signOut()} 
+                  className="w-full gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  {t('auth.logout')}
+                </Button>
 
                 {/* Admin Panel Button */}
                 {isAdmin && (
@@ -289,13 +282,10 @@ const Options = () => {
                 )}
               </div>
             ) : (
-              <div className="flex gap-2">
-                <Button onClick={() => navigate('/auth')} className="flex-1 gap-2">
-                  <LogIn className="w-4 h-4" />
-                  {t('auth.login')}
-                </Button>
-                <ContactDialog />
-              </div>
+              <Button onClick={() => navigate('/auth')} className="w-full gap-2">
+                <LogIn className="w-4 h-4" />
+                {t('auth.login')}
+              </Button>
             )}
           </div>
 
