@@ -3567,6 +3567,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.verificationError': '购买验证错误。',
     'premium.purchaseError': '购买错误。请重试。',
     'premium.loginForCode': '激活代码需要登录。',
+
+    // GDPR
+    'legal.gdpr.title': 'GDPR',
+    'legal.gdpr.section1.title': '1. 数据控制者',
+    'legal.gdpr.section1.content': 'BudgetCard是一款个人财务跟踪应用。数据控制者是BudgetCard开发团队。您的数据主要存储在您的设备本地。',
+    'legal.gdpr.section2.title': '2. 处理的法律依据',
+    'legal.gdpr.section2.content': '处理您的个人数据基于您的同意（GDPR第6条第1款a项）和合同履行（GDPR第6条第1款b项）。',
+    'legal.gdpr.section3.title': '3. 您的权利',
+    'legal.gdpr.section3.content': '您有权访问、更正、删除和转移您的数据。您可以通过设置中的"删除账户"选项请求删除所有数据。',
+    'legal.gdpr.section4.title': '4. 数据存储和传输',
+    'legal.gdpr.section4.content': '您的财务数据存储在设备本地。如果使用同步功能，数据将存储在欧盟/欧洲经济区内的安全服务器上。',
+    'legal.gdpr.section5.title': '5. 数据保留',
+    'legal.gdpr.section5.content': '在您使用应用期间，数据将被保留。您可以随时通过重置应用或删除账户来删除数据。账户删除后，所有数据将在30天内永久删除。',
+    'legal.gdpr.section6.title': '6. 数据保护联系方式',
+    'legal.gdpr.section6.content': '如有数据保护相关问题或行使GDPR权利，请通过应用内的联系表单或官方电子邮件与我们联系。',
+
+    // Contact
+    'contact.button': '联系我们',
+    'contact.title': '联系我们',
+    'contact.name': '姓名',
+    'contact.namePlaceholder': '您的姓名',
+    'contact.email': '电子邮件',
+    'contact.emailPlaceholder': 'your@email.com',
+    'contact.message': '消息',
+    'contact.messagePlaceholder': '描述您的问题...',
+    'contact.send': '发送',
+    'contact.sending': '发送中...',
+    'contact.sent': '消息发送成功！',
+    'contact.error': '发送消息时出错。',
+    'contact.fillAll': '请填写所有字段。',
+
+    // Account management
+    'account.delete': '删除账户',
+    'account.deleteConfirm': '删除账户？',
+    'account.deleteWarning': '此操作不可逆。您的所有数据（包括订阅和设置）将被永久删除。',
+    'account.deleted': '账户已成功删除。',
+    'account.deleteError': '删除账户时出错。',
+
+    // App Management
+    'appManagement.title': '应用管理',
   },
 
   hi: {
