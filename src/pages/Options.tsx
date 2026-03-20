@@ -144,7 +144,7 @@ const Options = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       <div className="max-w-lg mx-auto p-4">
         
         <div className="space-y-4 mt-4">
