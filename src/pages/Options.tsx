@@ -36,6 +36,48 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 
+const SyncStatusBadge = ({ status }: { status: string }) => {
+  const { t } = useLanguage();
+  
+  const config: Record<string, { icon: React.ReactNode; label: string; className: string }> = {
+    syncing: {
+      icon: <Loader2 className="w-3 h-3 animate-spin" />,
+      label: t('sync.status.syncing') || 'Syncing...',
+      className: 'text-primary bg-primary/10 border-primary/20',
+    },
+    synced: {
+      icon: <Check className="w-3 h-3" />,
+      label: t('sync.status.synced') || 'Synced',
+      className: 'text-green-600 bg-green-50 border-green-200 dark:text-green-400 dark:bg-green-950/30 dark:border-green-800',
+    },
+    offline: {
+      icon: <CloudOff className="w-3 h-3" />,
+      label: t('sync.status.offline') || 'Offline',
+      className: 'text-muted-foreground bg-muted/50 border-border',
+    },
+    error: {
+      icon: <CloudOff className="w-3 h-3" />,
+      label: t('sync.status.error') || 'Error',
+      className: 'text-destructive bg-destructive/10 border-destructive/20',
+    },
+    idle: {
+      icon: <Cloud className="w-3 h-3" />,
+      label: '',
+      className: 'text-muted-foreground bg-muted/50 border-border',
+    },
+  };
+
+  const c = config[status] || config.idle;
+  if (status === 'idle') return null;
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full border ${c.className}`}>
+      {c.icon}
+      {c.label}
+    </span>
+  );
+};
+
 const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
