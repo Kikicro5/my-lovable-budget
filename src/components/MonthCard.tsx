@@ -83,7 +83,12 @@ export const MonthCard = ({
                 </span>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="text-xs">
-                {syncLabel[syncStatus] || ''}
+                <p>{syncLabel[syncStatus] || ''}</p>
+                {lastSyncedAt && (
+                  <p className="text-muted-foreground mt-0.5">
+                    {lastSyncedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                )}
               </TooltipContent>
             </Tooltip>
           )}
