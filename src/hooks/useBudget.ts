@@ -394,6 +394,7 @@ export const useBudget = () => {
             isUpdatingFromRealtimeRef.current = true;
             setState(newData);
             setSyncStatus('synced');
+            setLastSyncedAt(new Date());
             // Reset flag after React processes the update
             setTimeout(() => { isUpdatingFromRealtimeRef.current = false; }, 500);
           }
