@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2, Users, Plus, KeyRound, Trash2 } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2, Users, Plus, KeyRound, Trash2, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
