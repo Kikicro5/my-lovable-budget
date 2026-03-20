@@ -5,8 +5,15 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Loader2, CheckCircle, ShoppingCart } from 'lucide-react';
+import { Loader2, CheckCircle, ShoppingCart, Gift, RotateCcw } from 'lucide-react';
 import { isNativeAndroid } from '@/utils/platform';
+import {
+  purchaseSubscription,
+  purchaseTrial,
+  restorePurchases,
+  getProducts,
+  type BillingProduct,
+} from '@/services/billing';
 
 const DEVICE_ID_KEY = 'budget-card-device-id';
 const getDeviceId = (): string => {
@@ -18,16 +25,13 @@ const getDeviceId = (): string => {
   return id;
 };
 
-// Google Play product ID for the premium annual subscription
-const PRODUCT_ID = 'premium_annual';
-
 export const GooglePlayPurchase = () => {
   const { user } = useAuth();
   const { checkStatus } = usePremium();
   const { t } = useLanguage();
-  const [processing, setProcessing] = useState(false);
+  const [processingAction, setProcessingAction] = useState<string | null>(null);
   const [purchaseComplete, setPurchaseComplete] = useState(false);
-  const [productPrice, setProductPrice] = useState<string | null>(null);
+  const [products, setProducts] = useState<BillingProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,66 +40,95 @@ export const GooglePlayPurchase = () => {
       return;
     }
 
-    const loadProduct = async () => {
+    const loadProducts = async () => {
       try {
-        const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
-        const { products } = await NativePurchases.getProducts({
-          productIdentifiers: [PRODUCT_ID],
-          productType: PURCHASE_TYPE.SUBS,
-        });
-        if (products.length > 0) {
-          setProductPrice(products[0].priceString || `${(products[0].price || 3.99).toFixed(2)} €`);
-        }
+        const loaded = await getProducts();
+        setProducts(loaded);
       } catch (err) {
-        console.error('Failed to load Google Play product:', err);
+        console.error('Failed to load Google Play products:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    loadProduct();
+    loadProducts();
   }, []);
 
-  const handlePurchase = async () => {
-    setProcessing(true);
+  const verifyWithBackend = async (transaction: any, productId: string) => {
     try {
-      const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
-
-      const transaction = await NativePurchases.purchaseProduct({
-        productIdentifier: PRODUCT_ID,
-        productType: PURCHASE_TYPE.SUBS,
-        appAccountToken: user?.id,
+      const { data, error } = await supabase.functions.invoke('verify-google-purchase', {
+        body: {
+          action: 'verify-purchase',
+          purchaseToken: transaction?.transactionId || productId,
+          productId,
+          deviceId: getDeviceId(),
+        },
       });
 
-      if (transaction) {
-        // Verify with backend
-        const { data, error } = await supabase.functions.invoke('verify-google-purchase', {
-          body: {
-            action: 'verify-purchase',
-            purchaseToken: transaction.transactionId || PRODUCT_ID,
-            productId: PRODUCT_ID,
-            deviceId: getDeviceId(),
-          },
-        });
-
-        if (error || !data?.success) {
-          console.error('Backend verification failed:', error || data?.error);
-          toast.warning(t('premium.verifyLater') || 'Kupnja uspješna, verifikacija u tijeku...');
-        }
-
-        setPurchaseComplete(true);
-        toast.success(t('premium.purchaseSuccess') || 'Premium aktiviran!');
-        await checkStatus();
+      if (error || !data?.success) {
+        console.error('Backend verification failed:', error || data?.error);
+        toast.warning('Kupnja uspješna, verifikacija u tijeku...');
       }
-    } catch (err: any) {
-      if (err?.code === 'PURCHASE_CANCELLED' || err?.message?.includes('cancel')) {
-        // User cancelled
-      } else {
-        console.error('Google Play purchase error:', err);
-        toast.error(t('premium.purchaseError') || 'Greška pri kupnji');
+    } catch (err) {
+      console.error('Backend verification error:', err);
+    }
+  };
+
+  const handleSubscription = async () => {
+    setProcessingAction('subscribe');
+    try {
+      const result = await purchaseSubscription(user?.id);
+
+      if (result.success && result.transaction) {
+        await verifyWithBackend(result.transaction, '001_01');
+        setPurchaseComplete(true);
+        toast.success('Premium aktiviran!');
+        await checkStatus();
+      } else if (result.error) {
+        if (result.error.code !== 'CANCELLED') {
+          toast.error(result.error.userMessage);
+        }
       }
     } finally {
-      setProcessing(false);
+      setProcessingAction(null);
+    }
+  };
+
+  const handleTrial = async () => {
+    setProcessingAction('trial');
+    try {
+      const result = await purchaseTrial(user?.id);
+
+      if (result.success && result.transaction) {
+        await verifyWithBackend(result.transaction, '001-02');
+        setPurchaseComplete(true);
+        toast.success('Probno razdoblje aktivirano!');
+        await checkStatus();
+      } else if (result.error) {
+        if (result.error.code !== 'CANCELLED') {
+          toast.error(result.error.userMessage);
+        }
+      }
+    } finally {
+      setProcessingAction(null);
+    }
+  };
+
+  const handleRestore = async () => {
+    setProcessingAction('restore');
+    try {
+      const result = await restorePurchases();
+
+      if (result.success && result.restored > 0) {
+        toast.success('Pretplata uspješno obnovljena!');
+        await checkStatus();
+      } else if (result.success && result.restored === 0) {
+        toast.info('Nema pronađenih prethodnih kupnji.');
+      } else if (result.error) {
+        toast.error(result.error.userMessage);
+      }
+    } finally {
+      setProcessingAction(null);
     }
   };
 
@@ -106,8 +139,8 @@ export const GooglePlayPurchase = () => {
       <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
         <CheckCircle className="w-5 h-5 text-primary" />
         <div>
-          <p className="font-medium text-sm text-foreground">{t('premium.purchaseSuccess')}</p>
-          <p className="text-xs text-muted-foreground">{t('premium.purchaseActivated')}</p>
+          <p className="font-medium text-sm text-foreground">Premium aktiviran!</p>
+          <p className="text-xs text-muted-foreground">Uživajte u svim značajkama.</p>
         </div>
       </div>
     );
@@ -129,24 +162,61 @@ export const GooglePlayPurchase = () => {
     );
   }
 
+  const subProduct = products.find(p => p.identifier === '001_01');
+  const trialProduct = products.find(p => p.identifier === '001-02');
+
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
-        {t('premium.buyGooglePlay') || 'Kupite premium putem Google Play-a:'}
+        Kupite premium putem Google Play-a:
       </p>
+
+      {/* Subscription button */}
       <Button
-        onClick={handlePurchase}
-        disabled={processing}
+        onClick={handleSubscription}
+        disabled={!!processingAction}
         className="w-full gap-2"
       >
-        {processing ? (
+        {processingAction === 'subscribe' ? (
           <Loader2 className="w-4 h-4 animate-spin" />
         ) : (
           <ShoppingCart className="w-4 h-4" />
         )}
-        {processing
-          ? (t('premium.processing') || 'Obrada...')
-          : `${t('premium.buyNow') || 'Kupi Premium'} — ${productPrice || '3,99 €/god'}`}
+        {processingAction === 'subscribe'
+          ? 'Obrada...'
+          : `Pretplatite se putem Google Play-a — ${subProduct?.priceString || '3,99 €/god'}`}
+      </Button>
+
+      {/* Trial button */}
+      <Button
+        onClick={handleTrial}
+        disabled={!!processingAction}
+        variant="outline"
+        className="w-full gap-2"
+      >
+        {processingAction === 'trial' ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <Gift className="w-4 h-4" />
+        )}
+        {processingAction === 'trial'
+          ? 'Obrada...'
+          : `Isprobaj 14 dana besplatno${trialProduct ? ` — ${trialProduct.priceString}` : ''}`}
+      </Button>
+
+      {/* Restore button */}
+      <Button
+        onClick={handleRestore}
+        disabled={!!processingAction}
+        variant="ghost"
+        className="w-full gap-2 text-muted-foreground"
+      >
+        {processingAction === 'restore' ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <RotateCcw className="w-4 h-4" />
+        )}
+        {processingAction === 'restore' ? 'Obnavljanje...' : 'Obnovi pretplatu'}
       </Button>
     </div>
   );
