@@ -234,7 +234,7 @@ const Options = () => {
             </div>
             
             {/* Premium Benefits - only show when not premium */}
-            {!isPremium && (
+            {!hasPremiumAccess && (
               <div className="mb-4 p-3 rounded-lg bg-primary/5 border border-primary/10">
                 <p className="text-sm font-medium text-foreground mb-2">{t('premium.benefits.title')}</p>
                 <ul className="space-y-1.5">
