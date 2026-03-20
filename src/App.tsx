@@ -63,6 +63,7 @@ const App = () => {
       </CurrencyProvider>
     </ThemeProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
