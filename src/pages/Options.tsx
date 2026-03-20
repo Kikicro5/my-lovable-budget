@@ -42,9 +42,11 @@ const Options = () => {
   const { currency, setCurrency } = useCurrency();
   const { user, isAdmin, signOut } = useAuth();
   const { isPremium, daysRemaining, activateCode } = usePremium();
+  const { syncStatus, syncNow, canSync } = useBudget();
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
+  const [manualSyncing, setManualSyncing] = useState(false);
   const premiumRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
