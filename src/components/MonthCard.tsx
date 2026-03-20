@@ -76,21 +76,23 @@ export const MonthCard = ({
         </h1>
         <div className="flex items-center gap-1">
           {syncStatus !== 'idle' && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="inline-flex items-center justify-center w-7 h-7 rounded-md">
-                  <SyncIcon status={syncStatus} />
+            <div className="flex items-center gap-1">
+              {lastSyncedAt && syncStatus === 'synced' && (
+                <span className="text-[10px] text-muted-foreground tabular-nums">
+                  {lastSyncedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="text-xs">
-                <p>{syncLabel[syncStatus] || ''}</p>
-                {lastSyncedAt && (
-                  <p className="text-muted-foreground mt-0.5">
-                    {lastSyncedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                )}
-              </TooltipContent>
-            </Tooltip>
+              )}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-md">
+                    <SyncIcon status={syncStatus} />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="text-xs">
+                  <p>{syncLabel[syncStatus] || ''}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
           )}
           {isInGroup && (
             <Tooltip>
