@@ -305,7 +305,7 @@ const Options = () => {
           </div>
 
           {/* Cloud Sync Section - only for premium users */}
-          {isPremium && user && (
+          {hasPremiumAccess && user && (
             <div className="bg-card rounded-xl p-4 border border-border">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
