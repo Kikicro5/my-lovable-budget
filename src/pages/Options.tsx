@@ -328,9 +328,9 @@ const Options = () => {
                   </Button>
                 </div>
 
-                {/* PayPal Purchase */}
+                {/* Payment options: Google Play on Android, PayPal elsewhere */}
                 <div className="border-t border-border pt-3 mt-3">
-                  <PayPalPurchase />
+                  {isNativeAndroid() ? <GooglePlayPurchase /> : <PayPalPurchase />}
                 </div>
               </div>
             )}
