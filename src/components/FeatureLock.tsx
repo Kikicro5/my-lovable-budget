@@ -19,7 +19,7 @@ export const FeatureLock = ({ children, featureName }: FeatureLockProps) => {
   if (isPremium || isAdmin) return <>{children}</>;
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden rounded-xl">
       <div className="pointer-events-none select-none blur-sm opacity-50 saturate-0">
         {children}
       </div>
