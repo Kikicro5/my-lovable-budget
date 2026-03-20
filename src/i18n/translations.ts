@@ -2560,6 +2560,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Producto de suscripción no encontrado.',
     'premium.verificationError': 'Error al verificar la compra.',
     'premium.purchaseError': 'Error durante la compra. Inténtelo de nuevo.',
+
+    // GDPR
+    'legal.gdpr.title': 'RGPD',
+    'legal.gdpr.section1.title': '1. Responsable del tratamiento',
+    'legal.gdpr.section1.content': 'BudgetCard es una aplicación de seguimiento de finanzas personales. El responsable del tratamiento es el equipo de desarrollo de BudgetCard. Sus datos se almacenan principalmente de forma local en su dispositivo.',
+    'legal.gdpr.section2.title': '2. Base legal del tratamiento',
+    'legal.gdpr.section2.content': 'El tratamiento de sus datos personales se basa en su consentimiento (Art. 6(1)(a) RGPD) y en la ejecución de un contrato (Art. 6(1)(b) RGPD).',
+    'legal.gdpr.section3.title': '3. Sus derechos',
+    'legal.gdpr.section3.content': 'Tiene derecho a acceder, rectificar, eliminar y portar sus datos. Puede solicitar la eliminación de todos los datos a través de la opción "Eliminar cuenta" en la configuración.',
+    'legal.gdpr.section4.title': '4. Almacenamiento y transferencia de datos',
+    'legal.gdpr.section4.content': 'Sus datos financieros se almacenan localmente en su dispositivo. Si utiliza la función de sincronización, los datos se almacenan en servidores seguros dentro de la UE/EEE.',
+    'legal.gdpr.section5.title': '5. Retención de datos',
+    'legal.gdpr.section5.content': 'Sus datos se conservan mientras use la aplicación. Puede eliminarlos en cualquier momento restableciendo la app o eliminando su cuenta. Tras la eliminación, todos los datos se borran permanentemente en 30 días.',
+    'legal.gdpr.section6.title': '6. Contacto de protección de datos',
+    'legal.gdpr.section6.content': 'Para consultas sobre protección de datos y ejercicio de sus derechos RGPD, contáctenos a través del formulario de contacto en la aplicación o por correo electrónico oficial.',
+
+    // Contact
+    'contact.button': 'Contacto',
+    'contact.title': 'Contáctenos',
+    'contact.name': 'Nombre',
+    'contact.namePlaceholder': 'Su nombre',
+    'contact.email': 'Correo electrónico',
+    'contact.emailPlaceholder': 'su@email.com',
+    'contact.message': 'Mensaje',
+    'contact.messagePlaceholder': 'Describa su consulta...',
+    'contact.send': 'Enviar',
+    'contact.sending': 'Enviando...',
+    'contact.sent': '¡Mensaje enviado con éxito!',
+    'contact.error': 'Error al enviar el mensaje.',
+    'contact.fillAll': 'Por favor complete todos los campos.',
+
+    // Account management
+    'account.delete': 'Eliminar cuenta',
+    'account.deleteConfirm': '¿Eliminar cuenta?',
+    'account.deleteWarning': 'Esta acción es irreversible. Todos sus datos, incluidas suscripciones y configuraciones, se eliminarán permanentemente.',
+    'account.deleted': 'Cuenta eliminada con éxito.',
+    'account.deleteError': 'Error al eliminar la cuenta.',
+
+    // App Management
+    'appManagement.title': 'Gestión de la app',
   },
 
   fr: {
