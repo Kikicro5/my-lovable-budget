@@ -3186,6 +3186,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': '注册成功！请检查邮箱进行确认。',
     'auth.invalidCredentials': '登录凭据无效',
     'auth.passwordMinLength': '密码必须至少6个字符',
+    'auth.noAccount': '没有账户？注册',
+    'auth.haveAccount': '已有账户？登录',
+    'auth.back': '返回',
 
     // Balance card
     'balance.current': '当前余额',
