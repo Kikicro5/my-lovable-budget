@@ -2057,6 +2057,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Produkt subskrypcji nie znaleziony.',
     'premium.verificationError': 'Błąd weryfikacji zakupu.',
     'premium.purchaseError': 'Błąd podczas zakupu. Spróbuj ponownie.',
+
+    // GDPR
+    'legal.gdpr.title': 'RODO',
+    'legal.gdpr.section1.title': '1. Administrator danych',
+    'legal.gdpr.section1.content': 'BudgetCard to aplikacja do śledzenia finansów osobistych. Administratorem danych jest zespół deweloperski BudgetCard. Dane są przechowywane głównie lokalnie na urządzeniu.',
+    'legal.gdpr.section2.title': '2. Podstawa prawna przetwarzania',
+    'legal.gdpr.section2.content': 'Przetwarzanie danych osobowych opiera się na zgodzie (art. 6 ust. 1 lit. a RODO) oraz wykonaniu umowy (art. 6 ust. 1 lit. b RODO).',
+    'legal.gdpr.section3.title': '3. Twoje prawa',
+    'legal.gdpr.section3.content': 'Masz prawo do dostępu, sprostowania, usunięcia i przenoszenia danych. Możesz zażądać usunięcia danych poprzez opcję „Usuń konto" w ustawieniach.',
+    'legal.gdpr.section4.title': '4. Przechowywanie i przekazywanie danych',
+    'legal.gdpr.section4.content': 'Dane finansowe są przechowywane lokalnie na urządzeniu. Przy korzystaniu z synchronizacji dane są przechowywane na bezpiecznych serwerach w UE/EOG.',
+    'legal.gdpr.section5.title': '5. Okres przechowywania danych',
+    'legal.gdpr.section5.content': 'Dane są przechowywane podczas korzystania z aplikacji. Możesz je usunąć w dowolnym momencie, resetując aplikację lub usuwając konto. Po usunięciu konta dane są trwale usuwane w ciągu 30 dni.',
+    'legal.gdpr.section6.title': '6. Kontakt ds. ochrony danych',
+    'legal.gdpr.section6.content': 'W sprawach dotyczących ochrony danych i realizacji praw RODO skontaktuj się z nami przez formularz kontaktowy w aplikacji lub oficjalny e-mail.',
+
+    // Contact
+    'contact.button': 'Kontakt',
+    'contact.title': 'Skontaktuj się z nami',
+    'contact.name': 'Imię',
+    'contact.namePlaceholder': 'Twoje imię',
+    'contact.email': 'E-mail',
+    'contact.emailPlaceholder': 'twoj@email.com',
+    'contact.message': 'Wiadomość',
+    'contact.messagePlaceholder': 'Opisz swoje zapytanie...',
+    'contact.send': 'Wyślij',
+    'contact.sending': 'Wysyłanie...',
+    'contact.sent': 'Wiadomość wysłana pomyślnie!',
+    'contact.error': 'Błąd wysyłania wiadomości.',
+    'contact.fillAll': 'Proszę wypełnić wszystkie pola.',
+
+    // Account management
+    'account.delete': 'Usuń konto',
+    'account.deleteConfirm': 'Usunąć konto?',
+    'account.deleteWarning': 'Ta akcja jest nieodwracalna. Wszystkie dane, w tym subskrypcje i ustawienia, zostaną trwale usunięte.',
+    'account.deleted': 'Konto zostało pomyślnie usunięte.',
+    'account.deleteError': 'Błąd podczas usuwania konta.',
+
+    // App Management
+    'appManagement.title': 'Zarządzanie aplikacją',
   },
 
   es: {
