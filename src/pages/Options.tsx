@@ -225,6 +225,16 @@ const Options = () => {
             </div>
           </div>
 
+          {/* Login Button for non-authenticated users */}
+          {!user && (
+            <div className="bg-card rounded-xl p-4 border border-border">
+              <Button onClick={() => navigate('/auth')} className="w-full gap-2">
+                <LogIn className="w-4 h-4" />
+                {t('auth.login')}
+              </Button>
+            </div>
+          )}
+
 
           {/* Premium Section */}
           <div ref={premiumRef} id="premium" className="bg-card rounded-xl p-4 border border-primary/20">
@@ -343,9 +353,9 @@ const Options = () => {
             <GroupManager />
           </FeatureLock>
 
-          {/* Account Section - Login/Logout */}
-          <div className="bg-card rounded-xl p-4 border border-border">
-            {user ? (
+          {/* Account Section - Logout/Admin (only for authenticated users) */}
+          {user && (
+            <div className="bg-card rounded-xl p-4 border border-border">
               <div className="space-y-2">
                 <Button 
                   variant="outline" 
@@ -355,8 +365,6 @@ const Options = () => {
                   <LogOut className="w-4 h-4" />
                   {t('auth.logout')}
                 </Button>
-
-                {/* Admin Panel Button */}
                 {isAdmin && (
                   <Button 
                     variant="outline" 
@@ -368,13 +376,8 @@ const Options = () => {
                   </Button>
                 )}
               </div>
-            ) : (
-              <Button onClick={() => navigate('/auth')} className="w-full gap-2">
-                <LogIn className="w-4 h-4" />
-                {t('auth.login')}
-              </Button>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Guide & Share Row */}
           <div className="grid grid-cols-2 gap-4">
