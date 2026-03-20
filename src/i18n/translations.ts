@@ -64,6 +64,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'Registracija uspješna! Provjerite email za potvrdu.',
     'auth.invalidCredentials': 'Neispravni podaci za prijavu',
     'auth.passwordMinLength': 'Lozinka mora imati najmanje 6 znakova',
+    'auth.noAccount': 'Nemate račun? Registrirajte se',
+    'auth.haveAccount': 'Već imate račun? Prijavite se',
+    'auth.back': 'Natrag',
 
     // Balance card
     'balance.current': 'Trenutno stanje',
