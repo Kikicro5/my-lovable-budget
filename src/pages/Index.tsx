@@ -90,6 +90,7 @@ const Index = () => {
             recurringApplied={recurringApplied}
             onApplyRecurring={handleApplyRecurring}
             syncStatus={syncStatus}
+            lastSyncedAt={lastSyncedAt}
             isInGroup={!!groupId}
           />
           
