@@ -259,7 +259,40 @@ const Options = () => {
             )}
           </div>
 
-          {/* Account Section - Login/Logout */}
+          {/* Cloud Sync Section - only for premium users */}
+          {isPremium && user && (
+            <div className="bg-card rounded-xl p-4 border border-border">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Cloud className="w-5 h-5 text-primary" />
+                  <h2 className="text-lg font-semibold text-foreground">{t('sync.title') || 'Cloud Sync'}</h2>
+                </div>
+                <SyncStatusBadge status={syncStatus} />
+              </div>
+              <p className="text-sm text-muted-foreground mb-3">
+                {t('sync.description') || 'Vaši podaci se automatski sinkroniziraju s oblakom.'}
+              </p>
+              <Button
+                variant="outline"
+                className="w-full gap-2"
+                disabled={manualSyncing || syncStatus === 'syncing'}
+                onClick={async () => {
+                  setManualSyncing(true);
+                  await syncNow();
+                  setManualSyncing(false);
+                  toast.success(t('sync.success') || 'Podaci sinkronizirani!');
+                }}
+              >
+                {manualSyncing || syncStatus === 'syncing' ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+                {t('sync.button') || 'Sinkroniziraj sada'}
+              </Button>
+            </div>
+          )}
+
           <div className="bg-card rounded-xl p-4 border border-border">
             {user ? (
               <div className="space-y-2">
