@@ -23,17 +23,17 @@ export const FeatureLock = ({ children, featureName }: FeatureLockProps) => {
       <div className="pointer-events-none select-none blur-sm opacity-50 saturate-0">
         {children}
       </div>
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 rounded-xl bg-background/60 backdrop-blur-[2px] border border-primary/20">
-        <div className="flex flex-col items-center gap-3 p-4 text-center max-w-[240px]">
-          <div className="p-3 rounded-full bg-primary/10">
-            <Lock className="w-6 h-6 text-primary" />
-          </div>
-          <div>
+      <div className="absolute inset-0 flex items-center justify-center z-10 rounded-xl bg-background/60 backdrop-blur-[2px] border border-primary/20">
+        <div className="flex items-center justify-between w-full px-4 py-3">
+          <div className="flex items-center gap-2">
+            <div className="p-2 rounded-full bg-primary/10">
+              <Lock className="w-5 h-5 text-primary" />
+            </div>
             <p className="font-semibold text-sm text-foreground">
               {featureName || t('feature.locked.title')}
             </p>
           </div>
-          <Button asChild size="sm" className="gap-2 bg-primary text-primary-foreground">
+          <Button asChild size="sm" className="gap-2 bg-primary text-primary-foreground shrink-0">
             <Link to="/options#premium">
               <Star className="w-3.5 h-3.5" />
               Aktiviraj premium
