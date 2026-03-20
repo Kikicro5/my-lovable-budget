@@ -2,7 +2,8 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { ReminderIndicator } from './ReminderIndicator';
 import { PaymentReminder, Account } from '@/types/budget';
 import { Badge } from '@/components/ui/badge';
-import { Repeat } from 'lucide-react';
+import { Repeat, Cloud, CloudOff, Loader2, Check } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface MonthCardProps {
   month: number;
@@ -14,7 +15,23 @@ interface MonthCardProps {
   hasRecurring?: boolean;
   recurringApplied?: boolean;
   onApplyRecurring?: () => void;
+  syncStatus?: 'idle' | 'syncing' | 'synced' | 'offline' | 'error';
 }
+
+const SyncIcon = ({ status }: { status: string }) => {
+  switch (status) {
+    case 'syncing':
+      return <Loader2 className="w-3.5 h-3.5 text-primary animate-spin" />;
+    case 'synced':
+      return <Cloud className="w-3.5 h-3.5 text-green-500 dark:text-green-400" />;
+    case 'offline':
+      return <CloudOff className="w-3.5 h-3.5 text-muted-foreground" />;
+    case 'error':
+      return <CloudOff className="w-3.5 h-3.5 text-destructive" />;
+    default:
+      return null;
+  }
+};
 
 export const MonthCard = ({ 
   month, 
@@ -26,10 +43,18 @@ export const MonthCard = ({
   hasRecurring = false,
   recurringApplied = false,
   onApplyRecurring,
+  syncStatus = 'idle',
 }: MonthCardProps) => {
   const { t } = useLanguage();
   
   const isRecurringActive = hasRecurring && !recurringApplied;
+
+  const syncLabel: Record<string, string> = {
+    syncing: t('sync.status.syncing') || 'Syncing...',
+    synced: t('sync.status.synced') || 'Synced',
+    offline: t('sync.status.offline') || 'Offline',
+    error: t('sync.status.error') || 'Sync error',
+  };
   
   return (
     <div className="bg-card rounded-xl p-2.5 shadow-card animate-slide-up">
@@ -46,6 +71,18 @@ export const MonthCard = ({
           </span>
         </h1>
         <div className="flex items-center gap-1">
+          {syncStatus !== 'idle' && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="inline-flex items-center justify-center w-7 h-7 rounded-md">
+                  <SyncIcon status={syncStatus} />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="text-xs">
+                {syncLabel[syncStatus] || ''}
+              </TooltipContent>
+            </Tooltip>
+          )}
           <Badge 
             variant="secondary" 
             className={`gap-1 text-xs transition-colors ${
