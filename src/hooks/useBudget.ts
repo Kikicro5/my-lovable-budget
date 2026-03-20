@@ -332,13 +332,13 @@ export const useBudget = () => {
         let cloudState: BudgetState | null = null;
 
         if (groupId) {
-          const { data, error } = await supabase
+          const { data, error } = await (supabase
             .from('group_data' as any)
             .select('data')
-            .eq('group_id', groupId)
+            .eq('group_id', groupId) as any)
             .maybeSingle();
           if (!error && data?.data) {
-            cloudState = (data as any).data as BudgetState;
+            cloudState = data.data as BudgetState;
           }
         } else {
           const { data, error } = await supabase
