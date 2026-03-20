@@ -16,6 +16,7 @@ interface MonthCardProps {
   recurringApplied?: boolean;
   onApplyRecurring?: () => void;
   syncStatus?: 'idle' | 'syncing' | 'synced' | 'offline' | 'error';
+  lastSyncedAt?: Date | null;
   isInGroup?: boolean;
 }
 
