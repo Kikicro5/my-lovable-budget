@@ -1453,6 +1453,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.benefits.investments': 'Investitionen und Portfolio verfolgen',
     'premium.benefits.savings': 'Ersparnisse und Ziele verwalten',
     'premium.benefits.transfers': 'Geldtransfers zwischen Konten',
+    'premium.benefits.sync': 'Datensynchronisierung zwischen Geräten',
+    'premium.benefits.sharing': 'Budget mit einer Gruppe teilen (bis zu 5 Mitglieder)',
     'premium.loginRequired': 'Zum Kauf oder zur Aktivierung eines Codes ist eine Anmeldung erforderlich.',
     'premium.buyAnnual': 'Kaufen Sie eine jährliche Premium-Lizenz über PayPal:',
     'premium.processing': 'Zahlung wird verarbeitet...',
