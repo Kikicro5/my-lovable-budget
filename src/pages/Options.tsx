@@ -461,8 +461,8 @@ const Options = () => {
           {/* Reset & Delete Account Section */}
           <div className="bg-card rounded-xl p-4 border border-destructive/30">
             <div className="flex items-center gap-2 mb-3">
-              <RotateCcw className="w-5 h-5 text-destructive" />
-              <h2 className="text-lg font-semibold text-foreground">{t('reset.title')}</h2>
+              <Settings className="w-5 h-5 text-destructive" />
+              <h2 className="text-lg font-semibold text-foreground">{t('appManagement.title') || 'App Management'}</h2>
             </div>
             <p className="text-sm text-muted-foreground mb-3">
               {t('reset.description')}
