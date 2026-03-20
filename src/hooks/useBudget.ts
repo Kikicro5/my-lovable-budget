@@ -364,6 +364,7 @@ export const useBudget = () => {
           }
         }
         setSyncStatus('synced');
+        setLastSyncedAt(new Date());
       } catch (err) {
         console.error('Cloud load error:', err);
         setSyncStatus('offline');
