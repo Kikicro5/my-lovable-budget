@@ -1554,6 +1554,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Abo-Produkt nicht gefunden.',
     'premium.verificationError': 'Fehler bei der Kaufverifizierung.',
     'premium.purchaseError': 'Fehler beim Kauf. Bitte versuchen Sie es erneut.',
+
+    // GDPR
+    'legal.gdpr.title': 'DSGVO',
+    'legal.gdpr.section1.title': '1. Verantwortlicher',
+    'legal.gdpr.section1.content': 'BudgetCard ist eine App zur persönlichen Finanzverfolgung. Verantwortlicher ist das BudgetCard-Entwicklungsteam. Ihre Daten werden primär lokal auf Ihrem Gerät gespeichert.',
+    'legal.gdpr.section2.title': '2. Rechtsgrundlage der Verarbeitung',
+    'legal.gdpr.section2.content': 'Die Verarbeitung Ihrer personenbezogenen Daten basiert auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) und der Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO).',
+    'legal.gdpr.section3.title': '3. Ihre Rechte',
+    'legal.gdpr.section3.content': 'Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Datenübertragbarkeit. Sie können die Löschung aller Daten über die Option „Konto löschen" in den Einstellungen anfordern.',
+    'legal.gdpr.section4.title': '4. Datenspeicherung und -übermittlung',
+    'legal.gdpr.section4.content': 'Ihre Finanzdaten werden lokal auf Ihrem Gerät gespeichert. Bei Nutzung der Synchronisierungsfunktion werden Daten auf sicheren Servern innerhalb der EU/des EWR gespeichert.',
+    'legal.gdpr.section5.title': '5. Datenaufbewahrung',
+    'legal.gdpr.section5.content': 'Ihre Daten werden aufbewahrt, solange Sie die App nutzen. Sie können sie jederzeit durch Zurücksetzen der App oder Löschen Ihres Kontos entfernen. Nach Kontolöschung werden alle Daten innerhalb von 30 Tagen endgültig entfernt.',
+    'legal.gdpr.section6.title': '6. Datenschutz-Kontakt',
+    'legal.gdpr.section6.content': 'Bei Fragen zum Datenschutz und zur Ausübung Ihrer DSGVO-Rechte können Sie uns über das Kontaktformular in der App oder per E-Mail kontaktieren.',
+
+    // Contact
+    'contact.button': 'Kontakt',
+    'contact.title': 'Kontaktieren Sie uns',
+    'contact.name': 'Name',
+    'contact.namePlaceholder': 'Ihr Name',
+    'contact.email': 'E-Mail',
+    'contact.emailPlaceholder': 'ihre@email.com',
+    'contact.message': 'Nachricht',
+    'contact.messagePlaceholder': 'Beschreiben Sie Ihre Anfrage...',
+    'contact.send': 'Senden',
+    'contact.sending': 'Wird gesendet...',
+    'contact.sent': 'Nachricht erfolgreich gesendet!',
+    'contact.error': 'Fehler beim Senden der Nachricht.',
+    'contact.fillAll': 'Bitte füllen Sie alle Felder aus.',
+
+    // Account management
+    'account.delete': 'Konto löschen',
+    'account.deleteConfirm': 'Konto löschen?',
+    'account.deleteWarning': 'Diese Aktion ist unwiderruflich. Alle Ihre Daten, einschließlich Abonnements und Einstellungen, werden dauerhaft gelöscht.',
+    'account.deleted': 'Konto erfolgreich gelöscht.',
+    'account.deleteError': 'Fehler beim Löschen des Kontos.',
+
+    // App Management
+    'appManagement.title': 'App-Verwaltung',
   },
 
   pl: {
