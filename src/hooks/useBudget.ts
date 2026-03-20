@@ -234,7 +234,7 @@ export const useBudget = () => {
   const cloudLoadedRef = useRef(false);
 
   useEffect(() => {
-    if (!syncConfig?.canSync || !syncConfig?.userId) return;
+    if (!canSync || !userId) return;
 
     // Debounce cloud saves
     if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
@@ -247,7 +247,7 @@ export const useBudget = () => {
         await supabase
           .from('user_data')
           .upsert({
-            user_id: syncConfig.userId,
+            user_id: userId,
             data: state as any,
           }, { onConflict: 'user_id' });
       } catch (err) {
@@ -260,11 +260,11 @@ export const useBudget = () => {
     return () => {
       if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
     };
-  }, [state, syncConfig?.canSync, syncConfig?.userId]);
+  }, [state, canSync, userId]);
 
   // Cloud sync: load from database on first mount for premium users
   useEffect(() => {
-    if (!syncConfig?.canSync || !syncConfig?.userId || cloudLoadedRef.current) return;
+    if (!canSync || !userId || cloudLoadedRef.current) return;
     cloudLoadedRef.current = true;
 
     const loadCloud = async () => {
@@ -272,7 +272,7 @@ export const useBudget = () => {
         const { data, error } = await supabase
           .from('user_data')
           .select('data, updated_at')
-          .eq('user_id', syncConfig.userId!)
+          .eq('user_id', userId)
           .maybeSingle();
 
         if (error || !data?.data) return;
@@ -297,7 +297,7 @@ export const useBudget = () => {
     };
 
     loadCloud();
-  }, [syncConfig?.canSync, syncConfig?.userId]);
+  }, [canSync, userId]);
 
   const getCurrentBudget = (): MonthlyBudget | undefined => {
     return state.budgets.find(
