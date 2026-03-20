@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2 } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2, Users, Plus, KeyRound } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
@@ -389,7 +389,25 @@ const Options = () => {
             <GroupManager />
           ) : (
             <FeatureLock featureName={t('group.title')}>
-              <GroupManager />
+              <div className="bg-card rounded-xl p-4 border border-border">
+                <div className="flex items-center gap-2 mb-3">
+                  <Users className="w-5 h-5 text-primary" />
+                  <h2 className="text-lg font-semibold text-foreground">{t('group.title')}</h2>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {t('group.noGroup') || 'Niste član nijedne grupe.'}
+                </p>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="flex-1 gap-2" disabled>
+                    <Plus className="w-4 h-4" />
+                    {t('group.create')}
+                  </Button>
+                  <Button variant="outline" className="flex-1 gap-2" disabled>
+                    <KeyRound className="w-4 h-4" />
+                    {t('group.join')}
+                  </Button>
+                </div>
+              </div>
             </FeatureLock>
           )}
 
