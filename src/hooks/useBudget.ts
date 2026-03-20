@@ -65,6 +65,10 @@ const migrateCategories = (categories: (string | Category)[]): Category[] => {
 };
 
 export const useBudget = () => {
+  const { user } = useAuth();
+  const { isPremium } = usePremium();
+  const canSync = !!user && isPremium;
+  const userId = user?.id;
   const [state, setState] = useState<BudgetState>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
