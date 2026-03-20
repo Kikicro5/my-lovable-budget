@@ -245,12 +245,12 @@ export const useBudget = () => {
 
     const checkGroup = async () => {
       try {
-        const { data } = await supabase
+        const { data } = await (supabase
           .from('group_members' as any)
           .select('group_id')
-          .eq('user_id', userId)
+          .eq('user_id', userId) as any)
           .maybeSingle();
-        setGroupId((data as any)?.group_id || null);
+        setGroupId(data?.group_id || null);
       } catch {
         setGroupId(null);
       }
