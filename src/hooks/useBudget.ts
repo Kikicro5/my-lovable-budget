@@ -233,6 +233,7 @@ export const useBudget = () => {
   const isSyncingRef = useRef(false);
   const cloudLoadedRef = useRef(false);
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline' | 'error'>('idle');
+  const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
   const [groupId, setGroupId] = useState<string | null>(null);
   const isUpdatingFromRealtimeRef = useRef(false);
 
@@ -286,6 +287,7 @@ export const useBudget = () => {
         setSyncStatus('error');
       } else {
         setSyncStatus('synced');
+        setLastSyncedAt(new Date());
       }
     } catch (err) {
       console.error('Cloud sync error:', err);
@@ -362,6 +364,7 @@ export const useBudget = () => {
           }
         }
         setSyncStatus('synced');
+        setLastSyncedAt(new Date());
       } catch (err) {
         console.error('Cloud load error:', err);
         setSyncStatus('offline');
@@ -391,6 +394,7 @@ export const useBudget = () => {
             isUpdatingFromRealtimeRef.current = true;
             setState(newData);
             setSyncStatus('synced');
+            setLastSyncedAt(new Date());
             // Reset flag after React processes the update
             setTimeout(() => { isUpdatingFromRealtimeRef.current = false; }, 500);
           }
@@ -1080,5 +1084,6 @@ export const useBudget = () => {
     syncNow,
     canSync,
     groupId,
+    lastSyncedAt,
   };
 };

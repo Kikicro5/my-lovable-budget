@@ -16,6 +16,7 @@ interface MonthCardProps {
   recurringApplied?: boolean;
   onApplyRecurring?: () => void;
   syncStatus?: 'idle' | 'syncing' | 'synced' | 'offline' | 'error';
+  lastSyncedAt?: Date | null;
   isInGroup?: boolean;
 }
 
@@ -45,6 +46,7 @@ export const MonthCard = ({
   recurringApplied = false,
   onApplyRecurring,
   syncStatus = 'idle',
+  lastSyncedAt,
   isInGroup = false,
 }: MonthCardProps) => {
   const { t } = useLanguage();
@@ -81,7 +83,12 @@ export const MonthCard = ({
                 </span>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="text-xs">
-                {syncLabel[syncStatus] || ''}
+                <p>{syncLabel[syncStatus] || ''}</p>
+                {lastSyncedAt && (
+                  <p className="text-muted-foreground mt-0.5">
+                    {lastSyncedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                )}
               </TooltipContent>
             </Tooltip>
           )}
