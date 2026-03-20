@@ -337,7 +337,9 @@ const Options = () => {
           )}
 
           {/* Group Sharing Section */}
-          <GroupManager />
+          <FeatureLock featureName={t('group.title')}>
+            <GroupManager />
+          </FeatureLock>
 
           {/* Account Section - Login/Logout */}
           <div className="bg-card rounded-xl p-4 border border-border">
