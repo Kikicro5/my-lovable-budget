@@ -88,6 +88,7 @@ const Index = () => {
             hasRecurring={hasRecurring}
             recurringApplied={recurringApplied}
             onApplyRecurring={handleApplyRecurring}
+            syncStatus={syncStatus}
           />
           
           <BalanceCard 
