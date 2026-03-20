@@ -1,4 +1,4 @@
-import { FileText, Shield } from 'lucide-react';
+import { FileText, Shield, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,35 +15,12 @@ const TermsOfServiceContent = () => {
   
   return (
     <div className="space-y-4 text-sm text-foreground">
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.terms.section1.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.terms.section1.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.terms.section2.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.terms.section2.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.terms.section3.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.terms.section3.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.terms.section4.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.terms.section4.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.terms.section5.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.terms.section5.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.terms.section6.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.terms.section6.content')}</p>
-      </section>
+      {[1,2,3,4,5,6].map(i => (
+        <section key={i}>
+          <h3 className="font-semibold mb-2">{t(`legal.terms.section${i}.title`)}</h3>
+          <p className="text-muted-foreground">{t(`legal.terms.section${i}.content`)}</p>
+        </section>
+      ))}
     </div>
   );
 };
@@ -53,35 +30,27 @@ const PrivacyPolicyContent = () => {
   
   return (
     <div className="space-y-4 text-sm text-foreground">
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.privacy.section1.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.privacy.section1.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.privacy.section2.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.privacy.section2.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.privacy.section3.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.privacy.section3.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.privacy.section4.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.privacy.section4.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.privacy.section5.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.privacy.section5.content')}</p>
-      </section>
-      
-      <section>
-        <h3 className="font-semibold mb-2">{t('legal.privacy.section6.title')}</h3>
-        <p className="text-muted-foreground">{t('legal.privacy.section6.content')}</p>
-      </section>
+      {[1,2,3,4,5,6].map(i => (
+        <section key={i}>
+          <h3 className="font-semibold mb-2">{t(`legal.privacy.section${i}.title`)}</h3>
+          <p className="text-muted-foreground">{t(`legal.privacy.section${i}.content`)}</p>
+        </section>
+      ))}
+    </div>
+  );
+};
+
+const GDPRContent = () => {
+  const { t } = useLanguage();
+  
+  return (
+    <div className="space-y-4 text-sm text-foreground">
+      {[1,2,3,4,5,6].map(i => (
+        <section key={i}>
+          <h3 className="font-semibold mb-2">{t(`legal.gdpr.section${i}.title`)}</h3>
+          <p className="text-muted-foreground">{t(`legal.gdpr.section${i}.content`)}</p>
+        </section>
+      ))}
     </div>
   );
 };
@@ -92,9 +61,9 @@ export const TermsOfServiceDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full gap-2">
-          <FileText className="w-4 h-4" />
-          {t('legal.terms.title')}
+        <Button variant="outline" className="w-full gap-2 text-xs sm:text-sm">
+          <FileText className="w-4 h-4 shrink-0" />
+          <span className="truncate">{t('legal.terms.title')}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg max-h-[80vh]">
@@ -118,9 +87,9 @@ export const PrivacyPolicyDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full gap-2">
-          <Shield className="w-4 h-4" />
-          {t('legal.privacy.title')}
+        <Button variant="outline" className="w-full gap-2 text-xs sm:text-sm">
+          <Shield className="w-4 h-4 shrink-0" />
+          <span className="truncate">{t('legal.privacy.title')}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg max-h-[80vh]">
@@ -132,6 +101,32 @@ export const PrivacyPolicyDialog = () => {
         </DialogHeader>
         <ScrollArea className="h-[60vh] pr-4">
           <PrivacyPolicyContent />
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export const GDPRDialog = () => {
+  const { t } = useLanguage();
+  
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="w-full gap-2 text-xs sm:text-sm">
+          <Scale className="w-4 h-4 shrink-0" />
+          <span className="truncate">GDPR</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-lg max-h-[80vh]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Scale className="w-5 h-5" />
+            {t('legal.gdpr.title') || 'GDPR'}
+          </DialogTitle>
+        </DialogHeader>
+        <ScrollArea className="h-[60vh] pr-4">
+          <GDPRContent />
         </ScrollArea>
       </DialogContent>
     </Dialog>

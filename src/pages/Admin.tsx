@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap } from 'lucide-react';
+import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap, MessageSquare, Mail, Eye, Reply, Send } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 interface CodeData {
@@ -24,6 +25,9 @@ interface UserData {
 interface PriceData {
   id: string; price: number; duration_days: number; currency: string;
 }
+interface ContactMessage {
+  id: string; name: string; email: string; message: string; is_read: boolean; created_at: string; admin_reply: string | null; replied_at: string | null;
+}
 
 const Admin = () => {
   const { isAdmin, isLoading: authLoading } = useAuth();
@@ -31,13 +35,17 @@ const Admin = () => {
   const [codes, setCodes] = useState<CodeData[]>([]);
   const [users, setUsers] = useState<UserData[]>([]);
   const [prices, setPrices] = useState<PriceData[]>([]);
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [codeCount, setCodeCount] = useState(10);
   const [maxUses, setMaxUses] = useState(1);
   const [expiresPeriod, setExpiresPeriod] = useState('365');
   const [lastGenerated, setLastGenerated] = useState<CodeData[]>([]);
-  const [deleteDialog, setDeleteDialog] = useState<{ type: 'code' | 'user'; id: string; label: string } | null>(null);
+  const [deleteDialog, setDeleteDialog] = useState<{ type: 'code' | 'user' | 'message'; id: string; label: string } | null>(null);
+  const [replyDialog, setReplyDialog] = useState<ContactMessage | null>(null);
+  const [replyText, setReplyText] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !isAdmin) navigate('/');
@@ -55,10 +63,14 @@ const Admin = () => {
 
   const loadAll = async () => {
     try {
-      const data = await adminCall('load-all');
-      setCodes(data.codes || []);
-      setUsers(data.users || []);
-      setPrices(data.prices || []);
+      const [adminData, messagesResult] = await Promise.all([
+        adminCall('load-all'),
+        supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
+      ]);
+      setCodes(adminData.codes || []);
+      setUsers(adminData.users || []);
+      setPrices(adminData.prices || []);
+      setMessages((messagesResult.data as ContactMessage[]) || []);
     } catch (e: any) {
       toast.error(e.message);
     } finally {
@@ -112,10 +124,41 @@ const Admin = () => {
     try { await adminCall('delete-user', { userId }); toast.success('Korisnik obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
 
+  const handleDeleteMessage = async (messageId: string) => {
+    setMessages(prev => prev.filter(m => m.id !== messageId));
+    setDeleteDialog(null);
+    try {
+      await supabase.from('contact_messages').delete().eq('id', messageId);
+      toast.success('Poruka obrisana');
+    } catch (e: any) { toast.error(e.message); loadAll(); }
+  };
+
+  const handleMarkRead = async (msg: ContactMessage) => {
+    setMessages(prev => prev.map(m => m.id === msg.id ? { ...m, is_read: true } : m));
+    await supabase.from('contact_messages').update({ is_read: true }).eq('id', msg.id);
+  };
+
+  const handleReply = async () => {
+    if (!replyDialog || !replyText.trim()) return;
+    setSendingReply(true);
+    try {
+      await supabase.from('contact_messages').update({
+        admin_reply: replyText.trim(),
+        replied_at: new Date().toISOString(),
+        is_read: true,
+      }).eq('id', replyDialog.id);
+      setMessages(prev => prev.map(m => m.id === replyDialog.id ? { ...m, admin_reply: replyText.trim(), replied_at: new Date().toISOString(), is_read: true } : m));
+      toast.success('Odgovor spremljen');
+      setReplyDialog(null);
+      setReplyText('');
+    } catch (e: any) { toast.error(e.message); } finally { setSendingReply(false); }
+  };
+
   const confirmDelete = () => {
     if (!deleteDialog) return;
     if (deleteDialog.type === 'code') handleDeleteCode(deleteDialog.id);
-    else handleDeleteUser(deleteDialog.id);
+    else if (deleteDialog.type === 'user') handleDeleteUser(deleteDialog.id);
+    else handleDeleteMessage(deleteDialog.id);
   };
 
   const handleDeactivatePremium = async (userId: string) => {
@@ -137,7 +180,7 @@ const Admin = () => {
   if (!isAdmin) return null;
 
   const showSkeleton = initialLoading;
-  if (!isAdmin) return null;
+  const unreadCount = messages.filter(m => !m.is_read).length;
 
   return (
     <div className="min-h-screen bg-background pb-6">
@@ -150,9 +193,17 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="codes">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="codes" className="gap-1 text-xs"><Key className="w-3 h-3" />Kodovi</TabsTrigger>
             <TabsTrigger value="users" className="gap-1 text-xs"><Users className="w-3 h-3" />Korisnici</TabsTrigger>
+            <TabsTrigger value="messages" className="gap-1 text-xs relative">
+              <MessageSquare className="w-3 h-3" />Poruke
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  {unreadCount}
+                </span>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="prices" className="gap-1 text-xs"><DollarSign className="w-3 h-3" />Cijene</TabsTrigger>
           </TabsList>
 
@@ -272,6 +323,62 @@ const Admin = () => {
             </div>
           </TabsContent>
 
+          {/* PORUKE TAB */}
+          <TabsContent value="messages" className="space-y-4 mt-4">
+            <h3 className="font-semibold text-sm">Poruke ({messages.length})</h3>
+            {showSkeleton ? (
+              <div className="space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <Skeleton key={i} className="h-24 w-full rounded-lg" />
+                ))}
+              </div>
+            ) : messages.length === 0 ? (
+              <p className="text-center text-muted-foreground text-sm py-8">Nema poruka</p>
+            ) : (
+              <div className="space-y-3">
+                {messages.map(msg => (
+                  <Card key={msg.id} className={`border ${!msg.is_read ? 'border-primary/40 bg-primary/5' : ''}`}>
+                    <CardContent className="p-4 space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-medium text-sm">{msg.name}</span>
+                            <span className="text-xs text-muted-foreground">{msg.email}</span>
+                            {!msg.is_read && <Badge variant="default" className="text-[10px] px-1.5 py-0">Nova</Badge>}
+                            {msg.admin_reply && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-green-600 border-green-300">Odgovoreno</Badge>}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {new Date(msg.created_at).toLocaleString('hr')}
+                          </p>
+                        </div>
+                        <div className="flex gap-1 shrink-0">
+                          {!msg.is_read && (
+                            <Button variant="ghost" size="icon" onClick={() => handleMarkRead(msg)} title="Označi kao pročitano">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                          )}
+                          <Button variant="ghost" size="icon" onClick={() => { setReplyDialog(msg); setReplyText(msg.admin_reply || ''); }} title="Odgovori">
+                            <Reply className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" onClick={() => setDeleteDialog({ type: 'message', id: msg.id, label: msg.name })} title="Obriši">
+                            <Trash2 className="w-4 h-4 text-destructive" />
+                          </Button>
+                        </div>
+                      </div>
+                      <p className="text-sm text-foreground whitespace-pre-wrap">{msg.message}</p>
+                      {msg.admin_reply && (
+                        <div className="bg-muted/50 rounded-lg p-3 mt-2">
+                          <p className="text-xs font-medium text-muted-foreground mb-1">Vaš odgovor:</p>
+                          <p className="text-sm text-foreground whitespace-pre-wrap">{msg.admin_reply}</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
           {/* CIJENE TAB */}
           <TabsContent value="prices" className="space-y-4 mt-4">
             <Card>
@@ -305,6 +412,7 @@ const Admin = () => {
         </Tabs>
       </div>
 
+      {/* Delete Dialog */}
       <AlertDialog open={!!deleteDialog} onOpenChange={(open) => !open && setDeleteDialog(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -312,6 +420,8 @@ const Admin = () => {
             <AlertDialogDescription>
               {deleteDialog?.type === 'code'
                 ? `Jeste li sigurni da želite obrisati kod "${deleteDialog?.label}"?`
+                : deleteDialog?.type === 'message'
+                ? `Jeste li sigurni da želite obrisati poruku od "${deleteDialog?.label}"?`
                 : `Jeste li sigurni da želite obrisati korisnika "${deleteDialog?.label}"? Ova radnja je nepovratna.`}
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -319,6 +429,37 @@ const Admin = () => {
             <AlertDialogCancel>Odustani</AlertDialogCancel>
             <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
               Obriši
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Reply Dialog */}
+      <AlertDialog open={!!replyDialog} onOpenChange={(open) => { if (!open) { setReplyDialog(null); setReplyText(''); } }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Reply className="w-5 h-5" />
+              Odgovori na poruku
+            </AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-2">
+                <p className="text-sm"><strong>{replyDialog?.name}</strong> ({replyDialog?.email})</p>
+                <p className="text-sm text-muted-foreground bg-muted/50 p-2 rounded">{replyDialog?.message}</p>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <Textarea
+            value={replyText}
+            onChange={(e) => setReplyText(e.target.value)}
+            placeholder="Vaš odgovor..."
+            rows={4}
+          />
+          <AlertDialogFooter>
+            <AlertDialogCancel>Odustani</AlertDialogCancel>
+            <AlertDialogAction onClick={handleReply} disabled={sendingReply || !replyText.trim()} className="gap-2">
+              <Send className="w-4 h-4" />
+              {sendingReply ? 'Slanje...' : 'Pošalji odgovor'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
