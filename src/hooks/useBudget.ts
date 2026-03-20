@@ -287,6 +287,7 @@ export const useBudget = () => {
         setSyncStatus('error');
       } else {
         setSyncStatus('synced');
+        setLastSyncedAt(new Date());
       }
     } catch (err) {
       console.error('Cloud sync error:', err);
