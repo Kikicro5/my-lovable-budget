@@ -21,7 +21,8 @@ import { FeatureLock } from '@/components/FeatureLock';
 import { useBudget } from '@/hooks/useBudget';
 import { GroupManager } from '@/components/GroupManager';
 
-import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
+import { TermsOfServiceDialog, PrivacyPolicyDialog, GDPRDialog } from '@/components/LegalDialogs';
+import { ContactDialog } from '@/components/ContactDialog';
 import {
   Select,
   SelectContent,
