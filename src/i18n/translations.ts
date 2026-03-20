@@ -507,6 +507,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'legal.privacy.section5.content': 'Poduzimamo razumne mjere za zaštitu vaših podataka, ali ne možemo jamčiti apsolutnu sigurnost. Preporučujemo redovito sigurnosno kopiranje važnih podataka.',
     'legal.privacy.section6.title': '6. Kontakt',
     'legal.privacy.section6.content': 'Za sva pitanja vezana uz privatnost možete nas kontaktirati putem službenih kanala aplikacije. Zadržavamo pravo ažuriranja ovih pravila privatnosti.',
+
+    // GDPR
+    'legal.gdpr.title': 'GDPR',
+    'legal.gdpr.section1.title': '1. Voditelj obrade podataka',
+    'legal.gdpr.section1.content': 'BudgetCard je aplikacija za osobno praćenje financija. Voditelj obrade podataka je razvojni tim BudgetCard. Vaši podaci se primarno pohranjuju lokalno na vašem uređaju.',
+    'legal.gdpr.section2.title': '2. Pravna osnova obrade',
+    'legal.gdpr.section2.content': 'Obrada vaših osobnih podataka temelji se na vašem pristanku (čl. 6. st. 1. t. a GDPR-a) i na izvršavanju ugovora (čl. 6. st. 1. t. b GDPR-a). Korištenjem aplikacije pristajete na obradu podataka kako je opisano u ovim pravilima.',
+    'legal.gdpr.section3.title': '3. Vaša prava',
+    'legal.gdpr.section3.content': 'Imate pravo na pristup, ispravak, brisanje i prenosivost vaših podataka. Možete zatražiti brisanje svih podataka putem opcije "Izbriši račun" u postavkama. Također imate pravo uložiti prigovor na obradu podataka.',
+    'legal.gdpr.section4.title': '4. Pohrana i prijenos podataka',
+    'legal.gdpr.section4.content': 'Vaši financijski podaci pohranjuju se lokalno na vašem uređaju. Ako koristite funkciju sinkronizacije, podaci se pohranjuju na sigurnim serverima unutar EU/EEA. Podaci se ne prenose u treće zemlje bez odgovarajuće zaštite.',
+    'legal.gdpr.section5.title': '5. Zadržavanje podataka',
+    'legal.gdpr.section5.content': 'Vaši podaci se čuvaju dok koristite aplikaciju. Možete ih obrisati u bilo kojem trenutku resetiranjem aplikacije ili brisanjem računa. Nakon brisanja računa, svi podaci se trajno uklanjaju unutar 30 dana.',
+    'legal.gdpr.section6.title': '6. Kontakt za zaštitu podataka',
+    'legal.gdpr.section6.content': 'Za sva pitanja vezana uz zaštitu podataka i ostvarivanje vaših GDPR prava, možete nas kontaktirati putem obrasca za kontakt u aplikaciji ili na službeni email.',
+
+    // Contact
+    'contact.button': 'Kontakt',
+    'contact.title': 'Kontaktirajte nas',
+    'contact.name': 'Ime',
+    'contact.namePlaceholder': 'Vaše ime',
+    'contact.email': 'Email',
+    'contact.emailPlaceholder': 'vas@email.com',
+    'contact.message': 'Poruka',
+    'contact.messagePlaceholder': 'Opišite vaš upit...',
+    'contact.send': 'Pošalji',
+    'contact.sending': 'Slanje...',
+    'contact.sent': 'Poruka uspješno poslana!',
+    'contact.error': 'Greška pri slanju poruke.',
+    'contact.fillAll': 'Molimo ispunite sva polja.',
+
+    // Account management
+    'account.delete': 'Izbriši račun',
+    'account.deleteConfirm': 'Izbrisati račun?',
+    'account.deleteWarning': 'Ova radnja je nepovratna. Svi vaši podaci, uključujući pretplate i postavke, bit će trajno izbrisani.',
+    'account.deleted': 'Račun je uspješno izbrisan.',
+    'account.deleteError': 'Greška pri brisanju računa.',
+
+    // App Management
+    'appManagement.title': 'Upravljanje aplikacijom',
   },
 
   en: {
