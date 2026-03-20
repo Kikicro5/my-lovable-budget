@@ -373,31 +373,6 @@ const Options = () => {
             <GroupManager />
           </FeatureLock>
 
-          {/* Account Section - Logout/Admin (only for authenticated users) */}
-          {user && (
-            <div className="bg-card rounded-xl p-4 border border-border">
-              <div className="space-y-2">
-                <Button 
-                  variant="outline" 
-                  onClick={() => signOut()} 
-                  className="w-full gap-2"
-                >
-                  <LogOut className="w-4 h-4" />
-                  {t('auth.logout')}
-                </Button>
-                {isAdmin && (
-                  <Button 
-                    variant="outline" 
-                    onClick={() => navigate('/admin')} 
-                    className="w-full gap-2"
-                  >
-                    <Shield className="w-4 h-4" />
-                    Admin
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
 
           {/* Guide & Share Row */}
           <div className="bg-card rounded-xl p-4 border border-border">
