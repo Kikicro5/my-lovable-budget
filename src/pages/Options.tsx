@@ -225,6 +225,16 @@ const Options = () => {
             </div>
           </div>
 
+          {/* Login Button for non-authenticated users */}
+          {!user && (
+            <div className="bg-card rounded-xl p-4 border border-border">
+              <Button onClick={() => navigate('/auth')} className="w-full gap-2">
+                <LogIn className="w-4 h-4" />
+                {t('auth.login')}
+              </Button>
+            </div>
+          )}
+
 
           {/* Premium Section */}
           <div ref={premiumRef} id="premium" className="bg-card rounded-xl p-4 border border-primary/20">
