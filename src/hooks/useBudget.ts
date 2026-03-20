@@ -268,9 +268,9 @@ export const useBudget = () => {
       let error;
       if (groupId) {
         // Save to group_data
-        const res = await supabase
+        const res = await (supabase
           .from('group_data' as any)
-          .update({ data: state as any })
+          .update({ data: state as any }) as any)
           .eq('group_id', groupId);
         error = res.error;
       } else {
