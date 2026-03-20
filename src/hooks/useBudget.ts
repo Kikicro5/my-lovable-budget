@@ -1084,5 +1084,6 @@ export const useBudget = () => {
     syncNow,
     canSync,
     groupId,
+    lastSyncedAt,
   };
 };
