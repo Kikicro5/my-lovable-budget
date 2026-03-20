@@ -233,6 +233,7 @@ export const useBudget = () => {
   const isSyncingRef = useRef(false);
   const cloudLoadedRef = useRef(false);
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline' | 'error'>('idle');
+  const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
   const [groupId, setGroupId] = useState<string | null>(null);
   const isUpdatingFromRealtimeRef = useRef(false);
 
