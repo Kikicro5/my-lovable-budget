@@ -62,7 +62,7 @@ const migrateCategories = (categories: (string | Category)[]): Category[] => {
   );
 };
 
-export const useBudget = (syncConfig?: { canSync: boolean; userId?: string }) => {
+export const useBudget = () => {
   const [state, setState] = useState<BudgetState>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
