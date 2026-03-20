@@ -64,6 +64,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'Registracija uspješna! Provjerite email za potvrdu.',
     'auth.invalidCredentials': 'Neispravni podaci za prijavu',
     'auth.passwordMinLength': 'Lozinka mora imati najmanje 6 znakova',
+    'auth.noAccount': 'Nemate račun? Registrirajte se',
+    'auth.haveAccount': 'Već imate račun? Prijavite se',
+    'auth.back': 'Natrag',
 
     // Balance card
     'balance.current': 'Trenutno stanje',
@@ -612,6 +615,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'Registration successful! Check your email to confirm.',
     'auth.invalidCredentials': 'Invalid login credentials',
     'auth.passwordMinLength': 'Password must be at least 6 characters',
+    'auth.noAccount': "Don't have an account? Register",
+    'auth.haveAccount': 'Already have an account? Login',
+    'auth.back': 'Back',
 
     // Balance card
     'balance.current': 'Current Balance',
@@ -1156,6 +1162,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'Registrierung erfolgreich! Überprüfen Sie Ihre E-Mail zur Bestätigung.',
     'auth.invalidCredentials': 'Ungültige Anmeldedaten',
     'auth.passwordMinLength': 'Passwort muss mindestens 6 Zeichen haben',
+    'auth.noAccount': 'Kein Konto? Registrieren',
+    'auth.haveAccount': 'Bereits ein Konto? Anmelden',
+    'auth.back': 'Zurück',
 
     // Balance card
     'balance.current': 'Aktueller Kontostand',
@@ -1659,6 +1668,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'Rejestracja udana! Sprawdź email w celu potwierdzenia.',
     'auth.invalidCredentials': 'Nieprawidłowe dane logowania',
     'auth.passwordMinLength': 'Hasło musi mieć minimum 6 znaków',
+    'auth.noAccount': 'Nie masz konta? Zarejestruj się',
+    'auth.haveAccount': 'Masz już konto? Zaloguj się',
+    'auth.back': 'Wstecz',
 
     // Balance card
     'balance.current': 'Aktualny stan',
@@ -2162,6 +2174,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': '¡Registro exitoso! Revisa tu correo para confirmar.',
     'auth.invalidCredentials': 'Credenciales de inicio de sesión inválidas',
     'auth.passwordMinLength': 'La contraseña debe tener al menos 6 caracteres',
+    'auth.noAccount': '¿No tienes cuenta? Regístrate',
+    'auth.haveAccount': '¿Ya tienes cuenta? Inicia sesión',
+    'auth.back': 'Volver',
 
     // Balance card
     'balance.current': 'Saldo actual',
@@ -2665,6 +2680,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'Inscription réussie ! Vérifiez votre email pour confirmer.',
     'auth.invalidCredentials': 'Identifiants de connexion invalides',
     'auth.passwordMinLength': 'Le mot de passe doit contenir au moins 6 caractères',
+    'auth.noAccount': 'Pas de compte ? Inscrivez-vous',
+    'auth.haveAccount': 'Déjà un compte ? Connectez-vous',
+    'auth.back': 'Retour',
 
     // Balance card
     'balance.current': 'Solde actuel',
@@ -3168,6 +3186,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': '注册成功！请检查邮箱进行确认。',
     'auth.invalidCredentials': '登录凭据无效',
     'auth.passwordMinLength': '密码必须至少6个字符',
+    'auth.noAccount': '没有账户？注册',
+    'auth.haveAccount': '已有账户？登录',
+    'auth.back': '返回',
 
     // Balance card
     'balance.current': '当前余额',
@@ -3672,6 +3693,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'रजिस्ट्रेशन सफल! कन्फर्मेशन के लिए ईमेल चेक करें।',
     'auth.invalidCredentials': 'अमान्य लॉगिन क्रेडेंशियल्स',
     'auth.passwordMinLength': 'पासवर्ड कम से कम 6 अक्षर का होना चाहिए',
+    'auth.noAccount': 'खाता नहीं है? रजिस्टर करें',
+    'auth.haveAccount': 'पहले से खाता है? लॉगिन करें',
+    'auth.back': 'वापस',
 
     // Balance card
     'balance.current': 'वर्तमान शेष',
