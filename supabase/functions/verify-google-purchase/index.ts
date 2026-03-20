@@ -10,12 +10,11 @@ const adminClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_SERVICE_ROL
 
 // Get Google access token using service account
 async function getGoogleAccessToken(): Promise<string> {
-  const serviceAccountJson = Deno.env.get('GOOGLE_PLAY_SERVICE_ACCOUNT');
+  const serviceAccountJson = Deno.env.get('GOOGLE_SERVICE_ACCOUNT_KEY');
   if (!serviceAccountJson) throw new Error('Google Play service account not configured');
 
   const sa = JSON.parse(serviceAccountJson);
   
-  // Create JWT for Google OAuth2
   const header = { alg: 'RS256', typ: 'JWT' };
   const now = Math.floor(Date.now() / 1000);
   const payload = {
@@ -34,7 +33,6 @@ async function getGoogleAccessToken(): Promise<string> {
 
   const signInput = `${headerB64}.${payloadB64}`;
 
-  // Import RSA private key
   const pemContents = sa.private_key
     .replace('-----BEGIN PRIVATE KEY-----', '')
     .replace('-----END PRIVATE KEY-----', '')
@@ -58,7 +56,6 @@ async function getGoogleAccessToken(): Promise<string> {
 
   const jwt = `${signInput}.${signatureB64}`;
 
-  // Exchange JWT for access token
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -84,63 +81,85 @@ Deno.serve(async (req) => {
     new Response(JSON.stringify(data), { status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   try {
-    const body = await req.json();
+    let body: Record<string, unknown>;
+    try {
+      body = await req.json();
+    } catch {
+      return json({ error: 'Invalid JSON' }, 400);
+    }
     const { action } = body;
 
-    // ── verify-purchase: verify a Google Play subscription purchase ──
+    // ── verify-purchase ──
     if (action === 'verify-purchase') {
-      const { purchaseToken, productId, deviceId } = body;
+      const { purchaseToken, productId, deviceId } = body as Record<string, string>;
       if (!purchaseToken || !productId) {
         return json({ error: 'Missing purchaseToken or productId' }, 400);
       }
 
-      // Get auth if available
       let userId: string | null = null;
       let email: string | null = null;
       const authHeader = req.headers.get('Authorization');
       if (authHeader?.startsWith('Bearer ')) {
         const token = authHeader.replace('Bearer ', '');
-        const { data: claimsData } = await adminClient.auth.getClaims(token);
-        if (claimsData?.claims) {
-          userId = claimsData.claims.sub as string;
-          email = claimsData.claims.email as string;
+        const { data: { user } } = await adminClient.auth.getUser(token);
+        if (user) {
+          userId = user.id;
+          email = user.email || null;
         }
       }
 
-      const packageName = 'app.lovable.2b913f8ae0084a13b688581953b1b4f7';
-      const subscriptionId = productId === '001_01' ? '001_01' : productId;
+      const packageName = 'app.lovable.budgetcard.twa';
+      const subscriptionId = productId;
 
       try {
         const accessToken = await getGoogleAccessToken();
         
-        // Verify subscription with Google Play
-        const verifyUrl = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/subscriptions/${subscriptionId}/tokens/${purchaseToken}`;
-        const verifyRes = await fetch(verifyUrl, {
+        // Try subscription endpoint first
+        let verifyUrl = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/subscriptions/${subscriptionId}/tokens/${purchaseToken}`;
+        let verifyRes = await fetch(verifyUrl, {
           headers: { 'Authorization': `Bearer ${accessToken}` },
         });
 
+        let purchaseData: any;
+        let isSubscription = true;
+
         if (!verifyRes.ok) {
-          const err = await verifyRes.text();
-          console.error('Google Play verify error:', err);
-          return json({ error: 'Purchase verification failed', valid: false }, 400);
+          // Try one-time product endpoint
+          isSubscription = false;
+          verifyUrl = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${packageName}/purchases/products/${subscriptionId}/tokens/${purchaseToken}`;
+          verifyRes = await fetch(verifyUrl, {
+            headers: { 'Authorization': `Bearer ${accessToken}` },
+          });
+
+          if (!verifyRes.ok) {
+            const err = await verifyRes.text();
+            console.error('Google Play verify error:', err);
+            return json({ error: 'Purchase verification failed', valid: false }, 400);
+          }
         }
 
-        const purchaseData = await verifyRes.json();
+        purchaseData = await verifyRes.json();
         console.log('Google Play purchase data:', JSON.stringify(purchaseData));
 
-        // Check if subscription is active
-        // paymentState: 0=pending, 1=received, 2=free trial, 3=deferred
-        const isActive = purchaseData.paymentState === 1 || purchaseData.paymentState === 2;
-        const expiryTimeMillis = parseInt(purchaseData.expiryTimeMillis || '0');
-        const isExpired = expiryTimeMillis < Date.now();
+        let validUntil: Date;
 
-        if (!isActive && !purchaseData.autoRenewing) {
-          return json({ error: 'Subscription not active', valid: false }, 400);
+        if (isSubscription) {
+          const isActive = purchaseData.paymentState === 1 || purchaseData.paymentState === 2;
+          const expiryTimeMillis = parseInt(purchaseData.expiryTimeMillis || '0');
+
+          if (!isActive && !purchaseData.autoRenewing) {
+            return json({ error: 'Subscription not active', valid: false }, 400);
+          }
+          validUntil = new Date(expiryTimeMillis);
+        } else {
+          // One-time purchase: grant 365 days
+          if (purchaseData.purchaseState !== 0) {
+            return json({ error: 'Purchase not completed', valid: false }, 400);
+          }
+          validUntil = new Date();
+          validUntil.setDate(validUntil.getDate() + 365);
         }
 
-        // Save activation
-        const validUntil = new Date(expiryTimeMillis);
-        
         // Create activation code for tracking
         const code = `GP_${Date.now().toString(36).toUpperCase()}`;
         const codeExpiresAt = new Date();
@@ -182,7 +201,7 @@ Deno.serve(async (req) => {
           valid: true,
           success: true,
           expiresAt: validUntil.toISOString(),
-          autoRenewing: purchaseData.autoRenewing || false,
+          autoRenewing: isSubscription ? (purchaseData.autoRenewing || false) : false,
         });
 
       } catch (err) {
@@ -191,9 +210,9 @@ Deno.serve(async (req) => {
       }
     }
 
-    // ── check-subscription: check if device has active Google Play subscription ──
+    // ── check-subscription ──
     if (action === 'check-subscription') {
-      const { deviceId } = body;
+      const { deviceId } = body as Record<string, string>;
       if (!deviceId) return json({ error: 'Missing deviceId' }, 400);
 
       const { data: activations } = await adminClient
