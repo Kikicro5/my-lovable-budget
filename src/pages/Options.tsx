@@ -118,10 +118,14 @@ const Options = () => {
   };
 
   const handleShare = async () => {
+    const shareUrl = isNativeAndroid()
+      ? 'https://play.google.com/store/apps/details?id=app.lovable.budgetcard.twa'
+      : 'https://budgetcard.lovable.app';
+
     const shareData = {
       title: 'BudgetCard',
       text: t('share.message') || 'Check out this budget tracking app!',
-      url: 'https://play.google.com/store/apps/details?id=app.lovable.budgetcard.twa',
+      url: shareUrl,
     };
 
     if (navigator.share) {
@@ -133,7 +137,7 @@ const Options = () => {
         }
       }
     } else {
-      await navigator.clipboard.writeText('https://play.google.com/store/apps/details?id=app.lovable.budgetcard.twa');
+      await navigator.clipboard.writeText(shareUrl);
       toast.success(t('share.copied') || 'Link copied to clipboard!');
     }
   };
