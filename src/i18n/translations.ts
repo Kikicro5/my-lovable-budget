@@ -1554,6 +1554,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Abo-Produkt nicht gefunden.',
     'premium.verificationError': 'Fehler bei der Kaufverifizierung.',
     'premium.purchaseError': 'Fehler beim Kauf. Bitte versuchen Sie es erneut.',
+
+    // GDPR
+    'legal.gdpr.title': 'DSGVO',
+    'legal.gdpr.section1.title': '1. Verantwortlicher',
+    'legal.gdpr.section1.content': 'BudgetCard ist eine App zur persönlichen Finanzverfolgung. Verantwortlicher ist das BudgetCard-Entwicklungsteam. Ihre Daten werden primär lokal auf Ihrem Gerät gespeichert.',
+    'legal.gdpr.section2.title': '2. Rechtsgrundlage der Verarbeitung',
+    'legal.gdpr.section2.content': 'Die Verarbeitung Ihrer personenbezogenen Daten basiert auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) und der Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO).',
+    'legal.gdpr.section3.title': '3. Ihre Rechte',
+    'legal.gdpr.section3.content': 'Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Datenübertragbarkeit. Sie können die Löschung aller Daten über die Option „Konto löschen" in den Einstellungen anfordern.',
+    'legal.gdpr.section4.title': '4. Datenspeicherung und -übermittlung',
+    'legal.gdpr.section4.content': 'Ihre Finanzdaten werden lokal auf Ihrem Gerät gespeichert. Bei Nutzung der Synchronisierungsfunktion werden Daten auf sicheren Servern innerhalb der EU/des EWR gespeichert.',
+    'legal.gdpr.section5.title': '5. Datenaufbewahrung',
+    'legal.gdpr.section5.content': 'Ihre Daten werden aufbewahrt, solange Sie die App nutzen. Sie können sie jederzeit durch Zurücksetzen der App oder Löschen Ihres Kontos entfernen. Nach Kontolöschung werden alle Daten innerhalb von 30 Tagen endgültig entfernt.',
+    'legal.gdpr.section6.title': '6. Datenschutz-Kontakt',
+    'legal.gdpr.section6.content': 'Bei Fragen zum Datenschutz und zur Ausübung Ihrer DSGVO-Rechte können Sie uns über das Kontaktformular in der App oder per E-Mail kontaktieren.',
+
+    // Contact
+    'contact.button': 'Kontakt',
+    'contact.title': 'Kontaktieren Sie uns',
+    'contact.name': 'Name',
+    'contact.namePlaceholder': 'Ihr Name',
+    'contact.email': 'E-Mail',
+    'contact.emailPlaceholder': 'ihre@email.com',
+    'contact.message': 'Nachricht',
+    'contact.messagePlaceholder': 'Beschreiben Sie Ihre Anfrage...',
+    'contact.send': 'Senden',
+    'contact.sending': 'Wird gesendet...',
+    'contact.sent': 'Nachricht erfolgreich gesendet!',
+    'contact.error': 'Fehler beim Senden der Nachricht.',
+    'contact.fillAll': 'Bitte füllen Sie alle Felder aus.',
+
+    // Account management
+    'account.delete': 'Konto löschen',
+    'account.deleteConfirm': 'Konto löschen?',
+    'account.deleteWarning': 'Diese Aktion ist unwiderruflich. Alle Ihre Daten, einschließlich Abonnements und Einstellungen, werden dauerhaft gelöscht.',
+    'account.deleted': 'Konto erfolgreich gelöscht.',
+    'account.deleteError': 'Fehler beim Löschen des Kontos.',
+
+    // App Management
+    'appManagement.title': 'App-Verwaltung',
   },
 
   pl: {
@@ -2017,6 +2057,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Produkt subskrypcji nie znaleziony.',
     'premium.verificationError': 'Błąd weryfikacji zakupu.',
     'premium.purchaseError': 'Błąd podczas zakupu. Spróbuj ponownie.',
+
+    // GDPR
+    'legal.gdpr.title': 'RODO',
+    'legal.gdpr.section1.title': '1. Administrator danych',
+    'legal.gdpr.section1.content': 'BudgetCard to aplikacja do śledzenia finansów osobistych. Administratorem danych jest zespół deweloperski BudgetCard. Dane są przechowywane głównie lokalnie na urządzeniu.',
+    'legal.gdpr.section2.title': '2. Podstawa prawna przetwarzania',
+    'legal.gdpr.section2.content': 'Przetwarzanie danych osobowych opiera się na zgodzie (art. 6 ust. 1 lit. a RODO) oraz wykonaniu umowy (art. 6 ust. 1 lit. b RODO).',
+    'legal.gdpr.section3.title': '3. Twoje prawa',
+    'legal.gdpr.section3.content': 'Masz prawo do dostępu, sprostowania, usunięcia i przenoszenia danych. Możesz zażądać usunięcia danych poprzez opcję „Usuń konto" w ustawieniach.',
+    'legal.gdpr.section4.title': '4. Przechowywanie i przekazywanie danych',
+    'legal.gdpr.section4.content': 'Dane finansowe są przechowywane lokalnie na urządzeniu. Przy korzystaniu z synchronizacji dane są przechowywane na bezpiecznych serwerach w UE/EOG.',
+    'legal.gdpr.section5.title': '5. Okres przechowywania danych',
+    'legal.gdpr.section5.content': 'Dane są przechowywane podczas korzystania z aplikacji. Możesz je usunąć w dowolnym momencie, resetując aplikację lub usuwając konto. Po usunięciu konta dane są trwale usuwane w ciągu 30 dni.',
+    'legal.gdpr.section6.title': '6. Kontakt ds. ochrony danych',
+    'legal.gdpr.section6.content': 'W sprawach dotyczących ochrony danych i realizacji praw RODO skontaktuj się z nami przez formularz kontaktowy w aplikacji lub oficjalny e-mail.',
+
+    // Contact
+    'contact.button': 'Kontakt',
+    'contact.title': 'Skontaktuj się z nami',
+    'contact.name': 'Imię',
+    'contact.namePlaceholder': 'Twoje imię',
+    'contact.email': 'E-mail',
+    'contact.emailPlaceholder': 'twoj@email.com',
+    'contact.message': 'Wiadomość',
+    'contact.messagePlaceholder': 'Opisz swoje zapytanie...',
+    'contact.send': 'Wyślij',
+    'contact.sending': 'Wysyłanie...',
+    'contact.sent': 'Wiadomość wysłana pomyślnie!',
+    'contact.error': 'Błąd wysyłania wiadomości.',
+    'contact.fillAll': 'Proszę wypełnić wszystkie pola.',
+
+    // Account management
+    'account.delete': 'Usuń konto',
+    'account.deleteConfirm': 'Usunąć konto?',
+    'account.deleteWarning': 'Ta akcja jest nieodwracalna. Wszystkie dane, w tym subskrypcje i ustawienia, zostaną trwale usunięte.',
+    'account.deleted': 'Konto zostało pomyślnie usunięte.',
+    'account.deleteError': 'Błąd podczas usuwania konta.',
+
+    // App Management
+    'appManagement.title': 'Zarządzanie aplikacją',
   },
 
   es: {
@@ -2480,6 +2560,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Producto de suscripción no encontrado.',
     'premium.verificationError': 'Error al verificar la compra.',
     'premium.purchaseError': 'Error durante la compra. Inténtelo de nuevo.',
+
+    // GDPR
+    'legal.gdpr.title': 'RGPD',
+    'legal.gdpr.section1.title': '1. Responsable del tratamiento',
+    'legal.gdpr.section1.content': 'BudgetCard es una aplicación de seguimiento de finanzas personales. El responsable del tratamiento es el equipo de desarrollo de BudgetCard. Sus datos se almacenan principalmente de forma local en su dispositivo.',
+    'legal.gdpr.section2.title': '2. Base legal del tratamiento',
+    'legal.gdpr.section2.content': 'El tratamiento de sus datos personales se basa en su consentimiento (Art. 6(1)(a) RGPD) y en la ejecución de un contrato (Art. 6(1)(b) RGPD).',
+    'legal.gdpr.section3.title': '3. Sus derechos',
+    'legal.gdpr.section3.content': 'Tiene derecho a acceder, rectificar, eliminar y portar sus datos. Puede solicitar la eliminación de todos los datos a través de la opción "Eliminar cuenta" en la configuración.',
+    'legal.gdpr.section4.title': '4. Almacenamiento y transferencia de datos',
+    'legal.gdpr.section4.content': 'Sus datos financieros se almacenan localmente en su dispositivo. Si utiliza la función de sincronización, los datos se almacenan en servidores seguros dentro de la UE/EEE.',
+    'legal.gdpr.section5.title': '5. Retención de datos',
+    'legal.gdpr.section5.content': 'Sus datos se conservan mientras use la aplicación. Puede eliminarlos en cualquier momento restableciendo la app o eliminando su cuenta. Tras la eliminación, todos los datos se borran permanentemente en 30 días.',
+    'legal.gdpr.section6.title': '6. Contacto de protección de datos',
+    'legal.gdpr.section6.content': 'Para consultas sobre protección de datos y ejercicio de sus derechos RGPD, contáctenos a través del formulario de contacto en la aplicación o por correo electrónico oficial.',
+
+    // Contact
+    'contact.button': 'Contacto',
+    'contact.title': 'Contáctenos',
+    'contact.name': 'Nombre',
+    'contact.namePlaceholder': 'Su nombre',
+    'contact.email': 'Correo electrónico',
+    'contact.emailPlaceholder': 'su@email.com',
+    'contact.message': 'Mensaje',
+    'contact.messagePlaceholder': 'Describa su consulta...',
+    'contact.send': 'Enviar',
+    'contact.sending': 'Enviando...',
+    'contact.sent': '¡Mensaje enviado con éxito!',
+    'contact.error': 'Error al enviar el mensaje.',
+    'contact.fillAll': 'Por favor complete todos los campos.',
+
+    // Account management
+    'account.delete': 'Eliminar cuenta',
+    'account.deleteConfirm': '¿Eliminar cuenta?',
+    'account.deleteWarning': 'Esta acción es irreversible. Todos sus datos, incluidas suscripciones y configuraciones, se eliminarán permanentemente.',
+    'account.deleted': 'Cuenta eliminada con éxito.',
+    'account.deleteError': 'Error al eliminar la cuenta.',
+
+    // App Management
+    'appManagement.title': 'Gestión de la app',
   },
 
   fr: {
@@ -2943,6 +3063,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Produit d\'abonnement introuvable.',
     'premium.verificationError': 'Erreur de vérification de l\'achat.',
     'premium.purchaseError': 'Erreur lors de l\'achat. Veuillez réessayer.',
+
+    // GDPR
+    'legal.gdpr.title': 'RGPD',
+    'legal.gdpr.section1.title': '1. Responsable du traitement',
+    'legal.gdpr.section1.content': 'BudgetCard est une application de suivi des finances personnelles. Le responsable du traitement est l\'équipe de développement BudgetCard. Vos données sont principalement stockées localement sur votre appareil.',
+    'legal.gdpr.section2.title': '2. Base juridique du traitement',
+    'legal.gdpr.section2.content': 'Le traitement de vos données personnelles repose sur votre consentement (Art. 6(1)(a) RGPD) et l\'exécution d\'un contrat (Art. 6(1)(b) RGPD).',
+    'legal.gdpr.section3.title': '3. Vos droits',
+    'legal.gdpr.section3.content': 'Vous avez le droit d\'accéder, de rectifier, de supprimer et de transférer vos données. Vous pouvez demander la suppression de toutes les données via l\'option « Supprimer le compte » dans les paramètres.',
+    'legal.gdpr.section4.title': '4. Stockage et transfert des données',
+    'legal.gdpr.section4.content': 'Vos données financières sont stockées localement sur votre appareil. Si vous utilisez la synchronisation, les données sont stockées sur des serveurs sécurisés au sein de l\'UE/EEE.',
+    'legal.gdpr.section5.title': '5. Conservation des données',
+    'legal.gdpr.section5.content': 'Vos données sont conservées tant que vous utilisez l\'application. Vous pouvez les supprimer à tout moment en réinitialisant l\'app ou en supprimant votre compte. Après suppression, toutes les données sont définitivement effacées sous 30 jours.',
+    'legal.gdpr.section6.title': '6. Contact protection des données',
+    'legal.gdpr.section6.content': 'Pour toute question relative à la protection des données et à l\'exercice de vos droits RGPD, contactez-nous via le formulaire de contact de l\'application ou par e-mail officiel.',
+
+    // Contact
+    'contact.button': 'Contact',
+    'contact.title': 'Contactez-nous',
+    'contact.name': 'Nom',
+    'contact.namePlaceholder': 'Votre nom',
+    'contact.email': 'E-mail',
+    'contact.emailPlaceholder': 'votre@email.com',
+    'contact.message': 'Message',
+    'contact.messagePlaceholder': 'Décrivez votre demande...',
+    'contact.send': 'Envoyer',
+    'contact.sending': 'Envoi en cours...',
+    'contact.sent': 'Message envoyé avec succès !',
+    'contact.error': 'Erreur lors de l\'envoi du message.',
+    'contact.fillAll': 'Veuillez remplir tous les champs.',
+
+    // Account management
+    'account.delete': 'Supprimer le compte',
+    'account.deleteConfirm': 'Supprimer le compte ?',
+    'account.deleteWarning': 'Cette action est irréversible. Toutes vos données, y compris les abonnements et paramètres, seront définitivement supprimées.',
+    'account.deleted': 'Compte supprimé avec succès.',
+    'account.deleteError': 'Erreur lors de la suppression du compte.',
+
+    // App Management
+    'appManagement.title': 'Gestion de l\'app',
   },
 
   zh: {
@@ -3407,6 +3567,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.verificationError': '购买验证错误。',
     'premium.purchaseError': '购买错误。请重试。',
     'premium.loginForCode': '激活代码需要登录。',
+
+    // GDPR
+    'legal.gdpr.title': 'GDPR',
+    'legal.gdpr.section1.title': '1. 数据控制者',
+    'legal.gdpr.section1.content': 'BudgetCard是一款个人财务跟踪应用。数据控制者是BudgetCard开发团队。您的数据主要存储在您的设备本地。',
+    'legal.gdpr.section2.title': '2. 处理的法律依据',
+    'legal.gdpr.section2.content': '处理您的个人数据基于您的同意（GDPR第6条第1款a项）和合同履行（GDPR第6条第1款b项）。',
+    'legal.gdpr.section3.title': '3. 您的权利',
+    'legal.gdpr.section3.content': '您有权访问、更正、删除和转移您的数据。您可以通过设置中的"删除账户"选项请求删除所有数据。',
+    'legal.gdpr.section4.title': '4. 数据存储和传输',
+    'legal.gdpr.section4.content': '您的财务数据存储在设备本地。如果使用同步功能，数据将存储在欧盟/欧洲经济区内的安全服务器上。',
+    'legal.gdpr.section5.title': '5. 数据保留',
+    'legal.gdpr.section5.content': '在您使用应用期间，数据将被保留。您可以随时通过重置应用或删除账户来删除数据。账户删除后，所有数据将在30天内永久删除。',
+    'legal.gdpr.section6.title': '6. 数据保护联系方式',
+    'legal.gdpr.section6.content': '如有数据保护相关问题或行使GDPR权利，请通过应用内的联系表单或官方电子邮件与我们联系。',
+
+    // Contact
+    'contact.button': '联系我们',
+    'contact.title': '联系我们',
+    'contact.name': '姓名',
+    'contact.namePlaceholder': '您的姓名',
+    'contact.email': '电子邮件',
+    'contact.emailPlaceholder': 'your@email.com',
+    'contact.message': '消息',
+    'contact.messagePlaceholder': '描述您的问题...',
+    'contact.send': '发送',
+    'contact.sending': '发送中...',
+    'contact.sent': '消息发送成功！',
+    'contact.error': '发送消息时出错。',
+    'contact.fillAll': '请填写所有字段。',
+
+    // Account management
+    'account.delete': '删除账户',
+    'account.deleteConfirm': '删除账户？',
+    'account.deleteWarning': '此操作不可逆。您的所有数据（包括订阅和设置）将被永久删除。',
+    'account.deleted': '账户已成功删除。',
+    'account.deleteError': '删除账户时出错。',
+
+    // App Management
+    'appManagement.title': '应用管理',
   },
 
   hi: {
@@ -3871,6 +4071,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.verificationError': 'खरीद सत्यापन में त्रुटि।',
     'premium.purchaseError': 'खरीद में त्रुटि। कृपया पुनः प्रयास करें।',
     'premium.loginForCode': 'कोड सक्रिय करने के लिए लॉगिन आवश्यक है।',
+
+    // GDPR
+    'legal.gdpr.title': 'GDPR',
+    'legal.gdpr.section1.title': '1. डेटा नियंत्रक',
+    'legal.gdpr.section1.content': 'BudgetCard एक व्यक्तिगत वित्त ट्रैकिंग ऐप है। डेटा नियंत्रक BudgetCard विकास टीम है। आपका डेटा मुख्य रूप से आपके डिवाइस पर स्थानीय रूप से संग्रहीत होता है।',
+    'legal.gdpr.section2.title': '2. प्रसंस्करण का कानूनी आधार',
+    'legal.gdpr.section2.content': 'आपके व्यक्तिगत डेटा का प्रसंस्करण आपकी सहमति (GDPR अनुच्छेद 6(1)(a)) और अनुबंध निष्पादन (GDPR अनुच्छेद 6(1)(b)) पर आधारित है।',
+    'legal.gdpr.section3.title': '3. आपके अधिकार',
+    'legal.gdpr.section3.content': 'आपको अपने डेटा तक पहुंच, सुधार, हटाने और पोर्ट करने का अधिकार है। आप सेटिंग्स में "खाता हटाएं" विकल्प के माध्यम से सभी डेटा हटाने का अनुरोध कर सकते हैं।',
+    'legal.gdpr.section4.title': '4. डेटा भंडारण और स्थानांतरण',
+    'legal.gdpr.section4.content': 'आपका वित्तीय डेटा आपके डिवाइस पर स्थानीय रूप से संग्रहीत होता है। सिंक सुविधा का उपयोग करने पर, डेटा EU/EEA के भीतर सुरक्षित सर्वरों पर संग्रहीत होता है।',
+    'legal.gdpr.section5.title': '5. डेटा प्रतिधारण',
+    'legal.gdpr.section5.content': 'जब तक आप ऐप का उपयोग करते हैं, आपका डेटा बनाए रखा जाता है। आप किसी भी समय ऐप रीसेट करके या खाता हटाकर इसे हटा सकते हैं। खाता हटाने के बाद, सभी डेटा 30 दिनों के भीतर स्थायी रूप से हटा दिया जाता है।',
+    'legal.gdpr.section6.title': '6. डेटा सुरक्षा संपर्क',
+    'legal.gdpr.section6.content': 'डेटा सुरक्षा और GDPR अधिकारों के बारे में किसी भी प्रश्न के लिए, ऐप में संपर्क फ़ॉर्म या आधिकारिक ईमेल के माध्यम से हमसे संपर्क करें।',
+
+    // Contact
+    'contact.button': 'संपर्क',
+    'contact.title': 'हमसे संपर्क करें',
+    'contact.name': 'नाम',
+    'contact.namePlaceholder': 'आपका नाम',
+    'contact.email': 'ईमेल',
+    'contact.emailPlaceholder': 'aapka@email.com',
+    'contact.message': 'संदेश',
+    'contact.messagePlaceholder': 'अपनी पूछताछ का वर्णन करें...',
+    'contact.send': 'भेजें',
+    'contact.sending': 'भेज रहे हैं...',
+    'contact.sent': 'संदेश सफलतापूर्वक भेजा गया!',
+    'contact.error': 'संदेश भेजने में त्रुटि।',
+    'contact.fillAll': 'कृपया सभी फ़ील्ड भरें।',
+
+    // Account management
+    'account.delete': 'खाता हटाएं',
+    'account.deleteConfirm': 'खाता हटाएं?',
+    'account.deleteWarning': 'यह क्रिया अपरिवर्तनीय है। सदस्यता और सेटिंग्स सहित आपका सभी डेटा स्थायी रूप से हटा दिया जाएगा।',
+    'account.deleted': 'खाता सफलतापूर्वक हटाया गया।',
+    'account.deleteError': 'खाता हटाने में त्रुटि।',
+
+    // App Management
+    'appManagement.title': 'ऐप प्रबंधन',
   },
 };
 
