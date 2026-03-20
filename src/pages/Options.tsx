@@ -336,6 +336,10 @@ const Options = () => {
             </div>
           )}
 
+          {/* Group Sharing Section */}
+          <GroupManager />
+
+          {/* Account Section - Login/Logout */}
           <div className="bg-card rounded-xl p-4 border border-border">
             {user ? (
               <div className="space-y-2">
