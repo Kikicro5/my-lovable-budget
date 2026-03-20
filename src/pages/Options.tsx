@@ -445,7 +445,7 @@ const Options = () => {
             </div>
           </div>
 
-          {/* Reset App Section */}
+          {/* Reset & Delete Account Section */}
           <div className="bg-card rounded-xl p-4 border border-destructive/30">
             <div className="flex items-center gap-2 mb-3">
               <RotateCcw className="w-5 h-5 text-destructive" />
@@ -454,35 +454,77 @@ const Options = () => {
             <p className="text-sm text-muted-foreground mb-3">
               {t('reset.description')}
             </p>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" className="w-full gap-2">
-                  <RotateCcw className="w-4 h-4" />
-                  {t('reset.button')}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{t('reset.confirm')}</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    {t('reset.warning')}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{t('dialog.cancel')}</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => {
-                      localStorage.removeItem('monthly-budget-app');
-                      toast.success(t('reset.success'));
-                      window.location.reload();
-                    }}
-                    className="bg-destructive hover:bg-destructive/90"
-                  >
+            <div className="grid grid-cols-2 gap-2">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" className="w-full gap-2">
+                    <RotateCcw className="w-4 h-4" />
                     {t('reset.button')}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t('reset.confirm')}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t('reset.warning')}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t('dialog.cancel')}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => {
+                        localStorage.removeItem('monthly-budget-app');
+                        toast.success(t('reset.success'));
+                        window.location.reload();
+                      }}
+                      className="bg-destructive hover:bg-destructive/90"
+                    >
+                      {t('reset.button')}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
+              {user && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" className="w-full gap-2">
+                      <Trash2 className="w-4 h-4" />
+                      {t('account.delete') || 'Izbriši račun'}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>{t('account.deleteConfirm') || 'Izbrisati račun?'}</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        {t('account.deleteWarning') || 'Ova radnja je nepovratna. Svi vaši podaci, uključujući pretplate i postavke, bit će trajno izbrisani.'}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>{t('dialog.cancel')}</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            const { error } = await supabase.functions.invoke('delete-account');
+                            if (error) throw error;
+                            localStorage.removeItem('monthly-budget-app');
+                            await supabase.auth.signOut();
+                            toast.success(t('account.deleted') || 'Račun je uspješno izbrisan.');
+                            window.location.href = '/';
+                          } catch (err) {
+                            console.error('Delete account error:', err);
+                            toast.error(t('account.deleteError') || 'Greška pri brisanju računa.');
+                          }
+                        }}
+                        className="bg-destructive hover:bg-destructive/90"
+                      >
+                        {t('account.delete') || 'Izbriši račun'}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+            </div>
           </div>
         </div>
       </div>
