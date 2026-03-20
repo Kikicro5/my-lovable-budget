@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits, RecurringTransaction, Account, PaymentReminder } from '@/types/budget';
+import { supabase } from '@/integrations/supabase/client';
 
 const STORAGE_KEY = 'monthly-budget-app';
+const SYNC_DEBOUNCE_MS = 2000;
 
 const DEFAULT_LIMITS: BudgetLimits = {
   expense: 0,
