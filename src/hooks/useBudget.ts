@@ -1079,5 +1079,6 @@ export const useBudget = () => {
     syncStatus,
     syncNow,
     canSync,
+    groupId,
   };
 };
