@@ -290,6 +290,14 @@ const Options = () => {
                     <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                     <span>{t('premium.benefits.transfers')}</span>
                   </li>
+                  <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{t('premium.benefits.sync')}</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span>{t('premium.benefits.sharing')}</span>
+                  </li>
                 </ul>
               </div>
             )}
