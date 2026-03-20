@@ -217,9 +217,81 @@ export const useBudget = (syncConfig?: { canSync: boolean; userId?: string }) =>
     }
   }, []);
 
+  // Save to localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
+
+  // Cloud sync: save to database for premium users
+  const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isSyncingRef = useRef(false);
+  const cloudLoadedRef = useRef(false);
+
+  useEffect(() => {
+    if (!syncConfig?.canSync || !syncConfig?.userId) return;
+
+    // Debounce cloud saves
+    if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
+    
+    syncTimeoutRef.current = setTimeout(async () => {
+      if (isSyncingRef.current) return;
+      isSyncingRef.current = true;
+
+      try {
+        await supabase
+          .from('user_data')
+          .upsert({
+            user_id: syncConfig.userId,
+            data: state as any,
+          }, { onConflict: 'user_id' });
+      } catch (err) {
+        console.error('Cloud sync error:', err);
+      } finally {
+        isSyncingRef.current = false;
+      }
+    }, SYNC_DEBOUNCE_MS);
+
+    return () => {
+      if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
+    };
+  }, [state, syncConfig?.canSync, syncConfig?.userId]);
+
+  // Cloud sync: load from database on first mount for premium users
+  useEffect(() => {
+    if (!syncConfig?.canSync || !syncConfig?.userId || cloudLoadedRef.current) return;
+    cloudLoadedRef.current = true;
+
+    const loadCloud = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('user_data')
+          .select('data, updated_at')
+          .eq('user_id', syncConfig.userId!)
+          .maybeSingle();
+
+        if (error || !data?.data) return;
+
+        const cloudState = data.data as unknown as BudgetState;
+        const localUpdated = localStorage.getItem(STORAGE_KEY);
+        
+        // If cloud has data, merge: use cloud data as it's the synced version
+        if (cloudState && cloudState.budgets) {
+          // Compare: if cloud has more budgets or more transactions, prefer cloud
+          const cloudTotal = cloudState.budgets.reduce((sum, b) => sum + b.transactions.length, 0);
+          const localState = localUpdated ? JSON.parse(localUpdated) : null;
+          const localTotal = localState?.budgets?.reduce((sum: number, b: any) => sum + (b.transactions?.length || 0), 0) || 0;
+
+          if (cloudTotal >= localTotal) {
+            setState(cloudState);
+          }
+        }
+      } catch (err) {
+        console.error('Cloud load error:', err);
+      }
+    };
+
+    loadCloud();
+  }, [syncConfig?.canSync, syncConfig?.userId]);
 
   const getCurrentBudget = (): MonthlyBudget | undefined => {
     return state.budgets.find(
