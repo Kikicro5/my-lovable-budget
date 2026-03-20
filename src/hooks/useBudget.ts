@@ -228,24 +228,58 @@ export const useBudget = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
-  // Cloud sync: save to database for premium users
+  // Cloud sync: save to database for premium users (individual or group)
   const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isSyncingRef = useRef(false);
   const cloudLoadedRef = useRef(false);
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline' | 'error'>('idle');
+  const [groupId, setGroupId] = useState<string | null>(null);
+  const isUpdatingFromRealtimeRef = useRef(false);
+
+  // Check if user is in a group
+  useEffect(() => {
+    if (!canSync || !userId) {
+      setGroupId(null);
+      return;
+    }
+
+    const checkGroup = async () => {
+      try {
+        const { data } = await (supabase
+          .from('group_members' as any)
+          .select('group_id')
+          .eq('user_id', userId) as any)
+          .maybeSingle();
+        setGroupId(data?.group_id || null);
+      } catch {
+        setGroupId(null);
+      }
+    };
+
+    checkGroup();
+  }, [canSync, userId]);
 
   const performCloudSave = useCallback(async () => {
-    if (!canSync || !userId || isSyncingRef.current) return;
+    if (!canSync || !userId || isSyncingRef.current || isUpdatingFromRealtimeRef.current) return;
     isSyncingRef.current = true;
     setSyncStatus('syncing');
 
     try {
-      const { error } = await supabase
-        .from('user_data')
-        .upsert({
-          user_id: userId,
-          data: state as any,
-        }, { onConflict: 'user_id' });
+      let error;
+      if (groupId) {
+        // Save to group_data
+        const res = await (supabase
+          .from('group_data' as any)
+          .update({ data: state as any }) as any)
+          .eq('group_id', groupId);
+        error = res.error;
+      } else {
+        // Save to user_data
+        const res = await supabase
+          .from('user_data')
+          .upsert({ user_id: userId, data: state as any }, { onConflict: 'user_id' });
+        error = res.error;
+      }
 
       if (error) {
         console.error('Cloud sync error:', error);
@@ -259,13 +293,15 @@ export const useBudget = () => {
     } finally {
       isSyncingRef.current = false;
     }
-  }, [canSync, userId, state]);
+  }, [canSync, userId, state, groupId]);
 
   useEffect(() => {
     if (!canSync || !userId) {
       setSyncStatus(user ? 'offline' : 'idle');
       return;
     }
+
+    if (isUpdatingFromRealtimeRef.current) return;
 
     // Debounce cloud saves
     if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
@@ -282,8 +318,6 @@ export const useBudget = () => {
   // Manual sync function
   const syncNow = useCallback(async () => {
     if (!canSync || !userId) return;
-    
-    // First save current state to cloud
     await performCloudSave();
   }, [canSync, userId, performCloudSave]);
 
@@ -295,25 +329,33 @@ export const useBudget = () => {
     const loadCloud = async () => {
       setSyncStatus('syncing');
       try {
-        const { data, error } = await supabase
-          .from('user_data')
-          .select('data, updated_at')
-          .eq('user_id', userId)
-          .maybeSingle();
+        let cloudState: BudgetState | null = null;
 
-        if (error || !data?.data) {
-          setSyncStatus('synced');
-          return;
+        if (groupId) {
+          const { data, error } = await (supabase
+            .from('group_data' as any)
+            .select('data')
+            .eq('group_id', groupId) as any)
+            .maybeSingle();
+          if (!error && data?.data) {
+            cloudState = data.data as BudgetState;
+          }
+        } else {
+          const { data, error } = await supabase
+            .from('user_data')
+            .select('data, updated_at')
+            .eq('user_id', userId)
+            .maybeSingle();
+          if (!error && data?.data) {
+            cloudState = data.data as unknown as BudgetState;
+          }
         }
 
-        const cloudState = data.data as unknown as BudgetState;
-        const localUpdated = localStorage.getItem(STORAGE_KEY);
-        
-        // If cloud has data, merge: use cloud data as it's the synced version
         if (cloudState && cloudState.budgets) {
           const cloudTotal = cloudState.budgets.reduce((sum, b) => sum + b.transactions.length, 0);
-          const localState = localUpdated ? JSON.parse(localUpdated) : null;
-          const localTotal = localState?.budgets?.reduce((sum: number, b: any) => sum + (b.transactions?.length || 0), 0) || 0;
+          const localState = localStorage.getItem(STORAGE_KEY);
+          const parsed = localState ? JSON.parse(localState) : null;
+          const localTotal = parsed?.budgets?.reduce((sum: number, b: any) => sum + (b.transactions?.length || 0), 0) || 0;
 
           if (cloudTotal >= localTotal) {
             setState(cloudState);
@@ -327,7 +369,39 @@ export const useBudget = () => {
     };
 
     loadCloud();
-  }, [canSync, userId]);
+  }, [canSync, userId, groupId]);
+
+  // Realtime subscription for group_data changes (from other members)
+  useEffect(() => {
+    if (!groupId || !canSync) return;
+
+    const channel = supabase
+      .channel(`group-data-${groupId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'group_data',
+          filter: `group_id=eq.${groupId}`,
+        },
+        (payload) => {
+          const newData = (payload.new as any)?.data as BudgetState;
+          if (newData && newData.budgets) {
+            isUpdatingFromRealtimeRef.current = true;
+            setState(newData);
+            setSyncStatus('synced');
+            // Reset flag after React processes the update
+            setTimeout(() => { isUpdatingFromRealtimeRef.current = false; }, 500);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [groupId, canSync]);
 
   const getCurrentBudget = (): MonthlyBudget | undefined => {
     return state.budgets.find(
@@ -1005,5 +1079,6 @@ export const useBudget = () => {
     syncStatus,
     syncNow,
     canSync,
+    groupId,
   };
 };
