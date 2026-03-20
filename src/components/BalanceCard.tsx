@@ -32,12 +32,12 @@ export const BalanceCard = ({
     <div className="bg-card rounded-2xl p-6 shadow-card animate-slide-up">
       <div className="flex justify-between items-start mb-6">
         <div className="flex-1">
-          <p className="text-sm text-muted-foreground font-medium mb-2">
+          <p className="text-xs text-muted-foreground font-medium mb-1">
             {t('balance.current')}
           </p>
           <h2
             className={cn(
-              'text-4xl font-display font-bold',
+              'text-2xl font-display font-bold',
               isPositive ? 'text-income' : 'text-expense'
             )}
           >
