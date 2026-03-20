@@ -232,35 +232,60 @@ export const useBudget = () => {
   const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isSyncingRef = useRef(false);
   const cloudLoadedRef = useRef(false);
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'offline' | 'error'>('idle');
+
+  const performCloudSave = useCallback(async () => {
+    if (!canSync || !userId || isSyncingRef.current) return;
+    isSyncingRef.current = true;
+    setSyncStatus('syncing');
+
+    try {
+      const { error } = await supabase
+        .from('user_data')
+        .upsert({
+          user_id: userId,
+          data: state as any,
+        }, { onConflict: 'user_id' });
+
+      if (error) {
+        console.error('Cloud sync error:', error);
+        setSyncStatus('error');
+      } else {
+        setSyncStatus('synced');
+      }
+    } catch (err) {
+      console.error('Cloud sync error:', err);
+      setSyncStatus('offline');
+    } finally {
+      isSyncingRef.current = false;
+    }
+  }, [canSync, userId, state]);
 
   useEffect(() => {
-    if (!canSync || !userId) return;
+    if (!canSync || !userId) {
+      setSyncStatus(user ? 'offline' : 'idle');
+      return;
+    }
 
     // Debounce cloud saves
     if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
     
-    syncTimeoutRef.current = setTimeout(async () => {
-      if (isSyncingRef.current) return;
-      isSyncingRef.current = true;
-
-      try {
-        await supabase
-          .from('user_data')
-          .upsert({
-            user_id: userId,
-            data: state as any,
-          }, { onConflict: 'user_id' });
-      } catch (err) {
-        console.error('Cloud sync error:', err);
-      } finally {
-        isSyncingRef.current = false;
-      }
+    syncTimeoutRef.current = setTimeout(() => {
+      performCloudSave();
     }, SYNC_DEBOUNCE_MS);
 
     return () => {
       if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
     };
-  }, [state, canSync, userId]);
+  }, [state, canSync, userId, performCloudSave]);
+
+  // Manual sync function
+  const syncNow = useCallback(async () => {
+    if (!canSync || !userId) return;
+    
+    // First save current state to cloud
+    await performCloudSave();
+  }, [canSync, userId, performCloudSave]);
 
   // Cloud sync: load from database on first mount for premium users
   useEffect(() => {
@@ -268,6 +293,7 @@ export const useBudget = () => {
     cloudLoadedRef.current = true;
 
     const loadCloud = async () => {
+      setSyncStatus('syncing');
       try {
         const { data, error } = await supabase
           .from('user_data')
@@ -275,14 +301,16 @@ export const useBudget = () => {
           .eq('user_id', userId)
           .maybeSingle();
 
-        if (error || !data?.data) return;
+        if (error || !data?.data) {
+          setSyncStatus('synced');
+          return;
+        }
 
         const cloudState = data.data as unknown as BudgetState;
         const localUpdated = localStorage.getItem(STORAGE_KEY);
         
         // If cloud has data, merge: use cloud data as it's the synced version
         if (cloudState && cloudState.budgets) {
-          // Compare: if cloud has more budgets or more transactions, prefer cloud
           const cloudTotal = cloudState.budgets.reduce((sum, b) => sum + b.transactions.length, 0);
           const localState = localUpdated ? JSON.parse(localUpdated) : null;
           const localTotal = localState?.budgets?.reduce((sum: number, b: any) => sum + (b.transactions?.length || 0), 0) || 0;
@@ -291,8 +319,10 @@ export const useBudget = () => {
             setState(cloudState);
           }
         }
+        setSyncStatus('synced');
       } catch (err) {
         console.error('Cloud load error:', err);
+        setSyncStatus('offline');
       }
     };
 
@@ -972,5 +1002,8 @@ export const useBudget = () => {
     completeReminder,
     getActiveReminders,
     getUpcomingReminders,
+    syncStatus,
+    syncNow,
+    canSync,
   };
 };

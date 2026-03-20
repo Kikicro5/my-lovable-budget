@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
@@ -14,6 +14,7 @@ import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
 import { PayPalPurchase } from '@/components/PayPalPurchase';
+import { useBudget } from '@/hooks/useBudget';
 
 import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
 import {
@@ -35,15 +36,59 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 
+const SyncStatusBadge = ({ status }: { status: string }) => {
+  const { t } = useLanguage();
+  
+  const config: Record<string, { icon: React.ReactNode; label: string; className: string }> = {
+    syncing: {
+      icon: <Loader2 className="w-3 h-3 animate-spin" />,
+      label: t('sync.status.syncing') || 'Syncing...',
+      className: 'text-primary bg-primary/10 border-primary/20',
+    },
+    synced: {
+      icon: <Check className="w-3 h-3" />,
+      label: t('sync.status.synced') || 'Synced',
+      className: 'text-green-600 bg-green-50 border-green-200 dark:text-green-400 dark:bg-green-950/30 dark:border-green-800',
+    },
+    offline: {
+      icon: <CloudOff className="w-3 h-3" />,
+      label: t('sync.status.offline') || 'Offline',
+      className: 'text-muted-foreground bg-muted/50 border-border',
+    },
+    error: {
+      icon: <CloudOff className="w-3 h-3" />,
+      label: t('sync.status.error') || 'Error',
+      className: 'text-destructive bg-destructive/10 border-destructive/20',
+    },
+    idle: {
+      icon: <Cloud className="w-3 h-3" />,
+      label: '',
+      className: 'text-muted-foreground bg-muted/50 border-border',
+    },
+  };
+
+  const c = config[status] || config.idle;
+  if (status === 'idle') return null;
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full border ${c.className}`}>
+      {c.icon}
+      {c.label}
+    </span>
+  );
+};
+
 const Options = () => {
   const { language, setLanguage, t, languageNames } = useLanguage();
   const { theme, setTheme } = useTheme();
   const { currency, setCurrency } = useCurrency();
   const { user, isAdmin, signOut } = useAuth();
   const { isPremium, daysRemaining, activateCode } = usePremium();
+  const { syncStatus, syncNow, canSync } = useBudget();
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
+  const [manualSyncing, setManualSyncing] = useState(false);
   const premiumRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -256,7 +301,40 @@ const Options = () => {
             )}
           </div>
 
-          {/* Account Section - Login/Logout */}
+          {/* Cloud Sync Section - only for premium users */}
+          {isPremium && user && (
+            <div className="bg-card rounded-xl p-4 border border-border">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Cloud className="w-5 h-5 text-primary" />
+                  <h2 className="text-lg font-semibold text-foreground">{t('sync.title') || 'Cloud Sync'}</h2>
+                </div>
+                <SyncStatusBadge status={syncStatus} />
+              </div>
+              <p className="text-sm text-muted-foreground mb-3">
+                {t('sync.description') || 'Vaši podaci se automatski sinkroniziraju s oblakom.'}
+              </p>
+              <Button
+                variant="outline"
+                className="w-full gap-2"
+                disabled={manualSyncing || syncStatus === 'syncing'}
+                onClick={async () => {
+                  setManualSyncing(true);
+                  await syncNow();
+                  setManualSyncing(false);
+                  toast.success(t('sync.success') || 'Podaci sinkronizirani!');
+                }}
+              >
+                {manualSyncing || syncStatus === 'syncing' ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+                {t('sync.button') || 'Sinkroniziraj sada'}
+              </Button>
+            </div>
+          )}
+
           <div className="bg-card rounded-xl p-4 border border-border">
             {user ? (
               <div className="space-y-2">
