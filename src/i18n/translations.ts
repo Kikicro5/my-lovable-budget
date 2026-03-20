@@ -3063,6 +3063,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.productNotFound': 'Produit d\'abonnement introuvable.',
     'premium.verificationError': 'Erreur de vérification de l\'achat.',
     'premium.purchaseError': 'Erreur lors de l\'achat. Veuillez réessayer.',
+
+    // GDPR
+    'legal.gdpr.title': 'RGPD',
+    'legal.gdpr.section1.title': '1. Responsable du traitement',
+    'legal.gdpr.section1.content': 'BudgetCard est une application de suivi des finances personnelles. Le responsable du traitement est l\'équipe de développement BudgetCard. Vos données sont principalement stockées localement sur votre appareil.',
+    'legal.gdpr.section2.title': '2. Base juridique du traitement',
+    'legal.gdpr.section2.content': 'Le traitement de vos données personnelles repose sur votre consentement (Art. 6(1)(a) RGPD) et l\'exécution d\'un contrat (Art. 6(1)(b) RGPD).',
+    'legal.gdpr.section3.title': '3. Vos droits',
+    'legal.gdpr.section3.content': 'Vous avez le droit d\'accéder, de rectifier, de supprimer et de transférer vos données. Vous pouvez demander la suppression de toutes les données via l\'option « Supprimer le compte » dans les paramètres.',
+    'legal.gdpr.section4.title': '4. Stockage et transfert des données',
+    'legal.gdpr.section4.content': 'Vos données financières sont stockées localement sur votre appareil. Si vous utilisez la synchronisation, les données sont stockées sur des serveurs sécurisés au sein de l\'UE/EEE.',
+    'legal.gdpr.section5.title': '5. Conservation des données',
+    'legal.gdpr.section5.content': 'Vos données sont conservées tant que vous utilisez l\'application. Vous pouvez les supprimer à tout moment en réinitialisant l\'app ou en supprimant votre compte. Après suppression, toutes les données sont définitivement effacées sous 30 jours.',
+    'legal.gdpr.section6.title': '6. Contact protection des données',
+    'legal.gdpr.section6.content': 'Pour toute question relative à la protection des données et à l\'exercice de vos droits RGPD, contactez-nous via le formulaire de contact de l\'application ou par e-mail officiel.',
+
+    // Contact
+    'contact.button': 'Contact',
+    'contact.title': 'Contactez-nous',
+    'contact.name': 'Nom',
+    'contact.namePlaceholder': 'Votre nom',
+    'contact.email': 'E-mail',
+    'contact.emailPlaceholder': 'votre@email.com',
+    'contact.message': 'Message',
+    'contact.messagePlaceholder': 'Décrivez votre demande...',
+    'contact.send': 'Envoyer',
+    'contact.sending': 'Envoi en cours...',
+    'contact.sent': 'Message envoyé avec succès !',
+    'contact.error': 'Erreur lors de l\'envoi du message.',
+    'contact.fillAll': 'Veuillez remplir tous les champs.',
+
+    // Account management
+    'account.delete': 'Supprimer le compte',
+    'account.deleteConfirm': 'Supprimer le compte ?',
+    'account.deleteWarning': 'Cette action est irréversible. Toutes vos données, y compris les abonnements et paramètres, seront définitivement supprimées.',
+    'account.deleted': 'Compte supprimé avec succès.',
+    'account.deleteError': 'Erreur lors de la suppression du compte.',
+
+    // App Management
+    'appManagement.title': 'Gestion de l\'app',
   },
 
   zh: {
