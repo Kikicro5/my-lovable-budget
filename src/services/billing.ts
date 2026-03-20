@@ -158,10 +158,11 @@ export async function restorePurchases(): Promise<{ success: boolean; restored: 
 
   try {
     const { NativePurchases } = await import('@capgo/native-purchases');
-    const result = await NativePurchases.restorePurchases();
+    await NativePurchases.restorePurchases();
 
-    const restoredCount = result?.transactions?.length || 0;
-    return { success: true, restored: restoredCount };
+    // After restoring, check if there's an active subscription
+    const sub = await checkSubscription();
+    return { success: true, restored: sub.isActive ? 1 : 0 };
   } catch (err: any) {
     console.error('[Billing] Restore error:', err);
     return { success: false, restored: 0, error: mapError(err) };
