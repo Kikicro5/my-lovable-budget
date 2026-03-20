@@ -615,6 +615,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'Registration successful! Check your email to confirm.',
     'auth.invalidCredentials': 'Invalid login credentials',
     'auth.passwordMinLength': 'Password must be at least 6 characters',
+    'auth.noAccount': "Don't have an account? Register",
+    'auth.haveAccount': 'Already have an account? Login',
+    'auth.back': 'Back',
 
     // Balance card
     'balance.current': 'Current Balance',
