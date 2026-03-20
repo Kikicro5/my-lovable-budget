@@ -452,6 +452,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.benefits.investments': 'Praćenje investicija i portfelja',
     'premium.benefits.savings': 'Upravljanje štednjom i ciljevima',
     'premium.benefits.transfers': 'Prijenosi sredstava između računa',
+    'premium.benefits.sync': 'Sinkronizacija podataka između uređaja',
+    'premium.benefits.sharing': 'Dijeljenje proračuna s grupom (do 5 članova)',
     'premium.loginRequired': 'Za kupovinu ili aktivaciju koda potrebna je prijava.',
     'premium.buyAnnual': 'Kupite godišnju premium licencu putem PayPal-a:',
     'premium.buyOptions': 'Ili kupite premium pristup putem PayPal-a:',
