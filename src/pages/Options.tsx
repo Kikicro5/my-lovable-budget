@@ -334,8 +334,8 @@ const Options = () => {
             )}
           </div>
 
-          {/* Cloud Sync Section - only for premium users */}
-          {hasPremiumAccess && user && (
+          {/* Cloud Sync Section */}
+          {hasPremiumAccess && user ? (
             <div className="bg-card rounded-xl p-4 border border-border">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -366,12 +366,32 @@ const Options = () => {
                 {t('sync.button') || 'Sinkroniziraj sada'}
               </Button>
             </div>
+          ) : (
+            <FeatureLock featureName={t('sync.title') || 'Cloud Sync'}>
+              <div className="bg-card rounded-xl p-4 border border-border">
+                <div className="flex items-center gap-2 mb-3">
+                  <Cloud className="w-5 h-5 text-primary" />
+                  <h2 className="text-lg font-semibold text-foreground">{t('sync.title') || 'Cloud Sync'}</h2>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {t('sync.description') || 'Vaši podaci se automatski sinkroniziraju s oblakom.'}
+                </p>
+                <Button variant="outline" className="w-full gap-2" disabled>
+                  <RefreshCw className="w-4 h-4" />
+                  {t('sync.button') || 'Sinkroniziraj sada'}
+                </Button>
+              </div>
+            </FeatureLock>
           )}
 
           {/* Group Sharing Section */}
-          <FeatureLock featureName={t('group.title')}>
+          {hasPremiumAccess ? (
             <GroupManager />
-          </FeatureLock>
+          ) : (
+            <FeatureLock featureName={t('group.title')}>
+              <GroupManager />
+            </FeatureLock>
+          )}
 
 
           {/* Guide & Share Row */}
