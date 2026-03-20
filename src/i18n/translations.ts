@@ -3693,6 +3693,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.registerSuccess': 'रजिस्ट्रेशन सफल! कन्फर्मेशन के लिए ईमेल चेक करें।',
     'auth.invalidCredentials': 'अमान्य लॉगिन क्रेडेंशियल्स',
     'auth.passwordMinLength': 'पासवर्ड कम से कम 6 अक्षर का होना चाहिए',
+    'auth.noAccount': 'खाता नहीं है? रजिस्टर करें',
+    'auth.haveAccount': 'पहले से खाता है? लॉगिन करें',
+    'auth.back': 'वापस',
 
     // Balance card
     'balance.current': 'वर्तमान शेष',
