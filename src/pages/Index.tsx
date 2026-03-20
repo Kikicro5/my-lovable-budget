@@ -34,6 +34,7 @@ const Index = () => {
     getActiveReminders,
     completeReminder,
     removeReminder,
+    syncStatus,
   } = useBudget();
   const { t } = useLanguage();
   
