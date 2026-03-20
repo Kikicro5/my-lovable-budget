@@ -261,7 +261,7 @@ const Options = () => {
                 </ul>
               </div>
             )}
-            {isPremium ? (
+            {hasPremiumAccess ? (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
                 <Crown className="w-5 h-5 text-primary" />
                 <div>
