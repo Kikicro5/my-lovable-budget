@@ -507,6 +507,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'legal.privacy.section5.content': 'Poduzimamo razumne mjere za zaštitu vaših podataka, ali ne možemo jamčiti apsolutnu sigurnost. Preporučujemo redovito sigurnosno kopiranje važnih podataka.',
     'legal.privacy.section6.title': '6. Kontakt',
     'legal.privacy.section6.content': 'Za sva pitanja vezana uz privatnost možete nas kontaktirati putem službenih kanala aplikacije. Zadržavamo pravo ažuriranja ovih pravila privatnosti.',
+
+    // GDPR
+    'legal.gdpr.title': 'GDPR',
+    'legal.gdpr.section1.title': '1. Voditelj obrade podataka',
+    'legal.gdpr.section1.content': 'BudgetCard je aplikacija za osobno praćenje financija. Voditelj obrade podataka je razvojni tim BudgetCard. Vaši podaci se primarno pohranjuju lokalno na vašem uređaju.',
+    'legal.gdpr.section2.title': '2. Pravna osnova obrade',
+    'legal.gdpr.section2.content': 'Obrada vaših osobnih podataka temelji se na vašem pristanku (čl. 6. st. 1. t. a GDPR-a) i na izvršavanju ugovora (čl. 6. st. 1. t. b GDPR-a). Korištenjem aplikacije pristajete na obradu podataka kako je opisano u ovim pravilima.',
+    'legal.gdpr.section3.title': '3. Vaša prava',
+    'legal.gdpr.section3.content': 'Imate pravo na pristup, ispravak, brisanje i prenosivost vaših podataka. Možete zatražiti brisanje svih podataka putem opcije "Izbriši račun" u postavkama. Također imate pravo uložiti prigovor na obradu podataka.',
+    'legal.gdpr.section4.title': '4. Pohrana i prijenos podataka',
+    'legal.gdpr.section4.content': 'Vaši financijski podaci pohranjuju se lokalno na vašem uređaju. Ako koristite funkciju sinkronizacije, podaci se pohranjuju na sigurnim serverima unutar EU/EEA. Podaci se ne prenose u treće zemlje bez odgovarajuće zaštite.',
+    'legal.gdpr.section5.title': '5. Zadržavanje podataka',
+    'legal.gdpr.section5.content': 'Vaši podaci se čuvaju dok koristite aplikaciju. Možete ih obrisati u bilo kojem trenutku resetiranjem aplikacije ili brisanjem računa. Nakon brisanja računa, svi podaci se trajno uklanjaju unutar 30 dana.',
+    'legal.gdpr.section6.title': '6. Kontakt za zaštitu podataka',
+    'legal.gdpr.section6.content': 'Za sva pitanja vezana uz zaštitu podataka i ostvarivanje vaših GDPR prava, možete nas kontaktirati putem obrasca za kontakt u aplikaciji ili na službeni email.',
+
+    // Contact
+    'contact.button': 'Kontakt',
+    'contact.title': 'Kontaktirajte nas',
+    'contact.name': 'Ime',
+    'contact.namePlaceholder': 'Vaše ime',
+    'contact.email': 'Email',
+    'contact.emailPlaceholder': 'vas@email.com',
+    'contact.message': 'Poruka',
+    'contact.messagePlaceholder': 'Opišite vaš upit...',
+    'contact.send': 'Pošalji',
+    'contact.sending': 'Slanje...',
+    'contact.sent': 'Poruka uspješno poslana!',
+    'contact.error': 'Greška pri slanju poruke.',
+    'contact.fillAll': 'Molimo ispunite sva polja.',
+
+    // Account management
+    'account.delete': 'Izbriši račun',
+    'account.deleteConfirm': 'Izbrisati račun?',
+    'account.deleteWarning': 'Ova radnja je nepovratna. Svi vaši podaci, uključujući pretplate i postavke, bit će trajno izbrisani.',
+    'account.deleted': 'Račun je uspješno izbrisan.',
+    'account.deleteError': 'Greška pri brisanju računa.',
+
+    // App Management
+    'appManagement.title': 'Upravljanje aplikacijom',
   },
 
   en: {
@@ -1015,6 +1055,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'legal.privacy.section5.content': 'We take reasonable measures to protect your data, but cannot guarantee absolute security. We recommend regularly backing up important data.',
     'legal.privacy.section6.title': '6. Contact',
     'legal.privacy.section6.content': 'For any privacy-related questions, you can contact us through the application\'s official channels. We reserve the right to update this privacy policy.',
+
+    // GDPR
+    'legal.gdpr.title': 'GDPR',
+    'legal.gdpr.section1.title': '1. Data Controller',
+    'legal.gdpr.section1.content': 'BudgetCard is a personal finance tracking application. The data controller is the BudgetCard development team. Your data is primarily stored locally on your device.',
+    'legal.gdpr.section2.title': '2. Legal Basis for Processing',
+    'legal.gdpr.section2.content': 'Processing of your personal data is based on your consent (Art. 6(1)(a) GDPR) and performance of a contract (Art. 6(1)(b) GDPR). By using the application, you consent to data processing as described in these policies.',
+    'legal.gdpr.section3.title': '3. Your Rights',
+    'legal.gdpr.section3.content': 'You have the right to access, rectify, delete, and port your data. You can request deletion of all data via the "Delete Account" option in settings. You also have the right to object to data processing.',
+    'legal.gdpr.section4.title': '4. Data Storage and Transfer',
+    'legal.gdpr.section4.content': 'Your financial data is stored locally on your device. If you use the sync feature, data is stored on secure servers within the EU/EEA. Data is not transferred to third countries without appropriate safeguards.',
+    'legal.gdpr.section5.title': '5. Data Retention',
+    'legal.gdpr.section5.content': 'Your data is retained while you use the application. You can delete it at any time by resetting the app or deleting your account. After account deletion, all data is permanently removed within 30 days.',
+    'legal.gdpr.section6.title': '6. Data Protection Contact',
+    'legal.gdpr.section6.content': 'For any questions regarding data protection and exercising your GDPR rights, you can contact us via the contact form in the application or at the official email.',
+
+    // Contact
+    'contact.button': 'Contact',
+    'contact.title': 'Contact Us',
+    'contact.name': 'Name',
+    'contact.namePlaceholder': 'Your name',
+    'contact.email': 'Email',
+    'contact.emailPlaceholder': 'your@email.com',
+    'contact.message': 'Message',
+    'contact.messagePlaceholder': 'Describe your inquiry...',
+    'contact.send': 'Send',
+    'contact.sending': 'Sending...',
+    'contact.sent': 'Message sent successfully!',
+    'contact.error': 'Error sending message.',
+    'contact.fillAll': 'Please fill in all fields.',
+
+    // Account management
+    'account.delete': 'Delete Account',
+    'account.deleteConfirm': 'Delete account?',
+    'account.deleteWarning': 'This action is irreversible. All your data, including subscriptions and settings, will be permanently deleted.',
+    'account.deleted': 'Account successfully deleted.',
+    'account.deleteError': 'Error deleting account.',
+
+    // App Management
+    'appManagement.title': 'App Management',
   },
 
   de: {

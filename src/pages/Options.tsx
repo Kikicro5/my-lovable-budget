@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2, Users, Plus, KeyRound, Trash2 } from 'lucide-react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2, Users, Plus, KeyRound, Trash2, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,8 @@ import { FeatureLock } from '@/components/FeatureLock';
 import { useBudget } from '@/hooks/useBudget';
 import { GroupManager } from '@/components/GroupManager';
 
-import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
+import { TermsOfServiceDialog, PrivacyPolicyDialog, GDPRDialog } from '@/components/LegalDialogs';
+import { ContactDialog } from '@/components/ContactDialog';
 import {
   Select,
   SelectContent,
@@ -143,7 +144,7 @@ const Options = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       <div className="max-w-lg mx-auto p-4">
         
         <div className="space-y-4 mt-4">
@@ -236,14 +237,17 @@ const Options = () => {
           <div className="bg-card rounded-xl p-4 border border-border">
             {user ? (
               <div className="space-y-2">
-                <Button 
-                  variant="outline" 
-                  onClick={() => signOut()} 
-                  className="w-full gap-2"
-                >
-                  <LogOut className="w-4 h-4" />
-                  {t('auth.logout')}
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => signOut()} 
+                    className="flex-1 gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    {t('auth.logout')}
+                  </Button>
+                  <ContactDialog />
+                </div>
                 {isAdmin && (
                   <Button 
                     variant="outline" 
@@ -256,10 +260,13 @@ const Options = () => {
                 )}
               </div>
             ) : (
-              <Button onClick={() => navigate('/auth')} className="w-full gap-2">
-                <LogIn className="w-4 h-4" />
-                {t('auth.login')}
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={() => navigate('/auth')} className="flex-1 gap-2">
+                  <LogIn className="w-4 h-4" />
+                  {t('auth.login')}
+                </Button>
+                <ContactDialog />
+              </div>
             )}
           </div>
 
@@ -444,17 +451,18 @@ const Options = () => {
               <FileText className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">{t('legal.title')}</h2>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <TermsOfServiceDialog />
               <PrivacyPolicyDialog />
+              <GDPRDialog />
             </div>
           </div>
 
           {/* Reset & Delete Account Section */}
           <div className="bg-card rounded-xl p-4 border border-destructive/30">
             <div className="flex items-center gap-2 mb-3">
-              <RotateCcw className="w-5 h-5 text-destructive" />
-              <h2 className="text-lg font-semibold text-foreground">{t('reset.title')}</h2>
+              <Settings className="w-5 h-5 text-destructive" />
+              <h2 className="text-lg font-semibold text-foreground">{t('appManagement.title') || 'App Management'}</h2>
             </div>
             <p className="text-sm text-muted-foreground mb-3">
               {t('reset.description')}
