@@ -93,7 +93,7 @@ export const MonthCard = ({
                 </span>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="text-xs">
-                Grupa aktivna
+                {t('group.active')}
               </TooltipContent>
             </Tooltip>
           )}
