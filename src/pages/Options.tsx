@@ -451,9 +451,10 @@ const Options = () => {
               <FileText className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">{t('legal.title')}</h2>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <TermsOfServiceDialog />
               <PrivacyPolicyDialog />
+              <GDPRDialog />
             </div>
           </div>
 
