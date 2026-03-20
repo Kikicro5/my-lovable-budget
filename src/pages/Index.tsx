@@ -35,6 +35,7 @@ const Index = () => {
     completeReminder,
     removeReminder,
     syncStatus,
+    groupId,
   } = useBudget();
   const { t } = useLanguage();
   
@@ -89,6 +90,7 @@ const Index = () => {
             recurringApplied={recurringApplied}
             onApplyRecurring={handleApplyRecurring}
             syncStatus={syncStatus}
+            isInGroup={!!groupId}
           />
           
           <BalanceCard 

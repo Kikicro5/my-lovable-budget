@@ -2,7 +2,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { ReminderIndicator } from './ReminderIndicator';
 import { PaymentReminder, Account } from '@/types/budget';
 import { Badge } from '@/components/ui/badge';
-import { Repeat, Cloud, CloudOff, Loader2, Check } from 'lucide-react';
+import { Repeat, Cloud, CloudOff, Loader2, Check, Users } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface MonthCardProps {
@@ -16,6 +16,7 @@ interface MonthCardProps {
   recurringApplied?: boolean;
   onApplyRecurring?: () => void;
   syncStatus?: 'idle' | 'syncing' | 'synced' | 'offline' | 'error';
+  isInGroup?: boolean;
 }
 
 const SyncIcon = ({ status }: { status: string }) => {
@@ -44,6 +45,7 @@ export const MonthCard = ({
   recurringApplied = false,
   onApplyRecurring,
   syncStatus = 'idle',
+  isInGroup = false,
 }: MonthCardProps) => {
   const { t } = useLanguage();
   
@@ -83,7 +85,19 @@ export const MonthCard = ({
               </TooltipContent>
             </Tooltip>
           )}
-          <Badge 
+          {isInGroup && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="inline-flex items-center justify-center w-7 h-7 rounded-md">
+                  <Users className="w-3.5 h-3.5 text-primary" />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="text-xs">
+                Grupa aktivna
+              </TooltipContent>
+            </Tooltip>
+          )}
+          <Badge
             variant="secondary" 
             className={`gap-1 text-xs transition-colors ${
               isRecurringActive 
