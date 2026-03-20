@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -6,6 +6,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Loader2, CheckCircle, ShoppingCart } from 'lucide-react';
+import { isNativeAndroid } from '@/utils/platform';
 
 const DEVICE_ID_KEY = 'budget-card-device-id';
 const getDeviceId = (): string => {
@@ -17,51 +18,67 @@ const getDeviceId = (): string => {
   return id;
 };
 
+// Google Play product ID for the premium annual subscription
+const PRODUCT_ID = 'premium_annual';
+
 export const GooglePlayPurchase = () => {
   const { user } = useAuth();
   const { checkStatus } = usePremium();
   const { t } = useLanguage();
   const [processing, setProcessing] = useState(false);
   const [purchaseComplete, setPurchaseComplete] = useState(false);
+  const [productPrice, setProductPrice] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!isNativeAndroid()) {
+      setLoading(false);
+      return;
+    }
+
+    const loadProduct = async () => {
+      try {
+        const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
+        const { products } = await NativePurchases.getProducts({
+          productIdentifiers: [PRODUCT_ID],
+          productType: PURCHASE_TYPE.SUBS,
+        });
+        if (products.length > 0) {
+          setProductPrice(products[0].priceString || `${(products[0].price || 3.99).toFixed(2)} €`);
+        }
+      } catch (err) {
+        console.error('Failed to load Google Play product:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProduct();
+  }, []);
 
   const handlePurchase = async () => {
     setProcessing(true);
     try {
-      // Dynamic import to avoid loading on web
-      const { Purchases } = await import('@capgo/native-purchases');
+      const { NativePurchases, PURCHASE_TYPE } = await import('@capgo/native-purchases');
 
-      // Initialize RevenueCat / native purchases
-      await Purchases.configure({
-        apiKey: 'goog_your_revenuecat_key', // Will be replaced with actual key
+      const transaction = await NativePurchases.purchaseProduct({
+        productIdentifier: PRODUCT_ID,
+        productType: PURCHASE_TYPE.SUBS,
+        appAccountToken: user?.id,
       });
 
-      // Get available packages
-      const offerings = await Purchases.getOfferings();
-      const currentOffering = offerings.current;
-
-      if (!currentOffering || !currentOffering.availablePackages?.length) {
-        toast.error(t('premium.noProducts') || 'Nema dostupnih proizvoda');
-        setProcessing(false);
-        return;
-      }
-
-      // Purchase the first available package (annual)
-      const pkg = currentOffering.availablePackages[0];
-      const purchaseResult = await Purchases.purchasePackage({ aPackage: pkg });
-
-      if (purchaseResult?.customerInfo) {
-        // Verify with our backend
+      if (transaction) {
+        // Verify with backend
         const { data, error } = await supabase.functions.invoke('verify-google-purchase', {
           body: {
             action: 'verify-purchase',
-            purchaseToken: pkg.product.identifier,
-            productId: pkg.product.identifier,
+            purchaseToken: transaction.transactionId || PRODUCT_ID,
+            productId: PRODUCT_ID,
             deviceId: getDeviceId(),
           },
         });
 
         if (error || !data?.success) {
-          // Even if backend verification fails, the purchase went through
           console.error('Backend verification failed:', error || data?.error);
           toast.warning(t('premium.verifyLater') || 'Kupnja uspješna, verifikacija u tijeku...');
         }
@@ -71,9 +88,8 @@ export const GooglePlayPurchase = () => {
         await checkStatus();
       }
     } catch (err: any) {
-      // User cancelled or error
       if (err?.code === 'PURCHASE_CANCELLED' || err?.message?.includes('cancel')) {
-        // User cancelled - no error toast
+        // User cancelled
       } else {
         console.error('Google Play purchase error:', err);
         toast.error(t('premium.purchaseError') || 'Greška pri kupnji');
@@ -82,6 +98,8 @@ export const GooglePlayPurchase = () => {
       setProcessing(false);
     }
   };
+
+  if (!isNativeAndroid()) return null;
 
   if (purchaseComplete) {
     return (
@@ -103,6 +121,14 @@ export const GooglePlayPurchase = () => {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-4">
+        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
@@ -120,7 +146,7 @@ export const GooglePlayPurchase = () => {
         )}
         {processing
           ? (t('premium.processing') || 'Obrada...')
-          : (t('premium.buyNow') || 'Kupi Premium — 3,99 €/god')}
+          : `${t('premium.buyNow') || 'Kupi Premium'} — ${productPrice || '3,99 €/god'}`}
       </Button>
     </div>
   );
