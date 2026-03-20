@@ -4071,6 +4071,46 @@ export const translations: Record<Language, Record<string, string>> = {
     'premium.verificationError': 'खरीद सत्यापन में त्रुटि।',
     'premium.purchaseError': 'खरीद में त्रुटि। कृपया पुनः प्रयास करें।',
     'premium.loginForCode': 'कोड सक्रिय करने के लिए लॉगिन आवश्यक है।',
+
+    // GDPR
+    'legal.gdpr.title': 'GDPR',
+    'legal.gdpr.section1.title': '1. डेटा नियंत्रक',
+    'legal.gdpr.section1.content': 'BudgetCard एक व्यक्तिगत वित्त ट्रैकिंग ऐप है। डेटा नियंत्रक BudgetCard विकास टीम है। आपका डेटा मुख्य रूप से आपके डिवाइस पर स्थानीय रूप से संग्रहीत होता है।',
+    'legal.gdpr.section2.title': '2. प्रसंस्करण का कानूनी आधार',
+    'legal.gdpr.section2.content': 'आपके व्यक्तिगत डेटा का प्रसंस्करण आपकी सहमति (GDPR अनुच्छेद 6(1)(a)) और अनुबंध निष्पादन (GDPR अनुच्छेद 6(1)(b)) पर आधारित है।',
+    'legal.gdpr.section3.title': '3. आपके अधिकार',
+    'legal.gdpr.section3.content': 'आपको अपने डेटा तक पहुंच, सुधार, हटाने और पोर्ट करने का अधिकार है। आप सेटिंग्स में "खाता हटाएं" विकल्प के माध्यम से सभी डेटा हटाने का अनुरोध कर सकते हैं।',
+    'legal.gdpr.section4.title': '4. डेटा भंडारण और स्थानांतरण',
+    'legal.gdpr.section4.content': 'आपका वित्तीय डेटा आपके डिवाइस पर स्थानीय रूप से संग्रहीत होता है। सिंक सुविधा का उपयोग करने पर, डेटा EU/EEA के भीतर सुरक्षित सर्वरों पर संग्रहीत होता है।',
+    'legal.gdpr.section5.title': '5. डेटा प्रतिधारण',
+    'legal.gdpr.section5.content': 'जब तक आप ऐप का उपयोग करते हैं, आपका डेटा बनाए रखा जाता है। आप किसी भी समय ऐप रीसेट करके या खाता हटाकर इसे हटा सकते हैं। खाता हटाने के बाद, सभी डेटा 30 दिनों के भीतर स्थायी रूप से हटा दिया जाता है।',
+    'legal.gdpr.section6.title': '6. डेटा सुरक्षा संपर्क',
+    'legal.gdpr.section6.content': 'डेटा सुरक्षा और GDPR अधिकारों के बारे में किसी भी प्रश्न के लिए, ऐप में संपर्क फ़ॉर्म या आधिकारिक ईमेल के माध्यम से हमसे संपर्क करें।',
+
+    // Contact
+    'contact.button': 'संपर्क',
+    'contact.title': 'हमसे संपर्क करें',
+    'contact.name': 'नाम',
+    'contact.namePlaceholder': 'आपका नाम',
+    'contact.email': 'ईमेल',
+    'contact.emailPlaceholder': 'aapka@email.com',
+    'contact.message': 'संदेश',
+    'contact.messagePlaceholder': 'अपनी पूछताछ का वर्णन करें...',
+    'contact.send': 'भेजें',
+    'contact.sending': 'भेज रहे हैं...',
+    'contact.sent': 'संदेश सफलतापूर्वक भेजा गया!',
+    'contact.error': 'संदेश भेजने में त्रुटि।',
+    'contact.fillAll': 'कृपया सभी फ़ील्ड भरें।',
+
+    // Account management
+    'account.delete': 'खाता हटाएं',
+    'account.deleteConfirm': 'खाता हटाएं?',
+    'account.deleteWarning': 'यह क्रिया अपरिवर्तनीय है। सदस्यता और सेटिंग्स सहित आपका सभी डेटा स्थायी रूप से हटा दिया जाएगा।',
+    'account.deleted': 'खाता सफलतापूर्वक हटाया गया।',
+    'account.deleteError': 'खाता हटाने में त्रुटि।',
+
+    // App Management
+    'appManagement.title': 'ऐप प्रबंधन',
   },
 };
 
