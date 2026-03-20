@@ -14,6 +14,7 @@ import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
 import { PayPalPurchase } from '@/components/PayPalPurchase';
+import { FeatureLock } from '@/components/FeatureLock';
 import { useBudget } from '@/hooks/useBudget';
 import { GroupManager } from '@/components/GroupManager';
 
@@ -337,7 +338,9 @@ const Options = () => {
           )}
 
           {/* Group Sharing Section */}
-          <GroupManager />
+          <FeatureLock featureName={t('group.title')}>
+            <GroupManager />
+          </FeatureLock>
 
           {/* Account Section - Login/Logout */}
           <div className="bg-card rounded-xl p-4 border border-border">
