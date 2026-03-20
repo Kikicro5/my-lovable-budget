@@ -138,14 +138,10 @@ export async function checkSubscription(): Promise<{ isActive: boolean; expiresA
 
   try {
     const { NativePurchases } = await import('@capgo/native-purchases');
-    const result = await NativePurchases.getActiveTransactions();
+    const result = await NativePurchases.getAppTransaction();
 
-    const activeSubs = result?.transactions?.filter((t: any) =>
-      t.productIdentifier === SUBSCRIPTION_PRODUCT_ID || t.productIdentifier === TRIAL_PRODUCT_ID
-    ) || [];
-
-    if (activeSubs.length > 0) {
-      return { isActive: true, expiresAt: activeSubs[0].expiresDate || undefined };
+    if (result && (result as any).productIdentifier) {
+      return { isActive: true, expiresAt: (result as any).expiresDate || undefined };
     }
 
     return { isActive: false };
