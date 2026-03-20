@@ -26,14 +26,14 @@ const Auth = () => {
       if (isLogin) {
         const { error } = await signIn(email, password);
         if (error) {
-          toast.error(error.message === 'Invalid login credentials' ? 'Neispravni podaci za prijavu' : error.message);
+          toast.error(error.message === 'Invalid login credentials' ? t('auth.invalidCredentials') : error.message);
         } else {
-          toast.success('Uspješna prijava!');
+          toast.success(t('auth.loginSuccess'));
           navigate('/');
         }
       } else {
         if (password.length < 6) {
-          toast.error('Lozinka mora imati najmanje 6 znakova');
+          toast.error(t('auth.passwordMinLength'));
           setLoading(false);
           return;
         }
@@ -41,7 +41,7 @@ const Auth = () => {
         if (error) {
           toast.error(error.message);
         } else {
-          toast.success('Registracija uspješna! Provjerite email za potvrdu.');
+          toast.success(t('auth.registerSuccess'));
         }
       }
     } finally {
@@ -57,7 +57,7 @@ const Auth = () => {
             <img src="/icon-192.png?v=2" alt="BudgetCard" className="h-16 w-16 rounded-2xl" />
           </div>
           <CardTitle className="text-xl">
-            {isLogin ? 'Prijava' : 'Registracija'}
+            {isLogin ? t('auth.login') : t('auth.register')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -66,7 +66,7 @@ const Auth = () => {
               <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 type="email"
-                placeholder="Email"
+                placeholder={t('auth.email')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-10"
@@ -77,7 +77,7 @@ const Auth = () => {
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 type="password"
-                placeholder="Lozinka"
+                placeholder={t('auth.password')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="pl-10"
@@ -86,7 +86,7 @@ const Auth = () => {
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? '...' : isLogin ? 'Prijavi se' : 'Registriraj se'}
+              {loading ? '...' : isLogin ? t('auth.loginButton') : t('auth.registerButton')}
             </Button>
           </form>
           <div className="mt-4 text-center">
@@ -95,7 +95,7 @@ const Auth = () => {
               className="text-sm text-primary hover:underline"
               onClick={() => setIsLogin(!isLogin)}
             >
-              {isLogin ? 'Nemate račun? Registrirajte se' : 'Već imate račun? Prijavite se'}
+              {isLogin ? t('auth.noAccount') : t('auth.haveAccount')}
             </button>
           </div>
           <div className="mt-3 text-center">
@@ -105,7 +105,7 @@ const Auth = () => {
               onClick={() => navigate('/')}
             >
               <ArrowLeft className="w-3 h-3" />
-              Natrag
+              {t('auth.back')}
             </button>
           </div>
         </CardContent>
