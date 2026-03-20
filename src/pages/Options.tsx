@@ -86,6 +86,7 @@ const Options = () => {
   const { currency, setCurrency } = useCurrency();
   const { user, isAdmin, signOut } = useAuth();
   const { isPremium, daysRemaining, activateCode } = usePremium();
+  const hasPremiumAccess = isPremium || isAdmin;
   const { syncStatus, syncNow, canSync } = useBudget();
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
@@ -233,7 +234,7 @@ const Options = () => {
             </div>
             
             {/* Premium Benefits - only show when not premium */}
-            {!isPremium && (
+            {!hasPremiumAccess && (
               <div className="mb-4 p-3 rounded-lg bg-primary/5 border border-primary/10">
                 <p className="text-sm font-medium text-foreground mb-2">{t('premium.benefits.title')}</p>
                 <ul className="space-y-1.5">
@@ -260,7 +261,7 @@ const Options = () => {
                 </ul>
               </div>
             )}
-            {isPremium ? (
+            {hasPremiumAccess ? (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/10">
                 <Crown className="w-5 h-5 text-primary" />
                 <div>
@@ -304,7 +305,7 @@ const Options = () => {
           </div>
 
           {/* Cloud Sync Section - only for premium users */}
-          {isPremium && user && (
+          {hasPremiumAccess && user && (
             <div className="bg-card rounded-xl p-4 border border-border">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">

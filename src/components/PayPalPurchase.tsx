@@ -51,7 +51,7 @@ const fetchConfigOnce = async (): Promise<typeof cachedConfig> => {
 };
 
 export const PayPalPurchase = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { checkStatus } = usePremium();
   const { t } = useLanguage();
   const checkStatusRef = useRef(checkStatus);

@@ -26,7 +26,7 @@ interface GroupState {
 }
 
 export const useGroup = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { isPremium } = usePremium();
   const [state, setState] = useState<GroupState>({
     group: null,
@@ -35,7 +35,7 @@ export const useGroup = () => {
     isLoading: true,
   });
 
-  const canUseGroups = !!user && isPremium;
+  const canUseGroups = !!user && (isPremium || isAdmin);
 
   const fetchGroupInfo = useCallback(async () => {
     if (!canUseGroups) {
