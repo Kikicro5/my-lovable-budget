@@ -2,7 +2,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { ReminderIndicator } from './ReminderIndicator';
 import { PaymentReminder, Account } from '@/types/budget';
 import { Badge } from '@/components/ui/badge';
-import { Repeat, Cloud, CloudOff, Loader2, Check } from 'lucide-react';
+import { Repeat, Cloud, CloudOff, Loader2, Check, Users } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface MonthCardProps {
