@@ -46,6 +46,7 @@ export const MonthCard = ({
   recurringApplied = false,
   onApplyRecurring,
   syncStatus = 'idle',
+  lastSyncedAt,
   isInGroup = false,
 }: MonthCardProps) => {
   const { t } = useLanguage();
