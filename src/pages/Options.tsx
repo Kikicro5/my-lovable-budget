@@ -15,6 +15,7 @@ import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
 import { PayPalPurchase } from '@/components/PayPalPurchase';
 import { useBudget } from '@/hooks/useBudget';
+import { GroupManager } from '@/components/GroupManager';
 
 import { TermsOfServiceDialog, PrivacyPolicyDialog } from '@/components/LegalDialogs';
 import {
