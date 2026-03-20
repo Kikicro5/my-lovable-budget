@@ -24,7 +24,14 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  useEffect(() => {
+    initBilling().then((ok) => {
+      if (ok) console.log('[App] Billing initialized');
+    });
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <CurrencyProvider>
