@@ -1002,5 +1002,8 @@ export const useBudget = () => {
     completeReminder,
     getActiveReminders,
     getUpcomingReminders,
+    syncStatus,
+    syncNow,
+    canSync,
   };
 };
