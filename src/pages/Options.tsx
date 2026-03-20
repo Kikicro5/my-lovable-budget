@@ -380,12 +380,14 @@ const Options = () => {
           )}
 
           {/* Guide & Share Row */}
-          <div className="grid grid-cols-2 gap-4">
-            <AppGuide />
-            <Button onClick={handleShare} variant="outline" className="w-full gap-2">
-              <Share2 className="w-4 h-4" />
-              Share App
-            </Button>
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <div className="grid grid-cols-2 gap-2">
+              <AppGuide />
+              <Button onClick={handleShare} variant="outline" className="w-full gap-2">
+                <Share2 className="w-4 h-4" />
+                Share App
+              </Button>
+            </div>
           </div>
 
           {/* Legal Section */}
