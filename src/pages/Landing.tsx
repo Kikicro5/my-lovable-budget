@@ -33,7 +33,7 @@ type LandingContent = {
 
 const content: Record<string, LandingContent> = {
   hr: {
-    hero: 'Vaš osobni financijski asistent',
+    hero: 'Budget Card - Praćenje troškova',
     heroSub: 'Pratite prihode, rashode i budžet po kategorijama na jednom mjestu.',
     cta: 'Preuzmi na Google Play',
     ctaWeb: 'Otvori web aplikaciju',
@@ -56,7 +56,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   en: {
-    hero: 'Your personal finance assistant',
+    hero: 'Budget Card - Expense Tracker',
     heroSub: 'Track income, expenses and budgets by category, all in one simple app.',
     cta: 'Get it on Google Play',
     ctaWeb: 'Open web app',
@@ -79,7 +79,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   de: {
-    hero: 'Ihr persönlicher Finanzassistent',
+    hero: 'Budget Card - Ausgaben-Tracker',
     heroSub: 'Verfolgen Sie Einnahmen, Ausgaben und Budgets nach Kategorien an einem Ort.',
     cta: 'Bei Google Play herunterladen',
     ctaWeb: 'Web-App öffnen',
@@ -102,7 +102,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   pl: {
-    hero: 'Twój osobisty asystent finansowy',
+    hero: 'Budget Card - Śledzenie wydatków',
     heroSub: 'Śledź przychody, wydatki i budżety według kategorii w jednym miejscu.',
     cta: 'Pobierz z Google Play',
     ctaWeb: 'Otwórz aplikację webową',
@@ -125,7 +125,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   es: {
-    hero: 'Tu asistente financiero personal',
+    hero: 'Budget Card - Seguimiento de gastos',
     heroSub: 'Controla ingresos, gastos y presupuestos por categoría en un solo lugar.',
     cta: 'Descargar en Google Play',
     ctaWeb: 'Abrir aplicación web',
@@ -148,7 +148,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   fr: {
-    hero: 'Votre assistant financier personnel',
+    hero: 'Budget Card - Suivi des dépenses',
     heroSub: 'Suivez revenus, dépenses et budgets par catégorie en un seul endroit.',
     cta: 'Télécharger sur Google Play',
     ctaWeb: 'Ouvrir l\'application web',
@@ -171,7 +171,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   zh: {
-    hero: '您的个人财务助手',
+    hero: 'Budget Card - 费用追踪器',
     heroSub: '在一个地方按类别跟踪收入、支出和预算。',
     cta: '在 Google Play 下载',
     ctaWeb: '打开网页应用',
@@ -194,7 +194,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   hi: {
-    hero: 'आपका व्यक्तिगत वित्तीय सहायक',
+    hero: 'Budget Card - व्यय ट्रैकर',
     heroSub: 'एक ही जगह पर श्रेणी के अनुसार आय, व्यय और बजट ट्रैक करें।',
     cta: 'Google Play से डाउनलोड करें',
     ctaWeb: 'वेब ऐप खोलें',
