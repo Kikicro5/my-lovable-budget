@@ -21,6 +21,7 @@ import Install from "./pages/Install";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import Landing from "./pages/Landing";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => {
                     <Route path="/install" element={<Install />} />
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/admin" element={<Admin />} />
+                    <Route path="/landing" element={<Landing />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </BrowserRouter>
