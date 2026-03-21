@@ -6,7 +6,16 @@ import {
   Smartphone, TrendingUp, Shield, Cloud, Users, BarChart3, 
   Wallet, ArrowRight, Star, ChevronDown, Globe, BookOpen
 } from 'lucide-react';
-import { TermsOfServiceDialog, PrivacyPolicyDialog, GDPRDialog } from '@/components/LegalDialogs';
+import { TermsOfServiceContent, PrivacyPolicyContent, GDPRContent } from '@/components/LegalDialogs';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { FileText, Scale } from 'lucide-react';
 import screenshotDashboard from '@/assets/screenshots/screenshot-dashboard.jpg';
 import screenshotTransactions from '@/assets/screenshots/screenshot-transactions.jpg';
 import screenshotPromo from '@/assets/screenshots/screenshot-promo.png';
@@ -363,12 +372,36 @@ const Landing = () => {
           <Separator className="my-8" />
 
           {/* Legal */}
-          <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
-              <TermsOfServiceDialog />
-              <PrivacyPolicyDialog />
-              <GDPRDialog />
-            </div>
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
+            <Dialog>
+              <DialogTrigger className="hover:text-foreground underline-offset-4 hover:underline transition-colors cursor-pointer">
+                {language === 'hr' ? 'Uvjeti korištenja' : language === 'de' ? 'Nutzungsbedingungen' : language === 'pl' ? 'Regulamin' : language === 'es' ? 'Términos de uso' : language === 'fr' ? 'Conditions d\'utilisation' : language === 'zh' ? '使用条款' : language === 'hi' ? 'उपयोग की शर्तें' : 'Terms of Service'}
+              </DialogTrigger>
+              <DialogContent className="max-w-lg max-h-[80vh]">
+                <DialogHeader><DialogTitle><FileText className="w-5 h-5 inline mr-2" />Terms of Service</DialogTitle></DialogHeader>
+                <ScrollArea className="h-[60vh] pr-4"><TermsOfServiceContent /></ScrollArea>
+              </DialogContent>
+            </Dialog>
+            <span>·</span>
+            <Dialog>
+              <DialogTrigger className="hover:text-foreground underline-offset-4 hover:underline transition-colors cursor-pointer">
+                {language === 'hr' ? 'Pravila privatnosti' : language === 'de' ? 'Datenschutz' : language === 'pl' ? 'Polityka prywatności' : language === 'es' ? 'Política de privacidad' : language === 'fr' ? 'Politique de confidentialité' : language === 'zh' ? '隐私政策' : language === 'hi' ? 'गोपनीयता नीति' : 'Privacy Policy'}
+              </DialogTrigger>
+              <DialogContent className="max-w-lg max-h-[80vh]">
+                <DialogHeader><DialogTitle><Shield className="w-5 h-5 inline mr-2" />Privacy Policy</DialogTitle></DialogHeader>
+                <ScrollArea className="h-[60vh] pr-4"><PrivacyPolicyContent /></ScrollArea>
+              </DialogContent>
+            </Dialog>
+            <span>·</span>
+            <Dialog>
+              <DialogTrigger className="hover:text-foreground underline-offset-4 hover:underline transition-colors cursor-pointer">
+                GDPR
+              </DialogTrigger>
+              <DialogContent className="max-w-lg max-h-[80vh]">
+                <DialogHeader><DialogTitle><Scale className="w-5 h-5 inline mr-2" />GDPR</DialogTitle></DialogHeader>
+                <ScrollArea className="h-[60vh] pr-4"><GDPRContent /></ScrollArea>
+              </DialogContent>
+            </Dialog>
           </div>
 
           <p className="text-xs text-muted-foreground mt-6">

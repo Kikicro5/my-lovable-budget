@@ -10,7 +10,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/i18n/LanguageContext';
 
-const TermsOfServiceContent = () => {
+export const TermsOfServiceContent = () => {
   const { t } = useLanguage();
   
   return (
@@ -25,7 +25,7 @@ const TermsOfServiceContent = () => {
   );
 };
 
-const PrivacyPolicyContent = () => {
+export const PrivacyPolicyContent = () => {
   const { t } = useLanguage();
   
   return (
@@ -40,7 +40,7 @@ const PrivacyPolicyContent = () => {
   );
 };
 
-const GDPRContent = () => {
+export const GDPRContent = () => {
   const { t } = useLanguage();
   
   return (
