@@ -1,10 +1,12 @@
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { 
   Smartphone, TrendingUp, Shield, Cloud, Users, BarChart3, 
-  Wallet, ArrowRight, Star, ChevronDown, Globe
+  Wallet, ArrowRight, Star, ChevronDown, Globe, BookOpen
 } from 'lucide-react';
+import { TermsOfServiceDialog, PrivacyPolicyDialog, GDPRDialog } from '@/components/LegalDialogs';
 import screenshotDashboard from '@/assets/screenshots/screenshot-dashboard.jpg';
 import screenshotTransactions from '@/assets/screenshots/screenshot-transactions.jpg';
 import screenshotPromo from '@/assets/screenshots/screenshot-promo.png';
