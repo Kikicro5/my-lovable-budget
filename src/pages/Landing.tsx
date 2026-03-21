@@ -56,7 +56,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   en: {
-    hero: 'Your personal finance assistant',
+    hero: 'Budget Card - Expense Tracker',
     heroSub: 'Track income, expenses and budgets by category, all in one simple app.',
     cta: 'Get it on Google Play',
     ctaWeb: 'Open web app',
