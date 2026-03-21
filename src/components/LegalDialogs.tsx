@@ -40,7 +40,7 @@ export const PrivacyPolicyContent = () => {
   );
 };
 
-const GDPRContent = () => {
+export const GDPRContent = () => {
   const { t } = useLanguage();
   
   return (
