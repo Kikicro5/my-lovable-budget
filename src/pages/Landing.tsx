@@ -171,7 +171,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   zh: {
-    hero: '您的个人财务助手',
+    hero: 'Budget Card - 费用追踪器',
     heroSub: '在一个地方按类别跟踪收入、支出和预算。',
     cta: '在 Google Play 下载',
     ctaWeb: '打开网页应用',
