@@ -387,6 +387,10 @@ const Landing = () => {
                 <ScrollArea className="h-[60vh] pr-4"><GDPRContent /></ScrollArea>
               </DialogContent>
             </Dialog>
+            <span>·</span>
+            <a href={WEB_APP_URL + '?tab=options'} target="_blank" rel="noopener noreferrer" className="hover:text-foreground underline-offset-4 hover:underline transition-colors">
+              {language === 'hr' ? 'Vodič za aplikaciju' : language === 'de' ? 'App-Anleitung' : language === 'pl' ? 'Przewodnik po aplikacji' : language === 'es' ? 'Guía de la aplicación' : language === 'fr' ? 'Guide de l\'application' : language === 'zh' ? '应用指南' : language === 'hi' ? 'ऐप गाइड' : 'App Guide'}
+            </a>
           </div>
 
           <p className="text-xs text-muted-foreground mt-6">
