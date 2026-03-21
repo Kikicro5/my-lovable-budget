@@ -219,8 +219,52 @@ const content: Record<string, LandingContent> = {
   },
 };
 
+const langLabels: Record<string, string> = {
+  hr: '🇭🇷 Hrvatski', en: '🇬🇧 English', de: '🇩🇪 Deutsch', pl: '🇵🇱 Polski',
+  es: '🇪🇸 Español', fr: '🇫🇷 Français', zh: '🇨🇳 中文', hi: '🇮🇳 हिन्दी',
+};
+
+const LanguageSelector = ({ language, setLanguage }: { language: string; setLanguage: (l: string) => void }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card border border-border/50 shadow-soft text-sm font-medium hover:bg-muted transition-colors"
+      >
+        <Globe className="w-4 h-4 text-primary" />
+        {langLabels[language] || langLabels.en}
+        <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 bg-card border border-border rounded-xl shadow-card overflow-hidden min-w-[160px] z-50">
+          {Object.entries(langLabels).map(([code, label]) => (
+            <button
+              key={code}
+              onClick={() => { setLanguage(code); setOpen(false); }}
+              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-muted transition-colors ${language === code ? 'bg-primary/10 text-primary font-semibold' : ''}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Landing = () => {
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const isAndroid = /android/i.test(navigator.userAgent);
   const c = content[language] || content.en;
 
