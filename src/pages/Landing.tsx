@@ -244,15 +244,12 @@ const Landing = () => {
                 className="h-16"
               />
             </a>
-            <Button
-              variant="outline"
-              size="lg"
-              className="gap-2 text-base px-8 py-6 rounded-xl"
-              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <ChevronDown className="w-5 h-5" />
-              {c.learnMore}
-            </Button>
+            <a href={WEB_APP_URL} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="lg" className="gap-2 text-base px-8 py-6 rounded-xl">
+                <ArrowRight className="w-5 h-5" />
+                {c.ctaWeb}
+              </Button>
+            </a>
           </div>
         </div>
       </section>
