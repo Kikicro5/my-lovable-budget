@@ -10,7 +10,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/i18n/LanguageContext';
 
-const TermsOfServiceContent = () => {
+export const TermsOfServiceContent = () => {
   const { t } = useLanguage();
   
   return (
