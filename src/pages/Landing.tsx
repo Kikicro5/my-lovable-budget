@@ -7,6 +7,14 @@ import {
   Wallet, ArrowRight, Star, ChevronDown, Globe, BookOpen
 } from 'lucide-react';
 import { TermsOfServiceDialog, PrivacyPolicyDialog, GDPRDialog } from '@/components/LegalDialogs';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import screenshotDashboard from '@/assets/screenshots/screenshot-dashboard.jpg';
 import screenshotTransactions from '@/assets/screenshots/screenshot-transactions.jpg';
 import screenshotPromo from '@/assets/screenshots/screenshot-promo.png';
