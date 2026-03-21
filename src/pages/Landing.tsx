@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -223,10 +224,23 @@ const Landing = () => {
   const isAndroid = /android/i.test(navigator.userAgent);
   const c = content[language] || content.en;
 
+  useEffect(() => {
+    document.title = 'Budget Card - Expense Tracker | Personal Finance & Budget Manager';
+    const setMeta = (name: string, content: string, attr = 'name') => {
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
+      if (!el) { el = document.createElement('meta'); el.setAttribute(attr, name); document.head.appendChild(el); }
+      el.setAttribute('content', content);
+    };
+    setMeta('description', 'Track expenses, manage budgets by category, set savings goals and bill reminders. Free personal finance app with spending reports and multilingual support.');
+    setMeta('og:title', 'Budget Card - Expense Tracker | Personal Finance & Budget Manager', 'property');
+    setMeta('og:description', 'Track expenses, manage budgets by category, set savings goals and bill reminders. Free personal finance app.', 'property');
+    setMeta('og:url', 'https://budgetcard.lovable.app/landing', 'property');
+  }, []);
+
   const screenshots = [
-    { src: screenshotDashboard, alt: 'Dashboard' },
-    { src: screenshotTransactions, alt: 'Transactions' },
-    { src: screenshotPromo, alt: 'BudgetCard App' },
+    { src: screenshotDashboard, alt: 'Budget Card dashboard showing expense categories and balance overview' },
+    { src: screenshotTransactions, alt: 'Transaction list with income and expense entries in Budget Card app' },
+    { src: screenshotPromo, alt: 'Budget Card expense tracker app promotional screenshot' },
   ];
 
   return (
