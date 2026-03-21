@@ -363,12 +363,12 @@ const Landing = () => {
           <Separator className="my-8" />
 
           {/* Legal */}
-          <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
-              <TermsOfServiceDialog />
-              <PrivacyPolicyDialog />
-              <GDPRDialog />
-            </div>
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
+            <LegalLink label={language === 'hr' ? 'Uvjeti korištenja' : language === 'de' ? 'Nutzungsbedingungen' : language === 'pl' ? 'Regulamin' : language === 'es' ? 'Términos de uso' : language === 'fr' ? 'Conditions d\'utilisation' : language === 'zh' ? '使用条款' : language === 'hi' ? 'उपयोग की शर्तें' : 'Terms of Service'} content={<TermsOfServiceDialogContent />} />
+            <span>·</span>
+            <LegalLink label={language === 'hr' ? 'Pravila privatnosti' : language === 'de' ? 'Datenschutz' : language === 'pl' ? 'Polityka prywatności' : language === 'es' ? 'Política de privacidad' : language === 'fr' ? 'Politique de confidentialité' : language === 'zh' ? '隐私政策' : language === 'hi' ? 'गोपनीयता नीति' : 'Privacy Policy'} content={<PrivacyPolicyDialogContent />} />
+            <span>·</span>
+            <LegalLink label="GDPR" content={<GDPRDialogContent />} />
           </div>
 
           <p className="text-xs text-muted-foreground mt-6">
