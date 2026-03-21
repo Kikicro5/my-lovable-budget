@@ -54,6 +54,7 @@ const App = () => {
                     <Route path="/install" element={<Install />} />
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/admin" element={<Admin />} />
+                    <Route path="/landing" element={<Landing />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </BrowserRouter>
