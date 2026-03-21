@@ -125,7 +125,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   es: {
-    hero: 'Tu asistente financiero personal',
+    hero: 'Budget Card - Seguimiento de gastos',
     heroSub: 'Controla ingresos, gastos y presupuestos por categoría en un solo lugar.',
     cta: 'Descargar en Google Play',
     ctaWeb: 'Abrir aplicación web',
