@@ -289,21 +289,16 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Sticky Header with Language Selector */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center gap-3">
-          <span className="font-display font-bold text-lg">BudgetCard</span>
-          <LanguageSelector language={language} setLanguage={setLanguage} />
-        </div>
-      </div>
-
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10" />
         <div className="relative max-w-5xl mx-auto px-6 pt-16 pb-20 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-primary/10 text-primary text-sm font-medium">
-            <Smartphone className="w-4 h-4" />
-            BudgetCard
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium">
+              <Smartphone className="w-4 h-4" />
+              BudgetCard
+            </div>
+            <LanguageSelector language={language} setLanguage={setLanguage} />
           </div>
 
           <h1 className="font-display text-4xl md:text-6xl font-bold tracking-tight mb-5 leading-tight">
