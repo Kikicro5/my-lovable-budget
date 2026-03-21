@@ -102,7 +102,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   pl: {
-    hero: 'Twój osobisty asystent finansowy',
+    hero: 'Budget Card - Śledzenie wydatków',
     heroSub: 'Śledź przychody, wydatki i budżety według kategorii w jednym miejscu.',
     cta: 'Pobierz z Google Play',
     ctaWeb: 'Otwórz aplikację webową',
