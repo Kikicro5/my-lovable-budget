@@ -18,7 +18,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { FileText, Scale } from 'lucide-react';
 import screenshotDashboard from '@/assets/screenshots/screen1.jpg';
-import screenshotTransactions from '@/assets/screenshots/screenshot-transactions.jpg';
+import screenshotTransactions from '@/assets/screenshots/screen2.jpg';
 import screenshotPromo from '@/assets/screenshots/screenshot-promo.png';
 
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.lovable.budgetcard.twa';
