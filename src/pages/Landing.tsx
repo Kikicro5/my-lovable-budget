@@ -194,7 +194,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   hi: {
-    hero: 'आपका व्यक्तिगत वित्तीय सहायक',
+    hero: 'Budget Card - व्यय ट्रैकर',
     heroSub: 'एक ही जगह पर श्रेणी के अनुसार आय, व्यय और बजट ट्रैक करें।',
     cta: 'Google Play से डाउनलोड करें',
     ctaWeb: 'वेब ऐप खोलें',
