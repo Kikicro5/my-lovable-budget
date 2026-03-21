@@ -345,7 +345,31 @@ const Landing = () => {
               </a>
             )}
           </div>
-          <p className="text-xs text-muted-foreground mt-8">
+          <Separator className="my-8" />
+
+          {/* Legal & Guide */}
+          <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
+              <TermsOfServiceDialog />
+              <PrivacyPolicyDialog />
+              <GDPRDialog />
+            </div>
+            <a href={WEB_APP_URL + '?tab=options'} target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="sm" className="gap-2 text-xs text-muted-foreground mt-2">
+                <BookOpen className="w-4 h-4" />
+                {language === 'hr' ? 'Vodič za aplikaciju' :
+                 language === 'de' ? 'App-Anleitung' :
+                 language === 'pl' ? 'Przewodnik po aplikacji' :
+                 language === 'es' ? 'Guía de la aplicación' :
+                 language === 'fr' ? 'Guide de l\'application' :
+                 language === 'zh' ? '应用指南' :
+                 language === 'hi' ? 'ऐप गाइड' :
+                 'App Guide'}
+              </Button>
+            </a>
+          </div>
+
+          <p className="text-xs text-muted-foreground mt-6">
             © {new Date().getFullYear()} BudgetCard.
           </p>
         </div>
