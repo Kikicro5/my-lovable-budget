@@ -79,7 +79,7 @@ const content: Record<string, LandingContent> = {
     ],
   },
   de: {
-    hero: 'Ihr persönlicher Finanzassistent',
+    hero: 'Budget Card - Ausgaben-Tracker',
     heroSub: 'Verfolgen Sie Einnahmen, Ausgaben und Budgets nach Kategorien an einem Ort.',
     cta: 'Bei Google Play herunterladen',
     ctaWeb: 'Web-App öffnen',
