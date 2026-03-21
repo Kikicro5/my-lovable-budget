@@ -373,11 +373,35 @@ const Landing = () => {
 
           {/* Legal */}
           <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
-            <LegalLink label={language === 'hr' ? 'Uvjeti korištenja' : language === 'de' ? 'Nutzungsbedingungen' : language === 'pl' ? 'Regulamin' : language === 'es' ? 'Términos de uso' : language === 'fr' ? 'Conditions d\'utilisation' : language === 'zh' ? '使用条款' : language === 'hi' ? 'उपयोग की शर्तें' : 'Terms of Service'} content={<TermsOfServiceDialogContent />} />
+            <Dialog>
+              <DialogTrigger className="hover:text-foreground underline-offset-4 hover:underline transition-colors cursor-pointer">
+                {language === 'hr' ? 'Uvjeti korištenja' : language === 'de' ? 'Nutzungsbedingungen' : language === 'pl' ? 'Regulamin' : language === 'es' ? 'Términos de uso' : language === 'fr' ? 'Conditions d\'utilisation' : language === 'zh' ? '使用条款' : language === 'hi' ? 'उपयोग की शर्तें' : 'Terms of Service'}
+              </DialogTrigger>
+              <DialogContent className="max-w-lg max-h-[80vh]">
+                <DialogHeader><DialogTitle><FileText className="w-5 h-5 inline mr-2" />Terms of Service</DialogTitle></DialogHeader>
+                <ScrollArea className="h-[60vh] pr-4"><TermsOfServiceContent /></ScrollArea>
+              </DialogContent>
+            </Dialog>
             <span>·</span>
-            <LegalLink label={language === 'hr' ? 'Pravila privatnosti' : language === 'de' ? 'Datenschutz' : language === 'pl' ? 'Polityka prywatności' : language === 'es' ? 'Política de privacidad' : language === 'fr' ? 'Politique de confidentialité' : language === 'zh' ? '隐私政策' : language === 'hi' ? 'गोपनीयता नीति' : 'Privacy Policy'} content={<PrivacyPolicyDialogContent />} />
+            <Dialog>
+              <DialogTrigger className="hover:text-foreground underline-offset-4 hover:underline transition-colors cursor-pointer">
+                {language === 'hr' ? 'Pravila privatnosti' : language === 'de' ? 'Datenschutz' : language === 'pl' ? 'Polityka prywatności' : language === 'es' ? 'Política de privacidad' : language === 'fr' ? 'Politique de confidentialité' : language === 'zh' ? '隐私政策' : language === 'hi' ? 'गोपनीयता नीति' : 'Privacy Policy'}
+              </DialogTrigger>
+              <DialogContent className="max-w-lg max-h-[80vh]">
+                <DialogHeader><DialogTitle><Shield className="w-5 h-5 inline mr-2" />Privacy Policy</DialogTitle></DialogHeader>
+                <ScrollArea className="h-[60vh] pr-4"><PrivacyPolicyContent /></ScrollArea>
+              </DialogContent>
+            </Dialog>
             <span>·</span>
-            <LegalLink label="GDPR" content={<GDPRDialogContent />} />
+            <Dialog>
+              <DialogTrigger className="hover:text-foreground underline-offset-4 hover:underline transition-colors cursor-pointer">
+                GDPR
+              </DialogTrigger>
+              <DialogContent className="max-w-lg max-h-[80vh]">
+                <DialogHeader><DialogTitle><Scale className="w-5 h-5 inline mr-2" />GDPR</DialogTitle></DialogHeader>
+                <ScrollArea className="h-[60vh] pr-4"><GDPRContent /></ScrollArea>
+              </DialogContent>
+            </Dialog>
           </div>
 
           <p className="text-xs text-muted-foreground mt-6">
