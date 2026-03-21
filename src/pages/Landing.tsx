@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { FileText, Scale } from 'lucide-react';
-import screenshotDashboard from '@/assets/screenshots/screenshot-dashboard.jpg';
+import screenshotDashboard from '@/assets/screenshots/screen1.jpg';
 import screenshotTransactions from '@/assets/screenshots/screenshot-transactions.jpg';
 import screenshotPromo from '@/assets/screenshots/screenshot-promo.png';
 
