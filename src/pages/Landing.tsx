@@ -237,22 +237,22 @@ const Landing = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            {isAndroid ? (
-              <a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">
-                <img
-                  src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                  alt="Get it on Google Play"
-                  className="h-16"
-                />
-              </a>
-            ) : (
-              <a href={WEB_APP_URL} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="gap-2 text-base px-8 py-6 rounded-xl shadow-glow">
-                  <ArrowRight className="w-5 h-5" />
-                  {c.ctaWeb}
-                </Button>
-              </a>
-            )}
+            <a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">
+              <img
+                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                alt="Get it on Google Play"
+                className="h-16"
+              />
+            </a>
+            <Button
+              variant="outline"
+              size="lg"
+              className="gap-2 text-base px-8 py-6 rounded-xl"
+              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              <ChevronDown className="w-5 h-5" />
+              {c.learnMore}
+            </Button>
             <Button
               variant="outline"
               size="lg"
