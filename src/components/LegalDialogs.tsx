@@ -25,7 +25,7 @@ export const TermsOfServiceContent = () => {
   );
 };
 
-const PrivacyPolicyContent = () => {
+export const PrivacyPolicyContent = () => {
   const { t } = useLanguage();
   
   return (
