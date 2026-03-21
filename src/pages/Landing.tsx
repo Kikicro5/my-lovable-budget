@@ -33,7 +33,7 @@ type LandingContent = {
 
 const content: Record<string, LandingContent> = {
   hr: {
-    hero: 'Vaš osobni financijski asistent',
+    hero: 'Budget Card - Praćenje troškova',
     heroSub: 'Pratite prihode, rashode i budžet po kategorijama na jednom mjestu.',
     cta: 'Preuzmi na Google Play',
     ctaWeb: 'Otvori web aplikaciju',
