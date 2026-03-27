@@ -284,6 +284,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Instaliraj aplikaciju',
     'install.settingsDescription': 'Instaliraj aplikaciju na svoj uređaj za brži pristup.',
     'install.openInstructions': 'Upute za instalaciju',
+    'install.popup.title': 'Instaliraj Budget Card',
+    'install.popup.description': 'Dodaj aplikaciju na početni ekran za brži pristup i korištenje bez interneta.',
+    'install.popup.quickAccess': 'Brži pristup s početnog ekrana',
+    'install.popup.offline': 'Radi i bez interneta',
+    'install.popup.autoUpdate': 'Automatska ažuriranja',
+    'install.popup.install': 'Instaliraj',
+    'install.popup.notNow': 'Ne sada',
 
     // Transfer
     'transfer.toBalance': 'Na stanje',
