@@ -1396,6 +1396,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'App installieren',
     'install.settingsDescription': 'Installieren Sie die App auf Ihrem Gerät für schnellen Zugriff.',
     'install.openInstructions': 'Installationsanleitung',
+    'install.popup.title': 'Budget Card installieren',
+    'install.popup.description': 'Fügen Sie die App zum Startbildschirm hinzu für schnellen Zugriff und Offline-Nutzung.',
+    'install.popup.quickAccess': 'Schneller Zugriff vom Startbildschirm',
+    'install.popup.offline': 'Funktioniert auch offline',
+    'install.popup.autoUpdate': 'Automatische Updates',
+    'install.popup.install': 'Installieren',
+    'install.popup.notNow': 'Nicht jetzt',
 
     // Transfer
     'transfer.toBalance': 'Zum Kontostand',
