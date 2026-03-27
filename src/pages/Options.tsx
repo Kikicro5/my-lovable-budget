@@ -91,7 +91,7 @@ const Options = () => {
   const { user, isAdmin, signOut } = useAuth();
   const { isPremium, daysRemaining, activateCode } = usePremium();
   const hasPremiumAccess = isPremium || isAdmin;
-  const { syncStatus, syncNow, canSync } = useBudget();
+  const { syncStatus, syncNow, canSync, resetAll } = useBudget();
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
@@ -485,10 +485,9 @@ const Options = () => {
                   <AlertDialogFooter>
                     <AlertDialogCancel>{t('dialog.cancel')}</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => {
-                        localStorage.removeItem('monthly-budget-app');
+                      onClick={async () => {
+                        await resetAll();
                         toast.success(t('reset.success'));
-                        window.location.reload();
                       }}
                       className="bg-destructive hover:bg-destructive/90"
                     >
