@@ -3448,6 +3448,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': '安装应用',
     'install.settingsDescription': '将应用安装到设备以便快速访问。',
     'install.openInstructions': '安装说明',
+    'install.popup.title': '安装 Budget Card',
+    'install.popup.description': '将应用添加到主屏幕，享受快速访问和离线使用。',
+    'install.popup.quickAccess': '从主屏幕快速访问',
+    'install.popup.offline': '离线也能使用',
+    'install.popup.autoUpdate': '自动更新',
+    'install.popup.install': '安装',
+    'install.popup.notNow': '暂时不要',
 
     // Transfer
     'transfer.toBalance': '转入余额',
