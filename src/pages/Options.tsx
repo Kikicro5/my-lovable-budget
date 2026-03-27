@@ -91,7 +91,7 @@ const Options = () => {
   const { user, isAdmin, signOut } = useAuth();
   const { isPremium, daysRemaining, activateCode } = usePremium();
   const hasPremiumAccess = isPremium || isAdmin;
-  const { syncStatus, syncNow, canSync } = useBudget();
+  const { syncStatus, syncNow, canSync, resetAll } = useBudget();
   const [code, setCode] = useState('');
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(false);
