@@ -485,10 +485,9 @@ const Options = () => {
                   <AlertDialogFooter>
                     <AlertDialogCancel>{t('dialog.cancel')}</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => {
-                        localStorage.removeItem('monthly-budget-app');
+                      onClick={async () => {
+                        await resetAll();
                         toast.success(t('reset.success'));
-                        window.location.reload();
                       }}
                       className="bg-destructive hover:bg-destructive/90"
                     >

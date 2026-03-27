@@ -1085,5 +1085,28 @@ export const useBudget = () => {
     canSync,
     groupId,
     lastSyncedAt,
+    resetAll: async () => {
+      // Clear cloud data first if syncing
+      if (canSync && userId) {
+        try {
+          if (groupId) {
+            await (supabase
+              .from('group_data' as any)
+              .update({ data: getInitialState() as any }) as any)
+              .eq('group_id', groupId);
+          } else {
+            await supabase
+              .from('user_data')
+              .update({ data: getInitialState() as any })
+              .eq('user_id', userId);
+          }
+        } catch (err) {
+          console.error('Failed to reset cloud data:', err);
+        }
+      }
+      // Clear localStorage and reload
+      localStorage.removeItem(STORAGE_KEY);
+      window.location.reload();
+    },
   };
 };
