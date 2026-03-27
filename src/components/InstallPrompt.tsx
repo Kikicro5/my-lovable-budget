@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { X, Download, Smartphone } from 'lucide-react';
+import { Download, Smartphone } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -15,6 +16,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 const InstallPrompt = () => {
+  const { t } = useLanguage();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
@@ -73,9 +75,9 @@ const InstallPrompt = () => {
           <div className="mx-auto mb-2 w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
             <Smartphone className="w-8 h-8 text-primary" />
           </div>
-          <DialogTitle className="text-xl">Instaliraj Budget Card</DialogTitle>
+          <DialogTitle className="text-xl">{t('install.popup.title')}</DialogTitle>
           <DialogDescription className="text-center">
-            Dodaj aplikaciju na početni ekran za brži pristup i korištenje bez interneta.
+            {t('install.popup.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -84,29 +86,29 @@ const InstallPrompt = () => {
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <Download className="w-4 h-4 text-primary" />
             </div>
-            <span>Brži pristup s početnog ekrana</span>
+            <span>{t('install.popup.quickAccess')}</span>
           </div>
           <div className="flex items-center gap-3 text-sm">
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <span className="text-primary text-xs font-bold">📶</span>
             </div>
-            <span>Radi i bez interneta</span>
+            <span>{t('install.popup.offline')}</span>
           </div>
           <div className="flex items-center gap-3 text-sm">
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <span className="text-primary text-xs font-bold">🔄</span>
             </div>
-            <span>Automatska ažuriranja</span>
+            <span>{t('install.popup.autoUpdate')}</span>
           </div>
         </div>
 
         <div className="flex flex-col gap-2 pt-2">
           <Button onClick={handleInstall} className="w-full" size="lg">
             <Download className="w-5 h-5 mr-2" />
-            Instaliraj
+            {t('install.popup.install')}
           </Button>
           <Button variant="ghost" onClick={handleDismiss} className="w-full text-muted-foreground">
-            Ne sada
+            {t('install.popup.notNow')}
           </Button>
         </div>
       </DialogContent>

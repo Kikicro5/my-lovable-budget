@@ -284,6 +284,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Instaliraj aplikaciju',
     'install.settingsDescription': 'Instaliraj aplikaciju na svoj uređaj za brži pristup.',
     'install.openInstructions': 'Upute za instalaciju',
+    'install.popup.title': 'Instaliraj Budget Card',
+    'install.popup.description': 'Dodaj aplikaciju na početni ekran za brži pristup i korištenje bez interneta.',
+    'install.popup.quickAccess': 'Brži pristup s početnog ekrana',
+    'install.popup.offline': 'Radi i bez interneta',
+    'install.popup.autoUpdate': 'Automatska ažuriranja',
+    'install.popup.install': 'Instaliraj',
+    'install.popup.notNow': 'Ne sada',
 
     // Transfer
     'transfer.toBalance': 'Na stanje',
@@ -835,6 +842,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Install App',
     'install.settingsDescription': 'Install the app on your device for quick access.',
     'install.openInstructions': 'Installation instructions',
+    'install.popup.title': 'Install Budget Card',
+    'install.popup.description': 'Add the app to your home screen for quick access and offline use.',
+    'install.popup.quickAccess': 'Quick access from home screen',
+    'install.popup.offline': 'Works offline',
+    'install.popup.autoUpdate': 'Automatic updates',
+    'install.popup.install': 'Install',
+    'install.popup.notNow': 'Not now',
 
     // Transfer
     'transfer.toBalance': 'To balance',
@@ -1382,6 +1396,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'App installieren',
     'install.settingsDescription': 'Installieren Sie die App auf Ihrem Gerät für schnellen Zugriff.',
     'install.openInstructions': 'Installationsanleitung',
+    'install.popup.title': 'Budget Card installieren',
+    'install.popup.description': 'Fügen Sie die App zum Startbildschirm hinzu für schnellen Zugriff und Offline-Nutzung.',
+    'install.popup.quickAccess': 'Schneller Zugriff vom Startbildschirm',
+    'install.popup.offline': 'Funktioniert auch offline',
+    'install.popup.autoUpdate': 'Automatische Updates',
+    'install.popup.install': 'Installieren',
+    'install.popup.notNow': 'Nicht jetzt',
 
     // Transfer
     'transfer.toBalance': 'Zum Kontostand',
@@ -1888,6 +1909,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Zainstaluj aplikację',
     'install.settingsDescription': 'Zainstaluj aplikację na swoim urządzeniu dla szybkiego dostępu.',
     'install.openInstructions': 'Instrukcja instalacji',
+    'install.popup.title': 'Zainstaluj Budget Card',
+    'install.popup.description': 'Dodaj aplikację do ekranu głównego, aby mieć szybki dostęp i korzystać offline.',
+    'install.popup.quickAccess': 'Szybki dostęp z ekranu głównego',
+    'install.popup.offline': 'Działa offline',
+    'install.popup.autoUpdate': 'Automatyczne aktualizacje',
+    'install.popup.install': 'Zainstaluj',
+    'install.popup.notNow': 'Nie teraz',
 
     // Transfer
     'transfer.toBalance': 'Na saldo',
@@ -2394,6 +2422,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Instalar aplicación',
     'install.settingsDescription': 'Instala la aplicación en tu dispositivo para acceso rápido.',
     'install.openInstructions': 'Instrucciones de instalación',
+    'install.popup.title': 'Instalar Budget Card',
+    'install.popup.description': 'Añade la aplicación a tu pantalla de inicio para acceso rápido y uso sin conexión.',
+    'install.popup.quickAccess': 'Acceso rápido desde la pantalla de inicio',
+    'install.popup.offline': 'Funciona sin conexión',
+    'install.popup.autoUpdate': 'Actualizaciones automáticas',
+    'install.popup.install': 'Instalar',
+    'install.popup.notNow': 'Ahora no',
 
     // Transfer
     'transfer.toBalance': 'Al saldo',
@@ -2900,6 +2935,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Installer l\'application',
     'install.settingsDescription': 'Installez l\'application sur votre appareil pour un accès rapide.',
     'install.openInstructions': 'Instructions d\'installation',
+    'install.popup.title': 'Installer Budget Card',
+    'install.popup.description': 'Ajoutez l\'application à votre écran d\'accueil pour un accès rapide et une utilisation hors ligne.',
+    'install.popup.quickAccess': 'Accès rapide depuis l\'écran d\'accueil',
+    'install.popup.offline': 'Fonctionne hors ligne',
+    'install.popup.autoUpdate': 'Mises à jour automatiques',
+    'install.popup.install': 'Installer',
+    'install.popup.notNow': 'Pas maintenant',
 
     // Transfer
     'transfer.toBalance': 'Vers le solde',
@@ -3406,6 +3448,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': '安装应用',
     'install.settingsDescription': '将应用安装到设备以便快速访问。',
     'install.openInstructions': '安装说明',
+    'install.popup.title': '安装 Budget Card',
+    'install.popup.description': '将应用添加到主屏幕，享受快速访问和离线使用。',
+    'install.popup.quickAccess': '从主屏幕快速访问',
+    'install.popup.offline': '离线也能使用',
+    'install.popup.autoUpdate': '自动更新',
+    'install.popup.install': '安装',
+    'install.popup.notNow': '暂时不要',
 
     // Transfer
     'transfer.toBalance': '转入余额',
@@ -3913,6 +3962,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'ऐप इंस्टॉल करें',
     'install.settingsDescription': 'त्वरित पहुंच के लिए अपने डिवाइस पर ऐप इंस्टॉल करें।',
     'install.openInstructions': 'इंस्टॉलेशन निर्देश',
+    'install.popup.title': 'Budget Card इंस्टॉल करें',
+    'install.popup.description': 'त्वरित पहुंच और ऑफ़लाइन उपयोग के लिए ऐप को होम स्क्रीन पर जोड़ें।',
+    'install.popup.quickAccess': 'होम स्क्रीन से त्वरित पहुंच',
+    'install.popup.offline': 'ऑफ़लाइन भी काम करता है',
+    'install.popup.autoUpdate': 'स्वचालित अपडेट',
+    'install.popup.install': 'इंस्टॉल करें',
+    'install.popup.notNow': 'अभी नहीं',
 
     // Transfer
     'transfer.toBalance': 'शेष में',
