@@ -2422,6 +2422,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'install.title': 'Instalar aplicación',
     'install.settingsDescription': 'Instala la aplicación en tu dispositivo para acceso rápido.',
     'install.openInstructions': 'Instrucciones de instalación',
+    'install.popup.title': 'Instalar Budget Card',
+    'install.popup.description': 'Añade la aplicación a tu pantalla de inicio para acceso rápido y uso sin conexión.',
+    'install.popup.quickAccess': 'Acceso rápido desde la pantalla de inicio',
+    'install.popup.offline': 'Funciona sin conexión',
+    'install.popup.autoUpdate': 'Actualizaciones automáticas',
+    'install.popup.install': 'Instalar',
+    'install.popup.notNow': 'Ahora no',
 
     // Transfer
     'transfer.toBalance': 'Al saldo',
