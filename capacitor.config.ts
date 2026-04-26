@@ -21,7 +21,7 @@ const config: CapacitorConfig = {
       useDialog: true
     },
     AdMob: {
-      appId: "ca-app-pub-0825549313210028~2423468724"
+      appId: "ca-app-pub-0825549313210028~8911340745"
     }
   },
   android: {
