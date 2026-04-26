@@ -14,17 +14,13 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap, MessageSquare, Mail, Eye, Reply, Send, Power } from 'lucide-react';
-import jsPDF from 'jspdf';
+import { ArrowLeft, Trash2, Crown, ShieldOff, Users, MessageSquare, Eye, Reply, Send, Power } from 'lucide-react';
 
 interface CodeData {
   id: string; code: string; max_uses: number; current_uses: number; expires_at: string; created_at: string; note: string | null;
 }
 interface UserData {
   id: string; email: string; created_at: string; last_sign_in_at: string | null; isPremium: boolean; premiumUntil: string | null; role: string;
-}
-interface PriceData {
-  id: string; price: number; duration_days: number; currency: string;
 }
 interface ContactMessage {
   id: string; name: string; email: string; message: string; is_read: boolean; created_at: string; admin_reply: string | null; replied_at: string | null;
@@ -36,19 +32,12 @@ interface AppSetting {
 const Admin = () => {
   const { isAdmin, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [codes, setCodes] = useState<CodeData[]>([]);
   const [users, setUsers] = useState<UserData[]>([]);
-  const [prices, setPrices] = useState<PriceData[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [billingEnabled, setBillingEnabled] = useState(true);
   const [billingSaving, setBillingSaving] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [codeCount, setCodeCount] = useState(10);
-  const [maxUses, setMaxUses] = useState(1);
-  const [expiresPeriod, setExpiresPeriod] = useState('365');
-  const [lastGenerated, setLastGenerated] = useState<CodeData[]>([]);
-  const [deleteDialog, setDeleteDialog] = useState<{ type: 'code' | 'user' | 'message'; id: string; label: string } | null>(null);
+  const [deleteDialog, setDeleteDialog] = useState<{ type: 'user' | 'message'; id: string; label: string } | null>(null);
   const [replyDialog, setReplyDialog] = useState<ContactMessage | null>(null);
   const [replyText, setReplyText] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
@@ -73,9 +62,7 @@ const Admin = () => {
         adminCall('load-all'),
         supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
       ]);
-      setCodes(adminData.codes || []);
       setUsers(adminData.users || []);
-      setPrices(adminData.prices || []);
       const settings: AppSetting[] = adminData.settings || [];
       const billing = settings.find(s => s.key === 'premium_billing_enabled');
       setBillingEnabled(billing ? billing.value !== false : true);
@@ -85,46 +72,6 @@ const Admin = () => {
     } finally {
       setInitialLoading(false);
     }
-  };
-
-  const handleGenerateCodes = async () => {
-    setLoading(true);
-    try {
-      const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + parseInt(expiresPeriod));
-      const data = await adminCall('generate-codes', { count: codeCount, maxUses, expiresAt: expiresAt.toISOString() });
-      const generated = data.codes || [];
-      setLastGenerated(generated);
-      setCodes(prev => [...generated, ...prev]);
-      toast.success(`${generated.length} kodova generirano`);
-    } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
-  };
-
-  const handleDownloadPDF = () => {
-    const codesToExport = lastGenerated.length > 0 ? lastGenerated : codes;
-    if (!codesToExport.length) { toast.error('Nema kodova za preuzimanje'); return; }
-
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('Premium aktivacijski kodovi', 14, 20);
-    doc.setFontSize(9);
-    doc.text(`Generirano: ${new Date().toLocaleDateString('hr')}`, 14, 28);
-    
-    doc.setFontSize(10);
-    let y = 40;
-    codesToExport.forEach((c, i) => {
-      if (y > 275) { doc.addPage(); y = 20; }
-      doc.text(`${i + 1}. ${c.code}   (max: ${c.max_uses}, ističe: ${new Date(c.expires_at).toLocaleDateString('hr')})`, 14, y);
-      y += 7;
-    });
-
-    doc.save('aktivacijski-kodovi.pdf');
-  };
-
-  const handleDeleteCode = async (codeId: string) => {
-    setCodes(prev => prev.filter(c => c.id !== codeId));
-    setDeleteDialog(null);
-    try { await adminCall('delete-code', { codeId }); toast.success('Kod obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
 
   const handleDeleteUser = async (userId: string) => {
@@ -165,18 +112,13 @@ const Admin = () => {
 
   const confirmDelete = () => {
     if (!deleteDialog) return;
-    if (deleteDialog.type === 'code') handleDeleteCode(deleteDialog.id);
-    else if (deleteDialog.type === 'user') handleDeleteUser(deleteDialog.id);
+    if (deleteDialog.type === 'user') handleDeleteUser(deleteDialog.id);
     else handleDeleteMessage(deleteDialog.id);
   };
 
   const handleDeactivatePremium = async (userId: string) => {
     setUsers(prev => prev.map(u => u.id === userId ? { ...u, isPremium: false, premiumUntil: null } : u));
     try { await adminCall('deactivate-premium', { userId }); toast.success('Premium deaktiviran'); } catch (e: any) { toast.error(e.message); loadAll(); }
-  };
-
-  const handleUpdatePrices = async () => {
-    try { await adminCall('update-prices', { prices }); toast.success('Cijene ažurirane'); } catch (e: any) { toast.error(e.message); }
   };
 
   const handleToggleBilling = async (enabled: boolean) => {
@@ -192,12 +134,6 @@ const Admin = () => {
     } finally {
       setBillingSaving(false);
     }
-  };
-
-  const getDurationLabel = (days: number) => {
-    if (days <= 31) return '1 mjesec';
-    if (days <= 93) return '3 mjeseca';
-    return '12 mjeseci';
   };
 
   if (authLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><p>Učitavanje...</p></div>;
