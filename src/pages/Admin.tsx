@@ -286,64 +286,6 @@ const Admin = () => {
             )}
           </TabsContent>
 
-          {/* CIJENE TAB */}
-          <TabsContent value="prices" className="space-y-4 mt-4">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Power className="w-4 h-4" />
-                  Naplata premium licenci
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">
-                      {billingEnabled ? 'Naplata uključena' : 'Naplata isključena'}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {billingEnabled
-                        ? 'Korisnici moraju aktivirati premium kodom ili kupnjom.'
-                        : 'Svi korisnici automatski imaju premium pristup besplatno.'}
-                    </p>
-                  </div>
-                  <Switch
-                    checked={billingEnabled}
-                    disabled={billingSaving || showSkeleton}
-                    onCheckedChange={handleToggleBilling}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-base">Cijena premium licenci</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                {prices.map((p, i) => (
-                  <Card key={p.id} className="border">
-                    <CardContent className="p-4">
-                      <label className="text-sm font-medium text-foreground block mb-2">{getDurationLabel(p.duration_days)}</label>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="number"
-                          step="0.01"
-                          value={p.price}
-                          onChange={(e) => {
-                            const updated = [...prices];
-                            updated[i] = { ...p, price: parseFloat(e.target.value) || 0 };
-                            setPrices(updated);
-                          }}
-                        />
-                        <span className="text-sm text-muted-foreground font-medium">{p.currency}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-                {prices.length > 0 && <Button onClick={handleUpdatePrices} className="w-full">Spremi</Button>}
-                {!prices.length && <p className="text-center text-muted-foreground text-sm">Nema cijena</p>}
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
 
@@ -353,9 +295,7 @@ const Admin = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Potvrda brisanja</AlertDialogTitle>
             <AlertDialogDescription>
-              {deleteDialog?.type === 'code'
-                ? `Jeste li sigurni da želite obrisati kod "${deleteDialog?.label}"?`
-                : deleteDialog?.type === 'message'
+              {deleteDialog?.type === 'message'
                 ? `Jeste li sigurni da želite obrisati poruku od "${deleteDialog?.label}"?`
                 : `Jeste li sigurni da želite obrisati korisnika "${deleteDialog?.label}"? Ova radnja je nepovratna.`}
             </AlertDialogDescription>
