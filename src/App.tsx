@@ -3,12 +3,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
 import InstallPrompt from "@/components/InstallPrompt";
+import { initializeAdMob } from "@/services/admob";
 
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
@@ -24,6 +26,10 @@ import Landing from "./pages/Landing";
 const queryClient = new QueryClient();
 
 const App = () => {
+  useEffect(() => {
+    initializeAdMob();
+  }, []);
+
   return (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
