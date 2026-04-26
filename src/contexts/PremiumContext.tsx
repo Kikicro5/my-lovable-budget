@@ -32,57 +32,10 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
 
   const checkStatus = useCallback(async () => {
-    // Admins always have premium - check this first
-    if (isAdmin) {
-      setIsPremium(true);
-      setExpiresAt(null);
-      setIsLoading(false);
-      return;
-    }
-
-    // Check global billing flag first — if disabled, everyone is premium (no auth needed)
-    try {
-      const { data: billingSetting } = await supabase
-        .from('app_settings')
-        .select('value')
-        .eq('key', 'premium_billing_enabled')
-        .maybeSingle();
-      if (billingSetting?.value === false) {
-        setIsPremium(true);
-        setExpiresAt(null);
-        setIsLoading(false);
-        return;
-      }
-    } catch {
-      // ignore and fall through to normal check
-    }
-
-    if (!session) {
-      setIsPremium(false);
-      setExpiresAt(null);
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      // Check server for premium status
-      const { data, error } = await supabase.functions.invoke('check-status', {
-        body: { deviceId: getDeviceId() },
-      });
-
-      if (!error && data?.isPremium) {
-        setIsPremium(true);
-        setExpiresAt(data.expiresAt ? new Date(data.expiresAt) : null);
-      } else {
-        setIsPremium(false);
-        setExpiresAt(null);
-      }
-    } catch {
-      setIsPremium(false);
-      setExpiresAt(null);
-    } finally {
-      setIsLoading(false);
-    }
+    // Premium je trajno omogućen za sve korisnike — bez naplate i bez zaključavanja.
+    setIsPremium(true);
+    setExpiresAt(null);
+    setIsLoading(false);
   }, [session, isAdmin]);
 
   useEffect(() => {
