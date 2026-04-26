@@ -14,7 +14,6 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
-import { PayPalPurchase } from '@/components/PayPalPurchase';
 import { isNativeAndroid } from '@/utils/platform';
 import { FeatureLock } from '@/components/FeatureLock';
 import { useBudget } from '@/hooks/useBudget';
@@ -347,10 +346,6 @@ const Options = () => {
                   </Button>
                 </div>
 
-                {/* Payment options: PayPal */}
-                <div className="border-t border-border pt-3 mt-3">
-                  <PayPalPurchase />
-                </div>
               </div>
             )}
           </div>
