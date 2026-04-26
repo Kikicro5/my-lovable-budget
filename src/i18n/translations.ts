@@ -330,6 +330,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Cloud Sync
     'sync.title': 'Cloud Sync',
     'sync.description': 'Vaši podaci se automatski sinkroniziraju s oblakom.',
+    'sync.loginRequired': 'Za korištenje Cloud Synca potrebno je prijaviti se.',
     'sync.button': 'Sinkroniziraj sada',
     'sync.success': 'Podaci sinkronizirani!',
     'sync.status.syncing': 'Sinkronizacija...',
@@ -340,6 +341,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Group Sharing
     'group.title': 'Dijeljenje podataka',
     'group.description': 'Povežite se s obitelji ili partnerom i dijelite iste financijske podatke u realnom vremenu.',
+    'group.loginRequired': 'Za dijeljenje podataka u grupi potrebno je prijaviti se.',
     'group.create': 'Kreiraj',
     'group.namePlaceholder': 'Naziv grupe (opcionalno)',
     'group.joinButton': 'Imam kod za pridruživanje',
@@ -888,6 +890,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Cloud Sync
     'sync.title': 'Cloud Sync',
     'sync.description': 'Your data is automatically synced to the cloud.',
+    'sync.loginRequired': 'You need to sign in to use Cloud Sync.',
     'sync.button': 'Sync now',
     'sync.success': 'Data synced!',
     'sync.status.syncing': 'Syncing...',
@@ -898,6 +901,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Group Sharing
     'group.title': 'Data Sharing',
     'group.description': 'Connect with family or a partner and share the same financial data in real time.',
+    'group.loginRequired': 'You need to sign in to share data in a group.',
     'group.create': 'Create',
     'group.namePlaceholder': 'Group name (optional)',
     'group.joinButton': 'I have a join code',
@@ -1442,6 +1446,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Cloud Sync
     'sync.title': 'Cloud Sync',
     'sync.description': 'Ihre Daten werden automatisch mit der Cloud synchronisiert.',
+    'sync.loginRequired': 'Sie müssen sich anmelden, um Cloud Sync zu nutzen.',
     'sync.button': 'Jetzt synchronisieren',
     'sync.success': 'Daten synchronisiert!',
     'sync.status.syncing': 'Synchronisiere...',
@@ -1452,6 +1457,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Group Sharing
     'group.title': 'Daten teilen',
     'group.description': 'Verbinden Sie sich mit Familie oder Partner und teilen Sie dieselben Finanzdaten in Echtzeit.',
+    'group.loginRequired': 'Sie müssen sich anmelden, um Daten in einer Gruppe zu teilen.',
     'group.create': 'Erstellen',
     'group.namePlaceholder': 'Gruppenname (optional)',
     'group.joinButton': 'Ich habe einen Beitrittscode',
@@ -1955,6 +1961,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Cloud Sync
     'sync.title': 'Cloud Sync',
     'sync.description': 'Twoje dane są automatycznie synchronizowane z chmurą.',
+    'sync.loginRequired': 'Aby korzystać z Cloud Sync, musisz się zalogować.',
     'sync.button': 'Synchronizuj teraz',
     'sync.success': 'Dane zsynchronizowane!',
     'sync.status.syncing': 'Synchronizacja...',
@@ -1965,6 +1972,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Group Sharing
     'group.title': 'Udostępnianie danych',
     'group.description': 'Połącz się z rodziną lub partnerem i współdzielcie te same dane finansowe w czasie rzeczywistym.',
+    'group.loginRequired': 'Aby udostępniać dane w grupie, musisz się zalogować.',
     'group.create': 'Utwórz',
     'group.namePlaceholder': 'Nazwa grupy (opcjonalnie)',
     'group.joinButton': 'Mam kod dołączenia',
@@ -2468,6 +2476,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Cloud Sync
     'sync.title': 'Cloud Sync',
     'sync.description': 'Sus datos se sincronizan automáticamente con la nube.',
+    'sync.loginRequired': 'Debes iniciar sesión para usar Cloud Sync.',
     'sync.button': 'Sincronizar ahora',
     'sync.success': '¡Datos sincronizados!',
     'sync.status.syncing': 'Sincronizando...',
@@ -2478,6 +2487,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Group Sharing
     'group.title': 'Compartir datos',
     'group.description': 'Conéctese con su familia o pareja y compartan los mismos datos financieros en tiempo real.',
+    'group.loginRequired': 'Debes iniciar sesión para compartir datos en un grupo.',
     'group.create': 'Crear',
     'group.namePlaceholder': 'Nombre del grupo (opcional)',
     'group.joinButton': 'Tengo un código de unión',
@@ -2981,6 +2991,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Cloud Sync
     'sync.title': 'Cloud Sync',
     'sync.description': 'Vos données sont automatiquement synchronisées avec le cloud.',
+    'sync.loginRequired': 'Vous devez vous connecter pour utiliser Cloud Sync.',
     'sync.button': 'Synchroniser maintenant',
     'sync.success': 'Données synchronisées !',
     'sync.status.syncing': 'Synchronisation...',
@@ -2991,6 +3002,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Group Sharing
     'group.title': 'Partage de données',
     'group.description': 'Connectez-vous avec votre famille ou partenaire et partagez les mêmes données financières en temps réel.',
+    'group.loginRequired': 'Vous devez vous connecter pour partager des données dans un groupe.',
     'group.create': 'Créer',
     'group.namePlaceholder': 'Nom du groupe (optionnel)',
     'group.joinButton': 'J\'ai un code d\'invitation',
@@ -3494,6 +3506,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Cloud Sync
     'sync.title': '云同步',
     'sync.description': '您的数据会自动同步到云端。',
+    'sync.loginRequired': '使用云同步需要登录。',
     'sync.button': '立即同步',
     'sync.success': '数据已同步！',
     'sync.status.syncing': '同步中...',
@@ -3504,6 +3517,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Group Sharing
     'group.title': '数据共享',
     'group.description': '与家人或伴侣连接，实时共享相同的财务数据。',
+    'group.loginRequired': '在群组中共享数据需要登录。',
     'group.create': '创建',
     'group.namePlaceholder': '群组名称（可选）',
     'group.joinButton': '我有加入码',
@@ -4008,6 +4022,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Cloud Sync
     'sync.title': 'क्लाउड सिंक',
     'sync.description': 'आपका डेटा स्वचालित रूप से क्लाउड पर सिंक होता है।',
+    'sync.loginRequired': 'क्लाउड सिंक का उपयोग करने के लिए साइन इन करना आवश्यक है।',
     'sync.button': 'अभी सिंक करें',
     'sync.success': 'डेटा सिंक हो गया!',
     'sync.status.syncing': 'सिंक हो रहा है...',
@@ -4018,6 +4033,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Group Sharing
     'group.title': 'डेटा साझाकरण',
     'group.description': 'परिवार या साथी से जुड़ें और वास्तविक समय में समान वित्तीय डेटा साझा करें।',
+    'group.loginRequired': 'समूह में डेटा साझा करने के लिए साइन इन करना आवश्यक है।',
     'group.create': 'बनाएं',
     'group.namePlaceholder': 'समूह का नाम (वैकल्पिक)',
     'group.joinButton': 'मेरे पास जुड़ने का कोड है',
