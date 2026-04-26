@@ -12,8 +12,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap, MessageSquare, Mail, Eye, Reply, Send } from 'lucide-react';
+import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap, MessageSquare, Mail, Eye, Reply, Send, Power } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 interface CodeData {
@@ -28,6 +29,9 @@ interface PriceData {
 interface ContactMessage {
   id: string; name: string; email: string; message: string; is_read: boolean; created_at: string; admin_reply: string | null; replied_at: string | null;
 }
+interface AppSetting {
+  key: string; value: any;
+}
 
 const Admin = () => {
   const { isAdmin, isLoading: authLoading } = useAuth();
@@ -36,6 +40,8 @@ const Admin = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [prices, setPrices] = useState<PriceData[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const [billingEnabled, setBillingEnabled] = useState(true);
+  const [billingSaving, setBillingSaving] = useState(false);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [codeCount, setCodeCount] = useState(10);
@@ -70,6 +76,9 @@ const Admin = () => {
       setCodes(adminData.codes || []);
       setUsers(adminData.users || []);
       setPrices(adminData.prices || []);
+      const settings: AppSetting[] = adminData.settings || [];
+      const billing = settings.find(s => s.key === 'premium_billing_enabled');
+      setBillingEnabled(billing ? billing.value !== false : true);
       setMessages((messagesResult.data as ContactMessage[]) || []);
     } catch (e: any) {
       toast.error(e.message);
@@ -168,6 +177,21 @@ const Admin = () => {
 
   const handleUpdatePrices = async () => {
     try { await adminCall('update-prices', { prices }); toast.success('Cijene ažurirane'); } catch (e: any) { toast.error(e.message); }
+  };
+
+  const handleToggleBilling = async (enabled: boolean) => {
+    const prev = billingEnabled;
+    setBillingEnabled(enabled);
+    setBillingSaving(true);
+    try {
+      await adminCall('set-setting', { key: 'premium_billing_enabled', value: enabled });
+      toast.success(enabled ? 'Naplata premium licenci uključena' : 'Naplata isključena — svi korisnici imaju premium besplatno');
+    } catch (e: any) {
+      setBillingEnabled(prev);
+      toast.error(e.message);
+    } finally {
+      setBillingSaving(false);
+    }
   };
 
   const getDurationLabel = (days: number) => {
