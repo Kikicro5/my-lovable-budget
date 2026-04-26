@@ -34,6 +34,22 @@ Deno.serve(async (req) => {
     // Use service role to check activations
     const adminClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
 
+    // Check global billing flag — if billing is disabled, everyone is premium
+    const { data: billingSetting } = await adminClient
+      .from('app_settings')
+      .select('value')
+      .eq('key', 'premium_billing_enabled')
+      .maybeSingle();
+    const billingEnabled = billingSetting?.value !== false;
+    if (!billingEnabled) {
+      return new Response(JSON.stringify({
+        isPremium: true,
+        expiresAt: null,
+        activations: [],
+        billingDisabled: true,
+      }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
     // Check activations for this user
     const { data: activations } = await adminClient
       .from('activations')
