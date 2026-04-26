@@ -152,9 +152,36 @@ const Admin = () => {
           <h1 className="text-xl font-bold text-foreground">Admin Panel</h1>
         </div>
 
-        <Tabs defaultValue="codes">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="codes" className="gap-1 text-xs"><Key className="w-3 h-3" />Kodovi</TabsTrigger>
+        <Card className="mb-4">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Power className="w-4 h-4" />
+              Naplata premium licenci
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <p className="text-sm font-medium text-foreground">
+                  {billingEnabled ? 'Naplata uključena' : 'Naplata isključena'}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {billingEnabled
+                    ? 'Korisnici moraju aktivirati premium kodom ili kupnjom.'
+                    : 'Svi korisnici automatski imaju premium pristup besplatno.'}
+                </p>
+              </div>
+              <Switch
+                checked={billingEnabled}
+                disabled={billingSaving || showSkeleton}
+                onCheckedChange={handleToggleBilling}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Tabs defaultValue="users">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="users" className="gap-1 text-xs"><Users className="w-3 h-3" />Korisnici</TabsTrigger>
             <TabsTrigger value="messages" className="gap-1 text-xs relative">
               <MessageSquare className="w-3 h-3" />Poruke
@@ -164,87 +191,7 @@ const Admin = () => {
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="prices" className="gap-1 text-xs"><DollarSign className="w-3 h-3" />Cijene</TabsTrigger>
           </TabsList>
-
-          {/* KODOVI TAB */}
-          <TabsContent value="codes" className="space-y-4 mt-4">
-            <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-base">Generiraj kodove</CardTitle></CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-3 gap-2">
-                  <div>
-                    <label className="text-xs text-muted-foreground">Broj kodova</label>
-                    <Input type="number" min={1} max={100} value={codeCount} onChange={(e) => setCodeCount(parseInt(e.target.value) || 1)} />
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground">Maks. korištenja</label>
-                    <Input type="number" min={1} value={maxUses} onChange={(e) => setMaxUses(parseInt(e.target.value) || 1)} />
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground">Trajanje</label>
-                    <Select value={expiresPeriod} onValueChange={setExpiresPeriod}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="30">1 mjesec</SelectItem>
-                        <SelectItem value="90">3 mjeseca</SelectItem>
-                        <SelectItem value="365">12 mjeseci</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button onClick={handleGenerateCodes} disabled={loading} className="flex-1 gap-2">
-                    <Zap className="w-4 h-4" />{loading ? 'Generiranje...' : 'Generiraj'}
-                  </Button>
-                  <Button variant="outline" onClick={handleDownloadPDF} className="gap-2">
-                    <FileText className="w-4 h-4" />PDF
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-sm">Kodovi ({codes.length})</h3>
-            </div>
-
-            <div className="rounded-md border overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Kod</TableHead>
-                    <TableHead>Korištenja</TableHead>
-                    <TableHead>Ističe</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {showSkeleton ? Array.from({ length: 3 }).map((_, i) => (
-                    <TableRow key={i}>
-                      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-10" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-16" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-8" /></TableCell>
-                    </TableRow>
-                  )) : (
-                    <>
-                      {codes.map(c => (
-                        <TableRow key={c.id}>
-                          <TableCell className="font-mono text-xs">{c.code}</TableCell>
-                          <TableCell>{c.current_uses}/{c.max_uses}</TableCell>
-                          <TableCell className="text-xs">{new Date(c.expires_at).toLocaleDateString('hr')}</TableCell>
-                          <TableCell><Button variant="ghost" size="icon" onClick={() => setDeleteDialog({ type: 'code', id: c.id, label: c.code })}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
-                        </TableRow>
-                      ))}
-                      {!codes.length && <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nema kodova</TableCell></TableRow>}
-                    </>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </TabsContent>
 
           {/* KORISNICI TAB */}
           <TabsContent value="users" className="space-y-4 mt-4">
