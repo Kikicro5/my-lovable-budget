@@ -406,6 +406,34 @@ const Admin = () => {
           {/* CIJENE TAB */}
           <TabsContent value="prices" className="space-y-4 mt-4">
             <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Power className="w-4 h-4" />
+                  Naplata premium licenci
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-foreground">
+                      {billingEnabled ? 'Naplata uključena' : 'Naplata isključena'}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {billingEnabled
+                        ? 'Korisnici moraju aktivirati premium kodom ili kupnjom.'
+                        : 'Svi korisnici automatski imaju premium pristup besplatno.'}
+                    </p>
+                  </div>
+                  <Switch
+                    checked={billingEnabled}
+                    disabled={billingSaving || showSkeleton}
+                    onCheckedChange={handleToggleBilling}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
               <CardHeader className="pb-3"><CardTitle className="text-base">Cijena premium licenci</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 {prices.map((p, i) => (
