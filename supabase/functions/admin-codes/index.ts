@@ -68,10 +68,11 @@ Deno.serve(async (req) => {
       case 'load-all': {
         console.log('Loading all data...');
         // Parallel fetch of all admin data
-        const [codesRes, usersRes, pricesRes] = await Promise.all([
+        const [codesRes, usersRes, pricesRes, settingsRes] = await Promise.all([
           adminClient.from('activation_codes').select('*').order('created_at', { ascending: false }),
           adminClient.auth.admin.listUsers({ perPage: 1000 }),
           adminClient.from('premium_settings').select('*').order('duration_days', { ascending: true }),
+          adminClient.from('app_settings').select('*'),
         ]);
 
         if (codesRes.error) throw codesRes.error;
@@ -98,6 +99,7 @@ Deno.serve(async (req) => {
 
         return new Response(JSON.stringify({
           codes: codesRes.data, users: usersWithStatus, prices: pricesRes.data,
+          settings: settingsRes.data || [],
         }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
 
@@ -223,6 +225,18 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
 
+      case 'set-setting': {
+        const { key, value } = params;
+        if (!key) {
+          return new Response(JSON.stringify({ error: 'Missing key' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+        }
+        const { error } = await adminClient
+          .from('app_settings')
+          .upsert({ key, value, updated_at: new Date().toISOString() });
+        if (error) throw error;
+        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+
       case 'list-activations': {
         const { data, error } = await adminClient
           .from('activations')
@@ -235,8 +249,8 @@ Deno.serve(async (req) => {
       default:
         return new Response(JSON.stringify({ error: 'Unknown action' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Admin error:', error);
-    return new Response(JSON.stringify({ error: error.message || 'Internal server error' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ error: error?.message || 'Internal server error' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 });
