@@ -305,11 +305,11 @@ const Options = () => {
                 <h2 className="text-lg font-semibold text-foreground">{t('sync.title') || 'Cloud Sync'}</h2>
               </div>
               <p className="text-sm text-muted-foreground mb-3">
-                Za korištenje Cloud Synca potrebno je prijaviti se.
+                {t('sync.loginRequired')}
               </p>
               <Button className="w-full gap-2" onClick={() => navigate('/auth')}>
                 <LogIn className="w-4 h-4" />
-                Prijavi se
+                {t('auth.login')}
               </Button>
             </div>
           )}
@@ -324,11 +324,11 @@ const Options = () => {
                 <h2 className="text-lg font-semibold text-foreground">{t('group.title')}</h2>
               </div>
               <p className="text-sm text-muted-foreground mb-3">
-                Za dijeljenje podataka u grupi potrebno je prijaviti se.
+                {t('group.loginRequired')}
               </p>
               <Button className="w-full gap-2" onClick={() => navigate('/auth')}>
                 <LogIn className="w-4 h-4" />
-                Prijavi se
+                {t('auth.login')}
               </Button>
             </div>
           )}
