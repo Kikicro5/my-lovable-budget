@@ -15,7 +15,6 @@ import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
 import { PayPalPurchase } from '@/components/PayPalPurchase';
-import { GooglePlayPurchase } from '@/components/GooglePlayPurchase';
 import { isNativeAndroid } from '@/utils/platform';
 import { FeatureLock } from '@/components/FeatureLock';
 import { useBudget } from '@/hooks/useBudget';
@@ -348,9 +347,9 @@ const Options = () => {
                   </Button>
                 </div>
 
-                {/* Payment options: Google Play on Android, PayPal elsewhere */}
+                {/* Payment options: PayPal */}
                 <div className="border-t border-border pt-3 mt-3">
-                  {isNativeAndroid() ? <GooglePlayPurchase /> : <PayPalPurchase />}
+                  <PayPalPurchase />
                 </div>
               </div>
             )}

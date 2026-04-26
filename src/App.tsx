@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,8 +9,6 @@ import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
 import InstallPrompt from "@/components/InstallPrompt";
-import { initBilling } from "@/services/billing";
-import { supabase } from "@/integrations/supabase/client";
 
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
@@ -27,31 +24,6 @@ import Landing from "./pages/Landing";
 const queryClient = new QueryClient();
 
 const App = () => {
-  useEffect(() => {
-    (async () => {
-      try {
-        // Skip billing init entirely if premium billing is globally disabled
-        const { data } = await supabase
-          .from('app_settings')
-          .select('value')
-          .eq('key', 'premium_billing_enabled')
-          .maybeSingle();
-        if (data?.value === false) {
-          console.log('[App] Billing disabled globally — skipping init');
-          return;
-        }
-      } catch (e) {
-        console.warn('[App] Could not read billing flag, attempting init anyway', e);
-      }
-      try {
-        const ok = await initBilling();
-        if (ok) console.log('[App] Billing initialized');
-      } catch (e) {
-        console.error('[App] initBilling threw:', e);
-      }
-    })();
-  }, []);
-
   return (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
