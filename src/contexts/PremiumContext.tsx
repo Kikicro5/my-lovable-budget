@@ -40,6 +40,23 @@ export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ child
       return;
     }
 
+    // Check global billing flag first — if disabled, everyone is premium (no auth needed)
+    try {
+      const { data: billingSetting } = await supabase
+        .from('app_settings')
+        .select('value')
+        .eq('key', 'premium_billing_enabled')
+        .maybeSingle();
+      if (billingSetting?.value === false) {
+        setIsPremium(true);
+        setExpiresAt(null);
+        setIsLoading(false);
+        return;
+      }
+    } catch {
+      // ignore and fall through to normal check
+    }
+
     if (!session) {
       setIsPremium(false);
       setExpiresAt(null);
