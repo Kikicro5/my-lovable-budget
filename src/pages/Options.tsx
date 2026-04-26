@@ -349,7 +349,7 @@ const Options = () => {
           </div>
 
           {/* Cloud Sync Section */}
-          {hasPremiumAccess && user ? (
+          {user ? (
             <div className="bg-card rounded-xl p-4 border border-border">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -381,48 +381,38 @@ const Options = () => {
               </Button>
             </div>
           ) : (
-            <FeatureLock featureName={t('sync.title') || 'Cloud Sync'}>
-              <div className="bg-card rounded-xl p-4 border border-border">
-                <div className="flex items-center gap-2 mb-3">
-                  <Cloud className="w-5 h-5 text-primary" />
-                  <h2 className="text-lg font-semibold text-foreground">{t('sync.title') || 'Cloud Sync'}</h2>
-                </div>
-                <p className="text-sm text-muted-foreground mb-3">
-                  {t('sync.description') || 'Vaši podaci se automatski sinkroniziraju s oblakom.'}
-                </p>
-                <Button variant="outline" className="w-full gap-2" disabled>
-                  <RefreshCw className="w-4 h-4" />
-                  {t('sync.button') || 'Sinkroniziraj sada'}
-                </Button>
+            <div className="bg-card rounded-xl p-4 border border-border">
+              <div className="flex items-center gap-2 mb-2">
+                <Cloud className="w-5 h-5 text-primary" />
+                <h2 className="text-lg font-semibold text-foreground">{t('sync.title') || 'Cloud Sync'}</h2>
               </div>
-            </FeatureLock>
+              <p className="text-sm text-muted-foreground mb-3">
+                Za korištenje Cloud Synca potrebno je prijaviti se.
+              </p>
+              <Button className="w-full gap-2" onClick={() => navigate('/auth')}>
+                <LogIn className="w-4 h-4" />
+                Prijavi se
+              </Button>
+            </div>
           )}
 
           {/* Group Sharing Section */}
-          {hasPremiumAccess ? (
+          {user ? (
             <GroupManager />
           ) : (
-            <FeatureLock featureName={t('group.title')}>
-              <div className="bg-card rounded-xl p-4 border border-border">
-                <div className="flex items-center gap-2 mb-3">
-                  <Users className="w-5 h-5 text-primary" />
-                  <h2 className="text-lg font-semibold text-foreground">{t('group.title')}</h2>
-                </div>
-                <p className="text-sm text-muted-foreground mb-3">
-                  {t('group.noGroup') || 'Niste član nijedne grupe.'}
-                </p>
-                <div className="flex gap-2">
-                  <Button variant="outline" className="flex-1 gap-2" disabled>
-                    <Plus className="w-4 h-4" />
-                    {t('group.create')}
-                  </Button>
-                  <Button variant="outline" className="flex-1 gap-2" disabled>
-                    <KeyRound className="w-4 h-4" />
-                    {t('group.join')}
-                  </Button>
-                </div>
+            <div className="bg-card rounded-xl p-4 border border-border">
+              <div className="flex items-center gap-2 mb-2">
+                <Users className="w-5 h-5 text-primary" />
+                <h2 className="text-lg font-semibold text-foreground">{t('group.title')}</h2>
               </div>
-            </FeatureLock>
+              <p className="text-sm text-muted-foreground mb-3">
+                Za dijeljenje podataka u grupi potrebno je prijaviti se.
+              </p>
+              <Button className="w-full gap-2" onClick={() => navigate('/auth')}>
+                <LogIn className="w-4 h-4" />
+                Prijavi se
+              </Button>
+            </div>
           )}
 
 
