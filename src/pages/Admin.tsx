@@ -14,17 +14,13 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { ArrowLeft, Trash2, Download, Crown, ShieldOff, Key, Users, DollarSign, FileText, Zap, MessageSquare, Mail, Eye, Reply, Send, Power } from 'lucide-react';
-import jsPDF from 'jspdf';
+import { ArrowLeft, Trash2, Crown, ShieldOff, Users, MessageSquare, Eye, Reply, Send, Power } from 'lucide-react';
 
 interface CodeData {
   id: string; code: string; max_uses: number; current_uses: number; expires_at: string; created_at: string; note: string | null;
 }
 interface UserData {
   id: string; email: string; created_at: string; last_sign_in_at: string | null; isPremium: boolean; premiumUntil: string | null; role: string;
-}
-interface PriceData {
-  id: string; price: number; duration_days: number; currency: string;
 }
 interface ContactMessage {
   id: string; name: string; email: string; message: string; is_read: boolean; created_at: string; admin_reply: string | null; replied_at: string | null;
@@ -36,19 +32,12 @@ interface AppSetting {
 const Admin = () => {
   const { isAdmin, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [codes, setCodes] = useState<CodeData[]>([]);
   const [users, setUsers] = useState<UserData[]>([]);
-  const [prices, setPrices] = useState<PriceData[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [billingEnabled, setBillingEnabled] = useState(true);
   const [billingSaving, setBillingSaving] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [codeCount, setCodeCount] = useState(10);
-  const [maxUses, setMaxUses] = useState(1);
-  const [expiresPeriod, setExpiresPeriod] = useState('365');
-  const [lastGenerated, setLastGenerated] = useState<CodeData[]>([]);
-  const [deleteDialog, setDeleteDialog] = useState<{ type: 'code' | 'user' | 'message'; id: string; label: string } | null>(null);
+  const [deleteDialog, setDeleteDialog] = useState<{ type: 'user' | 'message'; id: string; label: string } | null>(null);
   const [replyDialog, setReplyDialog] = useState<ContactMessage | null>(null);
   const [replyText, setReplyText] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
@@ -73,9 +62,7 @@ const Admin = () => {
         adminCall('load-all'),
         supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
       ]);
-      setCodes(adminData.codes || []);
       setUsers(adminData.users || []);
-      setPrices(adminData.prices || []);
       const settings: AppSetting[] = adminData.settings || [];
       const billing = settings.find(s => s.key === 'premium_billing_enabled');
       setBillingEnabled(billing ? billing.value !== false : true);
@@ -85,46 +72,6 @@ const Admin = () => {
     } finally {
       setInitialLoading(false);
     }
-  };
-
-  const handleGenerateCodes = async () => {
-    setLoading(true);
-    try {
-      const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + parseInt(expiresPeriod));
-      const data = await adminCall('generate-codes', { count: codeCount, maxUses, expiresAt: expiresAt.toISOString() });
-      const generated = data.codes || [];
-      setLastGenerated(generated);
-      setCodes(prev => [...generated, ...prev]);
-      toast.success(`${generated.length} kodova generirano`);
-    } catch (e: any) { toast.error(e.message); } finally { setLoading(false); }
-  };
-
-  const handleDownloadPDF = () => {
-    const codesToExport = lastGenerated.length > 0 ? lastGenerated : codes;
-    if (!codesToExport.length) { toast.error('Nema kodova za preuzimanje'); return; }
-
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('Premium aktivacijski kodovi', 14, 20);
-    doc.setFontSize(9);
-    doc.text(`Generirano: ${new Date().toLocaleDateString('hr')}`, 14, 28);
-    
-    doc.setFontSize(10);
-    let y = 40;
-    codesToExport.forEach((c, i) => {
-      if (y > 275) { doc.addPage(); y = 20; }
-      doc.text(`${i + 1}. ${c.code}   (max: ${c.max_uses}, ističe: ${new Date(c.expires_at).toLocaleDateString('hr')})`, 14, y);
-      y += 7;
-    });
-
-    doc.save('aktivacijski-kodovi.pdf');
-  };
-
-  const handleDeleteCode = async (codeId: string) => {
-    setCodes(prev => prev.filter(c => c.id !== codeId));
-    setDeleteDialog(null);
-    try { await adminCall('delete-code', { codeId }); toast.success('Kod obrisan'); } catch (e: any) { toast.error(e.message); loadAll(); }
   };
 
   const handleDeleteUser = async (userId: string) => {
@@ -165,18 +112,13 @@ const Admin = () => {
 
   const confirmDelete = () => {
     if (!deleteDialog) return;
-    if (deleteDialog.type === 'code') handleDeleteCode(deleteDialog.id);
-    else if (deleteDialog.type === 'user') handleDeleteUser(deleteDialog.id);
+    if (deleteDialog.type === 'user') handleDeleteUser(deleteDialog.id);
     else handleDeleteMessage(deleteDialog.id);
   };
 
   const handleDeactivatePremium = async (userId: string) => {
     setUsers(prev => prev.map(u => u.id === userId ? { ...u, isPremium: false, premiumUntil: null } : u));
     try { await adminCall('deactivate-premium', { userId }); toast.success('Premium deaktiviran'); } catch (e: any) { toast.error(e.message); loadAll(); }
-  };
-
-  const handleUpdatePrices = async () => {
-    try { await adminCall('update-prices', { prices }); toast.success('Cijene ažurirane'); } catch (e: any) { toast.error(e.message); }
   };
 
   const handleToggleBilling = async (enabled: boolean) => {
@@ -192,12 +134,6 @@ const Admin = () => {
     } finally {
       setBillingSaving(false);
     }
-  };
-
-  const getDurationLabel = (days: number) => {
-    if (days <= 31) return '1 mjesec';
-    if (days <= 93) return '3 mjeseca';
-    return '12 mjeseci';
   };
 
   if (authLoading) return <div className="min-h-screen bg-background flex items-center justify-center"><p>Učitavanje...</p></div>;
@@ -216,9 +152,36 @@ const Admin = () => {
           <h1 className="text-xl font-bold text-foreground">Admin Panel</h1>
         </div>
 
-        <Tabs defaultValue="codes">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="codes" className="gap-1 text-xs"><Key className="w-3 h-3" />Kodovi</TabsTrigger>
+        <Card className="mb-4">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Power className="w-4 h-4" />
+              Naplata premium licenci
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <p className="text-sm font-medium text-foreground">
+                  {billingEnabled ? 'Naplata uključena' : 'Naplata isključena'}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {billingEnabled
+                    ? 'Korisnici moraju aktivirati premium kodom ili kupnjom.'
+                    : 'Svi korisnici automatski imaju premium pristup besplatno.'}
+                </p>
+              </div>
+              <Switch
+                checked={billingEnabled}
+                disabled={billingSaving || showSkeleton}
+                onCheckedChange={handleToggleBilling}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Tabs defaultValue="users">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="users" className="gap-1 text-xs"><Users className="w-3 h-3" />Korisnici</TabsTrigger>
             <TabsTrigger value="messages" className="gap-1 text-xs relative">
               <MessageSquare className="w-3 h-3" />Poruke
@@ -228,87 +191,7 @@ const Admin = () => {
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="prices" className="gap-1 text-xs"><DollarSign className="w-3 h-3" />Cijene</TabsTrigger>
           </TabsList>
-
-          {/* KODOVI TAB */}
-          <TabsContent value="codes" className="space-y-4 mt-4">
-            <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-base">Generiraj kodove</CardTitle></CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-3 gap-2">
-                  <div>
-                    <label className="text-xs text-muted-foreground">Broj kodova</label>
-                    <Input type="number" min={1} max={100} value={codeCount} onChange={(e) => setCodeCount(parseInt(e.target.value) || 1)} />
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground">Maks. korištenja</label>
-                    <Input type="number" min={1} value={maxUses} onChange={(e) => setMaxUses(parseInt(e.target.value) || 1)} />
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground">Trajanje</label>
-                    <Select value={expiresPeriod} onValueChange={setExpiresPeriod}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="30">1 mjesec</SelectItem>
-                        <SelectItem value="90">3 mjeseca</SelectItem>
-                        <SelectItem value="365">12 mjeseci</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button onClick={handleGenerateCodes} disabled={loading} className="flex-1 gap-2">
-                    <Zap className="w-4 h-4" />{loading ? 'Generiranje...' : 'Generiraj'}
-                  </Button>
-                  <Button variant="outline" onClick={handleDownloadPDF} className="gap-2">
-                    <FileText className="w-4 h-4" />PDF
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-sm">Kodovi ({codes.length})</h3>
-            </div>
-
-            <div className="rounded-md border overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Kod</TableHead>
-                    <TableHead>Korištenja</TableHead>
-                    <TableHead>Ističe</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {showSkeleton ? Array.from({ length: 3 }).map((_, i) => (
-                    <TableRow key={i}>
-                      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-10" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-16" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-8" /></TableCell>
-                    </TableRow>
-                  )) : (
-                    <>
-                      {codes.map(c => (
-                        <TableRow key={c.id}>
-                          <TableCell className="font-mono text-xs">{c.code}</TableCell>
-                          <TableCell>{c.current_uses}/{c.max_uses}</TableCell>
-                          <TableCell className="text-xs">{new Date(c.expires_at).toLocaleDateString('hr')}</TableCell>
-                          <TableCell><Button variant="ghost" size="icon" onClick={() => setDeleteDialog({ type: 'code', id: c.id, label: c.code })}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
-                        </TableRow>
-                      ))}
-                      {!codes.length && <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nema kodova</TableCell></TableRow>}
-                    </>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </TabsContent>
 
           {/* KORISNICI TAB */}
           <TabsContent value="users" className="space-y-4 mt-4">
@@ -403,64 +286,6 @@ const Admin = () => {
             )}
           </TabsContent>
 
-          {/* CIJENE TAB */}
-          <TabsContent value="prices" className="space-y-4 mt-4">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Power className="w-4 h-4" />
-                  Naplata premium licenci
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">
-                      {billingEnabled ? 'Naplata uključena' : 'Naplata isključena'}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {billingEnabled
-                        ? 'Korisnici moraju aktivirati premium kodom ili kupnjom.'
-                        : 'Svi korisnici automatski imaju premium pristup besplatno.'}
-                    </p>
-                  </div>
-                  <Switch
-                    checked={billingEnabled}
-                    disabled={billingSaving || showSkeleton}
-                    onCheckedChange={handleToggleBilling}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-base">Cijena premium licenci</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                {prices.map((p, i) => (
-                  <Card key={p.id} className="border">
-                    <CardContent className="p-4">
-                      <label className="text-sm font-medium text-foreground block mb-2">{getDurationLabel(p.duration_days)}</label>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="number"
-                          step="0.01"
-                          value={p.price}
-                          onChange={(e) => {
-                            const updated = [...prices];
-                            updated[i] = { ...p, price: parseFloat(e.target.value) || 0 };
-                            setPrices(updated);
-                          }}
-                        />
-                        <span className="text-sm text-muted-foreground font-medium">{p.currency}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-                {prices.length > 0 && <Button onClick={handleUpdatePrices} className="w-full">Spremi</Button>}
-                {!prices.length && <p className="text-center text-muted-foreground text-sm">Nema cijena</p>}
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
 
@@ -470,9 +295,7 @@ const Admin = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Potvrda brisanja</AlertDialogTitle>
             <AlertDialogDescription>
-              {deleteDialog?.type === 'code'
-                ? `Jeste li sigurni da želite obrisati kod "${deleteDialog?.label}"?`
-                : deleteDialog?.type === 'message'
+              {deleteDialog?.type === 'message'
                 ? `Jeste li sigurni da želite obrisati poruku od "${deleteDialog?.label}"?`
                 : `Jeste li sigurni da želite obrisati korisnika "${deleteDialog?.label}"? Ova radnja je nepovratna.`}
             </AlertDialogDescription>
