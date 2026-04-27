@@ -27,8 +27,8 @@ const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
 
 export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, session, isAdmin } = useAuth();
-  const [isPremium, setIsPremium] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isPremium, setIsPremium] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
 
   const checkStatus = useCallback(async () => {
