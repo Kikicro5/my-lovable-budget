@@ -5,7 +5,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Input } from '@/components/ui/input';
 
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
