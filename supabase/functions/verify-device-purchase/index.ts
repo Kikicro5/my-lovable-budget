@@ -11,6 +11,11 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  return new Response(
+    JSON.stringify({ isAdFree: true, purchase: null, purchases: [], billingDisabled: true }),
+    { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+  );
+
   try {
     let body: any;
     try {

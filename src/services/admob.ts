@@ -2,12 +2,13 @@ import { AdMob, BannerAdOptions, BannerAdPosition, BannerAdSize } from '@capacit
 import { isNative } from '@/utils/platform';
 
 const BANNER_AD_ID = 'ca-app-pub-0825549313210028/2423468724';
+const ADS_DISABLED = true;
 
 let initialized = false;
 let bannerVisible = false;
 
 export const initializeAdMob = async (): Promise<void> => {
-  if (!isNative() || initialized) return;
+  if (ADS_DISABLED || !isNative() || initialized) return;
   try {
     await AdMob.initialize({
       initializeForTesting: false,
@@ -19,7 +20,7 @@ export const initializeAdMob = async (): Promise<void> => {
 };
 
 export const showBannerAd = async (): Promise<void> => {
-  if (!isNative()) return;
+  if (ADS_DISABLED || !isNative()) return;
   if (!initialized) await initializeAdMob();
   if (bannerVisible) return;
   try {
@@ -38,7 +39,7 @@ export const showBannerAd = async (): Promise<void> => {
 };
 
 export const hideBannerAd = async (): Promise<void> => {
-  if (!isNative() || !bannerVisible) return;
+  if (ADS_DISABLED || !isNative() || !bannerVisible) return;
   try {
     await AdMob.hideBanner();
     bannerVisible = false;
@@ -48,7 +49,7 @@ export const hideBannerAd = async (): Promise<void> => {
 };
 
 export const removeBannerAd = async (): Promise<void> => {
-  if (!isNative()) return;
+  if (ADS_DISABLED || !isNative()) return;
   try {
     await AdMob.removeBanner();
     bannerVisible = false;

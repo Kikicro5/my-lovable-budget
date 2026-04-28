@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { 
   Smartphone, TrendingUp, Shield, Cloud, Users, BarChart3, 
-  Wallet, ArrowRight, Star, ChevronDown, Globe, BookOpen
+  Wallet, ArrowRight, CheckCircle2, ChevronDown, Globe, BookOpen
 } from 'lucide-react';
 import { TermsOfServiceContent, PrivacyPolicyContent, GDPRContent } from '@/components/LegalDialogs';
 import {
@@ -26,10 +26,10 @@ const WEB_APP_URL = 'https://budgetcard.lovable.app';
 
 type LandingContent = {
   hero: string; heroSub: string; cta: string; ctaWeb: string;
-  featuresTitle: string; premiumTitle: string; premiumSub: string;
+  featuresTitle: string; includedTitle: string; includedSub: string;
   screenshotsTitle: string; footerCta: string; learnMore: string;
   features: { icon: any; title: string; desc: string }[];
-  premiumFeatures: string[];
+  includedFeatures: string[];
 };
 
 const content: Record<string, LandingContent> = {
@@ -39,8 +39,8 @@ const content: Record<string, LandingContent> = {
     cta: 'Preuzmi na Google Play',
     ctaWeb: 'Otvori web aplikaciju',
     featuresTitle: 'Sve što trebate za upravljanje budžetom',
-    premiumTitle: 'Premium pretplata',
-    premiumSub: 'Otključajte napredne mogućnosti za potpunu kontrolu financija.',
+    includedTitle: 'Besplatno uključeno',
+    includedSub: 'Sve napredne mogućnosti dostupne su svima bez pretplate.',
     screenshotsTitle: 'Pogledajte aplikaciju',
     footerCta: 'Započnite besplatno danas',
     learnMore: 'Saznaj više',
@@ -50,7 +50,7 @@ const content: Record<string, LandingContent> = {
       { icon: TrendingUp, title: 'Budžetski limiti', desc: 'Postavite limite po kategorijama i pratite napredak.' },
       { icon: Globe, title: '8 jezika', desc: 'Potpuna lokalizacija na hrvatski, engleski, njemački, poljski, španjolski, francuski, kineski i hindi.' },
     ],
-    premiumFeatures: [
+    includedFeatures: [
       'Postavljanje budžetskih limita', 'Napredna mjesečna analitika',
       'Sinkronizacija podataka u oblaku', 'Zajedničko vođenje budžeta',
       'Prijenosi između kategorija', 'Neograničen broj računa',
@@ -62,8 +62,8 @@ const content: Record<string, LandingContent> = {
     cta: 'Get it on Google Play',
     ctaWeb: 'Open web app',
     featuresTitle: 'Everything you need for budget management',
-    premiumTitle: 'Premium subscription',
-    premiumSub: 'Unlock advanced features for complete financial control.',
+    includedTitle: 'Included for free',
+    includedSub: 'All advanced features are available to everyone without a subscription.',
     screenshotsTitle: 'See the app in action',
     footerCta: 'Start for free today',
     learnMore: 'Learn more',
@@ -73,7 +73,7 @@ const content: Record<string, LandingContent> = {
       { icon: TrendingUp, title: 'Budget limits', desc: 'Set limits per category and track your progress.' },
       { icon: Globe, title: '8 languages', desc: 'Fully localized in Croatian, English, German, Polish, Spanish, French, Chinese and Hindi.' },
     ],
-    premiumFeatures: [
+    includedFeatures: [
       'Budget limit settings', 'Advanced monthly analytics',
       'Cloud data synchronization', 'Shared budget management',
       'Category transfers', 'Unlimited accounts',
@@ -85,8 +85,8 @@ const content: Record<string, LandingContent> = {
     cta: 'Bei Google Play herunterladen',
     ctaWeb: 'Web-App öffnen',
     featuresTitle: 'Alles was Sie für die Budgetverwaltung brauchen',
-    premiumTitle: 'Premium-Abonnement',
-    premiumSub: 'Schalten Sie erweiterte Funktionen für die vollständige Finanzkontrolle frei.',
+    includedTitle: 'Kostenlos enthalten',
+    includedSub: 'Alle erweiterten Funktionen sind ohne Abonnement verfügbar.',
     screenshotsTitle: 'Sehen Sie die App in Aktion',
     footerCta: 'Starten Sie noch heute kostenlos',
     learnMore: 'Mehr erfahren',
@@ -96,7 +96,7 @@ const content: Record<string, LandingContent> = {
       { icon: TrendingUp, title: 'Budgetlimits', desc: 'Setzen Sie Limits pro Kategorie und verfolgen Sie Ihren Fortschritt.' },
       { icon: Globe, title: '8 Sprachen', desc: 'Vollständig lokalisiert in Kroatisch, Englisch, Deutsch, Polnisch, Spanisch, Französisch, Chinesisch und Hindi.' },
     ],
-    premiumFeatures: [
+    includedFeatures: [
       'Budgetlimit-Einstellungen', 'Erweiterte monatliche Analysen',
       'Cloud-Datensynchronisierung', 'Gemeinsame Budgetverwaltung',
       'Kategorieübertragungen', 'Unbegrenzte Konten',
@@ -108,8 +108,8 @@ const content: Record<string, LandingContent> = {
     cta: 'Pobierz z Google Play',
     ctaWeb: 'Otwórz aplikację webową',
     featuresTitle: 'Wszystko czego potrzebujesz do zarządzania budżetem',
-    premiumTitle: 'Subskrypcja Premium',
-    premiumSub: 'Odblokuj zaawansowane funkcje dla pełnej kontroli finansów.',
+    includedTitle: 'Dostępne bezpłatnie',
+    includedSub: 'Wszystkie zaawansowane funkcje są dostępne dla wszystkich bez subskrypcji.',
     screenshotsTitle: 'Zobacz aplikację w akcji',
     footerCta: 'Zacznij za darmo już dziś',
     learnMore: 'Dowiedz się więcej',
@@ -119,7 +119,7 @@ const content: Record<string, LandingContent> = {
       { icon: TrendingUp, title: 'Limity budżetowe', desc: 'Ustaw limity dla każdej kategorii i śledź postępy.' },
       { icon: Globe, title: '8 języków', desc: 'Pełna lokalizacja w języku chorwackim, angielskim, niemieckim, polskim, hiszpańskim, francuskim, chińskim i hindi.' },
     ],
-    premiumFeatures: [
+    includedFeatures: [
       'Ustawienia limitów budżetowych', 'Zaawansowane miesięczne analizy',
       'Synchronizacja danych w chmurze', 'Wspólne zarządzanie budżetem',
       'Transfery między kategoriami', 'Nieograniczona liczba kont',
@@ -131,8 +131,8 @@ const content: Record<string, LandingContent> = {
     cta: 'Descargar en Google Play',
     ctaWeb: 'Abrir aplicación web',
     featuresTitle: 'Todo lo que necesitas para gestionar tu presupuesto',
-    premiumTitle: 'Suscripción Premium',
-    premiumSub: 'Desbloquea funciones avanzadas para un control financiero completo.',
+    includedTitle: 'Incluido gratis',
+    includedSub: 'Todas las funciones avanzadas están disponibles sin suscripción.',
     screenshotsTitle: 'Mira la aplicación en acción',
     footerCta: 'Empieza gratis hoy',
     learnMore: 'Saber más',
@@ -142,7 +142,7 @@ const content: Record<string, LandingContent> = {
       { icon: TrendingUp, title: 'Límites de presupuesto', desc: 'Establece límites por categoría y sigue tu progreso.' },
       { icon: Globe, title: '8 idiomas', desc: 'Totalmente localizada en croata, inglés, alemán, polaco, español, francés, chino y hindi.' },
     ],
-    premiumFeatures: [
+    includedFeatures: [
       'Configuración de límites', 'Análisis mensual avanzado',
       'Sincronización en la nube', 'Gestión compartida del presupuesto',
       'Transferencias entre categorías', 'Cuentas ilimitadas',
@@ -154,8 +154,8 @@ const content: Record<string, LandingContent> = {
     cta: 'Télécharger sur Google Play',
     ctaWeb: 'Ouvrir l\'application web',
     featuresTitle: 'Tout ce dont vous avez besoin pour gérer votre budget',
-    premiumTitle: 'Abonnement Premium',
-    premiumSub: 'Débloquez des fonctionnalités avancées pour un contrôle financier complet.',
+    includedTitle: 'Inclus gratuitement',
+    includedSub: 'Toutes les fonctionnalités avancées sont disponibles sans abonnement.',
     screenshotsTitle: 'Découvrez l\'application',
     footerCta: 'Commencez gratuitement aujourd\'hui',
     learnMore: 'En savoir plus',
@@ -165,7 +165,7 @@ const content: Record<string, LandingContent> = {
       { icon: TrendingUp, title: 'Limites de budget', desc: 'Définissez des limites par catégorie et suivez vos progrès.' },
       { icon: Globe, title: '8 langues', desc: 'Entièrement localisée en croate, anglais, allemand, polonais, espagnol, français, chinois et hindi.' },
     ],
-    premiumFeatures: [
+    includedFeatures: [
       'Paramètres de limites budgétaires', 'Analyses mensuelles avancées',
       'Synchronisation cloud des données', 'Gestion partagée du budget',
       'Transferts entre catégories', 'Comptes illimités',
@@ -177,8 +177,8 @@ const content: Record<string, LandingContent> = {
     cta: '在 Google Play 下载',
     ctaWeb: '打开网页应用',
     featuresTitle: '预算管理所需的一切',
-    premiumTitle: 'Premium 订阅',
-    premiumSub: '解锁高级功能，全面掌控财务。',
+    includedTitle: '免费包含',
+    includedSub: '所有高级功能均可免费使用，无需订阅。',
     screenshotsTitle: '查看应用',
     footerCta: '今天免费开始',
     learnMore: '了解更多',
@@ -188,7 +188,7 @@ const content: Record<string, LandingContent> = {
       { icon: TrendingUp, title: '预算限额', desc: '为每个类别设置限额并跟踪进度。' },
       { icon: Globe, title: '8种语言', desc: '完全支持克罗地亚语、英语、德语、波兰语、西班牙语、法语、中文和印地语。' },
     ],
-    premiumFeatures: [
+    includedFeatures: [
       '预算限额设置', '高级月度分析',
       '云数据同步', '共享预算管理',
       '类别间转账', '无限账户',
@@ -200,8 +200,8 @@ const content: Record<string, LandingContent> = {
     cta: 'Google Play से डाउनलोड करें',
     ctaWeb: 'वेब ऐप खोलें',
     featuresTitle: 'बजट प्रबंधन के लिए आपको जो कुछ भी चाहिए',
-    premiumTitle: 'प्रीमियम सदस्यता',
-    premiumSub: 'पूर्ण वित्तीय नियंत्रण के लिए उन्नत सुविधाएं अनलॉक करें।',
+    includedTitle: 'मुफ्त में शामिल',
+    includedSub: 'सभी उन्नत सुविधाएं बिना सदस्यता के सभी के लिए उपलब्ध हैं।',
     screenshotsTitle: 'ऐप देखें',
     footerCta: 'आज ही मुफ्त में शुरू करें',
     learnMore: 'और जानें',
@@ -211,7 +211,7 @@ const content: Record<string, LandingContent> = {
       { icon: TrendingUp, title: 'बजट सीमाएं', desc: 'प्रत्येक श्रेणी के लिए सीमाएं निर्धारित करें और प्रगति ट्रैक करें।' },
       { icon: Globe, title: '8 भाषाएं', desc: 'क्रोएशियाई, अंग्रेजी, जर्मन, पोलिश, स्पैनिश, फ्रेंच, चीनी और हिंदी में पूर्ण स्थानीयकरण।' },
     ],
-    premiumFeatures: [
+    includedFeatures: [
       'बजट सीमा सेटिंग्स', 'उन्नत मासिक विश्लेषण',
       'क्लाउड डेटा सिंक्रनाइज़ेशन', 'साझा बजट प्रबंधन',
       'श्रेणी स्थानांतरण', 'असीमित खाते',
@@ -368,21 +368,21 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Premium */}
+      {/* Included features */}
       <section className="py-16 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-accent/10 text-accent text-sm font-medium">
-            <Star className="w-4 h-4" />
-            Premium
+            <CheckCircle2 className="w-4 h-4" />
+            Free
           </div>
           <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
-            {c.premiumTitle}
+            {c.includedTitle}
           </h2>
           <p className="text-muted-foreground text-lg mb-10">
-            {c.premiumSub}
+            {c.includedSub}
           </p>
           <div className="grid sm:grid-cols-2 gap-4 text-left max-w-xl mx-auto">
-            {c.premiumFeatures.map((f, i) => (
+            {c.includedFeatures.map((f, i) => (
               <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/50 shadow-soft">
                 <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
                   <Shield className="w-4 h-4 text-accent" />
