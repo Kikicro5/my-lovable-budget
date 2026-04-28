@@ -11,14 +11,12 @@ interface PremiumContextType {
 
 const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
 
-// Device ID is now provided by billing service
-
 export const PremiumProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const checkStatus = useCallback(async () => {
     // Aplikacija je besplatna za sve — status se više ne provjerava naplatom.
   }, []);
 
-  const activateCode = async (code: string): Promise<{ success: boolean; error?: string }> => {
+  const activateCode = async (_code: string): Promise<{ success: boolean; error?: string }> => {
     return { success: true };
   };
 
