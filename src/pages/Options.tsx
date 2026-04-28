@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, Crown, Key, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2, Users, Plus, KeyRound, Trash2, Settings } from 'lucide-react';
+import { useState } from 'react';
+import { Languages, Sun, Moon, Palette, Share2, RotateCcw, Coins, Check, FileText, LogOut, LogIn, Shield, Cloud, CloudOff, RefreshCw, Loader2, Users, Trash2, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { usePremium } from '@/contexts/PremiumContext';
 import { Input } from '@/components/ui/input';
 
 import { Button } from '@/components/ui/button';
@@ -14,8 +13,6 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, currencies, Currency } from '@/contexts/CurrencyContext';
 import { Language } from '@/i18n/translations';
 import { AppGuide } from '@/components/AppGuide';
-import { isNativeAndroid } from '@/utils/platform';
-import { FeatureLock } from '@/components/FeatureLock';
 import { useBudget } from '@/hooks/useBudget';
 import { GroupManager } from '@/components/GroupManager';
 
@@ -87,34 +84,9 @@ const Options = () => {
   const { theme, setTheme } = useTheme();
   const { currency, setCurrency } = useCurrency();
   const { user, isAdmin, signOut } = useAuth();
-  const { isPremium, daysRemaining, activateCode } = usePremium();
-  const hasPremiumAccess = isPremium || isAdmin;
-  const { syncStatus, syncNow, canSync, resetAll } = useBudget();
-  const [code, setCode] = useState('');
-  const [activating, setActivating] = useState(false);
-  const [activated, setActivated] = useState(false);
+  const { syncStatus, syncNow, resetAll } = useBudget();
   const [manualSyncing, setManualSyncing] = useState(false);
-  const premiumRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (window.location.hash === '#premium' && premiumRef.current) {
-      setTimeout(() => premiumRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-    }
-  }, []);
-
-  const handleActivateCode = async () => {
-    if (!code.trim()) return;
-    setActivating(true);
-    const result = await activateCode(code.trim());
-    if (result.success) {
-      setActivated(true);
-      toast.success(t('premium.codeActivatedToast'));
-    } else {
-      toast.error(result.error || t('premium.activationError'));
-    }
-    setActivating(false);
-  };
 
   const handleShare = async () => {
     const shareUrl = 'https://play.google.com/store/apps/details?id=app.lovable.budgetcard.twa';
