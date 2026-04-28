@@ -4,7 +4,7 @@ const config: CapacitorConfig = {
   appId: 'app.lovable.budgetcard.twa',
   webDir: 'dist',
   server: {
-    url: 'https://2b913f8a-e008-4a13-b688-581953b1b4f7.lovableproject.com?forceHideBadge=true',
+    url: 'https://budgetcard.lovable.app',
     cleartext: true
   },
   plugins: {
