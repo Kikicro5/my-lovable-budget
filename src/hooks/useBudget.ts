@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { BudgetState, MonthlyBudget, Transaction, Category, BudgetLimits, RecurringTransaction, Account, PaymentReminder } from '@/types/budget';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { usePremium } from '@/contexts/PremiumContext';
 
 const STORAGE_KEY = 'monthly-budget-app';
 const SYNC_DEBOUNCE_MS = 2000;
@@ -65,9 +64,8 @@ const migrateCategories = (categories: (string | Category)[]): Category[] => {
 };
 
 export const useBudget = () => {
-  const { user, isAdmin } = useAuth();
-  const { isPremium } = usePremium();
-  const canSync = !!user && (isPremium || isAdmin);
+  const { user } = useAuth();
+  const canSync = !!user;
   const userId = user?.id;
   const [state, setState] = useState<BudgetState>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -228,7 +226,7 @@ export const useBudget = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
-  // Cloud sync: save to database for premium users (individual or group)
+  // Cloud sync: save to database for signed-in users (individual or group)
   const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isSyncingRef = useRef(false);
   const cloudLoadedRef = useRef(false);
@@ -323,7 +321,7 @@ export const useBudget = () => {
     await performCloudSave();
   }, [canSync, userId, performCloudSave]);
 
-  // Cloud sync: load from database on first mount for premium users
+  // Cloud sync: load from database on first mount for signed-in users
   useEffect(() => {
     if (!canSync || !userId || cloudLoadedRef.current) return;
     cloudLoadedRef.current = true;
