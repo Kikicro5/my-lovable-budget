@@ -10,6 +10,13 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  return new Response(JSON.stringify({
+    isPremium: true,
+    expiresAt: null,
+    activations: [],
+    billingDisabled: true,
+  }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+
   try {
     const authHeader = req.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {
