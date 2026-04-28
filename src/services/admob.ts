@@ -2,7 +2,7 @@ import { AdMob, BannerAdOptions, BannerAdPosition, BannerAdSize } from '@capacit
 import { isNative } from '@/utils/platform';
 
 const BANNER_AD_ID = 'ca-app-pub-0825549313210028/2423468724';
-const ADS_DISABLED = true;
+const ADS_DISABLED = false;
 
 let initialized = false;
 let bannerVisible = false;
