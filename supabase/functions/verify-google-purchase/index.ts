@@ -89,6 +89,23 @@ Deno.serve(async (req) => {
     }
     const { action } = body;
 
+    if (action === 'check-subscription') {
+      return json({
+        isPremium: true,
+        expiresAt: null,
+        billingDisabled: true,
+      });
+    }
+
+    if (action === 'verify-purchase') {
+      return json({
+        valid: true,
+        success: true,
+        expiresAt: null,
+        billingDisabled: true,
+      });
+    }
+
     // ── verify-purchase ──
     if (action === 'verify-purchase') {
       const { purchaseToken, productId, deviceId } = body as Record<string, string>;
