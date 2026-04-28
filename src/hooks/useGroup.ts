@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { usePremium } from '@/contexts/PremiumContext';
 
 interface GroupMember {
   user_id: string;
@@ -26,8 +25,7 @@ interface GroupState {
 }
 
 export const useGroup = () => {
-  const { user, isAdmin } = useAuth();
-  const { isPremium } = usePremium();
+  const { user } = useAuth();
   const [state, setState] = useState<GroupState>({
     group: null,
     members: [],
@@ -35,7 +33,7 @@ export const useGroup = () => {
     isLoading: true,
   });
 
-  const canUseGroups = !!user && (isPremium || isAdmin);
+  const canUseGroups = !!user;
 
   const fetchGroupInfo = useCallback(async () => {
     if (!canUseGroups) {
