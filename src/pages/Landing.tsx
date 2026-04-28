@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { 
   Smartphone, TrendingUp, Shield, Cloud, Users, BarChart3, 
-  Wallet, ArrowRight, Star, ChevronDown, Globe, BookOpen
+  Wallet, ArrowRight, CheckCircle2, ChevronDown, Globe, BookOpen
 } from 'lucide-react';
 import { TermsOfServiceContent, PrivacyPolicyContent, GDPRContent } from '@/components/LegalDialogs';
 import {
@@ -26,10 +26,10 @@ const WEB_APP_URL = 'https://budgetcard.lovable.app';
 
 type LandingContent = {
   hero: string; heroSub: string; cta: string; ctaWeb: string;
-  featuresTitle: string; premiumTitle: string; premiumSub: string;
+  featuresTitle: string; includedTitle: string; includedSub: string;
   screenshotsTitle: string; footerCta: string; learnMore: string;
   features: { icon: any; title: string; desc: string }[];
-  premiumFeatures: string[];
+  includedFeatures: string[];
 };
 
 const content: Record<string, LandingContent> = {
