@@ -1,11 +1,27 @@
 import { AdMob, BannerAdOptions, BannerAdPosition, BannerAdSize } from '@capacitor-community/admob';
 import { isNative } from '@/utils/platform';
 
-const BANNER_AD_ID = 'ca-app-pub-0825549313210028/7609317302';
+const BANNER_AD_ID = 'ca-app-pub-0825549313210028/3846166268';
 const ADS_DISABLED = false;
 
 let initialized = false;
 let bannerVisible = false;
+let bannerClosed = false;
+const listeners = new Set<(visible: boolean) => void>();
+
+const notify = () => {
+  listeners.forEach((l) => l(bannerVisible));
+};
+
+export const subscribeBannerVisibility = (cb: (visible: boolean) => void): (() => void) => {
+  listeners.add(cb);
+  cb(bannerVisible);
+  return () => {
+    listeners.delete(cb);
+  };
+};
+
+export const isBannerVisible = (): boolean => bannerVisible;
 
 export const initializeAdMob = async (): Promise<void> => {
   if (ADS_DISABLED || !isNative() || initialized) return;
@@ -20,7 +36,7 @@ export const initializeAdMob = async (): Promise<void> => {
 };
 
 export const showBannerAd = async (): Promise<void> => {
-  if (ADS_DISABLED || !isNative()) return;
+  if (ADS_DISABLED || !isNative() || bannerClosed) return;
   if (!initialized) await initializeAdMob();
   if (bannerVisible) return;
   try {
@@ -33,6 +49,7 @@ export const showBannerAd = async (): Promise<void> => {
     };
     await AdMob.showBanner(options);
     bannerVisible = true;
+    notify();
   } catch (err) {
     console.warn('[AdMob] showBanner failed', err);
   }
@@ -43,6 +60,7 @@ export const hideBannerAd = async (): Promise<void> => {
   try {
     await AdMob.hideBanner();
     bannerVisible = false;
+    notify();
   } catch (err) {
     console.warn('[AdMob] hideBanner failed', err);
   }
@@ -53,7 +71,13 @@ export const removeBannerAd = async (): Promise<void> => {
   try {
     await AdMob.removeBanner();
     bannerVisible = false;
+    notify();
   } catch (err) {
     console.warn('[AdMob] removeBanner failed', err);
   }
+};
+
+export const closeBannerAd = async (): Promise<void> => {
+  bannerClosed = true;
+  await removeBannerAd();
 };
