@@ -1,7 +1,7 @@
 import { AdMob, BannerAdOptions, BannerAdPosition, BannerAdSize } from '@capacitor-community/admob';
 import { isNative } from '@/utils/platform';
 
-const BANNER_AD_ID = 'ca-app-pub-0825549313210028/2423468724';
+const BANNER_AD_ID = 'ca-app-pub-0825549313210028/7609317302';
 const ADS_DISABLED = false;
 
 let initialized = false;
