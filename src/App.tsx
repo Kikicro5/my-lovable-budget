@@ -11,6 +11,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
 import InstallPrompt from "@/components/InstallPrompt";
 import { initializeAdMob } from "@/services/admob";
+import { AdCloseButton } from "@/components/AdCloseButton";
 
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
@@ -43,6 +44,7 @@ const App = () => {
                 
                 <BrowserRouter>
                   <InstallPrompt />
+                  <AdCloseButton />
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/monthly" element={<Monthly />} />
