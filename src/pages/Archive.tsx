@@ -167,6 +167,7 @@ const Archive = () => {
               <div><p className="text-xs text-muted-foreground mb-1">{t('balance.current')}</p><p className={cn('text-lg font-semibold', balance >= 0 ? 'text-income' : 'text-expense')}>{balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}</p></div>
             </div>
           </div>
+          <CategoryBreakdown budget={selectedBudget} onRemove={removeTransaction} />
           <TransactionList title={t('transaction.allTransactions')} transactions={selectedBudget.transactions} onRemove={removeTransaction} />
         </div>
         <BottomNavigation />
