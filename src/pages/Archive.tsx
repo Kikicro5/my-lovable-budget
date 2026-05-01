@@ -484,10 +484,23 @@ const Archive = () => {
             ) : (
               <div className="border-t border-border pt-2">
                 <TransactionList
-                  transactions={filteredSearchTx}
+                  transactions={isMobile && !searchExpanded ? filteredSearchTx.slice(0, 8) : filteredSearchTx}
                   onRemove={removeTransaction}
                   filterType={searchType}
                 />
+                {isMobile && filteredSearchTx.length > 8 && (
+                  <div className="mt-3 flex justify-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSearchExpanded((v) => !v)}
+                    >
+                      {searchExpanded
+                        ? t('archive.showLess')
+                        : `${t('archive.showAll')} (${filteredSearchTx.length})`}
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
           </div>
