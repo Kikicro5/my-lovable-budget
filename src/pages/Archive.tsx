@@ -4,7 +4,7 @@ import { BottomNavigation } from '@/components/BottomNavigation';
 import { TransactionList } from '@/components/TransactionList';
 
 import { MonthlyBudget } from '@/types/budget';
-import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2 } from 'lucide-react';
+import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2, PieChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthCard } from '@/components/MonthCard';
 import { useLanguage } from '@/i18n/LanguageContext';
