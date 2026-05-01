@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import { Bot, X, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -110,7 +110,7 @@ export const HelpChatBot = () => {
           className="fixed bottom-24 right-4 z-40 h-12 w-12 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
           style={{ marginBottom: 'env(safe-area-inset-bottom)' }}
         >
-          <MessageCircle className="w-5 h-5" />
+          <Bot className="w-6 h-6" />
         </button>
       )}
 
@@ -121,7 +121,7 @@ export const HelpChatBot = () => {
         >
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-primary/5">
             <div className="flex items-center gap-2">
-              <MessageCircle className="w-4 h-4 text-primary" />
+              <Bot className="w-4 h-4 text-primary" />
               <span className="font-semibold text-sm">{t('helpBot.title')}</span>
             </div>
             <button
