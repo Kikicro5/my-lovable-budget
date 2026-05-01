@@ -576,6 +576,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // App Management
     'appManagement.title': 'Upravljanje aplikacijom',
+    // Help Bot
+    'helpBot.title': 'Pomoćnik',
+    'helpBot.open': 'Otvori pomoć',
+    'helpBot.close': 'Zatvori',
+    'helpBot.placeholder': 'Pitaj me o aplikaciji...',
+    'helpBot.welcome': 'Bok! 👋 Ja sam tvoj pomoćnik za Budget Card. Pitaj me kako koristiti bilo koju funkciju aplikacije.',
+    'helpBot.thinking': 'Razmišljam...',
+    'helpBot.error': 'Došlo je do greške. Pokušaj ponovno.',
+    'helpBot.rateLimited': 'Previše zahtjeva. Pokušaj malo kasnije.',
+    'helpBot.creditsExhausted': 'Kredit za AI je potrošen.',
   },
 
   en: {
@@ -1153,6 +1163,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // App Management
     'appManagement.title': 'App Management',
+    // Help Bot
+    'helpBot.title': 'Help Assistant',
+    'helpBot.open': 'Open help',
+    'helpBot.close': 'Close',
+    'helpBot.placeholder': 'Ask me about the app...',
+    'helpBot.welcome': 'Hi! 👋 I\'m your Budget Card assistant. Ask me how to use any feature of the app.',
+    'helpBot.thinking': 'Thinking...',
+    'helpBot.error': 'Something went wrong. Please try again.',
+    'helpBot.rateLimited': 'Too many requests. Please try again later.',
+    'helpBot.creditsExhausted': 'AI credits exhausted.',
   },
 
   de: {
@@ -1681,6 +1701,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // App Management
     'appManagement.title': 'App-Verwaltung',
+    // Help Bot
+    'helpBot.title': 'Hilfe-Assistent',
+    'helpBot.open': 'Hilfe öffnen',
+    'helpBot.close': 'Schließen',
+    'helpBot.placeholder': 'Frag mich zur App...',
+    'helpBot.welcome': 'Hallo! 👋 Ich bin dein Budget Card Assistent. Frag mich, wie du die App benutzt.',
+    'helpBot.thinking': 'Denke nach...',
+    'helpBot.error': 'Ein Fehler ist aufgetreten. Bitte erneut versuchen.',
+    'helpBot.rateLimited': 'Zu viele Anfragen. Bitte später erneut versuchen.',
+    'helpBot.creditsExhausted': 'KI-Guthaben aufgebraucht.',
   },
 
   pl: {
@@ -2213,6 +2243,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // App Management
     'appManagement.title': 'Zarządzanie aplikacją',
+    // Help Bot
+    'helpBot.title': 'Asystent Pomocy',
+    'helpBot.open': 'Otwórz pomoc',
+    'helpBot.close': 'Zamknij',
+    'helpBot.placeholder': 'Zapytaj o aplikację...',
+    'helpBot.welcome': 'Cześć! 👋 Jestem asystentem Budget Card. Zapytaj mnie, jak korzystać z aplikacji.',
+    'helpBot.thinking': 'Myślę...',
+    'helpBot.error': 'Wystąpił błąd. Spróbuj ponownie.',
+    'helpBot.rateLimited': 'Zbyt wiele żądań. Spróbuj później.',
+    'helpBot.creditsExhausted': 'Wyczerpano kredyty AI.',
   },
 
   es: {
@@ -2745,6 +2785,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // App Management
     'appManagement.title': 'Gestión de la app',
+    // Help Bot
+    'helpBot.title': 'Asistente de Ayuda',
+    'helpBot.open': 'Abrir ayuda',
+    'helpBot.close': 'Cerrar',
+    'helpBot.placeholder': 'Pregúntame sobre la app...',
+    'helpBot.welcome': '¡Hola! 👋 Soy tu asistente de Budget Card. Pregúntame cómo usar la app.',
+    'helpBot.thinking': 'Pensando...',
+    'helpBot.error': 'Algo salió mal. Inténtalo de nuevo.',
+    'helpBot.rateLimited': 'Demasiadas solicitudes. Inténtalo más tarde.',
+    'helpBot.creditsExhausted': 'Créditos de IA agotados.',
   },
 
   fr: {
@@ -3277,6 +3327,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // App Management
     'appManagement.title': 'Gestion de l\'app',
+    // Help Bot
+    'helpBot.title': 'Assistant d\'aide',
+    'helpBot.open': 'Ouvrir l\'aide',
+    'helpBot.close': 'Fermer',
+    'helpBot.placeholder': 'Pose-moi une question sur l\'app...',
+    'helpBot.welcome': 'Salut ! 👋 Je suis ton assistant Budget Card. Demande-moi comment utiliser l\'app.',
+    'helpBot.thinking': 'Je réfléchis...',
+    'helpBot.error': 'Une erreur s\'est produite. Réessaie.',
+    'helpBot.rateLimited': 'Trop de requêtes. Réessaie plus tard.',
+    'helpBot.creditsExhausted': 'Crédits IA épuisés.',
   },
 
   zh: {
@@ -3810,6 +3870,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // App Management
     'appManagement.title': '应用管理',
+    // Help Bot
+    'helpBot.title': '帮助助手',
+    'helpBot.open': '打开帮助',
+    'helpBot.close': '关闭',
+    'helpBot.placeholder': '问我有关应用的任何问题...',
+    'helpBot.welcome': '你好！👋 我是你的 Budget Card 助手。问我如何使用应用的任何功能。',
+    'helpBot.thinking': '思考中...',
+    'helpBot.error': '出错了，请重试。',
+    'helpBot.rateLimited': '请求过多，请稍后再试。',
+    'helpBot.creditsExhausted': 'AI 额度已用完。',
   },
 
   hi: {
@@ -4343,6 +4413,16 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // App Management
     'appManagement.title': 'ऐप प्रबंधन',
+    // Help Bot
+    'helpBot.title': 'सहायक',
+    'helpBot.open': 'सहायता खोलें',
+    'helpBot.close': 'बंद करें',
+    'helpBot.placeholder': 'ऐप के बारे में पूछें...',
+    'helpBot.welcome': 'नमस्ते! 👋 मैं आपका Budget Card सहायक हूं। ऐप की किसी भी सुविधा के बारे में पूछें।',
+    'helpBot.thinking': 'सोच रहा हूं...',
+    'helpBot.error': 'कुछ गलत हो गया। कृपया पुनः प्रयास करें।',
+    'helpBot.rateLimited': 'बहुत अधिक अनुरोध। कृपया बाद में पुनः प्रयास करें।',
+    'helpBot.creditsExhausted': 'AI क्रेडिट समाप्त हो गए।',
   },
 };
 
