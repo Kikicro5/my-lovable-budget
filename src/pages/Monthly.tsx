@@ -19,7 +19,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 
 
 const Monthly = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getAvailableInvestment, getAvailableSavings, transferFromCategory } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getAvailableInvestment, getAvailableSavings, transferFromCategory, getAllInvestmentTransactions, getAllSavingsTransactions } = useBudget();
   const { t } = useLanguage();
   
   const currentBudget = getCurrentBudget();
