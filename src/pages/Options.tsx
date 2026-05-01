@@ -342,7 +342,7 @@ const Options = () => {
               {t('reset.description')}
             </p>
             <div className="grid grid-cols-2 gap-2">
-              <AlertDialog>
+              <AlertDialog open={resetDialogOpen} onOpenChange={(o) => { setResetDialogOpen(o); if (!o) setResetConfirmText(''); }}>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" className="w-full gap-2">
                     <RotateCcw className="w-4 h-4" />
@@ -354,11 +354,28 @@ const Options = () => {
                     <AlertDialogTitle>{t('reset.confirm')}</AlertDialogTitle>
                     <AlertDialogDescription>
                       {t('reset.warning')}
+                      {user && (
+                        <span className="block mt-2 font-medium text-destructive">
+                          {t('reset.cloudWarning') || '⚠️ Ovo će također obrisati sve vaše podatke u Cloud Sync-u na svim uređajima.'}
+                        </span>
+                      )}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
+                  <div className="space-y-2 py-2">
+                    <p className="text-sm text-muted-foreground">
+                      {(t('reset.typeToConfirm') || 'Za potvrdu upišite RESET:')}
+                    </p>
+                    <Input
+                      value={resetConfirmText}
+                      onChange={(e) => setResetConfirmText(e.target.value)}
+                      placeholder="RESET"
+                      autoFocus
+                    />
+                  </div>
                   <AlertDialogFooter>
                     <AlertDialogCancel>{t('dialog.cancel')}</AlertDialogCancel>
                     <AlertDialogAction
+                      disabled={resetConfirmText.trim().toUpperCase() !== 'RESET'}
                       onClick={async () => {
                         await resetAll();
                         toast.success(t('reset.success'));
