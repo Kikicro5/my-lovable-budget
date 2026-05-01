@@ -151,8 +151,10 @@ const Archive = () => {
   const [fromMonth, setFromMonth] = useState<string>('__any__');
   const [toYear, setToYear] = useState<string>('__any__');
   const [toMonth, setToMonth] = useState<string>('__any__');
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
+  const isMobile = useIsMobile();
   const pastBudgets = getPastBudgets();
 
   // Aggregate all transactions across the entire archive for the search section
