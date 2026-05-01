@@ -31,6 +31,8 @@ const Index = () => {
     getTotalInvestment, 
     getInvestmentFromPreviousPeriod, 
     getAvailableSavings,
+    getAllAvailableInvestment,
+    getAllAvailableSavings,
     getBudgetProgress, 
     applyRecurringTransactions,
     getActiveReminders,
@@ -108,9 +110,9 @@ const Index = () => {
             balance={state.accounts?.reduce((sum, acc) => sum + acc.balance, 0) || 0} 
             income={getTotalIncome()} 
             expense={getTotalExpense()} 
-            investment={getTotalInvestment()} 
-            savings={getAvailableSavings()} 
-            investmentFromPrevious={getInvestmentFromPreviousPeriod()}
+            investment={getAllAvailableInvestment()} 
+            savings={getAllAvailableSavings()} 
+            investmentFromPrevious={0}
             accounts={state.accounts || []}
           />
           
