@@ -12,6 +12,7 @@ import { PremiumProvider } from "@/contexts/PremiumContext";
 import InstallPrompt from "@/components/InstallPrompt";
 import { initializeAdMob } from "@/services/admob";
 import { AdCloseButton } from "@/components/AdCloseButton";
+import HelpChatBot from "@/components/HelpChatBot";
 
 import Index from "./pages/Index";
 import Monthly from "./pages/Monthly";
@@ -45,6 +46,7 @@ const App = () => {
                 <BrowserRouter>
                   <InstallPrompt />
                   <AdCloseButton />
+                  <HelpChatBot />
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/monthly" element={<Monthly />} />
