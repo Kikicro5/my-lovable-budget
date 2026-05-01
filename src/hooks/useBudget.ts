@@ -1134,18 +1134,29 @@ export const useBudget = () => {
     lastSyncedAt,
     resetAll: async () => {
       const initial = getInitialState();
+      // Mark reset so cloud-load on reload won't restore old data
+      localStorage.setItem('budget-reset-pending', '1');
       // Clear cloud data first if syncing
       if (canSync && userId) {
         try {
-          if (groupId) {
-            await (supabase
-              .from('group_data' as any)
-              .update({ data: initial as any }) as any)
-              .eq('group_id', groupId);
-          } else {
-            await supabase
-              .from('user_data')
-              .upsert({ user_id: userId, data: initial as any }, { onConflict: 'user_id' });
+          // Always clear user_data
+          await supabase
+            .from('user_data')
+            .upsert({ user_id: userId, data: initial as any }, { onConflict: 'user_id' });
+          // Clear ALL groups the user is a member of (query fresh from DB to avoid stale closure)
+          const { data: memberships } = await (supabase
+            .from('group_members' as any)
+            .select('group_id')
+            .eq('user_id', userId) as any);
+          if (memberships && Array.isArray(memberships)) {
+            for (const m of memberships) {
+              if (m?.group_id) {
+                await (supabase
+                  .from('group_data' as any)
+                  .update({ data: initial as any }) as any)
+                  .eq('group_id', m.group_id);
+              }
+            }
           }
         } catch (err) {
           console.error('Failed to reset cloud data:', err);
