@@ -5,6 +5,7 @@ import { TransactionList } from '@/components/TransactionList';
 
 import { MonthlyBudget } from '@/types/budget';
 import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2, PieChart } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthCard } from '@/components/MonthCard';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -24,6 +25,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type BreakdownType = 'expense' | 'income' | 'investment' | 'savings';
 
