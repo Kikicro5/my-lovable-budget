@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { TransactionList } from '@/components/TransactionList';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 import { MonthlyBudget } from '@/types/budget';
 import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2, PieChart } from 'lucide-react';
@@ -150,8 +151,10 @@ const Archive = () => {
   const [fromMonth, setFromMonth] = useState<string>('__any__');
   const [toYear, setToYear] = useState<string>('__any__');
   const [toMonth, setToMonth] = useState<string>('__any__');
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
+  const isMobile = useIsMobile();
   const pastBudgets = getPastBudgets();
 
   // Aggregate all transactions across the entire archive for the search section
@@ -481,10 +484,23 @@ const Archive = () => {
             ) : (
               <div className="border-t border-border pt-2">
                 <TransactionList
-                  transactions={filteredSearchTx}
+                  transactions={isMobile && !searchExpanded ? filteredSearchTx.slice(0, 8) : filteredSearchTx}
                   onRemove={removeTransaction}
                   filterType={searchType}
                 />
+                {isMobile && filteredSearchTx.length > 8 && (
+                  <div className="mt-3 flex justify-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSearchExpanded((v) => !v)}
+                    >
+                      {searchExpanded
+                        ? t('archive.showLess')
+                        : `${t('archive.showAll')} (${filteredSearchTx.length})`}
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
           </div>
