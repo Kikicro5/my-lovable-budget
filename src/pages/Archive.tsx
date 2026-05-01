@@ -144,9 +144,37 @@ const Archive = () => {
   const { getPastBudgets, getBalance, getTotalIncome, getTotalExpense, removeTransaction, removeBudget } = useBudget();
   const [selectedBudget, setSelectedBudget] = useState<MonthlyBudget | null>(null);
   const [expandedYears, setExpandedYears] = useState<number[]>([]);
+  const [searchType, setSearchType] = useState<BreakdownType>('expense');
+  const [searchItem, setSearchItem] = useState<string>('__all__');
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
   const pastBudgets = getPastBudgets();
+
+  // Aggregate all transactions across the entire archive for the search section
+  const allArchiveTx = useMemo(
+    () => pastBudgets.flatMap((b) => b.transactions),
+    [pastBudgets]
+  );
+
+  const itemsForType = useMemo(() => {
+    const set = new Set<string>();
+    allArchiveTx
+      .filter((tx) => tx.type === searchType && !tx.isWithdrawal)
+      .forEach((tx) => set.add(tx.category || '—'));
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [allArchiveTx, searchType]);
+
+  const filteredSearchTx = useMemo(() => {
+    return allArchiveTx
+      .filter((tx) => tx.type === searchType && !tx.isWithdrawal)
+      .filter((tx) => searchItem === '__all__' || (tx.category || '—') === searchItem)
+      .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  }, [allArchiveTx, searchType, searchItem]);
+
+  const filteredSearchTotal = useMemo(
+    () => filteredSearchTx.reduce((s, tx) => s + tx.amount, 0),
+    [filteredSearchTx]
+  );
 
   // Group budgets by year
   const budgetsByYear = useMemo(() => {
@@ -307,6 +335,73 @@ const Archive = () => {
             <p className="text-muted-foreground">{t('archive.willAppear')}</p>
           </div>
         ) : (
+          <>
+          {/* Search by item across the entire archive */}
+          <div className="bg-card rounded-xl p-4 shadow-soft mb-4 animate-fade-in">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Search className="w-4 h-4 text-primary" />
+              </div>
+              <h3 className="font-display font-semibold text-foreground">
+                {t('archive.searchByItem')}
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-4 gap-1 mb-3 bg-muted/40 p-1 rounded-lg">
+              {(Object.keys(breakdownConfig) as BreakdownType[]).map((type) => (
+                <button
+                  key={type}
+                  onClick={() => { setSearchType(type); setSearchItem('__all__'); }}
+                  className={cn(
+                    'text-xs font-medium py-2 px-1 rounded-md transition-colors',
+                    searchType === type ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  {t(breakdownConfig[type].labelKey)}
+                </button>
+              ))}
+            </div>
+
+            <Select value={searchItem} onValueChange={setSearchItem}>
+              <SelectTrigger className="mb-3">
+                <SelectValue placeholder={t('archive.selectItem')} />
+              </SelectTrigger>
+              <SelectContent className="max-h-72">
+                <SelectItem value="__all__">{t('archive.allItems')}</SelectItem>
+                {itemsForType.map((item) => (
+                  <SelectItem key={item} value={item}>{item}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <div className="flex items-center justify-between mb-2 px-1">
+              <span className="text-xs text-muted-foreground">
+                {t('archive.transactionsFound')}: <span className="font-semibold text-foreground">{filteredSearchTx.length}</span>
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {t('archive.totalAcrossArchive')}:{' '}
+                <span className={cn('font-semibold', breakdownConfig[searchType].colorClass)}>
+                  {breakdownConfig[searchType].sign}
+                  {filteredSearchTotal.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
+                </span>
+              </span>
+            </div>
+
+            {filteredSearchTx.length === 0 ? (
+              <p className="text-center text-sm text-muted-foreground py-4">
+                {t('transaction.noTransactions')}
+              </p>
+            ) : (
+              <div className="border-t border-border pt-2">
+                <TransactionList
+                  transactions={filteredSearchTx}
+                  onRemove={removeTransaction}
+                  filterType={searchType}
+                />
+              </div>
+            )}
+          </div>
+
           <div className="space-y-4">
             {sortedYears.map((year) => {
               const { totalIncome, totalExpense, balance } = getYearTotals(year);
@@ -418,6 +513,7 @@ const Archive = () => {
               );
             })}
           </div>
+          </>
         )}
       </div>
       <BottomNavigation />
