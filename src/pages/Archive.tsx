@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useBudget } from '@/hooks/useBudget';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { TransactionList } from '@/components/TransactionList';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 import { MonthlyBudget } from '@/types/budget';
 import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2, PieChart } from 'lucide-react';
