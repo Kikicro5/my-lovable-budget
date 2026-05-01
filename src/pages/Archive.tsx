@@ -146,6 +146,10 @@ const Archive = () => {
   const [expandedYears, setExpandedYears] = useState<number[]>([]);
   const [searchType, setSearchType] = useState<BreakdownType>('expense');
   const [searchItem, setSearchItem] = useState<string>('__all__');
+  const [fromYear, setFromYear] = useState<string>('__any__');
+  const [fromMonth, setFromMonth] = useState<string>('__any__');
+  const [toYear, setToYear] = useState<string>('__any__');
+  const [toMonth, setToMonth] = useState<string>('__any__');
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
   const pastBudgets = getPastBudgets();
@@ -164,12 +168,37 @@ const Archive = () => {
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [allArchiveTx, searchType]);
 
+  // Available years from the archive (descending)
+  const availableYears = useMemo(() => {
+    const set = new Set<number>();
+    pastBudgets.forEach((b) => set.add(b.year));
+    return Array.from(set).sort((a, b) => b - a);
+  }, [pastBudgets]);
+
+  // Compute numeric range bounds (inclusive). Encoded as year*12 + month.
+  const rangeBounds = useMemo(() => {
+    const fy = fromYear === '__any__' ? null : Number(fromYear);
+    const ty = toYear === '__any__' ? null : Number(toYear);
+    const fm = fromMonth === '__any__' ? 0 : Number(fromMonth);
+    const tm = toMonth === '__any__' ? 11 : Number(toMonth);
+    const min = fy === null ? -Infinity : fy * 12 + fm;
+    const max = ty === null ? Infinity : ty * 12 + tm;
+    return { min, max };
+  }, [fromYear, fromMonth, toYear, toMonth]);
+
   const filteredSearchTx = useMemo(() => {
     return allArchiveTx
       .filter((tx) => tx.type === searchType && !tx.isWithdrawal)
       .filter((tx) => searchItem === '__all__' || (tx.category || '—') === searchItem)
+      .filter((tx) => {
+        if (!tx.date) return rangeBounds.min === -Infinity && rangeBounds.max === Infinity;
+        const d = new Date(tx.date);
+        if (isNaN(d.getTime())) return true;
+        const key = d.getFullYear() * 12 + d.getMonth();
+        return key >= rangeBounds.min && key <= rangeBounds.max;
+      })
       .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-  }, [allArchiveTx, searchType, searchItem]);
+  }, [allArchiveTx, searchType, searchItem, rangeBounds]);
 
   const filteredSearchTotal = useMemo(
     () => filteredSearchTx.reduce((s, tx) => s + tx.amount, 0),
@@ -373,6 +402,64 @@ const Archive = () => {
                 ))}
               </SelectContent>
             </Select>
+
+            {/* From / To range */}
+            <div className="space-y-2 mb-3">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1 px-1">{t('archive.from')}</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Select value={fromYear} onValueChange={setFromYear}>
+                    <SelectTrigger><SelectValue placeholder={t('archive.year')} /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      <SelectItem value="__any__">{t('archive.anyYear')}</SelectItem>
+                      {availableYears.map((y) => (
+                        <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select value={fromMonth} onValueChange={setFromMonth}>
+                    <SelectTrigger><SelectValue placeholder={t('archive.monthLabel')} /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      <SelectItem value="__any__">{t('archive.anyMonth')}</SelectItem>
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <SelectItem key={i} value={String(i)}>{t(`month.${i}`)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1 px-1">{t('archive.to')}</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Select value={toYear} onValueChange={setToYear}>
+                    <SelectTrigger><SelectValue placeholder={t('archive.year')} /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      <SelectItem value="__any__">{t('archive.anyYear')}</SelectItem>
+                      {availableYears.map((y) => (
+                        <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select value={toMonth} onValueChange={setToMonth}>
+                    <SelectTrigger><SelectValue placeholder={t('archive.monthLabel')} /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      <SelectItem value="__any__">{t('archive.anyMonth')}</SelectItem>
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <SelectItem key={i} value={String(i)}>{t(`month.${i}`)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {(fromYear !== '__any__' || toYear !== '__any__' || fromMonth !== '__any__' || toMonth !== '__any__') && (
+                <button
+                  onClick={() => { setFromYear('__any__'); setFromMonth('__any__'); setToYear('__any__'); setToMonth('__any__'); }}
+                  className="text-xs text-primary hover:underline px-1"
+                >
+                  {t('archive.resetRange')}
+                </button>
+              )}
+            </div>
 
             <div className="flex items-center justify-between mb-2 px-1">
               <span className="text-xs text-muted-foreground">
