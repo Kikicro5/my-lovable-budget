@@ -399,7 +399,7 @@ const Archive = () => {
                 <SelectValue placeholder={t('archive.selectItem')} />
               </SelectTrigger>
               <SelectContent className="max-h-72">
-                <SelectItem value="__all__">{t('archive.allItems')}</SelectItem>
+                <SelectItem value="__all__">{t('archive.selectItem')}</SelectItem>
                 {itemsForType.map((item) => (
                   <SelectItem key={item} value={item}>{item}</SelectItem>
                 ))}
