@@ -432,7 +432,11 @@ export const useBudget = () => {
   };
 
   const addTransaction = (transaction: Omit<Transaction, 'id' | 'date'> & { date?: string }) => {
-    const budget = getOrCreateCurrentBudget();
+    const txDate = transaction.date ? new Date(transaction.date) : new Date();
+    const txMonth = txDate.getMonth();
+    const txYear = txDate.getFullYear();
+    const targetBudgetId = `${txYear}-${txMonth}`;
+
     const newTransaction: Transaction = {
       ...transaction,
       id: crypto.randomUUID(),
@@ -457,18 +461,30 @@ export const useBudget = () => {
         });
       }
 
+      // Route transaction to the budget matching its date (allows backdated entries to land in archive)
+      const existingTarget = prev.budgets.find((b) => b.id === targetBudgetId);
+      let updatedBudgets: MonthlyBudget[];
+      if (existingTarget) {
+        updatedBudgets = prev.budgets.map((b) =>
+          b.id === targetBudgetId
+            ? { ...b, transactions: [...b.transactions, newTransaction] }
+            : b
+        );
+      } else {
+        const newBudget: MonthlyBudget = {
+          id: targetBudgetId,
+          month: txMonth,
+          year: txYear,
+          transactions: [newTransaction],
+          savedCategories: { ...prev.savedCategories },
+        };
+        updatedBudgets = [...prev.budgets, newBudget];
+      }
+
       return {
         ...prev,
         accounts: updatedAccounts,
-        budgets: prev.budgets.map((b) =>
-          b.id === budget.id
-            ? { ...b, transactions: [...b.transactions, newTransaction] }
-            : b
-        ).concat(
-          prev.budgets.find((b) => b.id === budget.id)
-            ? []
-            : [{ ...budget, transactions: [newTransaction] }]
-        ),
+        budgets: updatedBudgets,
       };
     });
   };

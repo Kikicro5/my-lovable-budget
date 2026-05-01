@@ -249,11 +249,15 @@ const Archive = () => {
                           const monthBalance = getBalance(budget);
                           const monthIncome = getTotalIncome(budget);
                           const monthExpense = getTotalExpense(budget);
+                          const txCount = budget.transactions.length;
                           return (
                             <div key={budget.id} className="p-4 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
                               <div className="flex items-center justify-between mb-2">
                                 <button onClick={() => setSelectedBudget(budget)} className="font-medium text-foreground hover:text-primary transition-colors text-left flex-1">
                                   {t(`month.${budget.month}`)}
+                                  <span className="ml-2 text-xs text-muted-foreground font-normal">
+                                    ({txCount})
+                                  </span>
                                 </button>
                                 <div className="flex items-center gap-1">
                                   <Button onClick={(e) => handleExportPDF(budget, e)} variant="ghost" size="icon" className="h-8 w-8">
