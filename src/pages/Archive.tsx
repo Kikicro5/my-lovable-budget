@@ -4,7 +4,7 @@ import { BottomNavigation } from '@/components/BottomNavigation';
 import { TransactionList } from '@/components/TransactionList';
 
 import { MonthlyBudget } from '@/types/budget';
-import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2 } from 'lucide-react';
+import { Calendar, ChevronRight, ChevronDown, TrendingUp, TrendingDown, Wallet, Download, Trash2, PieChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MonthCard } from '@/components/MonthCard';
 import { useLanguage } from '@/i18n/LanguageContext';
@@ -24,6 +24,119 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+
+type BreakdownType = 'expense' | 'income' | 'investment' | 'savings';
+
+const breakdownConfig: Record<BreakdownType, { labelKey: string; colorClass: string; sign: string }> = {
+  expense: { labelKey: 'balance.expense', colorClass: 'text-expense', sign: '-' },
+  income: { labelKey: 'balance.income', colorClass: 'text-income', sign: '+' },
+  investment: { labelKey: 'balance.investment', colorClass: 'text-primary', sign: '' },
+  savings: { labelKey: 'balance.savings', colorClass: 'text-accent', sign: '' },
+};
+
+const CategoryBreakdown = ({ budget, onRemove }: { budget: MonthlyBudget; onRemove: (id: string) => void }) => {
+  const { t } = useLanguage();
+  const { currencySymbol } = useCurrency();
+  const [activeType, setActiveType] = useState<BreakdownType>('expense');
+  const [expandedCat, setExpandedCat] = useState<string | null>(null);
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, { total: number; items: typeof budget.transactions }>();
+    budget.transactions
+      .filter((tx) => tx.type === activeType && !tx.isWithdrawal)
+      .forEach((tx) => {
+        const key = tx.category || '—';
+        const entry = map.get(key) || { total: 0, items: [] };
+        entry.total += tx.amount;
+        entry.items.push(tx);
+        map.set(key, entry);
+      });
+    return Array.from(map.entries())
+      .map(([category, val]) => ({ category, total: val.total, items: val.items }))
+      .sort((a, b) => b.total - a.total);
+  }, [budget.transactions, activeType]);
+
+  const grandTotal = grouped.reduce((s, g) => s + g.total, 0);
+  const cfg = breakdownConfig[activeType];
+
+  return (
+    <div className="bg-card rounded-xl p-4 shadow-soft mb-4 animate-fade-in">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="p-2 rounded-lg bg-primary/10">
+          <PieChart className="w-4 h-4 text-primary" />
+        </div>
+        <h3 className="font-display font-semibold text-foreground">
+          {t('archive.byCategory') !== 'archive.byCategory' ? t('archive.byCategory') : 'Po kategorijama'}
+        </h3>
+      </div>
+      <div className="grid grid-cols-4 gap-1 mb-4 bg-muted/40 p-1 rounded-lg">
+        {(Object.keys(breakdownConfig) as BreakdownType[]).map((type) => (
+          <button
+            key={type}
+            onClick={() => { setActiveType(type); setExpandedCat(null); }}
+            className={cn(
+              'text-xs font-medium py-2 px-1 rounded-md transition-colors',
+              activeType === type ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            {t(breakdownConfig[type].labelKey)}
+          </button>
+        ))}
+      </div>
+
+      {grouped.length === 0 ? (
+        <p className="text-center text-sm text-muted-foreground py-4">
+          {t('transaction.noTransactions')}
+        </p>
+      ) : (
+        <div className="space-y-2">
+          {grouped.map(({ category, total, items }) => {
+            const isOpen = expandedCat === category;
+            const pct = grandTotal > 0 ? (total / grandTotal) * 100 : 0;
+            return (
+              <div key={category} className="rounded-lg border border-border overflow-hidden">
+                <button
+                  onClick={() => setExpandedCat(isOpen ? null : category)}
+                  className="w-full p-3 flex items-center justify-between hover:bg-muted/40 transition-colors"
+                >
+                  <div className="flex-1 min-w-0 text-left">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="font-medium text-foreground truncate">{category}</span>
+                      <span className={cn('font-semibold text-sm shrink-0', cfg.colorClass)}>
+                        {cfg.sign}{total.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                        <div
+                          className={cn('h-full rounded-full', activeType === 'expense' ? 'bg-expense' : activeType === 'income' ? 'bg-income' : activeType === 'investment' ? 'bg-primary' : 'bg-accent')}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-muted-foreground shrink-0">
+                        {pct.toFixed(0)}% · {items.length}
+                      </span>
+                      {isOpen ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
+                    </div>
+                  </div>
+                </button>
+                {isOpen && (
+                  <div className="border-t border-border bg-muted/20 p-2">
+                    <TransactionList
+                      transactions={items}
+                      onRemove={onRemove}
+                      filterType={activeType}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Archive = () => {
   const { getPastBudgets, getBalance, getTotalIncome, getTotalExpense, removeTransaction, removeBudget } = useBudget();
@@ -167,6 +280,7 @@ const Archive = () => {
               <div><p className="text-xs text-muted-foreground mb-1">{t('balance.current')}</p><p className={cn('text-lg font-semibold', balance >= 0 ? 'text-income' : 'text-expense')}>{balance.toLocaleString('hr-HR', { minimumFractionDigits: 2 })} {currencySymbol}</p></div>
             </div>
           </div>
+          <CategoryBreakdown budget={selectedBudget} onRemove={removeTransaction} />
           <TransactionList title={t('transaction.allTransactions')} transactions={selectedBudget.transactions} onRemove={removeTransaction} />
         </div>
         <BottomNavigation />
