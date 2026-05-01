@@ -310,6 +310,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Jeste li sigurni?',
     'reset.warning': 'Ova radnja će trajno obrisati sve vaše transakcije, račune, kategorije i postavke. Ova radnja se ne može poništiti.',
     'reset.success': 'Aplikacija je resetirana',
+    'reset.cloudWarning': '⚠️ Ovo će također obrisati sve vaše podatke iz Cloud Sync-a na svim uređajima.',
+    'reset.typeToConfirm': 'Za potvrdu upišite RESET:',
 
     // Remove Ads
     'removeAds.title': 'Ukloni reklame',
@@ -870,6 +872,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Are you sure?',
     'reset.warning': 'This action will permanently delete all your transactions, accounts, categories and settings. This cannot be undone.',
     'reset.success': 'App has been reset',
+    'reset.cloudWarning': '⚠️ This will also delete all your Cloud Sync data on all devices.',
+    'reset.typeToConfirm': 'Type RESET to confirm:',
 
     // Remove Ads
     'removeAds.title': 'Remove Ads',
@@ -1426,6 +1430,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Sind Sie sicher?',
     'reset.warning': 'Diese Aktion löscht dauerhaft alle Ihre Transaktionen, Konten, Kategorien und Einstellungen. Dies kann nicht rückgängig gemacht werden.',
     'reset.success': 'App wurde zurückgesetzt',
+    'reset.cloudWarning': '⚠️ Dies löscht auch alle Ihre Cloud-Sync-Daten auf allen Geräten.',
+    'reset.typeToConfirm': 'Geben Sie zur Bestätigung RESET ein:',
 
     // Remove Ads
     'removeAds.title': 'Werbung entfernen',
@@ -1941,6 +1947,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Czy jesteś pewien?',
     'reset.warning': 'Ta akcja trwale usunie wszystkie Twoje transakcje, konta, kategorie i ustawienia. Tej operacji nie można cofnąć.',
     'reset.success': 'Aplikacja została zresetowana',
+    'reset.cloudWarning': '⚠️ Spowoduje to również usunięcie wszystkich danych Cloud Sync na wszystkich urządzeniach.',
+    'reset.typeToConfirm': 'Wpisz RESET, aby potwierdzić:',
 
     // Remove Ads
     'removeAds.title': 'Usuń reklamy',
@@ -2456,6 +2464,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': '¿Estás seguro?',
     'reset.warning': 'Esta acción eliminará permanentemente todas tus transacciones, cuentas, categorías y configuraciones. Esta acción no se puede deshacer.',
     'reset.success': 'La aplicación ha sido restablecida',
+    'reset.cloudWarning': '⚠️ Esto también eliminará todos sus datos de Cloud Sync en todos los dispositivos.',
+    'reset.typeToConfirm': 'Escriba RESET para confirmar:',
 
     // Remove Ads
     'removeAds.title': 'Eliminar anuncios',
@@ -2971,6 +2981,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'Êtes-vous sûr?',
     'reset.warning': 'Cette action supprimera définitivement toutes vos transactions, comptes, catégories et paramètres. Cette action est irréversible.',
     'reset.success': 'L\'application a été réinitialisée',
+    'reset.cloudWarning': '⚠️ Cela supprimera également toutes vos données Cloud Sync sur tous les appareils.',
+    'reset.typeToConfirm': 'Tapez RESET pour confirmer :',
 
     // Remove Ads
     'removeAds.title': 'Supprimer les publicités',
@@ -3486,6 +3498,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': '确定吗？',
     'reset.warning': '此操作将永久删除您的所有交易、账户、类别和设置。此操作无法撤销。',
     'reset.success': '应用已重置',
+    'reset.cloudWarning': '⚠️ 这也将删除所有设备上的所有云同步数据。',
+    'reset.typeToConfirm': '输入 RESET 以确认：',
 
     // Remove Ads
     'removeAds.title': '移除广告',
@@ -4002,6 +4016,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'reset.confirm': 'क्या आप सुनिश्चित हैं?',
     'reset.warning': 'यह क्रिया आपके सभी लेनदेन, खाते, श्रेणियाँ और सेटिंग्स स्थायी रूप से हटा देगी। इसे पूर्ववत नहीं किया जा सकता।',
     'reset.success': 'ऐप रीसेट हो गया',
+    'reset.cloudWarning': '⚠️ इससे सभी डिवाइस पर आपका सारा क्लाउड सिंक डेटा भी हट जाएगा।',
+    'reset.typeToConfirm': 'पुष्टि के लिए RESET टाइप करें:',
 
     // Remove Ads
     'removeAds.title': 'विज्ञापन हटाएं',
