@@ -403,6 +403,64 @@ const Archive = () => {
               </SelectContent>
             </Select>
 
+            {/* From / To range */}
+            <div className="space-y-2 mb-3">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1 px-1">{t('archive.from')}</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Select value={fromYear} onValueChange={setFromYear}>
+                    <SelectTrigger><SelectValue placeholder={t('archive.year')} /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      <SelectItem value="__any__">{t('archive.anyYear')}</SelectItem>
+                      {availableYears.map((y) => (
+                        <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select value={fromMonth} onValueChange={setFromMonth}>
+                    <SelectTrigger><SelectValue placeholder={t('archive.monthLabel')} /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      <SelectItem value="__any__">{t('archive.anyMonth')}</SelectItem>
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <SelectItem key={i} value={String(i)}>{t(`month.${i}`)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1 px-1">{t('archive.to')}</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Select value={toYear} onValueChange={setToYear}>
+                    <SelectTrigger><SelectValue placeholder={t('archive.year')} /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      <SelectItem value="__any__">{t('archive.anyYear')}</SelectItem>
+                      {availableYears.map((y) => (
+                        <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select value={toMonth} onValueChange={setToMonth}>
+                    <SelectTrigger><SelectValue placeholder={t('archive.monthLabel')} /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      <SelectItem value="__any__">{t('archive.anyMonth')}</SelectItem>
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <SelectItem key={i} value={String(i)}>{t(`month.${i}`)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {(fromYear !== '__any__' || toYear !== '__any__' || fromMonth !== '__any__' || toMonth !== '__any__') && (
+                <button
+                  onClick={() => { setFromYear('__any__'); setFromMonth('__any__'); setToYear('__any__'); setToMonth('__any__'); }}
+                  className="text-xs text-primary hover:underline px-1"
+                >
+                  {t('archive.resetRange')}
+                </button>
+              )}
+            </div>
+
             <div className="flex items-center justify-between mb-2 px-1">
               <span className="text-xs text-muted-foreground">
                 {t('archive.transactionsFound')}: <span className="font-semibold text-foreground">{filteredSearchTx.length}</span>
