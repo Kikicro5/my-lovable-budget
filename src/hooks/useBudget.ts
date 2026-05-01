@@ -329,6 +329,39 @@ export const useBudget = () => {
     const loadCloud = async () => {
       setSyncStatus('syncing');
       try {
+        // If a reset just happened, skip restoring from cloud and force-clear it
+        const resetFlag = localStorage.getItem('budget-reset-pending');
+        if (resetFlag === '1') {
+          localStorage.removeItem('budget-reset-pending');
+          const initial = getInitialState();
+          try {
+            await supabase
+              .from('user_data')
+              .upsert({ user_id: userId, data: initial as any }, { onConflict: 'user_id' });
+            // Also clear any group the user is a member of
+            const { data: memberships } = await (supabase
+              .from('group_members' as any)
+              .select('group_id')
+              .eq('user_id', userId) as any);
+            if (memberships && Array.isArray(memberships)) {
+              for (const m of memberships) {
+                if (m?.group_id) {
+                  await (supabase
+                    .from('group_data' as any)
+                    .update({ data: initial as any }) as any)
+                    .eq('group_id', m.group_id);
+                }
+              }
+            }
+          } catch (err) {
+            console.error('Post-reset cloud clear failed:', err);
+          }
+          setState(initial);
+          setSyncStatus('synced');
+          setLastSyncedAt(new Date());
+          return;
+        }
+
         let cloudState: BudgetState | null = null;
 
         if (groupId) {
