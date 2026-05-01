@@ -146,6 +146,10 @@ const Archive = () => {
   const [expandedYears, setExpandedYears] = useState<number[]>([]);
   const [searchType, setSearchType] = useState<BreakdownType>('expense');
   const [searchItem, setSearchItem] = useState<string>('__all__');
+  const [fromYear, setFromYear] = useState<string>('__any__');
+  const [fromMonth, setFromMonth] = useState<string>('__any__');
+  const [toYear, setToYear] = useState<string>('__any__');
+  const [toMonth, setToMonth] = useState<string>('__any__');
   const { t } = useLanguage();
   const { currencySymbol } = useCurrency();
   const pastBudgets = getPastBudgets();
@@ -164,12 +168,37 @@ const Archive = () => {
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [allArchiveTx, searchType]);
 
+  // Available years from the archive (descending)
+  const availableYears = useMemo(() => {
+    const set = new Set<number>();
+    pastBudgets.forEach((b) => set.add(b.year));
+    return Array.from(set).sort((a, b) => b - a);
+  }, [pastBudgets]);
+
+  // Compute numeric range bounds (inclusive). Encoded as year*12 + month.
+  const rangeBounds = useMemo(() => {
+    const fy = fromYear === '__any__' ? null : Number(fromYear);
+    const ty = toYear === '__any__' ? null : Number(toYear);
+    const fm = fromMonth === '__any__' ? 0 : Number(fromMonth);
+    const tm = toMonth === '__any__' ? 11 : Number(toMonth);
+    const min = fy === null ? -Infinity : fy * 12 + fm;
+    const max = ty === null ? Infinity : ty * 12 + tm;
+    return { min, max };
+  }, [fromYear, fromMonth, toYear, toMonth]);
+
   const filteredSearchTx = useMemo(() => {
     return allArchiveTx
       .filter((tx) => tx.type === searchType && !tx.isWithdrawal)
       .filter((tx) => searchItem === '__all__' || (tx.category || '—') === searchItem)
+      .filter((tx) => {
+        if (!tx.date) return rangeBounds.min === -Infinity && rangeBounds.max === Infinity;
+        const d = new Date(tx.date);
+        if (isNaN(d.getTime())) return true;
+        const key = d.getFullYear() * 12 + d.getMonth();
+        return key >= rangeBounds.min && key <= rangeBounds.max;
+      })
       .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-  }, [allArchiveTx, searchType, searchItem]);
+  }, [allArchiveTx, searchType, searchItem, rangeBounds]);
 
   const filteredSearchTotal = useMemo(
     () => filteredSearchTx.reduce((s, tx) => s + tx.amount, 0),
