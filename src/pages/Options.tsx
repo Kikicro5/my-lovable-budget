@@ -17,6 +17,7 @@ import { GroupManager } from '@/components/GroupManager';
 
 import { TermsOfServiceDialog, PrivacyPolicyDialog, GDPRDialog } from '@/components/LegalDialogs';
 import { ContactDialog } from '@/components/ContactDialog';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
