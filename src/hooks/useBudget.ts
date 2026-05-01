@@ -1084,26 +1084,26 @@ export const useBudget = () => {
     groupId,
     lastSyncedAt,
     resetAll: async () => {
+      const initial = getInitialState();
       // Clear cloud data first if syncing
       if (canSync && userId) {
         try {
           if (groupId) {
             await (supabase
               .from('group_data' as any)
-              .update({ data: getInitialState() as any }) as any)
+              .update({ data: initial as any }) as any)
               .eq('group_id', groupId);
           } else {
             await supabase
               .from('user_data')
-              .update({ data: getInitialState() as any })
-              .eq('user_id', userId);
+              .upsert({ user_id: userId, data: initial as any }, { onConflict: 'user_id' });
           }
         } catch (err) {
           console.error('Failed to reset cloud data:', err);
         }
       }
       // Clear localStorage and reload
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
       window.location.reload();
     },
   };
