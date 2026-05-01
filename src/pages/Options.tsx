@@ -86,6 +86,8 @@ const Options = () => {
   const { user, isAdmin, signOut } = useAuth();
   const { syncStatus, syncNow, resetAll } = useBudget();
   const [manualSyncing, setManualSyncing] = useState(false);
+  const [resetConfirmText, setResetConfirmText] = useState('');
+  const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleShare = async () => {
