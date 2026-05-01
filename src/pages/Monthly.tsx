@@ -19,7 +19,7 @@ import { useLanguage } from '@/i18n/LanguageContext';
 
 
 const Monthly = () => {
-  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getAvailableInvestment, getAvailableSavings, transferFromCategory } = useBudget();
+  const { state, getCurrentBudget, addTransaction, removeTransaction, addCategory, removeCategory, getAvailableInvestment, getAvailableSavings, transferFromCategory, getAllInvestmentTransactions, getAllSavingsTransactions } = useBudget();
   const { t } = useLanguage();
   
   const currentBudget = getCurrentBudget();
@@ -133,7 +133,7 @@ const Monthly = () => {
                   <PreviousPeriodInput type="investment" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('investment', amount)} />
                 </>
               )}
-              <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="investment" accounts={state.accounts || []} />
+              <TransactionList transactions={getAllInvestmentTransactions()} onRemove={handleRemoveTransaction} filterType="investment" accounts={state.accounts || []} />
             </FeatureLock>
           </TabsContent>
           <TabsContent value="savings" className="space-y-4">
@@ -146,7 +146,7 @@ const Monthly = () => {
                   <PreviousPeriodInput type="savings" onSubmit={(amount) => handleAddTransactionFromPreviousPeriod('savings', amount)} />
                 </>
               )}
-              <TransactionList transactions={currentBudget?.transactions || []} onRemove={handleRemoveTransaction} filterType="savings" accounts={state.accounts || []} />
+              <TransactionList transactions={getAllSavingsTransactions()} onRemove={handleRemoveTransaction} filterType="savings" accounts={state.accounts || []} />
             </FeatureLock>
           </TabsContent>
           <TabsContent value="categories" className="space-y-4">

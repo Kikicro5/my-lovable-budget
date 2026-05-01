@@ -666,6 +666,30 @@ export const useBudget = () => {
       .reduce((acc, t) => acc + t.amount, 0);
   };
 
+  // Aggregate investment/savings across ALL budgets (every month/year),
+  // so the Home and Monthly pages can show cumulative totals and full transaction lists.
+  const getAllInvestmentTransactions = (): Transaction[] => {
+    return state.budgets.flatMap((b) => b.transactions.filter((t) => t.type === 'investment'));
+  };
+
+  const getAllSavingsTransactions = (): Transaction[] => {
+    return state.budgets.flatMap((b) => b.transactions.filter((t) => t.type === 'savings'));
+  };
+
+  const getAllAvailableInvestment = (): number => {
+    const txs = getAllInvestmentTransactions();
+    const invested = txs.filter((t) => !t.isWithdrawal).reduce((a, t) => a + t.amount, 0);
+    const withdrawn = txs.filter((t) => t.isWithdrawal).reduce((a, t) => a + t.amount, 0);
+    return Math.max(0, invested - withdrawn);
+  };
+
+  const getAllAvailableSavings = (): number => {
+    const txs = getAllSavingsTransactions();
+    const saved = txs.filter((t) => !t.isWithdrawal).reduce((a, t) => a + t.amount, 0);
+    const withdrawn = txs.filter((t) => t.isWithdrawal).reduce((a, t) => a + t.amount, 0);
+    return Math.max(0, saved - withdrawn);
+  };
+
   const getPastBudgets = (): MonthlyBudget[] => {
     const now = new Date();
     return state.budgets
@@ -1118,6 +1142,10 @@ export const useBudget = () => {
     transferFromCategory,
     getAvailableInvestment,
     getAvailableSavings,
+    getAllAvailableInvestment,
+    getAllAvailableSavings,
+    getAllInvestmentTransactions,
+    getAllSavingsTransactions,
     addAccount,
     removeAccount,
     updateAccount,
