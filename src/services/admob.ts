@@ -43,8 +43,8 @@ export const showBannerAd = async (): Promise<void> => {
     const options: BannerAdOptions = {
       adId: BANNER_AD_ID,
       adSize: BannerAdSize.ADAPTIVE_BANNER,
-      position: BannerAdPosition.BOTTOM_CENTER,
-      margin: 140,
+      position: BannerAdPosition.TOP_CENTER,
+      margin: 0,
       isTesting: false,
     };
     await AdMob.showBanner(options);
