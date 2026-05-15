@@ -12,7 +12,25 @@ const ADS_DISABLED = false;
 
 let initialized = false;
 let bannerVisible = false;
-let bannerClosed = false;
+const BANNER_CLOSED_KEY = 'admob.bannerClosed';
+const readBannerClosed = (): boolean => {
+  try {
+    return typeof sessionStorage !== 'undefined' &&
+      sessionStorage.getItem(BANNER_CLOSED_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
+const writeBannerClosed = (v: boolean) => {
+  try {
+    if (typeof sessionStorage === 'undefined') return;
+    if (v) sessionStorage.setItem(BANNER_CLOSED_KEY, '1');
+    else sessionStorage.removeItem(BANNER_CLOSED_KEY);
+  } catch {
+    /* ignore */
+  }
+};
+let bannerClosed = readBannerClosed();
 const listeners = new Set<(visible: boolean) => void>();
 
 // Fallback height used only until the AdMob plugin reports the real size.
@@ -110,5 +128,6 @@ export const removeBannerAd = async (): Promise<void> => {
 
 export const closeBannerAd = async (): Promise<void> => {
   bannerClosed = true;
+  writeBannerClosed(true);
   await removeBannerAd();
 };
