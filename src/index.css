@@ -177,6 +177,13 @@
     color: hsl(var(--expense));
   }
 
+  /* Reserve space at the very top of every page for the system status bar
+     and (when on native) the AdMob banner sitting at TOP_CENTER. */
+  body {
+    padding-top: calc(var(--app-top-inset) + var(--ad-banner-height));
+  }
+
+
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out;
   }
