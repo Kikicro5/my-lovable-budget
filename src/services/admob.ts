@@ -1,4 +1,10 @@
-import { AdMob, BannerAdOptions, BannerAdPosition, BannerAdSize } from '@capacitor-community/admob';
+import {
+  AdMob,
+  BannerAdOptions,
+  BannerAdPluginEvents,
+  BannerAdPosition,
+  BannerAdSize,
+} from '@capacitor-community/admob';
 import { isNative } from '@/utils/platform';
 
 const BANNER_AD_ID = 'ca-app-pub-0825549313210028/3846166268';
@@ -9,13 +15,16 @@ let bannerVisible = false;
 let bannerClosed = false;
 const listeners = new Set<(visible: boolean) => void>();
 
-const BANNER_HEIGHT_PX = 60;
+// Fallback height used only until the AdMob plugin reports the real size.
+const BANNER_HEIGHT_FALLBACK_PX = 60;
+let bannerHeightPx = 0;
+let sizeListenerAttached = false;
 
 const updateBannerCssVar = () => {
   if (typeof document === 'undefined') return;
   document.documentElement.style.setProperty(
     '--ad-banner-height',
-    bannerVisible ? `${BANNER_HEIGHT_PX}px` : '0px',
+    bannerVisible ? `${bannerHeightPx || BANNER_HEIGHT_FALLBACK_PX}px` : '0px',
   );
 };
 
@@ -41,6 +50,17 @@ export const initializeAdMob = async (): Promise<void> => {
       initializeForTesting: false,
     });
     initialized = true;
+    if (!sizeListenerAttached) {
+      sizeListenerAttached = true;
+      // Real banner dimensions reported by AdMob (adaptive banner height
+      // varies by device width and orientation). Update CSS var on change.
+      AdMob.addListener(BannerAdPluginEvents.SizeChanged, (info: { width: number; height: number }) => {
+        if (info && typeof info.height === 'number' && info.height > 0) {
+          bannerHeightPx = info.height;
+          updateBannerCssVar();
+        }
+      });
+    }
   } catch (err) {
     console.warn('[AdMob] init failed', err);
   }
