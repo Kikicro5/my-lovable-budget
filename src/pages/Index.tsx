@@ -15,10 +15,6 @@ import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Wallet, AlertCircle } from 'lucide-react';
-import { useEffect } from 'react';
-import { showBannerAd, hideBannerAd } from '@/services/admob';
-
-
 const Index = () => {
   const { 
     state, 
@@ -43,13 +39,6 @@ const Index = () => {
     groupId,
   } = useBudget();
   const { t } = useLanguage();
-  
-  useEffect(() => {
-    showBannerAd();
-    return () => {
-      hideBannerAd();
-    };
-  }, []);
 
   const currentBudget = getCurrentBudget();
   
