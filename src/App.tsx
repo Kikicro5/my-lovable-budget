@@ -10,7 +10,7 @@ import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
 import InstallPrompt from "@/components/InstallPrompt";
-import { initializeAdMob } from "@/services/admob";
+import { initializeAdMob, showBannerAd } from "@/services/admob";
 import { AdCloseButton } from "@/components/AdCloseButton";
 import HelpChatBot from "@/components/HelpChatBot";
 
@@ -29,7 +29,10 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
-    initializeAdMob();
+    (async () => {
+      await initializeAdMob();
+      await showBannerAd();
+    })();
   }, []);
 
   return (

@@ -6,6 +6,9 @@
 
 @layer base {
   :root {
+    /* Dynamic top inset = system safe area + ad banner (when visible) */
+    --app-top-inset: env(safe-area-inset-top);
+    --ad-banner-height: 0px;
     --background: 220 10% 95%;
     --foreground: 220 30% 15%;
 
@@ -173,6 +176,13 @@
   .text-expense {
     color: hsl(var(--expense));
   }
+
+  /* Reserve space at the very top of every page for the system status bar
+     and (when on native) the AdMob banner sitting at TOP_CENTER. */
+  body {
+    padding-top: calc(var(--app-top-inset) + var(--ad-banner-height));
+  }
+
 
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out;

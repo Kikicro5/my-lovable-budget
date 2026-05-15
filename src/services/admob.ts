@@ -9,8 +9,19 @@ let bannerVisible = false;
 let bannerClosed = false;
 const listeners = new Set<(visible: boolean) => void>();
 
+const BANNER_HEIGHT_PX = 60;
+
+const updateBannerCssVar = () => {
+  if (typeof document === 'undefined') return;
+  document.documentElement.style.setProperty(
+    '--ad-banner-height',
+    bannerVisible ? `${BANNER_HEIGHT_PX}px` : '0px',
+  );
+};
+
 const notify = () => {
   listeners.forEach((l) => l(bannerVisible));
+  updateBannerCssVar();
 };
 
 export const subscribeBannerVisibility = (cb: (visible: boolean) => void): (() => void) => {
