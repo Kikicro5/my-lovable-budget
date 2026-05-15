@@ -6,6 +6,9 @@
 
 @layer base {
   :root {
+    /* Dynamic top inset = system safe area + ad banner (when visible) */
+    --app-top-inset: env(safe-area-inset-top);
+    --ad-banner-height: 0px;
     --background: 220 10% 95%;
     --foreground: 220 30% 15%;
 
