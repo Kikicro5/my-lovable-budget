@@ -51,7 +51,10 @@ const getInitialState = (): BudgetState => {
     },
     defaultLimits: DEFAULT_LIMITS,
     recurringTransactions: [],
-    accounts: [],
+    accounts: [
+      { id: 'default-banka-1', name: 'Banka 1', balance: 0 },
+      { id: 'default-novcanik', name: 'Novčanik', balance: 0 },
+    ],
     reminders: [],
   };
 };
@@ -84,7 +87,7 @@ export const useBudget = () => {
           },
           defaultLimits: parsed.defaultLimits || DEFAULT_LIMITS,
           recurringTransactions: parsed.recurringTransactions || [],
-          accounts: parsed.accounts || [],
+          accounts: parsed.accounts ?? defaults.accounts,
           reminders: parsed.reminders || [],
         };
       } catch {
