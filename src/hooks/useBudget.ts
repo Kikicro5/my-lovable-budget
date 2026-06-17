@@ -12,8 +12,25 @@ const DEFAULT_LIMITS: BudgetLimits = {
   savings: 0,
 };
 
+const DEFAULT_ACCOUNT_NAMES: Record<string, { bank: string; wallet: string }> = {
+  hr: { bank: 'Banka 1', wallet: 'Novčanik' },
+  en: { bank: 'Bank 1', wallet: 'Wallet' },
+  de: { bank: 'Bank 1', wallet: 'Geldbörse' },
+  pl: { bank: 'Bank 1', wallet: 'Portfel' },
+  es: { bank: 'Banco 1', wallet: 'Cartera' },
+  fr: { bank: 'Banque 1', wallet: 'Portefeuille' },
+  zh: { bank: '银行 1', wallet: '钱包' },
+  hi: { bank: 'बैंक 1', wallet: 'बटुआ' },
+};
+
+const getDefaultAccountNames = () => {
+  const lang = (typeof window !== 'undefined' && localStorage.getItem('app-language')) || 'en';
+  return DEFAULT_ACCOUNT_NAMES[lang] || DEFAULT_ACCOUNT_NAMES.en;
+};
+
 const getInitialState = (): BudgetState => {
   const now = new Date();
+  const names = getDefaultAccountNames();
   return {
     currentMonth: now.getMonth(),
     currentYear: now.getFullYear(),
@@ -52,8 +69,8 @@ const getInitialState = (): BudgetState => {
     defaultLimits: DEFAULT_LIMITS,
     recurringTransactions: [],
     accounts: [
-      { id: 'default-banka-1', name: 'Banka 1', balance: 0 },
-      { id: 'default-novcanik', name: 'Novčanik', balance: 0 },
+      { id: 'default-banka-1', name: names.bank, balance: 0 },
+      { id: 'default-novcanik', name: names.wallet, balance: 0 },
     ],
     reminders: [],
   };
