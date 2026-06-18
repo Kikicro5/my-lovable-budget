@@ -28,9 +28,38 @@ const getDefaultAccountNames = () => {
   return DEFAULT_ACCOUNT_NAMES[lang] || DEFAULT_ACCOUNT_NAMES.en;
 };
 
+const getDefaultAccounts = (): Account[] => {
+  const names = getDefaultAccountNames();
+  return [
+    { id: 'default-banka-1', name: names.bank, balance: 0 },
+    { id: 'default-novcanik', name: names.wallet, balance: 0 },
+  ];
+};
+
+const normalizeBudgetState = (saved: Partial<BudgetState>): BudgetState => {
+  const defaults = getInitialState();
+  const hasExistingAccounts = Array.isArray(saved.accounts) && saved.accounts.length > 0;
+  const shouldAddDefaultAccounts = !hasExistingAccounts && !saved.accountsInitialized;
+
+  return {
+    ...defaults,
+    ...saved,
+    savedCategories: {
+      income: migrateCategories(saved.savedCategories?.income || defaults.savedCategories.income),
+      expense: migrateCategories(saved.savedCategories?.expense || defaults.savedCategories.expense),
+      investment: migrateCategories(saved.savedCategories?.investment || defaults.savedCategories.investment),
+      savings: migrateCategories(saved.savedCategories?.savings || defaults.savedCategories.savings),
+    },
+    defaultLimits: saved.defaultLimits || DEFAULT_LIMITS,
+    recurringTransactions: saved.recurringTransactions || [],
+    accounts: hasExistingAccounts ? saved.accounts! : shouldAddDefaultAccounts ? getDefaultAccounts() : [],
+    accountsInitialized: true,
+    reminders: saved.reminders || [],
+  };
+};
+
 const getInitialState = (): BudgetState => {
   const now = new Date();
-  const names = getDefaultAccountNames();
   return {
     currentMonth: now.getMonth(),
     currentYear: now.getFullYear(),
@@ -68,10 +97,8 @@ const getInitialState = (): BudgetState => {
     },
     defaultLimits: DEFAULT_LIMITS,
     recurringTransactions: [],
-    accounts: [
-      { id: 'default-banka-1', name: names.bank, balance: 0 },
-      { id: 'default-novcanik', name: names.wallet, balance: 0 },
-    ],
+    accounts: getDefaultAccounts(),
+    accountsInitialized: true,
     reminders: [],
   };
 };
@@ -92,23 +119,7 @@ export const useBudget = () => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        const defaults = getInitialState();
-        // Merge saved categories with defaults and migrate old format
-        return {
-          ...parsed,
-          savedCategories: {
-            income: migrateCategories(parsed.savedCategories?.income || defaults.savedCategories.income),
-            expense: migrateCategories(parsed.savedCategories?.expense || defaults.savedCategories.expense),
-            investment: migrateCategories(parsed.savedCategories?.investment || defaults.savedCategories.investment),
-            savings: migrateCategories(parsed.savedCategories?.savings || defaults.savedCategories.savings),
-          },
-          defaultLimits: parsed.defaultLimits || DEFAULT_LIMITS,
-          recurringTransactions: parsed.recurringTransactions || [],
-            accounts: (Array.isArray(parsed.accounts) && parsed.accounts.length > 0)
-              ? parsed.accounts
-              : defaults.accounts,
-          reminders: parsed.reminders || [],
-        };
+        return normalizeBudgetState(parsed);
       } catch {
         return getInitialState();
       }
@@ -407,6 +418,7 @@ export const useBudget = () => {
         }
 
         if (cloudState && cloudState.budgets) {
+          cloudState = normalizeBudgetState(cloudState);
           const cloudTotal = cloudState.budgets.reduce((sum, b) => sum + b.transactions.length, 0);
           const localState = localStorage.getItem(STORAGE_KEY);
           const parsed = localState ? JSON.parse(localState) : null;
@@ -445,7 +457,7 @@ export const useBudget = () => {
           const newData = (payload.new as any)?.data as BudgetState;
           if (newData && newData.budgets) {
             isUpdatingFromRealtimeRef.current = true;
-            setState(newData);
+            setState(normalizeBudgetState(newData));
             setSyncStatus('synced');
             setLastSyncedAt(new Date());
             // Reset flag after React processes the update
