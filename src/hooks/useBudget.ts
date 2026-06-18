@@ -119,23 +119,7 @@ export const useBudget = () => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        const defaults = getInitialState();
-        // Merge saved categories with defaults and migrate old format
-        return {
-          ...parsed,
-          savedCategories: {
-            income: migrateCategories(parsed.savedCategories?.income || defaults.savedCategories.income),
-            expense: migrateCategories(parsed.savedCategories?.expense || defaults.savedCategories.expense),
-            investment: migrateCategories(parsed.savedCategories?.investment || defaults.savedCategories.investment),
-            savings: migrateCategories(parsed.savedCategories?.savings || defaults.savedCategories.savings),
-          },
-          defaultLimits: parsed.defaultLimits || DEFAULT_LIMITS,
-          recurringTransactions: parsed.recurringTransactions || [],
-            accounts: (Array.isArray(parsed.accounts) && parsed.accounts.length > 0)
-              ? parsed.accounts
-              : defaults.accounts,
-          reminders: parsed.reminders || [],
-        };
+        return normalizeBudgetState(parsed);
       } catch {
         return getInitialState();
       }
