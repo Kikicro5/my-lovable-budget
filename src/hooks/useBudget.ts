@@ -104,7 +104,9 @@ export const useBudget = () => {
           },
           defaultLimits: parsed.defaultLimits || DEFAULT_LIMITS,
           recurringTransactions: parsed.recurringTransactions || [],
-          accounts: parsed.accounts ?? defaults.accounts,
+            accounts: (Array.isArray(parsed.accounts) && parsed.accounts.length > 0)
+              ? parsed.accounts
+              : defaults.accounts,
           reminders: parsed.reminders || [],
         };
       } catch {
