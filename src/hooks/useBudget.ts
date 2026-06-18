@@ -39,6 +39,7 @@ const getDefaultAccounts = (): Account[] => {
 const normalizeBudgetState = (saved: Partial<BudgetState>): BudgetState => {
   const defaults = getInitialState();
   const hasExistingAccounts = Array.isArray(saved.accounts) && saved.accounts.length > 0;
+  const shouldAddDefaultAccounts = !hasExistingAccounts && !saved.accountsInitialized;
 
   return {
     ...defaults,
@@ -51,8 +52,8 @@ const normalizeBudgetState = (saved: Partial<BudgetState>): BudgetState => {
     },
     defaultLimits: saved.defaultLimits || DEFAULT_LIMITS,
     recurringTransactions: saved.recurringTransactions || [],
-    accounts: hasExistingAccounts ? saved.accounts! : getDefaultAccounts(),
-    accountsInitialized: hasExistingAccounts || saved.accountsInitialized || !Array.isArray(saved.accounts),
+    accounts: hasExistingAccounts ? saved.accounts! : shouldAddDefaultAccounts ? getDefaultAccounts() : [],
+    accountsInitialized: true,
     reminders: saved.reminders || [],
   };
 };
