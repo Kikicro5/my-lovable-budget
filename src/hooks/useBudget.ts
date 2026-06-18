@@ -418,6 +418,7 @@ export const useBudget = () => {
         }
 
         if (cloudState && cloudState.budgets) {
+          cloudState = normalizeBudgetState(cloudState);
           const cloudTotal = cloudState.budgets.reduce((sum, b) => sum + b.transactions.length, 0);
           const localState = localStorage.getItem(STORAGE_KEY);
           const parsed = localState ? JSON.parse(localState) : null;
@@ -456,7 +457,7 @@ export const useBudget = () => {
           const newData = (payload.new as any)?.data as BudgetState;
           if (newData && newData.budgets) {
             isUpdatingFromRealtimeRef.current = true;
-            setState(newData);
+            setState(normalizeBudgetState(newData));
             setSyncStatus('synced');
             setLastSyncedAt(new Date());
             // Reset flag after React processes the update
