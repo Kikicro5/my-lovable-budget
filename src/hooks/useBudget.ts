@@ -28,9 +28,37 @@ const getDefaultAccountNames = () => {
   return DEFAULT_ACCOUNT_NAMES[lang] || DEFAULT_ACCOUNT_NAMES.en;
 };
 
+const getDefaultAccounts = (): Account[] => {
+  const names = getDefaultAccountNames();
+  return [
+    { id: 'default-banka-1', name: names.bank, balance: 0 },
+    { id: 'default-novcanik', name: names.wallet, balance: 0 },
+  ];
+};
+
+const normalizeBudgetState = (saved: Partial<BudgetState>): BudgetState => {
+  const defaults = getInitialState();
+  const hasExistingAccounts = Array.isArray(saved.accounts) && saved.accounts.length > 0;
+
+  return {
+    ...defaults,
+    ...saved,
+    savedCategories: {
+      income: migrateCategories(saved.savedCategories?.income || defaults.savedCategories.income),
+      expense: migrateCategories(saved.savedCategories?.expense || defaults.savedCategories.expense),
+      investment: migrateCategories(saved.savedCategories?.investment || defaults.savedCategories.investment),
+      savings: migrateCategories(saved.savedCategories?.savings || defaults.savedCategories.savings),
+    },
+    defaultLimits: saved.defaultLimits || DEFAULT_LIMITS,
+    recurringTransactions: saved.recurringTransactions || [],
+    accounts: hasExistingAccounts ? saved.accounts! : getDefaultAccounts(),
+    accountsInitialized: hasExistingAccounts || saved.accountsInitialized || !Array.isArray(saved.accounts),
+    reminders: saved.reminders || [],
+  };
+};
+
 const getInitialState = (): BudgetState => {
   const now = new Date();
-  const names = getDefaultAccountNames();
   return {
     currentMonth: now.getMonth(),
     currentYear: now.getFullYear(),
@@ -68,10 +96,8 @@ const getInitialState = (): BudgetState => {
     },
     defaultLimits: DEFAULT_LIMITS,
     recurringTransactions: [],
-    accounts: [
-      { id: 'default-banka-1', name: names.bank, balance: 0 },
-      { id: 'default-novcanik', name: names.wallet, balance: 0 },
-    ],
+    accounts: getDefaultAccounts(),
+    accountsInitialized: true,
     reminders: [],
   };
 };
