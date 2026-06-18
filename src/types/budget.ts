@@ -75,5 +75,6 @@ export interface BudgetState {
   defaultLimits: BudgetLimits;
   recurringTransactions: RecurringTransaction[];
   accounts: Account[];
+  accountsInitialized?: boolean;
   reminders: PaymentReminder[];
 }
